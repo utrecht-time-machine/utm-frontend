@@ -359,7 +359,7 @@ div.user-bar ul > li > a:not(.is-active):hover {
   user-select: none;
 }
 .brand.white {
-  background-image: url(/themes/utm/ui/svg/logo-w.svg);
+  background-image: url("../ui/svg/logo-w.svg");
 }
 .brand.white > div {
   color: #fff;
@@ -439,7 +439,7 @@ div.utm-footer ul > li > a.is-active {
   display: block;
   width: 32px;
   height: 80px;
-  background-image: url(/themes/utm/ui/logo.png);
+  background-image: url("../logo.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: auto 60px;
@@ -674,7 +674,7 @@ div.utm-footer ul > li > a.is-active {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url(/themes/utm/ui/svg/close.svg);
+  background-image: url("../ui/svg/close.svg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 50% auto;
@@ -1032,7 +1032,7 @@ div.utm-footer ul > li > a.is-active {
   display: block;
   width: 100%;
   height: 100%;
-  background-image: url(/themes/utm/ui/svg/play-w.svg);
+  background-image: url("../ui/svg/play-w.svg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 20% auto;
@@ -1409,7 +1409,7 @@ div.utm-footer ul > li > a.is-active {
   width: 40px;
   height: 40px;
   background-color: var(--sand);
-  background-image: url(/themes/utm/ui/svg/close.svg);
+  background-image: url("../ui/svg/close.svg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 50% auto;
@@ -1476,7 +1476,7 @@ div.utm-footer ul > li > a.is-active {
   margin: 2rem auto;
   padding: 20px 30px 20px 56px;
   background-color: #000;
-  background-image: url(/themes/utm/ui/svg/route-w.svg);
+  background-image: url("../ui/svg/route-w.svg");
   background-repeat: no-repeat;
   background-position: left 28px center;
   background-size: 18px auto;
@@ -1502,7 +1502,7 @@ div.utm-footer ul > li > a.is-active {
 }
 .map-data-path.type-cycling div.nav-calc span {
   padding-left: 2.6em;
-  background-image: url(/themes/utm/ui/svg/cycling.svg);
+  background-image: url("../ui/svg/cycling.svg");
 }
 .map-data-path div.nav-menu.dragscroll {
   overflow: scroll;
@@ -1530,7 +1530,7 @@ div.utm-footer ul > li > a.is-active {
   border-radius: 100px;
   font-size: 1.1em;
   font-weight: 500;
-  background-image: url(/themes/utm/ui/svg/walking.svg);
+  background-image: url("../ui/svg/walking.svg");
   background-repeat: no-repeat;
   background-position: left 1em center;
   background-size: auto 1em;
@@ -1596,13 +1596,13 @@ div.utm-footer ul > li > a.is-active {
   color: #eee;
 }
 .map-data-path ul > li.is-home > a > div {
-  background-image: url(/themes/utm/ui/svg/home.svg);
+  background-image: url("../ui/svg/home.svg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: auto 44%;
 }
 .map-data-path ul > li.is-home > a.on > div {
-  background-image: url(/themes/utm/ui/svg/home-w.svg);
+  background-image: url("../ui/svg/home-w.svg");
 }
 .fold {
   margin: 2rem 0;
@@ -1627,7 +1627,7 @@ div.utm-footer ul > li > a.is-active {
   width: 16px;
   height: 16px;
   margin-top: -8px;
-  background-image: url(/themes/utm/ui/svg/plus.svg);
+  background-image: url("../ui/svg/plus.svg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
