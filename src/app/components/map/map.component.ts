@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { MapService } from '../../services/map.service';
 import { ApiService } from '../../services/api.service';
-import { MapLocation } from '../../models/map-location';
-import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-map',
@@ -10,7 +8,7 @@ import { lastValueFrom } from 'rxjs';
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent {
-  constructor(private mapService: MapService, private apiService: ApiService) {}
+  constructor(public mapService: MapService, private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.mapService.initMap();

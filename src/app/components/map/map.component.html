@@ -6,43 +6,52 @@
     <div class="map-data-handle"></div>
     <div class="map-data-dock" id="map_dock">
       <div class="views-element-container">
-        <app-selected-item
-          [title]="'Castellum'"
-          [location]="'Woerden'"
-          [introText]="
-            'Intro text <strong>met HTML</strong>. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque eligendi itaque iure sapiente velit. Aliquam consectetur deserunt dolor eligendi itaque laboriosam minima, nam nihil, placeat provident reprehenderit ullam velit voluptatum.'
-          "
-        ></app-selected-item>
+        <!--        <app-selected-item-->
+        <!--          [title]="'Castellum'"-->
+        <!--          [location]="'Woerden'"-->
+        <!--          [introText]="-->
+        <!--            'Intro text <strong>met HTML</strong>. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque eligendi itaque iure sapiente velit. Aliquam consectetur deserunt dolor eligendi itaque laboriosam minima, nam nihil, placeat provident reprehenderit ullam velit voluptatum.'-->
+        <!--          "-->
+        <!--        ></app-selected-item>-->
       </div>
     </div>
     <div class="map-data-near">
       <div class="pad">
         <h2>Ontdek deze buurt</h2>
         <div class="card-hold promote" id="map_near">
-          <div class="card">
-            <a
-              href="/nl/locaties/stedehuys-woerden"
-              data-dock-id="444"
-              data-dock="location"
-              data-dock-name="Stedehuys, Woerden - Utrecht Time Machine"
-            >
-              <div class="head">
+          <div
+            class="card"
+            *ngFor="
+              let locationWithDistance of mapService.locationsClosestToCenter.getValue()
+            "
+          >
+            <a href="/locaties/heksenvervolgingen"
+              ><div class="head">
                 <div>
                   <div>
-                    <img src="https://via.placeholder.com/600x400" />
+                    <img [src]="locationWithDistance.location.photo" />
                   </div>
                 </div>
               </div>
               <div class="core">
-                <span class="type">Kerkplein 6</span
-                ><span class="name">Stedehuys, Woerden</span
-                ><span class="desc"
-                  >Het voormalig stadhuis van de destijds Zuid-Hollandse stad
-                  Woerden is een rijksmonument. </span
-                ><span class="dist">5,4km</span>
-              </div>
-            </a>
+                <span class="type">{{
+                  locationWithDistance.location.address
+                }}</span
+                ><span class="name">{{
+                  locationWithDistance.location.title
+                }}</span
+                ><span class="desc">SUBTEXT</span>
+                <!--                TODO: Show comma instead of period -->
+                <!--                TODO: Show meters when distance is below 1km? -->
+                <span class="dist">{{
+                  locationWithDistance.distanceFromCenterInKm.toFixed(1) + " km"
+                }}</span>
+              </div></a
+            >
           </div>
+
+          <!--          TODO: Refactor to use components (ignored for now as it seems to mess with the preferred DOM hierarchy for the CSS -->
+          <!--          <app-nearby-item></app-nearby-item>-->
         </div>
       </div>
     </div>

@@ -2,14 +2,30 @@ import { Injectable } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
 import { ApiService } from './api.service';
 import { GeoJSON } from 'geojson';
+import { Feature, FeatureCollection } from '@turf/turf';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { MapLocation } from '../models/map-location';
+import { LocationDistanceFromCenter } from '../models/location-distance-from-center';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MapService {
   map: mapboxgl.Map | undefined = undefined;
+  mapLocations: GeoJSON.FeatureCollection | undefined = undefined;
 
-  constructor(private apiService: ApiService) {}
+  locationsClosestToCenter = new BehaviorSubject<LocationDistanceFromCenter[]>(
+    []
+  );
+
+  constructor(private apiService: ApiService) {
+    this.locationsClosestToCenter.subscribe(() => {
+      console.log(
+        'Locations closest to center updated:',
+        this.locationsClosestToCenter.getValue()
+      );
+    });
+  }
 
   initMap() {
     mapboxgl.accessToken =
@@ -117,24 +133,16 @@ export class MapService {
       );
     });
 
-    void this.addLocationsOnMap();
+    this.addLocationsOnMap();
   }
 
-  async addLocationsOnMap() {
+  addLocationsOnMap() {
     if (!this.map) {
       console.warn('Map not yet initialized... Not adding locations to map.');
       return;
     }
 
-    const mapLocations: GeoJSON.FeatureCollection =
-      await this.apiService.getMapLocationsGeoJson();
-
-    if (!mapLocations) {
-      console.warn('No map locations loaded...');
-      return;
-    }
-
-    this.map.on('load', () => {
+    this.map.on('load', async () => {
       // TODO: Bring back routes on the map
       // if (map_geo_route) {
       //   fetch(map_nav_route)
@@ -213,11 +221,18 @@ export class MapService {
       //   });
       // }
 
-      console.log('Adding map locations: ', mapLocations);
+      this.mapLocations = await this.apiService.getMapLocationsGeoJson();
+
+      if (!this.mapLocations) {
+        console.warn('No map locations loaded...');
+        return;
+      }
+
+      console.log('Adding map locations: ', this.mapLocations);
 
       this.map?.addSource('locations', {
         type: 'geojson',
-        data: mapLocations,
+        data: this.mapLocations,
         cluster: true,
         clusterMaxZoom: 12,
         clusterRadius: 50,
@@ -333,6 +348,67 @@ export class MapService {
           .setLngLat(feature.geometry.coordinates)
           .addTo(this.map as mapboxgl.Map);
       });
+
+      this.map?.on('moveend', () => {
+        this.updateLocationsClosestToCenter(5);
+      });
+      this.map?.on('zoomend', () => {
+        this.updateLocationsClosestToCenter(5);
+      });
     });
+  }
+
+  private _getDistanceFromLatLonInKm(
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number
+  ): number {
+    const R = 6371; // Radius of the earth in km
+    const dLat = this._deg2rad(lat2 - lat1);
+    const dLon = this._deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this._deg2rad(lat1)) *
+        Math.cos(this._deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in km
+    return distance;
+  }
+
+  private _deg2rad(deg: number): number {
+    return deg * (Math.PI / 180);
+  }
+
+  updateLocationsClosestToCenter(maxItems: number = 5): void {
+    if (!this.map || !this.mapLocations) {
+      console.warn('Map not (yet) initialized...');
+      return;
+    }
+
+    // TODO: Also check if in bounds?
+
+    const center = this.map.getCenter();
+    let locationsWithDistances: LocationDistanceFromCenter[] =
+      this.mapLocations.features
+        .map((feature: any) => {
+          const [lng, lat] = feature.geometry.coordinates;
+          const distance = this._getDistanceFromLatLonInKm(
+            center.lat,
+            center.lng,
+            lat,
+            lng
+          );
+          const location: MapLocation = feature?.properties;
+          return { location, distanceFromCenterInKm: distance };
+        })
+        .filter((item: any) => !isNaN(item.distanceFromCenterInKm));
+    locationsWithDistances.sort(
+      (a, b) => a.distanceFromCenterInKm - b.distanceFromCenterInKm
+    );
+    locationsWithDistances = locationsWithDistances.slice(0, maxItems);
+    this.locationsClosestToCenter.next(locationsWithDistances);
   }
 }
