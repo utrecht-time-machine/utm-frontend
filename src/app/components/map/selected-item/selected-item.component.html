@@ -1,0 +1,98 @@
+<div>
+  <div class="dock-inner" data-geo="52.087122000000, 5.042116100000">
+    <div class="pad">
+      <div class="node-column">
+        <div>
+          <div class="screen-mode" data-mobile="1">
+            <h1>{{ title }}</h1>
+            <h3>{{ location }}</h3>
+          </div>
+          <div class="photo-hold">
+            <div class="photo">
+              <div>
+                <img
+                  loading="lazy"
+                  src="https://via.placeholder.com/800x560"
+                  width="800"
+                  height="560"
+                />
+              </div>
+            </div>
+            <div class="media-source">
+              <div class="views-element-container">
+                <div>
+                  <span>Bron: fotograaf Jan Buteijn</span>
+                  <span><em>All rights reserved</em></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="screen-mode" data-mobile="0">
+            <h1>{{ title }}</h1>
+            <h3>{{ location }}</h3>
+          </div>
+          <p [innerHtml]="introText"></p>
+          <div class="fold">
+            <a>Lees meer over deze plek</a>
+            <div
+              class="fold-toggle fold-toggle-hidden"
+              [innerHtml]="readMoreText"
+            ></div>
+          </div>
+          <div class="org-logo">
+            <div class="org-logo-head">Met bijdragen van</div>
+            <div class="org-logo-hold">
+              <div class="views-element-container">
+                <a
+                  href="https://www.oud-utrecht.nl"
+                  title="Oud Utrecht"
+                  target="_blank"
+                  ><img src="https://via.placeholder.com/600x400"
+                /></a>
+              </div>
+
+              <div class="views-element-container">
+                <a
+                  href="https://utrecht.kiwanis.nl"
+                  title="Kiwani's Utrecht"
+                  target="_blank"
+                  ><img src="https://via.placeholder.com/600x400"
+                /></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="views-element-container">
+        <div class="story-head"><h2>Verhalen op deze locatie</h2></div>
+        <div class="story-hold">
+          <div class="story">
+            <a href="/nl/nl/story/romeinse-kersen" data-story-id="390"
+              ><div class="head has-video-0">
+                <div>
+                  <img
+                    loading="lazy"
+                    src="https://via.placeholder.com/560x315"
+                    width="560"
+                    height="315"
+                  />
+                </div>
+              </div>
+              <div class="core">
+                <span class="name">Romeinse Kersen</span>
+              </div></a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dock-story">
+    <a class="dock-story-end"></a>
+    <div>
+      <div id="map_dock_story"></div>
+    </div>
+  </div>
+</div>
