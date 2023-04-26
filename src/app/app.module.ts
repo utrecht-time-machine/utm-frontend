@@ -7,6 +7,7 @@ import { HeaderModule } from './components/header/header.module';
 import { FooterModule } from './components/footer/footer.module';
 import { MapModule } from './components/map/map.module';
 import { MenuButtonModule } from './components/menu-button/menu-button.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { MenuButtonModule } from './components/menu-button/menu-button.module';
     FooterModule,
     MapModule,
     MenuButtonModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
