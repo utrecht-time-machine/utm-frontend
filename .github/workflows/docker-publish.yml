@@ -111,7 +111,7 @@ jobs:
           port: 22
           script: |
             echo $LOCAL_TOKEN | docker login ghcr.io -u $LOCAL_USERNAME --password-stdin
-            sudo docker pull ghcr.io/utrecht-time-machine/utm2023-frontend:latest
+            sudo docker pull ghcr.io/utrecht-time-machine/utm2023-frontend:main
             sudo docker stop utm2023-frontend
             sudo docker rm utm2023-frontend
-            sudo docker run -p 4000:4000 utm2023-frontend
+            sudo docker run -p 4000:4000 --name utm2023-frontend -d ghcr.io/utrecht-time-machine/utm2023-frontend:main
