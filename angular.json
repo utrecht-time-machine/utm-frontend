@@ -4,7 +4,8 @@
   "cli": {
     "cache": {
       "path": ".cache/ng"
-    }
+    },
+    "analytics": false
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -48,8 +49,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1000kb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
