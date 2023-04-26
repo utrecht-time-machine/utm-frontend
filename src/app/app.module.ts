@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HeaderModule } from './components/header/header.module';
 import { FooterModule } from './components/footer/footer.module';
 import { MapModule } from './components/map/map.module';
+import { MenuButtonModule } from './components/menu-button/menu-button.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,6 +16,7 @@ import { MapModule } from './components/map/map.module';
     HeaderModule,
     FooterModule,
     MapModule,
+    MenuButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
