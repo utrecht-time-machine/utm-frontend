@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'utm2023-frontend';
+  title = 'Utrecht Time Machine';
 }
