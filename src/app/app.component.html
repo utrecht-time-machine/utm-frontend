@@ -2,4 +2,22 @@
 
 </style>
 
-<router-outlet></router-outlet>
+<app-header></app-header>
+
+
+<main role="main">
+  <a id="main-content" tabindex="-1"></a>
+  <div class="layout-content">
+    <div>
+      <article role="article">
+
+        <app-map></app-map>
+
+        <router-outlet></router-outlet>
+      </article>
+    </div>
+  </div>
+</main>
+
+
+<app-footer></app-footer>
