@@ -92,3 +92,26 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Deploy to VPS via SSH action
+        uses: appleboy/ssh-action@v0.1.10
+        env:
+          LOCAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LOCAL_USERNAME: ${{ github.actor }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          key: ${{ secrets.KEY }}
+          port: 22
+          script: |
+            echo $LOCAL_TOKEN | docker login ghcr.io -u $LOCAL_USERNAME --password-stdin
+            sudo docker pull ghcr.io/utrecht-time-machine/utm2023-frontend:latest
+            sudo docker stop utm2023-frontend
+            sudo docker rm utm2023-frontend
+            sudo docker run -p 4000:4000 utm2023-frontend
