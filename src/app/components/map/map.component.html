@@ -25,11 +25,11 @@
               let locationWithDistance of mapService.locationsClosestToCenter.getValue()
             "
           >
-            <a href="/locaties/heksenvervolgingen"
+            <a [href]="locationWithDistance.location.url"
               ><div class="head">
                 <div>
                   <div>
-                    <img [src]="locationWithDistance.location.photo" />
+                    <img [src]="locationWithDistance.location.thumb" />
                   </div>
                 </div>
               </div>

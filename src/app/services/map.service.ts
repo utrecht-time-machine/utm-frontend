@@ -331,16 +331,16 @@ export class MapService {
           .setLngLat(feature.geometry.coordinates)
           .setHTML(
             `
-<a href="/locaties/heksenvervolgingen">
+<a href="${feature.properties.url}">
   <div>
     <div>
       <div class="thumb">
-          <img src="${feature.properties.photo}">
+          <img src="${feature.properties.thumb}">
       </div>
     </div>
     <div>
       <span class="name">${feature.properties.title}</span>
-      <span class="addr">${feature.properties.address}</span>
+      <span class="addr">${feature.properties.address} ${feature.properties.city}</span>
     </div>
   </div>
 </a>`

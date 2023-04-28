@@ -13,10 +13,10 @@ export class ApiService {
 
   getMapLocations(): Observable<MapLocation[]> {
     console.log('Retrieving map locations...');
-    return this.http.get<MapLocation[]>('/assets/mock/mapLocations.json');
-    // return this.http.get<MapLocation[]>(
-    //   environment.apiUrl + environment.apiSuffixes.mapLocations
-    // );
+    // return this.http.get<MapLocation[]>('/assets/mock/mapLocations.json');
+    return this.http.get<MapLocation[]>(
+      environment.apiUrl + environment.apiSuffixes.mapLocations
+    );
   }
 
   async getMapLocationsGeoJson(): Promise<GeoJSON.FeatureCollection> {
@@ -40,7 +40,9 @@ export class ApiService {
         properties: {
           title: mapLocation.title,
           address: mapLocation.address,
-          photo: mapLocation.photo,
+          city: mapLocation.city,
+          thumb: environment.imageBaseUrl + mapLocation.thumb,
+          url: mapLocation.url,
         },
       };
     });
