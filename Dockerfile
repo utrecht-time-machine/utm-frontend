@@ -8,7 +8,7 @@ COPY . .
 
 RUN npm install -g @angular/cli
 RUN npm install
-RUN ng run utm2023-frontend:server
+RUN ng build && ng run utm2023-frontend:server
 
 EXPOSE 4000
 
