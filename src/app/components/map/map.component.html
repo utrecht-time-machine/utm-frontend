@@ -4,13 +4,29 @@
   </div>
   <div class="map-data">
     <div class="map-data-handle"></div>
-    <div class="map-data-dock" id="map_dock" *ngIf="getSelectedLocation()">
+    <app-route-steps
+      *ngIf="routing.getSelectedView() === SelectedView.Routes"
+    ></app-route-steps>
+    <div
+      class="map-data-dock"
+      id="map_dock"
+      *ngIf="
+        getSelectedLocation() ||
+        routing.getSelectedView() === SelectedView.Routes
+      "
+    >
       <div class="views-element-container">
         <app-selected-item
           [locationDetails]="getSelectedLocation()"
+          *ngIf="routing.getSelectedView() === SelectedView.Locations"
         ></app-selected-item>
+
+        <app-selected-route
+          *ngIf="routing.getSelectedView() === SelectedView.Routes"
+        ></app-selected-route>
       </div>
     </div>
+
     <div class="map-data-near">
       <div class="pad">
         <h2 *ngIf="routing.getSelectedView() === SelectedView.Locations">
