@@ -41,10 +41,8 @@
                   locationWithDistance.location.title
                 }}</span
                 ><span class="desc">SUBTEXT</span>
-                <!--                TODO: Show comma instead of period -->
-                <!--                TODO: Show meters when distance is below 1km? -->
                 <span class="dist">{{
-                  locationWithDistance.distanceFromCenterInKm.toFixed(1) + " km"
+                  mapService.convertDistanceInKmToString(locationWithDistance.distanceFromCenterInKm)
                 }}</span>
               </div></a
             >

@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
 import { ApiService } from './api.service';
 import { GeoJSON } from 'geojson';
-import { Feature, FeatureCollection } from '@turf/turf';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { MapLocation } from '../models/map-location';
 import { LocationDistanceFromCenter } from '../models/location-distance-from-center';
 
@@ -289,48 +288,54 @@ export class MapService {
           'circle-stroke-color': '#ffffff',
         },
       });
-      this.map?.on('click', 'clusters', (e: any) => {
-        const features = this.map?.queryRenderedFeatures(e.point, {
-          layers: ['clusters'],
-        });
+
+      this._initMapInteractivity();
+    });
+  }
+
+  private _initMapInteractivity() {
+    this.map?.on('click', 'clusters', (e: any) => {
+      const features = this.map?.queryRenderedFeatures(e.point, {
+        layers: ['clusters'],
+      });
+      // @ts-ignore
+      const clusterId = features[0].properties.cluster_id;
+      this.map
+        ?.getSource('locations')
         // @ts-ignore
-        const clusterId = features[0].properties.cluster_id;
-        this.map
-          ?.getSource('locations')
-          // @ts-ignore
-          .getClusterExpansionZoom(clusterId, (err, zoom) => {
-            if (err) return;
-            this.map?.easeTo({
-              // @ts-ignore
-              center: features[0].geometry.coordinates,
-              zoom: zoom,
-            });
+        .getClusterExpansionZoom(clusterId, (err, zoom) => {
+          if (err) return;
+          this.map?.easeTo({
+            // @ts-ignore
+            center: features[0].geometry.coordinates,
+            zoom: zoom,
           });
-      });
-      this.map?.on('mouseenter', 'clusters', () => {
-        // @ts-ignore
-        this.map.getCanvas().style.cursor = 'pointer';
-      });
-      this.map?.on('mouseenter', 'unclustered-point', () => {
-        // @ts-ignore
-        this.map.getCanvas().style.cursor = 'pointer';
-      });
-      this.map?.on('mouseleave', 'clusters', () => {
-        // @ts-ignore
-        this.map.getCanvas().style.cursor = '';
-      });
-      this.map?.on('mouseleave', 'unclustered-point', () => {
-        // @ts-ignore
-        this.map.getCanvas().style.cursor = '';
-      });
-      this.map?.on('click', 'unclustered-point', (e: any) => {
-        const feature = e.features[0];
-        const popup = new mapboxgl.Popup({
-          offset: [0, 0],
-        })
-          .setLngLat(feature.geometry.coordinates)
-          .setHTML(
-            `
+        });
+    });
+    this.map?.on('mouseenter', 'clusters', () => {
+      // @ts-ignore
+      this.map.getCanvas().style.cursor = 'pointer';
+    });
+    this.map?.on('mouseenter', 'unclustered-point', () => {
+      // @ts-ignore
+      this.map.getCanvas().style.cursor = 'pointer';
+    });
+    this.map?.on('mouseleave', 'clusters', () => {
+      // @ts-ignore
+      this.map.getCanvas().style.cursor = '';
+    });
+    this.map?.on('mouseleave', 'unclustered-point', () => {
+      // @ts-ignore
+      this.map.getCanvas().style.cursor = '';
+    });
+    this.map?.on('click', 'unclustered-point', (e: any) => {
+      const feature = e.features[0];
+      const popup = new mapboxgl.Popup({
+        offset: [0, 0],
+      })
+        .setLngLat(feature.geometry.coordinates)
+        .setHTML(
+          `
 <a href="${feature.properties.url}">
   <div>
     <div>
@@ -344,18 +349,28 @@ export class MapService {
     </div>
   </div>
 </a>`
-          )
-          .setLngLat(feature.geometry.coordinates)
-          .addTo(this.map as mapboxgl.Map);
-      });
-
-      this.map?.on('moveend', () => {
-        this.updateLocationsClosestToCenter(5);
-      });
-      this.map?.on('zoomend', () => {
-        this.updateLocationsClosestToCenter(5);
-      });
+        )
+        .setLngLat(feature.geometry.coordinates)
+        .addTo(this.map as mapboxgl.Map);
     });
+
+    this.map?.on('moveend', () => {
+      this.updateLocationsClosestToCenter(5);
+    });
+    this.map?.on('zoomend', () => {
+      this.updateLocationsClosestToCenter(5);
+    });
+
+    this.updateLocationsClosestToCenter(5);
+  }
+
+  public convertDistanceInKmToString(distanceInKm: number): string {
+    if (distanceInKm < 1) {
+      const distanceInMeters = distanceInKm * 1000;
+      return distanceInMeters.toFixed(0) + ' m';
+    }
+
+    return distanceInKm.toFixed(1) + ' km';
   }
 
   private _getDistanceFromLatLonInKm(
