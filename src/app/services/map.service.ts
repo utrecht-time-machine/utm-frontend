@@ -342,7 +342,7 @@ export class MapService {
         .setLngLat(feature.geometry.coordinates)
         .setHTML(
           `
-<a href="${feature.properties.url}" class="popup-location-link">
+<a href="javascript:void(0)" data-url="${feature.properties.url}" class="popup-location-link">
   <div>
     <div>
       <div class="thumb">
@@ -363,7 +363,7 @@ export class MapService {
       if (link) {
         link.addEventListener('click', (event) => {
           event.preventDefault();
-          const url = link.getAttribute('href');
+          const url = link.getAttribute('data-url');
           if (url) {
             void this.selectLocationById(feature.properties.nid, url);
           } else {

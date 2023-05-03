@@ -6,46 +6,100 @@
   <div class="utm-header">
     <div class="header-inner">
       <div class="site-icon">
-        <a href="https://test.utrechttimemachine.nl/nl"></a>
+        <a
+          href="javascript:void(0)"
+          (click)="this.router.navigateByUrl('/')"
+        ></a>
       </div>
       <div class="site-name">
-        <a href="/nl">Utrecht<br>Time Machine</a>
+        <a href="javascript:void(0)" (click)="this.router.navigateByUrl('/')"
+          >Utrecht<br />Time Machine</a
+        >
       </div>
       <div class="site-live">
         <div class="views-element-container">
-          <div class="js-view-dom-id-d70b04c18c038f84e15eabe941d003819d0d7c6166a9d51f94e5bb168bf42128">
-            <form class="views-exposed-form" data-drupal-selector="views-exposed-form-utm-search-livesearch"
-                  action="/nl/zoeken" method="get" id="views-exposed-form-utm-search-livesearch" accept-charset="UTF-8">
+          <div
+            class="js-view-dom-id-d70b04c18c038f84e15eabe941d003819d0d7c6166a9d51f94e5bb168bf42128"
+          >
+            <form
+              class="views-exposed-form"
+              data-drupal-selector="views-exposed-form-utm-search-livesearch"
+              action="/nl/zoeken"
+              method="get"
+              id="views-exposed-form-utm-search-livesearch"
+              accept-charset="UTF-8"
+            >
               <div
-                class="js-form-item form-item js-form-type-search-api-autocomplete form-item-livesearch js-form-item-livesearch form-no-label">
-                <input placeholder="Zoeken" data-drupal-selector="edit-livesearch"
-                       data-search-api-autocomplete-search="utm_search"
-                       class="form-autocomplete form-text ui-autocomplete-input"
-                       data-autocomplete-path="/nl/search_api_autocomplete/utm_search?display=livesearch&amp;&amp;filter=livesearch"
-                       type="text" id="edit-livesearch" name="livesearch" value="" size="30" maxlength="128"
-                       data-once="autocomplete search-api-autocomplete" autocomplete="off">
-
+                class="js-form-item form-item js-form-type-search-api-autocomplete form-item-livesearch js-form-item-livesearch form-no-label"
+              >
+                <input
+                  placeholder="Zoeken"
+                  data-drupal-selector="edit-livesearch"
+                  data-search-api-autocomplete-search="utm_search"
+                  class="form-autocomplete form-text ui-autocomplete-input"
+                  data-autocomplete-path="/nl/search_api_autocomplete/utm_search?display=livesearch&amp;&amp;filter=livesearch"
+                  type="text"
+                  id="edit-livesearch"
+                  name="livesearch"
+                  value=""
+                  size="30"
+                  maxlength="128"
+                  data-once="autocomplete search-api-autocomplete"
+                  autocomplete="off"
+                />
               </div>
-              <div data-drupal-selector="edit-actions" class="form-actions js-form-wrapper form-wrapper"
-                   id="edit-actions"><input data-drupal-selector="edit-submit-utm-search" type="submit"
-                                            id="edit-submit-utm-search" value="Apply"
-                                            class="button js-form-submit form-submit">
+              <div
+                data-drupal-selector="edit-actions"
+                class="form-actions js-form-wrapper form-wrapper"
+                id="edit-actions"
+              >
+                <input
+                  data-drupal-selector="edit-submit-utm-search"
+                  type="submit"
+                  id="edit-submit-utm-search"
+                  value="Apply"
+                  class="button js-form-submit form-submit"
+                />
               </div>
             </form>
           </div>
         </div>
-
       </div>
       <div class="site-menu">
         <ul class="menu">
-          <li class="menu-item menu-item--active-trail">
-            <a href="/nl/locaties" data-drupal-link-system-path="node/1836">Locaties</a>
+          <li
+            class="menu-item"
+            [ngClass]="{
+              'menu-item--active-trail': routing.locationsPageIsSelected()
+            }"
+          >
+            <a
+              href="javascript:void(0)"
+              (click)="this.router.navigateByUrl('/')"
+              >Locaties</a
+            >
           </li>
-          <li class="menu-item">
-            <a href="/nl/routes" data-drupal-link-system-path="node/1837">Routes</a>
+          <li
+            class="menu-item"
+            [ngClass]="{
+              'menu-item--active-trail': routing.routesPageIsSelected()
+            }"
+          >
+            <a
+              href="javascript:void(0)"
+              (click)="router.navigateByUrl('/routes')"
+              >Routes</a
+            >
           </li>
-          <li class="menu-item">
-            <a href="/nl/over" data-drupal-link-system-path="node/1838">Over</a>
+          <li
+            class="menu-item"
+            [ngClass]="{
+              'menu-item--active-trail': routing.aboutPageIsSelected()
+            }"
+          >
+            <a href="javascript:void(0)" (click)="router.navigateByUrl('/over')"
+              >Over</a
+            >
           </li>
         </ul>
       </div>
