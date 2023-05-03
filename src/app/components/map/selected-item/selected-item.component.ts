@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { LocationDetails } from '../../../models/location-details';
 
 @Component({
   selector: 'app-selected-item',
@@ -6,10 +7,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./selected-item.component.scss'],
 })
 export class SelectedItemComponent {
-  @Input() title: string = '';
-  @Input() location: string = '';
-  @Input() introText: string = '';
-  @Input() readMoreText: string = '';
+  @Input() locationDetails: LocationDetails | undefined;
 
   constructor() {}
 }

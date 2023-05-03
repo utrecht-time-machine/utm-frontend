@@ -1,3 +1,5 @@
+// TODO: Remove dependency on jQuery
+
 /*! jQuery v3.6.3 | (c) OpenJS Foundation and other contributors | jquery.org/license */
 !(function (e, t) {
   "use strict";
@@ -8717,14 +8719,13 @@ document.documentElement.className += " js";
 
   Drupal.autocomplete = autocomplete;
 })(jQuery, Drupal);
-//pop state
 
+//pop state
 jQuery(window).bind("popstate", function () {
   window.location.href = window.location.href;
 });
 
 //menu
-
 jQuery(".menu-mb-btn>a").click(function () {
   jQuery("body").toggleClass("menu-mb-on");
 });

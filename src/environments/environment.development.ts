@@ -3,5 +3,6 @@ export const environment = {
   imageBaseUrl: 'https://test.utrechttimemachine.nl/',
   apiSuffixes: {
     mapLocations: 'all_locations',
+    locationDetailsById: 'location_details?nid=',
   },
 };

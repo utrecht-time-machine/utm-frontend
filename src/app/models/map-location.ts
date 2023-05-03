@@ -1,8 +1,10 @@
 export interface MapLocation {
+  nid: string;
   title: string;
+  url: string;
   address: string;
   city: string;
-  thumb: string;
   geo: string;
-  url: string;
+  thumb: string;
+  image_small: string;
 }

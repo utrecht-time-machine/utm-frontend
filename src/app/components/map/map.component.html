@@ -4,15 +4,11 @@
   </div>
   <div class="map-data">
     <div class="map-data-handle"></div>
-    <div class="map-data-dock" id="map_dock">
+    <div class="map-data-dock" id="map_dock" *ngIf="getSelectedLocation()">
       <div class="views-element-container">
-        <!--        <app-selected-item-->
-        <!--          [title]="'Castellum'"-->
-        <!--          [location]="'Woerden'"-->
-        <!--          [introText]="-->
-        <!--            'Intro text <strong>met HTML</strong>. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque eligendi itaque iure sapiente velit. Aliquam consectetur deserunt dolor eligendi itaque laboriosam minima, nam nihil, placeat provident reprehenderit ullam velit voluptatum.'-->
-        <!--          "-->
-        <!--        ></app-selected-item>-->
+        <app-selected-item
+          [locationDetails]="getSelectedLocation()"
+        ></app-selected-item>
       </div>
     </div>
     <div class="map-data-near">
@@ -25,11 +21,19 @@
               let locationWithDistance of mapService.locationsClosestToCenter.getValue()
             "
           >
-            <a [href]="locationWithDistance.location.url"
-              ><div class="head">
+            <a
+              (click)="
+                mapService.selectLocationById(
+                  locationWithDistance.location.nid,
+                  locationWithDistance.location.url
+                )
+              "
+              href="javascript:void(0);"
+            >
+              <div class="head">
                 <div>
                   <div>
-                    <img [src]="locationWithDistance.location.thumb" />
+                    <img [src]="locationWithDistance.location.image_small" />
                   </div>
                 </div>
               </div>
@@ -42,10 +46,12 @@
                 }}</span
                 ><span class="desc">SUBTEXT</span>
                 <span class="dist">{{
-                  mapService.convertDistanceInKmToString(locationWithDistance.distanceFromCenterInKm)
+                  mapService.convertDistanceInKmToString(
+                    locationWithDistance.distanceFromCenterInKm
+                  )
                 }}</span>
-              </div></a
-            >
+              </div>
+            </a>
           </div>
 
           <!--          TODO: Refactor to use components (ignored for now as it seems to mess with the preferred DOM hierarchy for the CSS -->

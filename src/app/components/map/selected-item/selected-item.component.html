@@ -4,8 +4,8 @@
       <div class="node-column">
         <div>
           <div class="screen-mode" data-mobile="1">
-            <h1>{{ title }}</h1>
-            <h3>{{ location }}</h3>
+            <h1>{{ locationDetails?.title }}</h1>
+            <h3>{{ locationDetails?.address }}</h3>
           </div>
           <div class="photo-hold">
             <div class="photo">
@@ -30,17 +30,18 @@
         </div>
         <div>
           <div class="screen-mode" data-mobile="0">
-            <h1>{{ title }}</h1>
-            <h3>{{ location }}</h3>
+            <h1>{{ locationDetails?.title }}</h1>
+            <h3>{{ locationDetails?.address }}</h3>
           </div>
-          <p [innerHtml]="introText"></p>
-          <div class="fold">
+          <p [innerHtml]="locationDetails?.teaser"></p>
+          <div class="fold" *ngIf="locationDetails?.text">
             <a>Lees meer over deze plek</a>
             <div
               class="fold-toggle fold-toggle-hidden"
-              [innerHtml]="readMoreText"
+              [innerHtml]="locationDetails?.text"
             ></div>
           </div>
+          <!--          TODO: Add partner data dynamically! -->
           <div class="org-logo">
             <div class="org-logo-head">Met bijdragen van</div>
             <div class="org-logo-hold">
@@ -65,6 +66,8 @@
           </div>
         </div>
       </div>
+
+      <!--      TODO: Add stories dynamically -->
       <div class="views-element-container">
         <div class="story-head"><h2>Verhalen op deze locatie</h2></div>
         <div class="story-hold">

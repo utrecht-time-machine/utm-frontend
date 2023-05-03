@@ -5,6 +5,8 @@ import { GeoJSON } from 'geojson';
 import { BehaviorSubject } from 'rxjs';
 import { MapLocation } from '../models/map-location';
 import { LocationDistanceFromCenter } from '../models/location-distance-from-center';
+import { Router } from '@angular/router';
+import { LocationDetails } from '../models/location-details';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +15,14 @@ export class MapService {
   map: mapboxgl.Map | undefined = undefined;
   mapLocations: GeoJSON.FeatureCollection | undefined = undefined;
 
+  selectedLocation: BehaviorSubject<LocationDetails | undefined> =
+    new BehaviorSubject<LocationDetails | undefined>(undefined);
+
   locationsClosestToCenter = new BehaviorSubject<LocationDistanceFromCenter[]>(
     []
   );
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private router: Router) {
     this.locationsClosestToCenter.subscribe(() => {
       console.log(
         'Locations closest to center updated:',
@@ -330,13 +335,14 @@ export class MapService {
     });
     this.map?.on('click', 'unclustered-point', (e: any) => {
       const feature = e.features[0];
+      console.log('FEATURE', feature);
       const popup = new mapboxgl.Popup({
         offset: [0, 0],
       })
         .setLngLat(feature.geometry.coordinates)
         .setHTML(
           `
-<a href="${feature.properties.url}">
+<a href="${feature.properties.url}" class="popup-location-link">
   <div>
     <div>
       <div class="thumb">
@@ -352,6 +358,19 @@ export class MapService {
         )
         .setLngLat(feature.geometry.coordinates)
         .addTo(this.map as mapboxgl.Map);
+      // Catch popup clicks and route them to the Angular routing service
+      const link = popup.getElement()?.querySelector('.popup-location-link');
+      if (link) {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          const url = link.getAttribute('href');
+          if (url) {
+            void this.selectLocationById(feature.properties.nid, url);
+          } else {
+            console.warn('Clicked on popup location without a URL...');
+          }
+        });
+      }
     });
 
     this.map?.on('moveend', () => {
@@ -425,5 +444,14 @@ export class MapService {
     );
     locationsWithDistances = locationsWithDistances.slice(0, maxItems);
     this.locationsClosestToCenter.next(locationsWithDistances);
+  }
+
+  async selectLocationById(id: string, url: string) {
+    const locationDetails: LocationDetails | undefined =
+      await this.apiService.getLocationDetailsFromId(id);
+    if (locationDetails) {
+      this.selectedLocation.next(locationDetails);
+    }
+    await this.router.navigateByUrl(url);
   }
 }
