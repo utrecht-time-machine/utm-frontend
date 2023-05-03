@@ -1,0 +1,29 @@
+<ul class="menu">
+  <li
+    class="menu-item"
+    [ngClass]="{
+      'menu-item--active-trail':
+        routing.getSelectedView() === SelectedView.Locations
+    }"
+  >
+    <a (click)="this.router.navigateByUrl('/')">Locaties</a>
+  </li>
+  <li
+    class="menu-item"
+    [ngClass]="{
+      'menu-item--active-trail':
+        routing.getSelectedView() === SelectedView.Routes
+    }"
+  >
+    <a (click)="router.navigateByUrl('/routes')">Routes</a>
+  </li>
+  <li
+    class="menu-item"
+    [ngClass]="{
+      'menu-item--active-trail':
+        routing.getSelectedView() === SelectedView.About
+    }"
+  >
+    <a (click)="router.navigateByUrl('/over')">Over</a>
+  </li>
+</ul>

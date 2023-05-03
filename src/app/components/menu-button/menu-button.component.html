@@ -11,35 +11,7 @@
       <div class="brand">
         <div>Utrecht<br />Time Machine</div>
       </div>
-      <ul class="menu">
-        <li
-          class="menu-item"
-          [ngClass]="{
-            'menu-item--active-trail':
-              routing.getSelectedView() === SelectedView.Locations
-          }"
-        >
-          <a (click)="router.navigateByUrl('/')">Locaties</a>
-        </li>
-        <li
-          class="menu-item"
-          [ngClass]="{
-            'menu-item--active-trail':
-              routing.getSelectedView() === SelectedView.Routes
-          }"
-        >
-          <a (click)="router.navigateByUrl('/routes')">Routes</a>
-        </li>
-        <li
-          class="menu-item"
-          [ngClass]="{
-            'menu-item--active-trail':
-              routing.getSelectedView() === SelectedView.About
-          }"
-        >
-          <a (click)="router.navigateByUrl('/over')">Over</a>
-        </li>
-      </ul>
+      <app-menu-links></app-menu-links>
     </div>
   </div>
 </div>
