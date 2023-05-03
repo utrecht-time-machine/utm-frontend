@@ -453,5 +453,8 @@ export class MapService {
       this.selectedLocation.next(locationDetails);
     }
     await this.router.navigateByUrl(url);
+
+    // TODO: Center map on the selected location
+    // TODO: Scroll the page to the right location
   }
 }

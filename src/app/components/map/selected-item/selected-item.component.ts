@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { LocationDetails } from '../../../models/location-details';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-selected-item',
@@ -9,5 +10,12 @@ import { LocationDetails } from '../../../models/location-details';
 export class SelectedItemComponent {
   @Input() locationDetails: LocationDetails | undefined;
 
-  constructor() {}
+  constructor(public router: Router) {}
+
+  locationHasStories(): boolean {
+    if (!this.locationDetails?.stories) {
+      return false;
+    }
+    return this.locationDetails.stories.length > 0;
+  }
 }

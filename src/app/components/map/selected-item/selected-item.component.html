@@ -67,12 +67,14 @@
         </div>
       </div>
 
-      <!--      TODO: Add stories dynamically -->
-      <div class="views-element-container">
+      <div class="views-element-container" *ngIf="locationHasStories()">
         <div class="story-head"><h2>Verhalen op deze locatie</h2></div>
         <div class="story-hold">
-          <div class="story">
-            <a href="/nl/nl/story/romeinse-kersen" data-story-id="390"
+          <div class="story" *ngFor="let story of locationDetails?.stories">
+            <a
+              href="javascript:void(0)"
+              (click)="router.navigateByUrl('story/REPLACE')"
+              data-story-id="390"
               ><div class="head has-video-0">
                 <div>
                   <img
@@ -84,7 +86,7 @@
                 </div>
               </div>
               <div class="core">
-                <span class="name">Romeinse Kersen</span>
+                <span class="name">{{ story.title }}</span>
               </div></a
             >
           </div>

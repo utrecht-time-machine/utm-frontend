@@ -1,3 +1,5 @@
+import { Story } from './story';
+
 export interface LocationDetails {
   type: string;
   nid: string;
@@ -17,4 +19,5 @@ export interface LocationDetails {
   zipcode: string;
   teaser: string;
   text: string;
+  stories: Story[];
 }

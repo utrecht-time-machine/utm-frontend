@@ -4,5 +4,6 @@ export const environment = {
   apiSuffixes: {
     mapLocations: 'all_locations',
     locationDetailsById: 'location_details?nid=',
+    storiesByLocationId: 'stories_by_location?nid=',
   },
 };

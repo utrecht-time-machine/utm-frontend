@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { GeoJSON } from 'geojson';
 import { LocationDetails } from '../models/location-details';
+import { Story } from '../models/story';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +41,25 @@ export class ApiService {
     if (locationsDetails.length < 1) {
       return undefined;
     }
-    return locationsDetails[0];
+    const locationDetails: LocationDetails = locationsDetails[0];
+    // TODO: Enrich location details with story data asynchronously?
+    const locationStories: Story[] = await this._getStoriesByLocationId(
+      locationDetails.nid
+    );
+    locationDetails.stories = locationStories;
+
+    return locationDetails;
+  }
+
+  private async _getStoriesByLocationId(locationId: string): Promise<Story[]> {
+    const stories: Story[] = await lastValueFrom(
+      this.http.get<LocationDetails[]>(
+        environment.apiUrl +
+          environment.apiSuffixes.storiesByLocationId +
+          locationId
+      )
+    );
+    return stories;
   }
 
   private _convertMapLocationsToGeoJson(
