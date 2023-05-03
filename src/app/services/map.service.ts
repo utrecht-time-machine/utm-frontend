@@ -454,7 +454,21 @@ export class MapService {
     }
     await this.router.navigateByUrl(url);
 
-    // TODO: Center map on the selected location
+    if (!this.map || !locationDetails) {
+      return;
+    }
+
+    console.log(
+      `Flying to coordinates of ${locationDetails.title}: ${JSON.stringify(
+        locationDetails.coords
+      )}...`
+    );
+    this.map.flyTo({
+      center: [locationDetails.coords.long, locationDetails.coords.lat],
+      essential: true,
+      zoom: 18,
+    });
+
     // TODO: Scroll the page to the right location
   }
 }

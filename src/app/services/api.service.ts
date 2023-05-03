@@ -41,7 +41,15 @@ export class ApiService {
     if (locationsDetails.length < 1) {
       return undefined;
     }
+
     const locationDetails: LocationDetails = locationsDetails[0];
+
+    const splitGeoCoords: string[] = locationDetails.geo.split(', ');
+    locationDetails.coords = {
+      lat: parseFloat(splitGeoCoords[0]),
+      long: parseFloat(splitGeoCoords[1]),
+    };
+
     // TODO: Enrich location details with story data asynchronously?
     const locationStories: Story[] = await this._getStoriesByLocationId(
       locationDetails.nid

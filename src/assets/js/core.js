@@ -8758,65 +8758,65 @@ function audio_player_ini() {
 audio_player_ini();
 
 //dock
-
-function dock(n, f, uri, uri_name) {
-  jQuery(".map-spin").removeClass("hide");
-  var u = drupalSettings.path.baseUrl + "dock/" + f + "/" + n;
-  window.xhr = jQuery
-    .get(u)
-    .done(function (r) {
-      var d = jQuery("#map_dock");
-      var h =
-        jQuery(".map").eq(0).offset().top + jQuery(window).height() * 0.25;
-      d.html(r.data);
-      audio_player_ini();
-      jQuery("html,body")
-        .stop()
-        .animate({ scrollTop: h })
-        .promise()
-        .done(function () {
-          if (d.find(".dock-inner[data-geo]").length) {
-            var c = d.find(".dock-inner").attr("data-geo").split(",");
-            map.flyTo({
-              center: [c[1], c[0]],
-              essential: true,
-              zoom: 18,
-            });
-          }
-        });
-      if (uri) {
-        if (typeof history.pushState != "undefined") {
-          history.pushState(null, null, uri);
-        }
-      }
-      if (uri_name) {
-        jQuery(document).prop("title", uri_name);
-      }
-      var a = jQuery('#nav_menu a[data-dock-id="' + n + '"]');
-      if (a.length) {
-        jQuery("#nav_menu a").removeClass("on");
-        a.addClass("on");
-      }
-      jQuery(".map-spin").addClass("hide");
-    })
-    .fail(function () {
-      jQuery(".map-spin").addClass("hide");
-    });
-}
-jQuery(document).on("click", "a[data-dock-id][data-dock]", function (e) {
-  e.preventDefault();
-  var n = jQuery(this);
-  if (n.parents(".no-dock").length > 0) {
-    window.open(n.attr("href"), "_blank");
-  } else {
-    dock(
-      n.attr("data-dock-id"),
-      n.attr("data-dock"),
-      n.attr("href"),
-      n.attr("data-dock-name")
-    );
-  }
-});
+//
+// function dock(n, f, uri, uri_name) {
+//   jQuery(".map-spin").removeClass("hide");
+//   var u = drupalSettings.path.baseUrl + "dock/" + f + "/" + n;
+//   window.xhr = jQuery
+//     .get(u)
+//     .done(function (r) {
+//       var d = jQuery("#map_dock");
+//       var h =
+//         jQuery(".map").eq(0).offset().top + jQuery(window).height() * 0.25;
+//       d.html(r.data);
+//       audio_player_ini();
+//       jQuery("html,body")
+//         .stop()
+//         .animate({ scrollTop: h })
+//         .promise()
+//         .done(function () {
+//           if (d.find(".dock-inner[data-geo]").length) {
+//             var c = d.find(".dock-inner").attr("data-geo").split(",");
+//             map.flyTo({
+//               center: [c[1], c[0]],
+//               essential: true,
+//               zoom: 18,
+//             });
+//           }
+//         });
+//       if (uri) {
+//         if (typeof history.pushState != "undefined") {
+//           history.pushState(null, null, uri);
+//         }
+//       }
+//       if (uri_name) {
+//         jQuery(document).prop("title", uri_name);
+//       }
+//       var a = jQuery('#nav_menu a[data-dock-id="' + n + '"]');
+//       if (a.length) {
+//         jQuery("#nav_menu a").removeClass("on");
+//         a.addClass("on");
+//       }
+//       jQuery(".map-spin").addClass("hide");
+//     })
+//     .fail(function () {
+//       jQuery(".map-spin").addClass("hide");
+//     });
+// }
+// jQuery(document).on("click", "a[data-dock-id][data-dock]", function (e) {
+//   e.preventDefault();
+//   var n = jQuery(this);
+//   if (n.parents(".no-dock").length > 0) {
+//     window.open(n.attr("href"), "_blank");
+//   } else {
+//     dock(
+//       n.attr("data-dock-id"),
+//       n.attr("data-dock"),
+//       n.attr("href"),
+//       n.attr("data-dock-name")
+//     );
+//   }
+// });
 
 //dock story
 
