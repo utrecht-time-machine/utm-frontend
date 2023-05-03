@@ -368,7 +368,7 @@ export class MapService {
         .setLngLat(feature.geometry.coordinates)
         .setHTML(
           `
-<a href="javascript:void(0)" data-url="${feature.properties.url}" class="popup-location-link">
+<a data-url="${feature.properties.url}" class="popup-location-link">
   <div>
     <div>
       <div class="thumb">

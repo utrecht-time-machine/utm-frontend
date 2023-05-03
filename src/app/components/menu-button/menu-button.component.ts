@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
+import { Router } from '@angular/router';
+import { RoutingService } from '../../services/routing.service';
+import { SelectedView } from '../../models/selected-view';
 
 @Component({
   selector: 'app-menu-button',
@@ -7,5 +10,11 @@ import { MenuService } from '../../services/menu.service';
   styleUrls: ['./menu-button.component.scss'],
 })
 export class MenuButtonComponent {
-  constructor(public menuService: MenuService) {}
+  SelectedView = SelectedView;
+
+  constructor(
+    public menuService: MenuService,
+    public router: Router,
+    public routing: RoutingService
+  ) {}
 }

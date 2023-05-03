@@ -6,13 +6,10 @@
   <div class="utm-header">
     <div class="header-inner">
       <div class="site-icon">
-        <a
-          href="javascript:void(0)"
-          (click)="this.router.navigateByUrl('/')"
-        ></a>
+        <a (click)="this.router.navigateByUrl('/')"></a>
       </div>
       <div class="site-name">
-        <a href="javascript:void(0)" (click)="this.router.navigateByUrl('/')"
+        <a (click)="this.router.navigateByUrl('/')"
           >Utrecht<br />Time Machine</a
         >
       </div>
@@ -74,11 +71,7 @@
                 routing.getSelectedView() === SelectedView.Locations
             }"
           >
-            <a
-              href="javascript:void(0)"
-              (click)="this.router.navigateByUrl('/')"
-              >Locaties</a
-            >
+            <a (click)="this.router.navigateByUrl('/')">Locaties</a>
           </li>
           <li
             class="menu-item"
@@ -87,11 +80,7 @@
                 routing.getSelectedView() === SelectedView.Routes
             }"
           >
-            <a
-              href="javascript:void(0)"
-              (click)="router.navigateByUrl('/routes')"
-              >Routes</a
-            >
+            <a (click)="router.navigateByUrl('/routes')">Routes</a>
           </li>
           <li
             class="menu-item"
@@ -100,9 +89,7 @@
                 routing.getSelectedView() === SelectedView.About
             }"
           >
-            <a href="javascript:void(0)" (click)="router.navigateByUrl('/over')"
-              >Over</a
-            >
+            <a (click)="router.navigateByUrl('/over')">Over</a>
           </li>
         </ul>
       </div>
