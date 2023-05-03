@@ -446,6 +446,7 @@ export class MapService {
     this.locationsClosestToCenter.next(locationsWithDistances);
   }
 
+  // TODO: Select location directly from route URL (to allow direct navigation, needs API call to map URL to nid first)
   async selectLocationById(id: string, url: string) {
     const locationDetails: LocationDetails | undefined =
       await this.apiService.getLocationDetailsFromId(id);
