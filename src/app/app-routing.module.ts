@@ -9,6 +9,7 @@ export const routes: Routes = [
   { path: 'locaties', component: MapComponent },
   { path: 'locaties/:id', component: MapComponent },
   { path: 'routes', component: RoutesComponent },
+  { path: 'routes/:id', component: MapComponent },
   { path: 'over', component: AboutComponent },
 ];
 @NgModule({

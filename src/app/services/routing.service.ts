@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { SelectedView } from '../models/selected-view';
 
 @Injectable({
   providedIn: 'root',
@@ -7,15 +8,19 @@ import { Router } from '@angular/router';
 export class RoutingService {
   constructor(public router: Router) {}
 
-  locationsPageIsSelected(): boolean {
-    return this.router.url === '/' || this.router.url.startsWith('/locaties');
-  }
+  getSelectedView(): SelectedView {
+    if (this.router.url === '/' || this.router.url.startsWith('/locaties')) {
+      return SelectedView.Locations;
+    }
 
-  routesPageIsSelected(): boolean {
-    return this.router.url.startsWith('/routes');
-  }
+    if (this.router.url.startsWith('/routes')) {
+      return SelectedView.Routes;
+    }
 
-  aboutPageIsSelected(): boolean {
-    return this.router.url.startsWith('/over');
+    if (this.router.url.startsWith('/over')) {
+      return SelectedView.About;
+    }
+
+    return SelectedView.Undefined;
   }
 }

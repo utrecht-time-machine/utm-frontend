@@ -13,7 +13,12 @@
     </div>
     <div class="map-data-near">
       <div class="pad">
-        <h2>Ontdek deze buurt</h2>
+        <h2 *ngIf="routing.getSelectedView() === SelectedView.Locations">
+          Ontdek deze buurt
+        </h2>
+        <h2 *ngIf="routing.getSelectedView() === SelectedView.Routes">
+          Ook in deze buurt
+        </h2>
         <div class="card-hold promote" id="map_near">
           <div
             class="card"
@@ -46,7 +51,7 @@
                 }}</span
                 ><span class="desc">SUBTEXT</span>
                 <span class="dist">{{
-                  mapService.convertDistanceInKmToString(
+                  UtilService.convertDistanceInKmToString(
                     locationWithDistance.distanceFromCenterInKm
                   )
                 }}</span>

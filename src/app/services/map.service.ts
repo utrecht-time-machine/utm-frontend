@@ -7,6 +7,9 @@ import { MapLocation } from '../models/map-location';
 import { LocationDistanceFromCenter } from '../models/location-distance-from-center';
 import { Router } from '@angular/router';
 import { LocationDetails } from '../models/location-details';
+import { UtilService } from './util.service';
+import { RoutingService } from './routing.service';
+import { SelectedView } from '../models/selected-view';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +25,11 @@ export class MapService {
     []
   );
 
-  constructor(private apiService: ApiService, private router: Router) {
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private routing: RoutingService
+  ) {
     this.locationsClosestToCenter.subscribe(() => {
       console.log(
         'Locations closest to center updated:',
@@ -137,94 +144,100 @@ export class MapService {
       );
     });
 
-    this.addLocationsOnMap();
+    if (this.routing.getSelectedView() === SelectedView.Locations) {
+      this.addLocationsOnMap(false);
+    } else if (this.routing.getSelectedView() === SelectedView.Routes) {
+      this.addLocationsOnMap(true);
+    }
   }
 
-  addLocationsOnMap() {
+  addRouteMarkersOnMap() {
+    // TODO: Bring back routes on the map
+    // if (map_geo_route) {
+    //   fetch(map_nav_route)
+    //     .then((response) => response.json())
+    //     .then((json) => {
+    //       if (json.coordinates) {
+    //         this.map.addSource('route_path', {
+    //           type: 'geojson',
+    //           data: {
+    //             type: 'Feature',
+    //             properties: {},
+    //             geometry: {
+    //               type: 'LineString',
+    //               coordinates: json.coordinates,
+    //             },
+    //           },
+    //         });
+    //         this.map.addLayer({
+    //           id: 'route_line',
+    //           type: 'line',
+    //           source: 'route_path',
+    //           layout: {
+    //             'line-join': 'round',
+    //             'line-cap': 'round',
+    //           },
+    //           paint: {
+    //             'line-color': '#fe0000',
+    //             'line-width': 4,
+    //           },
+    //         });
+    //       }
+    //
+    //       // if (json.distance && json.duration) {
+    //       //   jQuery('#nav_calc').html(
+    //       //     '<span>' +
+    //       //       json.distance +
+    //       //       ' <em>(' +
+    //       //       json.duration +
+    //       //       ')</em></span>'
+    //       //   );
+    //       // }
+    //       // jQuery('#nav_menu').html(json.nav_menu);
+    //     });
+    //
+    //   // this.map.addSource('stories', {
+    //   //   type: 'geojson',
+    //   //   data: map_geo_route,
+    //   // });
+    //
+    //   this.map.addLayer({
+    //     id: 'stories-marker',
+    //     type: 'circle',
+    //     source: 'stories',
+    //     paint: {
+    //       'circle-color': '#fe0000',
+    //       'circle-radius': 10,
+    //       'circle-stroke-width': 2,
+    //       'circle-stroke-color': '#ffffff',
+    //     },
+    //   });
+    //   this.map.on('mouseenter', 'stories-marker', () => {
+    //     this.map.getCanvas().style.cursor = 'pointer';
+    //   });
+    //   this.map.on('mouseleave', 'stories-marker', () => {
+    //     this.map.getCanvas().style.cursor = '';
+    //   });
+    //   this.map.on('click', 'stories-marker', (e: any) => {
+    //     const feature = e.features[0];
+    //     const popup = new mapboxgl.Popup({
+    //       offset: [0, 0],
+    //     })
+    //       .setLngLat(feature.geometry.coordinates)
+    //       .setHTML(feature.properties.map_pop)
+    //       .setLngLat(feature.geometry.coordinates)
+    //       .addTo(this.map);
+    //   });
+    // }
+  }
+
+  addLocationsOnMap(hideLocations = false) {
     if (!this.map) {
       console.warn('Map not yet initialized... Not adding locations to map.');
       return;
     }
 
     this.map.on('load', async () => {
-      // TODO: Bring back routes on the map
-      // if (map_geo_route) {
-      //   fetch(map_nav_route)
-      //     .then((response) => response.json())
-      //     .then((json) => {
-      //       if (json.coordinates) {
-      //         this.map.addSource('route_path', {
-      //           type: 'geojson',
-      //           data: {
-      //             type: 'Feature',
-      //             properties: {},
-      //             geometry: {
-      //               type: 'LineString',
-      //               coordinates: json.coordinates,
-      //             },
-      //           },
-      //         });
-      //         this.map.addLayer({
-      //           id: 'route_line',
-      //           type: 'line',
-      //           source: 'route_path',
-      //           layout: {
-      //             'line-join': 'round',
-      //             'line-cap': 'round',
-      //           },
-      //           paint: {
-      //             'line-color': '#fe0000',
-      //             'line-width': 4,
-      //           },
-      //         });
-      //       }
-      //
-      //       // if (json.distance && json.duration) {
-      //       //   jQuery('#nav_calc').html(
-      //       //     '<span>' +
-      //       //       json.distance +
-      //       //       ' <em>(' +
-      //       //       json.duration +
-      //       //       ')</em></span>'
-      //       //   );
-      //       // }
-      //       // jQuery('#nav_menu').html(json.nav_menu);
-      //     });
-      //
-      //   // this.map.addSource('stories', {
-      //   //   type: 'geojson',
-      //   //   data: map_geo_route,
-      //   // });
-      //
-      //   this.map.addLayer({
-      //     id: 'stories-marker',
-      //     type: 'circle',
-      //     source: 'stories',
-      //     paint: {
-      //       'circle-color': '#fe0000',
-      //       'circle-radius': 10,
-      //       'circle-stroke-width': 2,
-      //       'circle-stroke-color': '#ffffff',
-      //     },
-      //   });
-      //   this.map.on('mouseenter', 'stories-marker', () => {
-      //     this.map.getCanvas().style.cursor = 'pointer';
-      //   });
-      //   this.map.on('mouseleave', 'stories-marker', () => {
-      //     this.map.getCanvas().style.cursor = '';
-      //   });
-      //   this.map.on('click', 'stories-marker', (e: any) => {
-      //     const feature = e.features[0];
-      //     const popup = new mapboxgl.Popup({
-      //       offset: [0, 0],
-      //     })
-      //       .setLngLat(feature.geometry.coordinates)
-      //       .setHTML(feature.properties.map_pop)
-      //       .setLngLat(feature.geometry.coordinates)
-      //       .addTo(this.map);
-      //   });
-      // }
-
       this.mapLocations = await this.apiService.getMapLocationsGeoJson();
 
       if (!this.mapLocations) {
@@ -294,8 +307,22 @@ export class MapService {
         },
       });
 
+      if (hideLocations) {
+        this.hideLocationsOnMap();
+      }
+
       this._initMapInteractivity();
     });
+  }
+
+  hideLocationsOnMap() {
+    if (!this.map) {
+      return;
+    }
+
+    this.map.setLayoutProperty('clusters', 'visibility', 'none');
+    this.map.setLayoutProperty('cluster-count', 'visibility', 'none');
+    this.map.setLayoutProperty('unclustered-point', 'visibility', 'none');
   }
 
   private _initMapInteractivity() {
@@ -382,39 +409,6 @@ export class MapService {
     this.updateLocationsClosestToCenter(5);
   }
 
-  public convertDistanceInKmToString(distanceInKm: number): string {
-    if (distanceInKm < 1) {
-      const distanceInMeters = distanceInKm * 1000;
-      return distanceInMeters.toFixed(0) + ' m';
-    }
-
-    return distanceInKm.toFixed(1) + ' km';
-  }
-
-  private _getDistanceFromLatLonInKm(
-    lat1: number,
-    lon1: number,
-    lat2: number,
-    lon2: number
-  ): number {
-    const R = 6371; // Radius of the earth in km
-    const dLat = this._deg2rad(lat2 - lat1);
-    const dLon = this._deg2rad(lon2 - lon1);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this._deg2rad(lat1)) *
-        Math.cos(this._deg2rad(lat2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // Distance in km
-    return distance;
-  }
-
-  private _deg2rad(deg: number): number {
-    return deg * (Math.PI / 180);
-  }
-
   updateLocationsClosestToCenter(maxItems: number = 5): void {
     if (!this.map || !this.mapLocations) {
       console.warn('Map not (yet) initialized...');
@@ -428,7 +422,7 @@ export class MapService {
       this.mapLocations.features
         .map((feature: any) => {
           const [lng, lat] = feature.geometry.coordinates;
-          const distance = this._getDistanceFromLatLonInKm(
+          const distance = UtilService.getDistanceFromLatLonInKm(
             center.lat,
             center.lng,
             lat,

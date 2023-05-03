@@ -3,6 +3,9 @@ import { MapService } from '../../services/map.service';
 import { ApiService } from '../../services/api.service';
 import { LocationDetails } from '../../models/location-details';
 import { Router } from '@angular/router';
+import { RoutingService } from '../../services/routing.service';
+import { SelectedView } from '../../models/selected-view';
+import { UtilService } from '../../services/util.service';
 
 @Component({
   selector: 'app-map',
@@ -10,10 +13,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent {
+  SelectedView = SelectedView;
+  UtilService = UtilService;
+
   constructor(
     public mapService: MapService,
     private apiService: ApiService,
-    public router: Router
+    public router: Router,
+    public routing: RoutingService
   ) {}
 
   ngOnInit(): void {
