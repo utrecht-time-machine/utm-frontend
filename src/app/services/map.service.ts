@@ -335,7 +335,6 @@ export class MapService {
     });
     this.map?.on('click', 'unclustered-point', (e: any) => {
       const feature = e.features[0];
-      console.log('FEATURE', feature);
       const popup = new mapboxgl.Popup({
         offset: [0, 0],
       })
@@ -455,21 +454,28 @@ export class MapService {
     }
     await this.router.navigateByUrl(url);
 
-    if (!this.map || !locationDetails) {
-      return;
-    }
+    setTimeout(() => {
+      if (!this.map || !locationDetails) {
+        return;
+      }
 
-    console.log(
-      `Flying to coordinates of ${locationDetails.title}: ${JSON.stringify(
-        locationDetails.coords
-      )}...`
-    );
-    this.map.flyTo({
-      center: [locationDetails.coords.long, locationDetails.coords.lat],
-      essential: true,
-      zoom: 18,
+      console.log(
+        `Flying to coordinates of ${locationDetails.title}: ${JSON.stringify(
+          locationDetails.coords
+        )}...`
+      );
+
+      this.map.flyTo({
+        center: [locationDetails.coords.long, locationDetails.coords.lat],
+        essential: true,
+        zoom: 18,
+      });
+
+      // TODO: Fine-tune this value, where do we want to scroll to when selecting a new location?
+      // const headerHeight: number =
+      //   document.getElementsByClassName('utm-header')[0].clientHeight;
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-
-    // TODO: Scroll the page to the right location
   }
 }
