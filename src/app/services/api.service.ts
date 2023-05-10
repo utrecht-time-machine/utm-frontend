@@ -14,6 +14,14 @@ import { Organisation } from '../models/organisation';
 export class ApiService {
   constructor(private http: HttpClient) {}
 
+  async getNidFromUrlAlias(url: string): Promise<string> {
+    console.log('Retrieving Nid from URL alias', url + '...');
+    const response: { nid: string } = await lastValueFrom(
+      this.http.get<{ nid: string }>(environment.aliasToNidUrl + url)
+    );
+    return response.nid;
+  }
+
   getMapLocations(): Observable<MapLocation[]> {
     console.log('Retrieving map locations...');
     // return this.http.get<MapLocation[]>('/assets/mock/mapLocations.json');

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MapService } from '../../services/map.service';
 import { ApiService } from '../../services/api.service';
 import { LocationDetails } from '../../models/location-details';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RoutingService } from '../../services/routing.service';
 import { SelectedView } from '../../models/selected-view';
 import { UtilService } from '../../services/util.service';
@@ -20,11 +20,18 @@ export class MapComponent {
     public mapService: MapService,
     private apiService: ApiService,
     public router: Router,
-    public routing: RoutingService
+    public routing: RoutingService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.mapService.initMap();
+
+    const loadedLocationsPage =
+      this.routing.getSelectedView() === SelectedView.Locations;
+    if (loadedLocationsPage) {
+      void this.mapService.selectLocationByUrl(this.router.url);
+    }
   }
 
   public getSelectedLocation(): LocationDetails | undefined {

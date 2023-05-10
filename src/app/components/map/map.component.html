@@ -44,9 +44,9 @@
           >
             <a
               (click)="
-                mapService.selectLocationById(
-                  locationWithDistance.location.nid,
-                  locationWithDistance.location.url
+                mapService.selectLocationByUrl(
+                  locationWithDistance.location.url,
+                  locationWithDistance.location.nid
                 )
               "
             >

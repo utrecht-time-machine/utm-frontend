@@ -7,7 +7,12 @@ import { SelectedRouteComponent } from './selected-route/selected-route.componen
 import { RouteStepsComponent } from './route-steps/route-steps.component';
 
 @NgModule({
-  declarations: [MapComponent, SelectedItemComponent, SelectedRouteComponent, RouteStepsComponent],
+  declarations: [
+    MapComponent,
+    SelectedItemComponent,
+    SelectedRouteComponent,
+    RouteStepsComponent,
+  ],
   exports: [MapComponent],
   imports: [CommonModule, RouterModule],
 })

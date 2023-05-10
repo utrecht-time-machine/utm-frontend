@@ -5,7 +5,7 @@ import { GeoJSON } from 'geojson';
 import { BehaviorSubject } from 'rxjs';
 import { MapLocation } from '../models/map-location';
 import { LocationDistanceFromCenter } from '../models/location-distance-from-center';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LocationDetails } from '../models/location-details';
 import { UtilService } from './util.service';
 import { RoutingService } from './routing.service';
@@ -28,7 +28,8 @@ export class MapService {
   constructor(
     private apiService: ApiService,
     private router: Router,
-    private routing: RoutingService
+    private routing: RoutingService,
+    private route: ActivatedRoute
   ) {
     this.locationsClosestToCenter.subscribe(() => {
       console.log(
@@ -391,7 +392,7 @@ export class MapService {
           event.preventDefault();
           const url = link.getAttribute('data-url');
           if (url) {
-            void this.selectLocationById(feature.properties.nid, url);
+            void this.selectLocationByUrl(url, feature.properties.nid);
           } else {
             console.warn('Clicked on popup location without a URL...');
           }
@@ -439,10 +440,13 @@ export class MapService {
     this.locationsClosestToCenter.next(locationsWithDistances);
   }
 
-  // TODO: Select location directly from route URL (to allow direct navigation, needs API call to map URL to nid first)
-  async selectLocationById(id: string, url: string) {
+  async selectLocationByUrl(url: string, locationId?: string) {
+    if (!locationId) {
+      locationId = await this.apiService.getNidFromUrlAlias(url);
+    }
+
     const locationDetails: LocationDetails | undefined =
-      await this.apiService.getLocationDetailsFromId(id);
+      await this.apiService.getLocationDetailsFromId(locationId);
     if (locationDetails) {
       this.selectedLocation.next(locationDetails);
     }
