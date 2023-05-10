@@ -160,6 +160,7 @@ export class MapService {
   }
 
   addRouteMarkersOnMap() {
+    // TODO: Ensure that the markers get removed as well, also sometimes the lines do not show up
     if (!this.map) {
       return;
     }
