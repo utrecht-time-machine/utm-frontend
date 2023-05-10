@@ -8,6 +8,7 @@ import { FooterModule } from './components/footer/footer.module';
 import { MapModule } from './components/map/map.module';
 import { MenuButtonModule } from './components/menu-button/menu-button.module';
 import { HttpClientModule } from '@angular/common/http';
+import { RoutesModule } from './components/routes/routes.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
     MapModule,
     MenuButtonModule,
     HttpClientModule,
+    RoutesModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -5,11 +5,12 @@ import { GeoJSON } from 'geojson';
 import { BehaviorSubject } from 'rxjs';
 import { MapLocation } from '../models/map-location';
 import { LocationDistanceFromCenter } from '../models/location-distance-from-center';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { LocationDetails } from '../models/location-details';
 import { UtilService } from './util.service';
 import { RoutingService } from './routing.service';
 import { SelectedView } from '../models/selected-view';
+import { UtmRoutesService } from './utm-routes.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,9 +28,9 @@ export class MapService {
 
   constructor(
     private apiService: ApiService,
+    private utmRoutes: UtmRoutesService,
     private router: Router,
-    private routing: RoutingService,
-    private route: ActivatedRoute
+    private routing: RoutingService
   ) {
     this.locationsClosestToCenter.subscribe(() => {
       console.log(
@@ -149,10 +150,12 @@ export class MapService {
       this.addLocationsOnMap(false);
     } else if (this.routing.getSelectedView() === SelectedView.Routes) {
       this.addLocationsOnMap(true);
+      this.addRouteMarkersOnMap();
     }
   }
 
   addRouteMarkersOnMap() {
+    console.log('ADDING ROUTE MARKERS ON MAP');
     // TODO: Bring back routes on the map
     // if (map_geo_route) {
     //   fetch(map_nav_route)

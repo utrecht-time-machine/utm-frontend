@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { UtmRoutesService } from '../../services/utm-routes.service';
 
 @Component({
   selector: 'app-routes',
@@ -7,5 +8,5 @@ import { Router } from '@angular/router';
   styleUrls: ['./routes.component.scss'],
 })
 export class RoutesComponent {
-  constructor(public router: Router) {}
+  constructor(public router: Router, public utmRoutes: UtmRoutesService) {}
 }

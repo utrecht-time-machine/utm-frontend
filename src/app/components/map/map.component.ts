@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { MapService } from '../../services/map.service';
-import { ApiService } from '../../services/api.service';
 import { LocationDetails } from '../../models/location-details';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { RoutingService } from '../../services/routing.service';
 import { SelectedView } from '../../models/selected-view';
 import { UtilService } from '../../services/util.service';
@@ -18,10 +17,8 @@ export class MapComponent {
 
   constructor(
     public mapService: MapService,
-    private apiService: ApiService,
     public router: Router,
-    public routing: RoutingService,
-    private route: ActivatedRoute
+    public routing: RoutingService
   ) {}
 
   ngOnInit(): void {

@@ -7,6 +7,7 @@ import { GeoJSON } from 'geojson';
 import { LocationDetails } from '../models/location-details';
 import { Story } from '../models/story';
 import { Organisation } from '../models/organisation';
+import { UtmRoute } from '../models/utm-route';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +38,16 @@ export class ApiService {
     return this._convertMapLocationsToGeoJson(mapLocations);
   }
 
+  async getUtmRoutes(): Promise<UtmRoute[]> {
+    let utmRoutes: UtmRoute[] = await lastValueFrom(
+      this.http.get<UtmRoute[]>(
+        environment.apiUrl + environment.apiSuffixes.routes
+      )
+    );
+    utmRoutes = this._addImageUrlPrefixes(utmRoutes, 'photo');
+    return utmRoutes;
+  }
+
   async getLocationDetailsFromId(
     locationId: string
   ): Promise<LocationDetails | undefined> {
@@ -53,9 +64,7 @@ export class ApiService {
 
     const locationDetails: LocationDetails = locationsDetails[0];
 
-    if (locationDetails.image) {
-      locationDetails.image = environment.imageBaseUrl + locationDetails.image;
-    }
+    this._addImageUrlPrefix(locationDetails, 'image');
 
     const splitGeoCoords: string[] = locationDetails.geo.split(', ');
     locationDetails.coords = {
@@ -76,6 +85,22 @@ export class ApiService {
     return locationDetails;
   }
 
+  private _addImageUrlPrefix(obj: any, imageKey: string): any {
+    if (imageKey in obj) {
+      obj[imageKey] = environment.imageBaseUrl + obj[imageKey];
+    }
+    return obj;
+  }
+
+  private _addImageUrlPrefixes(objs: any[], imageKey: string): any[] {
+    const updatedObjs: any[] = [];
+    for (const obj of objs) {
+      const updatedObj: any = this._addImageUrlPrefix(obj, imageKey);
+      updatedObjs.push(updatedObj);
+    }
+    return updatedObjs;
+  }
+
   private async _getStoriesByLocationId(locationId: string): Promise<Story[]> {
     let stories: Story[] = await lastValueFrom(
       this.http.get<Story[]>(
@@ -84,10 +109,7 @@ export class ApiService {
           locationId
       )
     );
-    stories = stories.map((story) => {
-      story.photo = environment.imageBaseUrl + story.photo;
-      return story;
-    });
+    stories = this._addImageUrlPrefixes(stories, 'photo');
     return stories;
   }
 
@@ -101,10 +123,7 @@ export class ApiService {
           locationId
       )
     );
-    organisations = organisations.map((org) => {
-      org.logo = environment.imageBaseUrl + org.logo;
-      return org;
-    });
+    organisations = this._addImageUrlPrefixes(organisations, 'logo');
     return organisations;
   }
 
