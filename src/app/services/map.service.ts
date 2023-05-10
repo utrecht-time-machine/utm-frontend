@@ -11,6 +11,7 @@ import { UtilService } from './util.service';
 import { RoutingService } from './routing.service';
 import { SelectedView } from '../models/selected-view';
 import { UtmRoutesService } from './utm-routes.service';
+import { UtmRouteStop } from '../models/utm-route-stop';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +38,10 @@ export class MapService {
         'Locations closest to center updated:',
         this.locationsClosestToCenter.getValue()
       );
+    });
+
+    this.utmRoutes.selected.subscribe(() => {
+      this.addRouteMarkersOnMap();
     });
   }
 
@@ -149,90 +154,134 @@ export class MapService {
     if (this.routing.getSelectedView() === SelectedView.Locations) {
       this.addLocationsOnMap(false);
     } else if (this.routing.getSelectedView() === SelectedView.Routes) {
-      this.addLocationsOnMap(true);
       this.addRouteMarkersOnMap();
+      this.addLocationsOnMap(true);
     }
   }
 
   addRouteMarkersOnMap() {
-    console.log('ADDING ROUTE MARKERS ON MAP');
-    // TODO: Bring back routes on the map
-    // if (map_geo_route) {
-    //   fetch(map_nav_route)
-    //     .then((response) => response.json())
-    //     .then((json) => {
-    //       if (json.coordinates) {
-    //         this.map.addSource('route_path', {
-    //           type: 'geojson',
-    //           data: {
-    //             type: 'Feature',
-    //             properties: {},
-    //             geometry: {
-    //               type: 'LineString',
-    //               coordinates: json.coordinates,
-    //             },
-    //           },
-    //         });
-    //         this.map.addLayer({
-    //           id: 'route_line',
-    //           type: 'line',
-    //           source: 'route_path',
-    //           layout: {
-    //             'line-join': 'round',
-    //             'line-cap': 'round',
-    //           },
-    //           paint: {
-    //             'line-color': '#fe0000',
-    //             'line-width': 4,
-    //           },
-    //         });
-    //       }
+    if (!this.map) {
+      return;
+    }
+
+    const routeStops: UtmRouteStop[] | undefined =
+      this.utmRoutes.selected.getValue()?.stops;
+    if (!routeStops) {
+      console.warn('Could not find route stops');
+      return;
+    }
+
+    const stopCoordinates: string[] | undefined = routeStops.map((s) => s.geo);
+
+    const parsedStopCoordinates: ([number, number] | undefined)[] =
+      stopCoordinates?.map((coordinate) => {
+        if (!coordinate) {
+          return undefined;
+        }
+        const [lat, lng] = coordinate.split(',');
+        return [parseFloat(lng), parseFloat(lat)];
+      });
+
+    const markerCoordinates = parsedStopCoordinates?.filter(Boolean) as [
+      number,
+      number
+    ][];
+
+    // Add numbered circles for each coordinate
+    markerCoordinates.forEach((coordinate, index) => {
+      const marker = document.createElement('div');
+      marker.className = 'numbered-marker';
+      marker.style.background = '#fe0000';
+      marker.style.borderRadius = '50%';
+      marker.style.width = '20px';
+      marker.style.height = '20px';
+      marker.style.display = 'flex';
+      marker.style.justifyContent = 'center';
+      marker.style.alignItems = 'center';
+      marker.innerHTML = `<span>${index + 1}</span>`;
+
+      new mapboxgl.Marker({ element: marker })
+        .setLngLat(coordinate)
+        .addTo(this.map as any);
+    });
+
+    this.map.addSource('route_path', {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: markerCoordinates,
+        },
+      },
+    });
+    this.map.addLayer({
+      id: 'route_line',
+      type: 'line',
+      source: 'route_path',
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round',
+      },
+      paint: {
+        'line-color': '#fe0000',
+        'line-width': 4,
+      },
+    });
+
+    // // if (map_geo_route) {
+    // //   fetch(map_nav_route)
+    // //     .then((response) => response.json())
+    // //     .then((json) => {
+    // //       if (json.coordinates) {
+    // //
+    // //       }
+    // //
+    // //       // if (json.distance && json.duration) {
+    // //       //   jQuery('#nav_calc').html(
+    // //       //     '<span>' +
+    // //       //       json.distance +
+    // //       //       ' <em>(' +
+    // //       //       json.duration +
+    // //       //       ')</em></span>'
+    // //       //   );
+    // //       // }
+    // //       // jQuery('#nav_menu').html(json.nav_menu);
+    // //     });
+    // //
+    // //   // this.map.addSource('stories', {
+    // //   //   type: 'geojson',
+    // //   //   data: map_geo_route,
+    // //   // });
     //
-    //       // if (json.distance && json.duration) {
-    //       //   jQuery('#nav_calc').html(
-    //       //     '<span>' +
-    //       //       json.distance +
-    //       //       ' <em>(' +
-    //       //       json.duration +
-    //       //       ')</em></span>'
-    //       //   );
-    //       // }
-    //       // jQuery('#nav_menu').html(json.nav_menu);
-    //     });
-    //
-    //   // this.map.addSource('stories', {
-    //   //   type: 'geojson',
-    //   //   data: map_geo_route,
-    //   // });
-    //
-    //   this.map.addLayer({
-    //     id: 'stories-marker',
-    //     type: 'circle',
-    //     source: 'stories',
-    //     paint: {
-    //       'circle-color': '#fe0000',
-    //       'circle-radius': 10,
-    //       'circle-stroke-width': 2,
-    //       'circle-stroke-color': '#ffffff',
-    //     },
-    //   });
-    //   this.map.on('mouseenter', 'stories-marker', () => {
-    //     this.map.getCanvas().style.cursor = 'pointer';
-    //   });
-    //   this.map.on('mouseleave', 'stories-marker', () => {
-    //     this.map.getCanvas().style.cursor = '';
-    //   });
-    //   this.map.on('click', 'stories-marker', (e: any) => {
-    //     const feature = e.features[0];
-    //     const popup = new mapboxgl.Popup({
-    //       offset: [0, 0],
-    //     })
-    //       .setLngLat(feature.geometry.coordinates)
-    //       .setHTML(feature.properties.map_pop)
-    //       .setLngLat(feature.geometry.coordinates)
-    //       .addTo(this.map);
-    //   });
-    // }
+    // this.map.addLayer({
+    //   id: 'stories-marker',
+    //   type: 'circle',
+    //   source: 'stories',
+    //   paint: {
+    //     'circle-color': '#fe0000',
+    //     'circle-radius': 10,
+    //     'circle-stroke-width': 2,
+    //     'circle-stroke-color': '#ffffff',
+    //   },
+    // });
+    // this.map.on('mouseenter', 'stories-marker', () => {
+    //   this.map.getCanvas().style.cursor = 'pointer';
+    // });
+    // this.map.on('mouseleave', 'stories-marker', () => {
+    //   this.map.getCanvas().style.cursor = '';
+    // });
+    // this.map.on('click', 'stories-marker', (e: any) => {
+    //   const feature = e.features[0];
+    //   const popup = new mapboxgl.Popup({
+    //     offset: [0, 0],
+    //   })
+    //     .setLngLat(feature.geometry.coordinates)
+    //     .setHTML(feature.properties.map_pop)
+    //     .setLngLat(feature.geometry.coordinates)
+    //     .addTo(this.map);
+    // });
   }
 
   addLocationsOnMap(hideLocations = false) {
