@@ -3427,6 +3427,14 @@ div.user-bar ul > li > a:not(.is-active):hover {
   transition: transform 300ms ease;
 }
 
+
+.card .head img, .photo img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+
 .card .core {
   width: 64%;
   padding-right: 2%;
