@@ -10,18 +10,23 @@
           <div class="photo-hold">
             <div class="photo">
               <div>
-                <img
-                  loading="lazy"
-                  src="https://via.placeholder.com/800x560"
-                  width="800"
-                  height="560"
-                />
+                <img loading="lazy" [src]="locationDetails?.image" />
               </div>
             </div>
-            <div class="media-source">
+            <div
+              class="media-source"
+              *ngIf="
+                locationDetails?.source_link && locationDetails?.source_name
+              "
+            >
               <div class="views-element-container">
                 <div>
-                  <span>Bron: fotograaf Jan Buteijn</span>
+                  <span
+                    >Bron:
+                    <a [href]="locationDetails?.source_link" target="_blank">{{
+                      locationDetails?.source_name
+                    }}</a></span
+                  >
                   <span><em>All rights reserved</em></span>
                 </div>
               </div>
@@ -49,7 +54,7 @@
                 *ngFor="let org of locationDetails?.organisations"
               >
                 <a [href]="org.link" [title]="org.title" target="_blank">
-                  <img [src]="org.link" />
+                  <img [src]="org.logo" alt="" />
                 </a>
               </div>
             </div>
@@ -66,18 +71,12 @@
               data-story-id="390"
               ><div class="head has-video-0">
                 <div>
-                  <img
-                    loading="lazy"
-                    src="https://via.placeholder.com/560x315"
-                    width="560"
-                    height="315"
-                  />
+                  <img loading="lazy" [src]="story?.photo" />
                 </div>
               </div>
               <div class="core">
-                <span class="name">{{ story.title }}</span>
-              </div></a
-            >
+                <span class="name" [innerHtml]="story.title"></span></div
+            ></a>
           </div>
         </div>
       </div>

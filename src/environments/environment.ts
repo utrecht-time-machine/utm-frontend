@@ -1,6 +1,6 @@
 export const environment = {
   apiUrl: 'https://dev-data.utrechttimemachine.nl/rest/',
-  imageBaseUrl: 'https://dev-data.utrechttimemachine.nl/',
+  imageBaseUrl: 'https://dev-data.utrechttimemachine.nl',
   apiSuffixes: {
     mapLocations: 'all_locations',
     locationDetailsById: 'location_details?nid=',

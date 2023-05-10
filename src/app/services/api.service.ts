@@ -45,6 +45,10 @@ export class ApiService {
 
     const locationDetails: LocationDetails = locationsDetails[0];
 
+    if (locationDetails.image) {
+      locationDetails.image = environment.imageBaseUrl + locationDetails.image;
+    }
+
     const splitGeoCoords: string[] = locationDetails.geo.split(', ');
     locationDetails.coords = {
       lat: parseFloat(splitGeoCoords[0]),
@@ -65,26 +69,34 @@ export class ApiService {
   }
 
   private async _getStoriesByLocationId(locationId: string): Promise<Story[]> {
-    const stories: Story[] = await lastValueFrom(
-      this.http.get<LocationDetails[]>(
+    let stories: Story[] = await lastValueFrom(
+      this.http.get<Story[]>(
         environment.apiUrl +
           environment.apiSuffixes.storiesByLocationId +
           locationId
       )
     );
+    stories = stories.map((story) => {
+      story.photo = environment.imageBaseUrl + story.photo;
+      return story;
+    });
     return stories;
   }
 
   private async _getOrganisationsByLocationId(
     locationId: string
   ): Promise<Organisation[]> {
-    const organisations: Organisation[] = await lastValueFrom(
+    let organisations: Organisation[] = await lastValueFrom(
       this.http.get<Organisation[]>(
         environment.apiUrl +
           environment.apiSuffixes.organisationsByLocation +
           locationId
       )
     );
+    organisations = organisations.map((org) => {
+      org.logo = environment.imageBaseUrl + org.logo;
+      return org;
+    });
     return organisations;
   }
 

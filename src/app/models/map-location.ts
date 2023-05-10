@@ -7,4 +7,5 @@ export interface MapLocation {
   geo: string;
   thumb: string;
   image_small: string;
+  head: string;
 }

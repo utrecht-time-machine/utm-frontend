@@ -64,7 +64,9 @@
                 ><span class="name">{{
                   locationWithDistance.location.title
                 }}</span
-                ><span class="desc">SUBTEXT</span>
+                ><span class="desc">{{
+                  locationWithDistance.location?.head
+                }}</span>
                 <span class="dist">{{
                   UtilService.convertDistanceInKmToString(
                     locationWithDistance.distanceFromCenterInKm
