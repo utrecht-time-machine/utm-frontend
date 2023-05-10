@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { GeoJSON } from 'geojson';
 import { LocationDetails } from '../models/location-details';
 import { Story } from '../models/story';
+import { Organisation } from '../models/organisation';
 
 @Injectable({
   providedIn: 'root',
@@ -50,11 +51,15 @@ export class ApiService {
       long: parseFloat(splitGeoCoords[1]),
     };
 
-    // TODO: Enrich location details with story data asynchronously?
+    // TODO: Enrich location/organisation details with story data asynchronously?
     const locationStories: Story[] = await this._getStoriesByLocationId(
       locationDetails.nid
     );
     locationDetails.stories = locationStories;
+
+    const locationOrganisations: Organisation[] =
+      await this._getOrganisationsByLocationId(locationDetails.nid);
+    locationDetails.organisations = locationOrganisations;
 
     return locationDetails;
   }
@@ -68,6 +73,19 @@ export class ApiService {
       )
     );
     return stories;
+  }
+
+  private async _getOrganisationsByLocationId(
+    locationId: string
+  ): Promise<Organisation[]> {
+    const organisations: Organisation[] = await lastValueFrom(
+      this.http.get<Organisation[]>(
+        environment.apiUrl +
+          environment.apiSuffixes.organisationsByLocation +
+          locationId
+      )
+    );
+    return organisations;
   }
 
   private _convertMapLocationsToGeoJson(

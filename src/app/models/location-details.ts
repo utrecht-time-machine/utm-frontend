@@ -1,4 +1,5 @@
 import { Story } from './story';
+import { Organisation } from './organisation';
 
 export interface LocationDetails {
   type: string;
@@ -16,7 +17,8 @@ export interface LocationDetails {
   license: string;
   caption: string;
   head: string;
-  orgs: string;
+  organisation_ids: Organisation[];
+  organisations: Organisation[];
   zipcode: string;
   teaser: string;
   text: string;

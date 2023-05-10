@@ -41,26 +41,16 @@
               [innerHtml]="locationDetails?.text"
             ></div>
           </div>
-          <!--          TODO: Add partner data dynamically! -->
-          <div class="org-logo">
+          <div class="org-logo" *ngIf="locationHasOrganisations()">
             <div class="org-logo-head">Met bijdragen van</div>
             <div class="org-logo-hold">
-              <div class="views-element-container">
-                <a
-                  href="https://www.oud-utrecht.nl"
-                  title="Oud Utrecht"
-                  target="_blank"
-                  ><img src="https://via.placeholder.com/600x400"
-                /></a>
-              </div>
-
-              <div class="views-element-container">
-                <a
-                  href="https://utrecht.kiwanis.nl"
-                  title="Kiwani's Utrecht"
-                  target="_blank"
-                  ><img src="https://via.placeholder.com/600x400"
-                /></a>
+              <div
+                class="views-element-container"
+                *ngFor="let org of locationDetails?.organisations"
+              >
+                <a [href]="org.link" [title]="org.title" target="_blank">
+                  <img [src]="org.link" />
+                </a>
               </div>
             </div>
           </div>
