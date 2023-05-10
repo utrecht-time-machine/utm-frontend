@@ -7,6 +7,7 @@ export const environment = {
     storiesByLocationId: 'stories_by_location?nid=',
     organisationsByLocation: 'organisations_by_location?nid=',
     routes: 'routes',
+    stopsByRoute: 'stops_by_route?nid=',
   },
   aliasToNidUrl: 'https://dev-data.utrechttimemachine.nl/alias_to_nid?alias=',
 };

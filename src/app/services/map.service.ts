@@ -448,12 +448,13 @@ export class MapService {
       locationId = await this.apiService.getNidFromUrlAlias(url);
     }
 
+    await this.router.navigateByUrl(url);
+
     const locationDetails: LocationDetails | undefined =
       await this.apiService.getLocationDetailsFromId(locationId);
     if (locationDetails) {
       this.selectedLocation.next(locationDetails);
     }
-    await this.router.navigateByUrl(url);
 
     setTimeout(() => {
       if (!this.map || !locationDetails) {

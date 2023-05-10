@@ -8,6 +8,7 @@ import { LocationDetails } from '../models/location-details';
 import { Story } from '../models/story';
 import { Organisation } from '../models/organisation';
 import { UtmRoute } from '../models/utm-route';
+import { UtmRouteStop } from '../models/utm-route-stop';
 
 @Injectable({
   providedIn: 'root',
@@ -83,6 +84,18 @@ export class ApiService {
     locationDetails.organisations = locationOrganisations;
 
     return locationDetails;
+  }
+
+  async getUtmRouteStopsById(
+    routeId: string
+  ): Promise<UtmRouteStop[] | undefined> {
+    console.log('Retrieving route stops', routeId);
+    const utmRouteStops: UtmRouteStop[] = await lastValueFrom(
+      this.http.get<UtmRouteStop[]>(
+        environment.apiUrl + environment.apiSuffixes.stopsByRoute + routeId
+      )
+    );
+    return utmRouteStops;
   }
 
   private _addImageUrlPrefix(obj: any, imageKey: string): any {

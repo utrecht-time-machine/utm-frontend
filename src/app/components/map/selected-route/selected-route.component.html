@@ -1,28 +1,15 @@
 <div>
   <div class="dock-inner route-container">
     <div class="pad">
-      <h2>Unie van Utrecht wandeling</h2>
+      <h2>{{ selectedRoute?.title }}</h2>
       <div class="route-container-inner">
-        <h4>
-          Een wandeling langs plekken die een rol hebben gespeeld bij de
-          totstandkoming van de Unie van Utrecht
-        </h4>
-        <p>
-          Dit verdrag vormde de inspiratiebron voor de Grondwet van Nederland
-          (1814) en de Amerikaanse Onafhankelijkheidsverklaring (1776).
-        </p>
+        <div [innerHtml]="selectedRoute?.teaser"></div>
         <a class="route-start" id="route_start">Route starten</a>
       </div>
       <div class="photo-hold">
         <div class="photo">
           <div>
-            <img
-              loading="lazy"
-              src="https://via.placeholder.com/800x560"
-              alt=""
-              width="800"
-              height="560"
-            />
+            <img loading="lazy" [src]="selectedRoute?.photo" alt="" />
           </div>
         </div>
         <div class="media-source">

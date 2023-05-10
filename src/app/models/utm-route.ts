@@ -1,5 +1,8 @@
+import { UtmRouteStop } from './utm-route-stop';
+
 export interface UtmRoute {
   title: string;
+  url: string;
   photo: string;
   head: string;
   nid: string;
@@ -7,4 +10,5 @@ export interface UtmRoute {
   duration_minutes: string;
   teaser: string;
   type: string;
+  stops?: UtmRouteStop[];
 }

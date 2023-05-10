@@ -4,8 +4,7 @@
     <div class="views-element-container">
       <div class="card-hold promote">
         <div class="card" *ngFor="let r of utmRoutes.all">
-          <a
-            (click)="router.navigateByUrl('/routes/unie-van-utrecht-wandeling')"
+          <a (click)="utmRoutes.selectByUrl(r.url, r.nid)"
             ><div class="head">
               <div>
                 <div>
