@@ -3428,7 +3428,7 @@ div.user-bar ul > li > a:not(.is-active):hover {
 }
 
 
-.card .head img, .photo img {
+.card .head img, .photo img, .story .head img, .popup-location-link .thumb img {
   height: 100%;
   width: 100%;
   object-fit: cover;
