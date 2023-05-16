@@ -4,7 +4,12 @@
       <h2>{{ selectedRoute?.title }}</h2>
       <div class="route-container-inner">
         <div [innerHtml]="selectedRoute?.teaser"></div>
-        <a class="route-start" id="route_start">Route starten</a>
+        <a
+          class="route-start"
+          id="route_start"
+          (click)="utmRoutes.selectStopByIdx(0)"
+          >Route starten</a
+        >
       </div>
       <div class="photo-hold">
         <div class="photo">

@@ -15,6 +15,16 @@ export class UtmRoutesService {
     UtmRoute | undefined
   >(undefined);
 
+  selectedStopIdx: BehaviorSubject<number | undefined> = new BehaviorSubject<
+    number | undefined
+  >(undefined);
+
+  public get noStopIsSelected() {
+    return (
+      this.selected.getValue() === undefined ||
+      this.selectedStopIdx.getValue() === undefined
+    );
+  }
   constructor(private apiService: ApiService, private router: Router) {
     void this.load();
   }
@@ -60,5 +70,23 @@ export class UtmRoutesService {
     }
 
     this.selected.next(routeToSelect);
+  }
+
+  public selectStopByIdx(stopIdx: number | undefined) {
+    const selectedRoute: UtmRoute | undefined = this.selected.getValue();
+    const selectedStops: UtmRouteStop[] | undefined = selectedRoute?.stops;
+    if (!selectedStops) {
+      return;
+    }
+
+    const stopDoesNotExist =
+      stopIdx !== undefined && stopIdx >= selectedStops.length;
+    if (stopDoesNotExist) {
+      return;
+    }
+
+    if (selectedRoute) {
+      this.selectedStopIdx.next(stopIdx);
+    }
   }
 }

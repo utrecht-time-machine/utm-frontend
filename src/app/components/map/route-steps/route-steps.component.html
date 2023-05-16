@@ -11,7 +11,11 @@
   <div id="nav_menu" class="nav-menu dragscroll">
     <ul>
       <li class="is-home">
-        <a data-dock-id="148" data-dock="route" class="on">
+        <a
+          data-dock="route"
+          [ngClass]="{ on: utmRoutes.noStopIsSelected }"
+          (click)="utmRoutes.selectStopByIdx(undefined)"
+        >
           <div></div>
         </a>
       </li>
@@ -21,7 +25,10 @@
           let stopNum = index
         "
       >
-        <a>
+        <a
+          (click)="utmRoutes.selectStopByIdx(stopNum)"
+          [ngClass]="{ on: utmRoutes.selectedStopIdx.getValue() === stopNum }"
+        >
           <div>
             {{ stopNum + 1 }}
           </div>
