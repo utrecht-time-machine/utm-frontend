@@ -445,7 +445,7 @@ export class MapService {
           event.preventDefault();
           const url = link.getAttribute('data-url');
           if (url) {
-            void this.selectLocationByUrl(url, feature.properties.nid);
+            void this.selectLocationByUrlOrId(url, feature.properties.nid);
           } else {
             console.warn('Clicked on popup location without a URL...');
           }
@@ -493,7 +493,7 @@ export class MapService {
     this.locationsClosestToCenter.next(locationsWithDistances);
   }
 
-  async selectLocationByUrl(url: string, locationId?: string) {
+  async selectLocationByUrlOrId(url: string, locationId?: string) {
     if (!locationId) {
       locationId = await this.apiService.getNidFromUrlAlias(url);
     }

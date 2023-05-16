@@ -25,7 +25,7 @@ export class UtmRoutesService {
     console.log('Loaded all UTM routes:', this.all);
   }
 
-  public async selectByUrl(url: string, id?: string) {
+  public async selectByUrlOrId(url: string, id?: string) {
     await this.router.navigateByUrl(url);
 
     if (!id) {

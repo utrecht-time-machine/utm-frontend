@@ -27,7 +27,7 @@ export class MapComponent {
     const loadedLocationsPage =
       this.routing.getSelectedView() === SelectedView.Locations;
     if (loadedLocationsPage) {
-      void this.mapService.selectLocationByUrl(this.router.url);
+      void this.mapService.selectLocationByUrlOrId(this.router.url);
     }
   }
 

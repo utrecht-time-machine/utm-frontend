@@ -25,7 +25,7 @@ export class SelectedRouteComponent {
       this.routing.getSelectedView() == SelectedView.Routes;
 
     if (navigatedToUtmRoutePage) {
-      void this.utmRoutes.selectByUrl(this.router.url);
+      void this.utmRoutes.selectByUrlOrId(this.router.url);
     }
   }
 }
