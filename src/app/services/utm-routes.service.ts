@@ -19,10 +19,10 @@ export class UtmRoutesService {
     number | undefined
   >(undefined);
 
-  public get noStopIsSelected() {
+  public get stopIsSelected() {
     return (
-      this.selected.getValue() === undefined ||
-      this.selectedStopIdx.getValue() === undefined
+      this.selected.getValue() !== undefined &&
+      this.selectedStopIdx.getValue() !== undefined
     );
   }
   constructor(private apiService: ApiService, private router: Router) {
