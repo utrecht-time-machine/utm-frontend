@@ -153,11 +153,14 @@ export class MapService {
       );
     });
 
-    if (this.routing.getSelectedView() === SelectedView.Locations) {
-      this.addLocationsOnMap(false);
-    } else if (this.routing.getSelectedView() === SelectedView.Routes) {
-      this.addLocationsOnMap(true);
-    }
+    this.map.on('load', () => {
+      if (this.routing.getSelectedView() === SelectedView.Locations) {
+        this.addLocationsOnMap(false);
+      } else if (this.routing.getSelectedView() === SelectedView.Routes) {
+        this.addRouteMarkersOnMap();
+        this.addLocationsOnMap(true);
+      }
+    });
   }
 
   removeRouteMarkersFromMap() {
@@ -181,10 +184,12 @@ export class MapService {
       return;
     }
 
+    this.removeRouteMarkersFromMap();
+
     const routeStops: UtmRouteStop[] | undefined =
       this.utmRoutes.selected.getValue()?.stops;
     if (!routeStops) {
-      console.warn('Could not find route stops');
+      // console.warn('Could not find route stops');
       return;
     }
 
@@ -203,7 +208,6 @@ export class MapService {
       number,
       number
     ][];
-
     // Add numbered circles for each coordinate
     markerCoordinates.forEach((coordinate, index) => {
       const marker = document.createElement('div');
@@ -215,14 +219,12 @@ export class MapService {
       marker.style.display = 'flex';
       marker.style.justifyContent = 'center';
       marker.style.alignItems = 'center';
-      marker.innerHTML = `<span>${index + 1}</span>`;
 
+      marker.innerHTML = `<span>${index + 1}</span>`;
       new mapboxgl.Marker({ element: marker })
         .setLngLat(coordinate)
         .addTo(this.map as any);
     });
-
-    this.removeRouteMarkersFromMap();
 
     this.map.addSource('route_path', {
       type: 'geojson',

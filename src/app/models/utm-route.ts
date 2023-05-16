@@ -8,6 +8,7 @@ export interface UtmRoute {
   nid: string;
   stop_ids: string;
   duration_minutes: string;
+  distance: string;
   teaser: string;
   type: string;
   stops?: UtmRouteStop[];
