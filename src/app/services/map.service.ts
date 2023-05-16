@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import mapboxgl, { Marker } from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl';
 import { ApiService } from './api.service';
 import { GeoJSON } from 'geojson';
 import { BehaviorSubject } from 'rxjs';
@@ -28,8 +28,6 @@ export class MapService {
   );
 
   showSpinner = false;
-
-  private _routeStopMarkers: Marker[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -195,6 +193,21 @@ export class MapService {
       return;
     }
 
+    const stopsLayer = this.map.getLayer('stops-marker');
+    if (stopsLayer) {
+      this.map.removeLayer('stops-marker');
+    }
+
+    const stopsLabelsLayer = this.map.getLayer('stops-marker-labels');
+    if (stopsLabelsLayer) {
+      this.map.removeLayer('stops-marker-labels');
+    }
+
+    const stopsSource = this.map.getSource('stops');
+    if (stopsSource) {
+      this.map.removeSource('stops');
+    }
+
     const routeLineLayer = this.map.getLayer('route_line');
     if (routeLineLayer) {
       this.map.removeLayer('route_line');
@@ -204,9 +217,6 @@ export class MapService {
     if (routePathSource) {
       this.map.removeSource('route_path');
     }
-
-    this._routeStopMarkers.map((marker) => marker.remove());
-    this._routeStopMarkers = [];
   }
 
   addRouteMarkersOnMap() {
@@ -223,40 +233,37 @@ export class MapService {
       return;
     }
 
-    const stopCoordinates: string[] | undefined = routeStops.map((s) => s.geo);
-
-    const parsedStopCoordinates: ([number, number] | undefined)[] =
-      stopCoordinates?.map((coordinate) => {
-        if (!coordinate) {
-          return undefined;
-        }
-        const [lat, lng] = coordinate.split(',');
-        return [parseFloat(lng), parseFloat(lat)];
-      });
-
-    const markerCoordinates = parsedStopCoordinates?.filter(Boolean) as [
-      number,
-      number
-    ][];
-    // Add numbered circles for each coordinate
-    markerCoordinates.forEach((coordinate, index) => {
-      const marker = document.createElement('div');
-      marker.className = 'numbered-marker';
-      marker.style.background = '#fe0000';
-      marker.style.borderRadius = '50%';
-      marker.style.width = '20px';
-      marker.style.height = '20px';
-      marker.style.display = 'flex';
-      marker.style.justifyContent = 'center';
-      marker.style.alignItems = 'center';
-
-      marker.innerHTML = `<span>${index + 1}</span>`;
-      const routeStopMarker = new mapboxgl.Marker({ element: marker })
-        .setLngLat(coordinate)
-        .addTo(this.map as any);
-
-      this._routeStopMarkers.push(routeStopMarker);
-    });
+    const stopsFeatureCollection = {
+      type: 'FeatureCollection',
+      features: routeStops.map((stop, idx) => {
+        return {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [stop.coords.long, stop.coords.lat],
+          },
+          properties: {
+            label: idx + 1,
+            map_pop: `
+<a data-stop-idx="${idx}" class="popup-stop-link">
+  <div>
+    <div>
+      <div class="thumb">
+<!--      TODO: Use stop image -->
+          <img src="https://via.placeholder.com/200x200">
+      </div>
+    </div>
+    <div>
+      <span class="name">${stop.title}</span>
+<!--      TODO: Use stop location -->
+<!--      <span class="addr"></span>-->
+    </div>
+  </div>
+</a>`,
+          },
+        };
+      }),
+    };
 
     this.map.addSource('route_path', {
       type: 'geojson',
@@ -265,7 +272,10 @@ export class MapService {
         properties: {},
         geometry: {
           type: 'LineString',
-          coordinates: markerCoordinates,
+          coordinates: routeStops.map((stop) => [
+            stop.coords.long,
+            stop.coords.lat,
+          ]),
         },
       },
     });
@@ -282,6 +292,79 @@ export class MapService {
         'line-color': '#fe0000',
         'line-width': 4,
       },
+    });
+
+    this.map.addSource('stops', {
+      type: 'geojson',
+      data: stopsFeatureCollection as any,
+    });
+
+    this.map.addLayer({
+      id: 'stops-marker',
+      type: 'circle',
+      source: 'stops',
+      paint: {
+        'circle-color': '#fe0000',
+        'circle-radius': 10,
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#ffffff',
+      },
+    });
+
+    this.map.addLayer({
+      id: 'stops-marker-labels',
+      type: 'symbol',
+      source: 'stops',
+      layout: {
+        'text-field': '{label}',
+        'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+        'text-size': 12,
+        'text-offset': [0, 0],
+        // 'text-anchor': 'top',
+      },
+      paint: {
+        'text-color': '#ffffff',
+      },
+    });
+
+    this.map.on('mouseenter', 'stops-marker', () => {
+      if (this.map) {
+        this.map.getCanvas().style.cursor = 'pointer';
+      }
+    });
+    this.map.on('mouseleave', 'stops-marker', () => {
+      if (this.map) {
+        this.map.getCanvas().style.cursor = '';
+      }
+    });
+    this.map.on('click', 'stops-marker', (e: any) => {
+      if (!this.map) {
+        return;
+      }
+
+      const feature = e.features[0];
+      const popup = new mapboxgl.Popup({
+        offset: [0, 0],
+      })
+        .setLngLat(feature.geometry.coordinates)
+        .setHTML(feature.properties.map_pop)
+        .addTo(this.map);
+
+      // Catch popup route stop clicks
+      const link = popup.getElement()?.querySelector('.popup-stop-link');
+      if (link) {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          const stopIdx = link.getAttribute('data-stop-idx');
+          if (stopIdx) {
+            void this.utmRoutes.selectStopByIdx(parseInt(stopIdx));
+          } else {
+            console.warn(
+              'Clicked on popup route stop without a known index...'
+            );
+          }
+        });
+      }
     });
 
     // // if (map_geo_route) {
