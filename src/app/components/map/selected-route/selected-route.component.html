@@ -1,5 +1,5 @@
 <div>
-  <div class="dock-inner route-container" *ngIf="!utmRoutes.stopIsSelected">
+  <div class="dock-inner route-container" *ngIf="!utmRoutes.selectedStop">
     <div class="pad">
       <h2>{{ selectedRoute?.title }}</h2>
       <div class="route-container-inner">
@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  <div class="dock-inner story-container" *ngIf="utmRoutes.stopIsSelected">
+  <div class="dock-inner story-container" *ngIf="utmRoutes.selectedStop">
     <div class="pad">
       <app-selected-stop></app-selected-stop>
     </div>

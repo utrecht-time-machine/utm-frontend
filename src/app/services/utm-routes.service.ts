@@ -19,12 +19,27 @@ export class UtmRoutesService {
     number | undefined
   >(undefined);
 
-  public get stopIsSelected() {
-    return (
-      this.selected.getValue() !== undefined &&
-      this.selectedStopIdx.getValue() !== undefined
-    );
+  // public get stopIsSelected() {
+  //   return (
+  //     this.selected.getValue() !== undefined &&
+  //     this.selectedStopIdx.getValue() !== undefined
+  //   );
+  // }
+
+  public get selectedStop(): UtmRouteStop | undefined {
+    const selectedRoute: UtmRoute | undefined = this.selected.getValue();
+    if (selectedRoute === undefined || selectedRoute?.stops === undefined) {
+      return undefined;
+    }
+
+    const selectedStopIdx = this.selectedStopIdx.getValue();
+    if (selectedStopIdx === undefined) {
+      return undefined;
+    }
+
+    return selectedRoute.stops[selectedStopIdx];
   }
+
   constructor(private apiService: ApiService, private router: Router) {
     void this.load();
   }

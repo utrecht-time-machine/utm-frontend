@@ -4,4 +4,5 @@ export interface UtmRouteStop {
   title: string;
   route_id: string;
   geo: string;
+  coords: { lat: number; long: number };
 }

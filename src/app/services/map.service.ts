@@ -47,6 +47,21 @@ export class MapService {
         this.addRouteMarkersOnMap();
       });
     });
+
+    this.utmRoutes.selectedStopIdx.subscribe((stopIdx) => {
+      if (!this.map || !this.utmRoutes.selectedStop) {
+        return;
+      }
+
+      const stopCoords = this.utmRoutes.selectedStop?.coords;
+      if (stopCoords) {
+        this.map.flyTo({
+          center: [stopCoords.long, stopCoords.lat],
+          essential: true,
+          zoom: 18,
+        });
+      }
+    });
   }
 
   initMap() {

@@ -95,6 +95,19 @@ export class ApiService {
         environment.apiUrl + environment.apiSuffixes.stopsByRoute + routeId
       )
     );
+
+    utmRouteStops.forEach((element) => {
+      if (!element.geo) {
+        return;
+      }
+      const [lat, long] = element.geo.split(',');
+      element.coords = {
+        lat: parseFloat(lat.trim()),
+        long: parseFloat(long.trim()),
+      };
+    });
+
+    console.log('STOPS', utmRouteStops);
     return utmRouteStops;
   }
 

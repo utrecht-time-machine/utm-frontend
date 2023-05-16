@@ -13,7 +13,7 @@
       <li class="is-home">
         <a
           data-dock="route"
-          [ngClass]="{ on: !utmRoutes.stopIsSelected }"
+          [ngClass]="{ on: !utmRoutes.selectedStop }"
           (click)="utmRoutes.selectStopByIdx(undefined)"
         >
           <div></div>
