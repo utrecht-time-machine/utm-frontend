@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import mapboxgl from 'mapbox-gl';
+import mapboxgl, { Marker } from 'mapbox-gl';
 import { ApiService } from './api.service';
 import { GeoJSON } from 'geojson';
 import { BehaviorSubject } from 'rxjs';
@@ -27,6 +27,8 @@ export class MapService {
     []
   );
 
+  private _routeStopMarkers: Marker[] = [];
+
   constructor(
     private apiService: ApiService,
     private utmRoutes: UtmRoutesService,
@@ -48,6 +50,8 @@ export class MapService {
   }
 
   initMap() {
+    this.removeRouteMarkersFromMap();
+
     mapboxgl.accessToken =
       'pk.eyJ1IjoiY2Itc3R1ZGlvIiwiYSI6ImNrcDUxZW04MjBjZ3gydHF0bmUyano0bncifQ.MLaKn3TF2V4b4ICX1HJnnA';
 
@@ -151,9 +155,7 @@ export class MapService {
         },
         labelLayerId
       );
-    });
 
-    this.map.on('load', () => {
       if (this.routing.getSelectedView() === SelectedView.Locations) {
         this.addLocationsOnMap(false);
       } else if (this.routing.getSelectedView() === SelectedView.Routes) {
@@ -161,6 +163,10 @@ export class MapService {
         this.addLocationsOnMap(true);
       }
     });
+
+    // this.map.on('load', () => {
+    //
+    // });
   }
 
   removeRouteMarkersFromMap() {
@@ -177,6 +183,9 @@ export class MapService {
     if (routePathSource) {
       this.map.removeSource('route_path');
     }
+
+    this._routeStopMarkers.map((marker) => marker.remove());
+    this._routeStopMarkers = [];
   }
 
   addRouteMarkersOnMap() {
@@ -221,9 +230,11 @@ export class MapService {
       marker.style.alignItems = 'center';
 
       marker.innerHTML = `<span>${index + 1}</span>`;
-      new mapboxgl.Marker({ element: marker })
+      const routeStopMarker = new mapboxgl.Marker({ element: marker })
         .setLngLat(coordinate)
         .addTo(this.map as any);
+
+      this._routeStopMarkers.push(routeStopMarker);
     });
 
     this.map.addSource('route_path', {

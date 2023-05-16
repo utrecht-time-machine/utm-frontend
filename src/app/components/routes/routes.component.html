@@ -4,8 +4,8 @@
     <div class="views-element-container">
       <div class="card-hold promote">
         <div class="card" *ngFor="let r of utmRoutes.all">
-          <a (click)="utmRoutes.selectByUrlOrId(r.url, r.nid)"
-            ><div class="head">
+          <a (click)="utmRoutes.selectByUrlOrId(r.url, r.nid)">
+            <div class="head">
               <div>
                 <div>
                   <img loading="lazy" [src]="r.photo" [alt]="r.title" />
@@ -17,9 +17,11 @@
               <span class="type">Wandelroute</span
               ><span class="name">{{ r.title }}</span
               ><span class="desc">{{ r.head }}</span
-              ><span class="dist">{{ r.duration_minutes }} min</span>
-            </div></a
-          >
+              ><span class="dist" *ngIf="r.duration_minutes"
+                >{{ r.duration_minutes }} min</span
+              >
+            </div>
+          </a>
         </div>
       </div>
     </div>
