@@ -7,6 +7,10 @@
   <div class="layout-content">
     <div>
       <article role="article">
+        <div [ngClass]="{ 'map-spin': map.showSpinner }">
+          <div></div>
+        </div>
+
         <router-outlet></router-outlet>
       </article>
     </div>

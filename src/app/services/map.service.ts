@@ -27,6 +27,8 @@ export class MapService {
     []
   );
 
+  showSpinner = false;
+
   private _routeStopMarkers: Marker[] = [];
 
   constructor(
@@ -65,6 +67,10 @@ export class MapService {
   }
 
   initMap() {
+    // setTimeout(() => {
+    //   this.showSpinner = true;
+    // });
+
     this.removeRouteMarkersFromMap();
 
     mapboxgl.accessToken =
@@ -177,11 +183,11 @@ export class MapService {
         this.addRouteMarkersOnMap();
         this.addLocationsOnMap(true);
       }
-    });
 
-    // this.map.on('load', () => {
-    //
-    // });
+      // setTimeout(() => {
+      //   this.showSpinner = false;
+      // });
+    });
   }
 
   removeRouteMarkersFromMap() {
@@ -339,6 +345,10 @@ export class MapService {
     }
 
     this.map.on('load', async () => {
+      if (!hideLocations) {
+        this.showSpinner = true;
+      }
+
       this.mapLocations = await this.apiService.getMapLocationsGeoJson();
 
       if (!this.mapLocations) {
@@ -413,6 +423,8 @@ export class MapService {
       }
 
       this._initMapInteractivity();
+
+      this.showSpinner = false;
     });
   }
 
@@ -541,6 +553,7 @@ export class MapService {
   }
 
   async selectLocationByUrlOrId(url: string, locationId?: string) {
+    this.showSpinner = true;
     if (!locationId) {
       locationId = await this.apiService.getNidFromUrlAlias(url);
     }
@@ -575,6 +588,8 @@ export class MapService {
       //   document.getElementsByClassName('utm-header')[0].clientHeight;
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      this.showSpinner = false;
     });
   }
 }
