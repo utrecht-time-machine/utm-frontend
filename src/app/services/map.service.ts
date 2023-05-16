@@ -41,7 +41,9 @@ export class MapService {
     });
 
     this.utmRoutes.selected.subscribe(() => {
-      this.addRouteMarkersOnMap();
+      setTimeout(() => {
+        this.addRouteMarkersOnMap();
+      });
     });
   }
 
@@ -154,13 +156,27 @@ export class MapService {
     if (this.routing.getSelectedView() === SelectedView.Locations) {
       this.addLocationsOnMap(false);
     } else if (this.routing.getSelectedView() === SelectedView.Routes) {
-      this.addRouteMarkersOnMap();
       this.addLocationsOnMap(true);
     }
   }
 
+  removeRouteMarkersFromMap() {
+    if (!this.map) {
+      return;
+    }
+
+    const routeLineLayer = this.map.getLayer('route_line');
+    if (routeLineLayer) {
+      this.map.removeLayer('route_line');
+    }
+
+    const routePathSource = this.map.getSource('route_path');
+    if (routePathSource) {
+      this.map.removeSource('route_path');
+    }
+  }
+
   addRouteMarkersOnMap() {
-    // TODO: Ensure that the markers get removed as well, also sometimes the lines do not show up
     if (!this.map) {
       return;
     }
@@ -206,6 +222,8 @@ export class MapService {
         .addTo(this.map as any);
     });
 
+    this.removeRouteMarkersFromMap();
+
     this.map.addSource('route_path', {
       type: 'geojson',
       data: {
@@ -217,6 +235,7 @@ export class MapService {
         },
       },
     });
+
     this.map.addLayer({
       id: 'route_line',
       type: 'line',
