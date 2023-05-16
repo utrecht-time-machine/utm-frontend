@@ -1,6 +1,7 @@
 export const environment = {
   apiUrl: 'https://dev-data.utrechttimemachine.nl/rest/',
   imageBaseUrl: 'https://dev-data.utrechttimemachine.nl',
+  audioBaseUrl: 'https://dev-data.utrechttimemachine.nl',
   apiSuffixes: {
     mapLocations: 'all_locations',
     locationDetailsById: 'location_details?nid=',
@@ -8,6 +9,10 @@ export const environment = {
     organisationsByLocation: 'organisations_by_location?nid=',
     routes: 'routes',
     stopsByRoute: 'stops_by_route?nid=',
+    mediaByStory: 'media_by_story?nid=',
   },
   aliasToNidUrl: 'https://dev-data.utrechttimemachine.nl/alias_to_nid?alias=',
+  mediaItemImageExtensions: ['.png', '.jpg'],
+  mediaItemAudioExtensions: ['.mp3', '.ogg'],
+  mediaItemYouTubePrefixToRemove: 'https://www.youtube.com/watch?v=',
 };

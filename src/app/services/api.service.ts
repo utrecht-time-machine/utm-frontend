@@ -9,6 +9,7 @@ import { Story } from '../models/story';
 import { Organisation } from '../models/organisation';
 import { UtmRoute } from '../models/utm-route';
 import { UtmRouteStop } from '../models/utm-route-stop';
+import { MediaItem, MediaItemType } from '../models/media-item';
 
 @Injectable({
   providedIn: 'root',
@@ -47,6 +48,52 @@ export class ApiService {
     );
     utmRoutes = this._addImageUrlPrefixes(utmRoutes, 'photo');
     return utmRoutes;
+  }
+
+  async getMediaItemsByStoryId(storyId: string): Promise<MediaItem[]> {
+    let mediaItems: MediaItem[] = await lastValueFrom(
+      this.http.get<MediaItem[]>(
+        environment.apiUrl + environment.apiSuffixes.mediaByStory + storyId
+      )
+    );
+
+    mediaItems.forEach((mediaItem) => {
+      mediaItem.type = MediaItemType.Undefined;
+
+      if (mediaItem.youtube) {
+        mediaItem.type = MediaItemType.YouTube;
+        mediaItem.youtube = mediaItem.youtube.replace(
+          environment.mediaItemYouTubePrefixToRemove,
+          ''
+        );
+      }
+
+      const isAudioItem = environment.mediaItemAudioExtensions.some(
+        (audioExtension) => mediaItem.media_file.endsWith(audioExtension)
+      );
+      if (isAudioItem) {
+        mediaItem.type = MediaItemType.Audio;
+        mediaItem.media_file = environment.audioBaseUrl + mediaItem.media_file;
+      }
+
+      const isImageItem = mediaItem.image_small;
+      if (isImageItem) {
+        mediaItem.type = MediaItemType.Image;
+        mediaItem = this._addImageUrlPrefix(mediaItem, 'image_small');
+      }
+
+      // const isImageItem = environment.mediaItemImageExtensions.some(
+      //   (imageExtension) => mediaItem.media_file.endsWith(imageExtension)
+      // );
+      // if (isImageItem) {
+      //   mediaItem.type = MediaItemType.Image;
+      //   mediaItem = this._addImageUrlPrefix(mediaItem, 'media_file');
+      // }
+    });
+
+    console.log(mediaItems);
+    // mediaItems = this._addImageUrlPrefixes(mediaItems, 'media_file');
+    return mediaItems;
   }
 
   async getLocationDetailsFromId(

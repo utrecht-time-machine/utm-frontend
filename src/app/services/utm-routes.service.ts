@@ -4,6 +4,7 @@ import { UtmRoute } from '../models/utm-route';
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
 import { UtmRouteStop } from '../models/utm-route-stop';
+import { MediaItem } from '../models/media-item';
 
 @Injectable({
   providedIn: 'root',
@@ -19,12 +20,26 @@ export class UtmRoutesService {
     number | undefined
   >(undefined);
 
-  // public get stopIsSelected() {
-  //   return (
-  //     this.selected.getValue() !== undefined &&
-  //     this.selectedStopIdx.getValue() !== undefined
-  //   );
-  // }
+  shownMediaItems: BehaviorSubject<MediaItem[] | undefined> =
+    new BehaviorSubject<MediaItem[] | undefined>(undefined);
+
+  constructor(private apiService: ApiService, private router: Router) {
+    void this.load();
+
+    this.selectedStopIdx.subscribe(() => {
+      void this._updateShownMediaItems();
+    });
+  }
+
+  private async _updateShownMediaItems() {
+    if (!this.selectedStop) {
+      return;
+    }
+
+    const retrievedMediaItems: MediaItem[] =
+      await this.apiService.getMediaItemsByStoryId(this.selectedStop.stop_id);
+    this.shownMediaItems.next(retrievedMediaItems);
+  }
 
   public get selectedStop(): UtmRouteStop | undefined {
     const selectedRoute: UtmRoute | undefined = this.selected.getValue();
@@ -38,10 +53,6 @@ export class UtmRoutesService {
     }
 
     return selectedRoute.stops[selectedStopIdx];
-  }
-
-  constructor(private apiService: ApiService, private router: Router) {
-    void this.load();
   }
 
   public async load() {
