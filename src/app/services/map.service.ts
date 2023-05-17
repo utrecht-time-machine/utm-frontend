@@ -21,8 +21,7 @@ export class MapService {
   allLocations: BehaviorSubject<MapLocation[]> = new BehaviorSubject<
     MapLocation[]
   >([]);
-  allLocationsByLetter: BehaviorSubject<{ [letter: string]: MapLocation[] }> =
-    new BehaviorSubject<{ [p: string]: MapLocation[] }>({});
+
   mapLocationsFeatures: GeoJSON.FeatureCollection | undefined = undefined;
 
   selectedLocation: BehaviorSubject<LocationDetails | undefined> =
@@ -47,10 +46,6 @@ export class MapService {
       );
     });
 
-    this.allLocations.subscribe(() => {
-      this._updateAllLocationsByLetter();
-    });
-
     this.utmRoutes.selected.subscribe(() => {
       setTimeout(() => {
         this.addRouteMarkersOnMap();
@@ -71,22 +66,6 @@ export class MapService {
         });
       }
     });
-  }
-
-  private _updateAllLocationsByLetter() {
-    const sortedLocations = this.allLocations.getValue().sort((a, b) => {
-      return a.title.localeCompare(b.title);
-    });
-    const sortedLocationsByLetter: { [letter: string]: MapLocation[] } = {};
-
-    sortedLocations.forEach((obj) => {
-      const firstLetter = obj.title[0].toUpperCase();
-      if (!sortedLocationsByLetter[firstLetter]) {
-        sortedLocationsByLetter[firstLetter] = [];
-      }
-      sortedLocationsByLetter[firstLetter].push(obj);
-    });
-    this.allLocationsByLetter.next(sortedLocationsByLetter);
   }
 
   initMap() {

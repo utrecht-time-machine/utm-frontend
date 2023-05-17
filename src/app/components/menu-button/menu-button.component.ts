@@ -4,6 +4,12 @@ import { Router } from '@angular/router';
 import { RoutingService } from '../../services/routing.service';
 import { SelectedView } from '../../models/selected-view';
 import { MapService } from '../../services/map.service';
+import { MapLocation } from '../../models/map-location';
+
+enum MenuSortOn {
+  Title,
+  Address,
+}
 
 @Component({
   selector: 'app-menu-button',
@@ -12,6 +18,9 @@ import { MapService } from '../../services/map.service';
 })
 export class MenuButtonComponent {
   SelectedView = SelectedView;
+
+  menuIsSortedOn: MenuSortOn = MenuSortOn.Title;
+  MenuSortOn = MenuSortOn;
 
   alphabet: string[] = [
     'A',
@@ -50,6 +59,36 @@ export class MenuButtonComponent {
   ) {}
 
   public get locationsByLetterAreLoaded(): boolean {
-    return Object.keys(this.map.allLocationsByLetter).length > 0;
+    if (this.menuIsSortedOn === MenuSortOn.Title) {
+      return Object.keys(this.menuService.allLocationsSortedByTitle).length > 0;
+    } else if (this.menuIsSortedOn === MenuSortOn.Address) {
+      return (
+        Object.keys(this.menuService.allLocationsSortedByAddress).length > 0
+      );
+    }
+
+    console.warn('Menu sorted on unknown variable');
+    return false;
+  }
+
+  public get locationsByLetter(): { [letter: string]: MapLocation[] } {
+    if (this.menuIsSortedOn === MenuSortOn.Title) {
+      return this.menuService.allLocationsSortedByTitle.getValue();
+    } else if (this.menuIsSortedOn === MenuSortOn.Address) {
+      return this.menuService.allLocationsSortedByAddress.getValue();
+    }
+
+    console.warn('Menu sorted on unknown variable');
+    return {};
+  }
+
+  public toggleMenuSort() {
+    if (this.menuIsSortedOn === MenuSortOn.Title) {
+      this.menuIsSortedOn = MenuSortOn.Address;
+    } else if (this.menuIsSortedOn === MenuSortOn.Address) {
+      this.menuIsSortedOn = MenuSortOn.Title;
+    } else {
+      console.warn('Menu sorted on unknown variable');
+    }
   }
 }
