@@ -28,6 +28,12 @@ export class MenuService {
     });
   }
 
+  public get azMenuIsShown() {
+    return document
+      .getElementsByTagName('body')[0]
+      .classList.contains('menu-az-on');
+  }
+
   closeAllMenus() {
     const body = document.getElementsByTagName('body')[0];
     body.classList.remove('menu-az-on');
