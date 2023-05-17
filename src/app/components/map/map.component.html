@@ -12,13 +12,17 @@
       id="map_dock"
       *ngIf="
         getSelectedLocation() ||
-        routing.getSelectedView() === SelectedView.Routes
+        routing.getSelectedView() === SelectedView.Routes ||
+        routing.getSelectedView() === SelectedView.Story
       "
     >
       <div class="views-element-container">
         <app-selected-item
           [locationDetails]="getSelectedLocation()"
-          *ngIf="routing.getSelectedView() === SelectedView.Locations"
+          *ngIf="
+            routing.getSelectedView() === SelectedView.Locations ||
+            routing.getSelectedView() === SelectedView.Story
+          "
         ></app-selected-item>
 
         <app-selected-route

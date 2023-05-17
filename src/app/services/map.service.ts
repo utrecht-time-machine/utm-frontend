@@ -429,7 +429,7 @@ export class MapService {
 
     this.map.on('load', async () => {
       if (!hideLocations) {
-        this.showSpinner = true;
+        setTimeout(() => (this.showSpinner = true));
       }
 
       this.mapLocations = await this.apiService.getMapLocationsGeoJson();
@@ -507,7 +507,7 @@ export class MapService {
 
       this._initMapInteractivity();
 
-      this.showSpinner = false;
+      setTimeout(() => (this.showSpinner = false));
     });
   }
 
@@ -636,7 +636,7 @@ export class MapService {
   }
 
   async selectLocationByUrlOrId(url: string, locationId?: string) {
-    this.showSpinner = true;
+    setTimeout(() => (this.showSpinner = true));
     if (!locationId) {
       locationId = await this.apiService.getNidFromUrlAlias(url);
     }
@@ -672,7 +672,7 @@ export class MapService {
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      this.showSpinner = false;
+      setTimeout(() => (this.showSpinner = false));
     });
   }
 }

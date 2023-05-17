@@ -1,12 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { SelectedView } from '../models/selected-view';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoutingService {
-  constructor(public router: Router) {}
+  constructor(public router: Router) {
+    router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        if (this.getSelectedView() === SelectedView.Story) {
+          this.showStoryView();
+        } else {
+          this.hideStoryView();
+        }
+      }
+    });
+  }
 
   getSelectedView(): SelectedView {
     if (this.router.url === '/' || this.router.url.startsWith('/locaties')) {
@@ -21,6 +31,18 @@ export class RoutingService {
       return SelectedView.About;
     }
 
+    if (this.router.url.startsWith('/story')) {
+      return SelectedView.Story;
+    }
+
     return SelectedView.Undefined;
+  }
+
+  showStoryView() {
+    document.getElementsByTagName('body')[0].classList.add('dock-story-on');
+  }
+
+  hideStoryView() {
+    document.getElementsByTagName('body')[0].classList.remove('dock-story-on');
   }
 }

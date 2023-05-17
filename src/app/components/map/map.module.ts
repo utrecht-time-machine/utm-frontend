@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { SelectedRouteComponent } from './selected-route/selected-route.component';
 import { RouteStepsComponent } from './route-steps/route-steps.component';
 import { SelectedStopModule } from './selected-stop/selected-stop.module';
+import { StoryModule } from './story/story.module';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,6 @@ import { SelectedStopModule } from './selected-stop/selected-stop.module';
     RouteStepsComponent,
   ],
   exports: [MapComponent],
-  imports: [CommonModule, RouterModule, SelectedStopModule],
+  imports: [CommonModule, RouterModule, SelectedStopModule, StoryModule],
 })
 export class MapModule {}

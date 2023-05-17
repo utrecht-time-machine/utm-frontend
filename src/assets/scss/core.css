@@ -1760,6 +1760,10 @@ div.user-bar ul > li > a:not(.is-active):hover {
   transition: transform 200ms ease;
 }
 
+.dock-story-on .utm-header, .dock-story-on .utm-footer {
+  display: none;
+}
+
 .dock-story-on .dock-story {
   pointer-events: all;
   -webkit-transition: opacity 200ms ease, visibility 0s linear;

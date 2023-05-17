@@ -3,4 +3,5 @@ export enum SelectedView {
   Locations,
   About,
   Routes,
+  Story,
 }
