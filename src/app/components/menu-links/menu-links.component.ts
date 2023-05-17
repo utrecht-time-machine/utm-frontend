@@ -12,4 +12,9 @@ export class MenuLinksComponent {
   SelectedView = SelectedView;
 
   constructor(public router: Router, public routing: RoutingService) {}
+
+  clickOnLink(url: string) {
+    void this.router.navigateByUrl(url);
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
 }

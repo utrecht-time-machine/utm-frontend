@@ -6,7 +6,7 @@
         routing.getSelectedView() === SelectedView.Locations
     }"
   >
-    <a (click)="this.router.navigateByUrl('/')">Locaties</a>
+    <a (click)="clickOnLink('/')">Locaties</a>
   </li>
   <li
     class="menu-item"
@@ -15,7 +15,7 @@
         routing.getSelectedView() === SelectedView.Routes
     }"
   >
-    <a (click)="router.navigateByUrl('/routes')">Routes</a>
+    <a (click)="clickOnLink('/routes')">Routes</a>
   </li>
   <li
     class="menu-item"
@@ -24,6 +24,6 @@
         routing.getSelectedView() === SelectedView.About
     }"
   >
-    <a (click)="router.navigateByUrl('/over')">Over</a>
+    <a (click)="clickOnLink('/over')">Over</a>
   </li>
 </ul>
