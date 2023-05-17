@@ -253,8 +253,7 @@ export class MapService {
   <div>
     <div>
       <div class="thumb">
-<!--      TODO: Use stop image -->
-          <img src="https://via.placeholder.com/200x200">
+          <img src="${stop.stop_thumb}">
       </div>
     </div>
     <div>

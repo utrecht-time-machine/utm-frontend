@@ -6,4 +6,6 @@ export interface UtmRouteStop {
   geo: string;
   coords: { lat: number; long: number };
   audio: string;
+  stop_image: string;
+  stop_thumb: string;
 }

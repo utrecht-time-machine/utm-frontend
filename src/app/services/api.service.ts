@@ -171,6 +171,8 @@ export class ApiService {
       if (element.audio) {
         element.audio = environment.audioBaseUrl + element.audio;
       }
+      element = this._addImageUrlPrefix(element, 'stop_image');
+      element = this._addImageUrlPrefix(element, 'stop_thumb');
     });
 
     console.log('STOPS', utmRouteStops);
