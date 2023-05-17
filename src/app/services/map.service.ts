@@ -269,23 +269,26 @@ export class MapService {
       }),
     };
 
-    this.map.addSource(
-      'route_path',
-      this._getRouteStopsPathFeature(routeStops)
-    );
+    this._getRouteStopsPathFeature(routeStops).then((routePath) => {
+      if (!this.map) {
+        return;
+      }
 
-    this.map.addLayer({
-      id: 'route_line',
-      type: 'line',
-      source: 'route_path',
-      layout: {
-        'line-join': 'round',
-        'line-cap': 'round',
-      },
-      paint: {
-        'line-color': '#fe0000',
-        'line-width': 4,
-      },
+      this.map.addSource('route_path', routePath);
+
+      this.map.addLayer({
+        id: 'route_line',
+        type: 'line',
+        source: 'route_path',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+        },
+        paint: {
+          'line-color': '#fe0000',
+          'line-width': 4,
+        },
+      });
     });
 
     this.map.addSource('stops', {
@@ -362,17 +365,24 @@ export class MapService {
     });
   }
 
-  private _getRouteStopsPathFeature(routeStops: UtmRouteStop[]): any {
-    // TODO: Finish retrieving directions data
+  private async _getRouteStopsPathFeature(
+    routeStops: UtmRouteStop[]
+  ): Promise<any> {
     const directionsRequest =
       `https://api.mapbox.com/directions/v5/mapbox/walking/${routeStops
         .map((stop) => `${stop.coords.long},${stop.coords.lat}`)
         .join(';')}` +
-      '?access_token=' +
+      '?continue_straight=true&geometries=geojson&overview=simplified&access_token=' +
       environment.mapboxAccessToken;
     console.log(directionsRequest);
-    // await lastValueFrom(this.http.get(directionsRequest));
+    const directionsData: any = await lastValueFrom(
+      this.http.get(directionsRequest)
+    );
 
+    let coordinates = [];
+    if (directionsData.routes.length > 0) {
+      coordinates = directionsData.routes[0].geometry.coordinates;
+    }
     return {
       type: 'geojson',
       data: {
@@ -380,10 +390,7 @@ export class MapService {
         properties: {},
         geometry: {
           type: 'LineString',
-          coordinates: routeStops.map((stop) => [
-            stop.coords.long,
-            stop.coords.lat,
-          ]),
+          coordinates: coordinates,
         },
       },
     };
