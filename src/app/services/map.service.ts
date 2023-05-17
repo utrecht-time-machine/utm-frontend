@@ -260,8 +260,7 @@ export class MapService {
     </div>
     <div>
       <span class="name">${stop.title}</span>
-<!--      TODO: Use stop location -->
-<!--      <span class="addr"></span>-->
+      <span class="addr">${stop.address}</span>
     </div>
   </div>
 </a>`,
