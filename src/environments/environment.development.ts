@@ -19,4 +19,6 @@ export const environment = {
     'https://www.youtube.com/watch?v=',
     'https://youtu.be/',
   ],
+  mapboxAccessToken:
+    'pk.eyJ1IjoiY2Itc3R1ZGlvIiwiYSI6ImNrcDUxZW04MjBjZ3gydHF0bmUyano0bncifQ.MLaKn3TF2V4b4ICX1HJnnA',
 };

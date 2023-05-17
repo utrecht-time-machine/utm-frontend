@@ -12,6 +12,8 @@ import { RoutingService } from './routing.service';
 import { SelectedView } from '../models/selected-view';
 import { UtmRoutesService } from './utm-routes.service';
 import { UtmRouteStop } from '../models/utm-route-stop';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +39,8 @@ export class MapService {
     private apiService: ApiService,
     private utmRoutes: UtmRoutesService,
     private router: Router,
-    private routing: RoutingService
+    private routing: RoutingService,
+    private http: HttpClient
   ) {
     this.locationsClosestToCenter.subscribe(() => {
       console.log(
@@ -75,8 +78,7 @@ export class MapService {
 
     this.removeRouteMarkersFromMap();
 
-    mapboxgl.accessToken =
-      'pk.eyJ1IjoiY2Itc3R1ZGlvIiwiYSI6ImNrcDUxZW04MjBjZ3gydHF0bmUyano0bncifQ.MLaKn3TF2V4b4ICX1HJnnA';
+    mapboxgl.accessToken = environment.mapboxAccessToken;
 
     this.map = new mapboxgl.Map({
       container: 'mapbox',
@@ -268,20 +270,10 @@ export class MapService {
       }),
     };
 
-    this.map.addSource('route_path', {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: routeStops.map((stop) => [
-            stop.coords.long,
-            stop.coords.lat,
-          ]),
-        },
-      },
-    });
+    this.map.addSource(
+      'route_path',
+      this._getRouteStopsPathFeature(routeStops)
+    );
 
     this.map.addLayer({
       id: 'route_line',
@@ -369,61 +361,34 @@ export class MapService {
         });
       }
     });
-
-    // // if (map_geo_route) {
-    // //   fetch(map_nav_route)
-    // //     .then((response) => response.json())
-    // //     .then((json) => {
-    // //       if (json.coordinates) {
-    // //
-    // //       }
-    // //
-    // //       // if (json.distance && json.duration) {
-    // //       //   jQuery('#nav_calc').html(
-    // //       //     '<span>' +
-    // //       //       json.distance +
-    // //       //       ' <em>(' +
-    // //       //       json.duration +
-    // //       //       ')</em></span>'
-    // //       //   );
-    // //       // }
-    // //       // jQuery('#nav_menu').html(json.nav_menu);
-    // //     });
-    // //
-    // //   // this.map.addSource('stories', {
-    // //   //   type: 'geojson',
-    // //   //   data: map_geo_route,
-    // //   // });
-    //
-    // this.map.addLayer({
-    //   id: 'stories-marker',
-    //   type: 'circle',
-    //   source: 'stories',
-    //   paint: {
-    //     'circle-color': '#fe0000',
-    //     'circle-radius': 10,
-    //     'circle-stroke-width': 2,
-    //     'circle-stroke-color': '#ffffff',
-    //   },
-    // });
-    // this.map.on('mouseenter', 'stories-marker', () => {
-    //   this.map.getCanvas().style.cursor = 'pointer';
-    // });
-    // this.map.on('mouseleave', 'stories-marker', () => {
-    //   this.map.getCanvas().style.cursor = '';
-    // });
-    // this.map.on('click', 'stories-marker', (e: any) => {
-    //   const feature = e.features[0];
-    //   const popup = new mapboxgl.Popup({
-    //     offset: [0, 0],
-    //   })
-    //     .setLngLat(feature.geometry.coordinates)
-    //     .setHTML(feature.properties.map_pop)
-    //     .setLngLat(feature.geometry.coordinates)
-    //     .addTo(this.map);
-    // });
   }
 
+  private _getRouteStopsPathFeature(routeStops: UtmRouteStop[]): any {
+    // TODO: Finish retrieving directions data
+    const directionsRequest =
+      `https://api.mapbox.com/directions/v5/mapbox/walking/${routeStops
+        .map((stop) => `${stop.coords.long},${stop.coords.lat}`)
+        .join(';')}` +
+      '?access_token=' +
+      environment.mapboxAccessToken;
+    console.log(directionsRequest);
+    // await lastValueFrom(this.http.get(directionsRequest));
+
+    return {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: routeStops.map((stop) => [
+            stop.coords.long,
+            stop.coords.lat,
+          ]),
+        },
+      },
+    };
+  }
   addLocationsOnMap(hideLocations = false) {
     if (!this.map) {
       console.warn('Map not yet initialized... Not adding locations to map.');
