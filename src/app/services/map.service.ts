@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
 import { ApiService } from './api.service';
 import { GeoJSON } from 'geojson';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { MapLocation } from '../models/map-location';
 import { LocationDistanceFromCenter } from '../models/location-distance-from-center';
 import { Router } from '@angular/router';
@@ -18,7 +18,12 @@ import { UtmRouteStop } from '../models/utm-route-stop';
 })
 export class MapService {
   map: mapboxgl.Map | undefined = undefined;
-  mapLocations: GeoJSON.FeatureCollection | undefined = undefined;
+  allLocations: BehaviorSubject<MapLocation[]> = new BehaviorSubject<
+    MapLocation[]
+  >([]);
+  allLocationsByLetter: BehaviorSubject<{ [letter: string]: MapLocation[] }> =
+    new BehaviorSubject<{ [p: string]: MapLocation[] }>({});
+  mapLocationsFeatures: GeoJSON.FeatureCollection | undefined = undefined;
 
   selectedLocation: BehaviorSubject<LocationDetails | undefined> =
     new BehaviorSubject<LocationDetails | undefined>(undefined);
@@ -42,6 +47,10 @@ export class MapService {
       );
     });
 
+    this.allLocations.subscribe(() => {
+      this._updateAllLocationsByLetter();
+    });
+
     this.utmRoutes.selected.subscribe(() => {
       setTimeout(() => {
         this.addRouteMarkersOnMap();
@@ -62,6 +71,22 @@ export class MapService {
         });
       }
     });
+  }
+
+  private _updateAllLocationsByLetter() {
+    const sortedLocations = this.allLocations.getValue().sort((a, b) => {
+      return a.title.localeCompare(b.title);
+    });
+    const sortedLocationsByLetter: { [letter: string]: MapLocation[] } = {};
+
+    sortedLocations.forEach((obj) => {
+      const firstLetter = obj.title[0].toUpperCase();
+      if (!sortedLocationsByLetter[firstLetter]) {
+        sortedLocationsByLetter[firstLetter] = [];
+      }
+      sortedLocationsByLetter[firstLetter].push(obj);
+    });
+    this.allLocationsByLetter.next(sortedLocationsByLetter);
   }
 
   initMap() {
@@ -432,18 +457,23 @@ export class MapService {
         setTimeout(() => (this.showSpinner = true));
       }
 
-      this.mapLocations = await this.apiService.getMapLocationsGeoJson();
+      this.allLocations.next(
+        await lastValueFrom(this.apiService.getMapLocations())
+      );
+      this.mapLocationsFeatures = this.apiService.convertMapLocationsToGeoJson(
+        this.allLocations.getValue()
+      );
 
-      if (!this.mapLocations) {
+      if (!this.mapLocationsFeatures) {
         console.warn('No map locations loaded...');
         return;
       }
 
-      console.log('Adding map locations: ', this.mapLocations);
+      console.log('Adding map locations: ', this.mapLocationsFeatures);
 
       this.map?.addSource('locations', {
         type: 'geojson',
-        data: this.mapLocations,
+        data: this.mapLocationsFeatures,
         cluster: true,
         clusterMaxZoom: 12,
         clusterRadius: 50,
@@ -606,7 +636,7 @@ export class MapService {
   }
 
   updateLocationsClosestToCenter(maxItems: number = 5): void {
-    if (!this.map || !this.mapLocations) {
+    if (!this.map || !this.mapLocationsFeatures) {
       console.warn('Map not (yet) initialized...');
       return;
     }
@@ -615,7 +645,7 @@ export class MapService {
 
     const center = this.map.getCenter();
     let locationsWithDistances: LocationDistanceFromCenter[] =
-      this.mapLocations.features
+      this.mapLocationsFeatures.features
         .map((feature: any) => {
           const [lng, lat] = feature.geometry.coordinates;
           const distance = UtilService.getDistanceFromLatLonInKm(

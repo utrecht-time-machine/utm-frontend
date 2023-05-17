@@ -37,7 +37,7 @@ export class ApiService {
     const mapLocations: MapLocation[] = await lastValueFrom(
       this.getMapLocations()
     );
-    return this._convertMapLocationsToGeoJson(mapLocations);
+    return this.convertMapLocationsToGeoJson(mapLocations);
   }
 
   async getUtmRoutes(): Promise<UtmRoute[]> {
@@ -219,7 +219,7 @@ export class ApiService {
     return organisations;
   }
 
-  private _convertMapLocationsToGeoJson(
+  public convertMapLocationsToGeoJson(
     mapLocations: MapLocation[]
   ): GeoJSON.FeatureCollection {
     const features: GeoJSON.Feature[] = mapLocations.map((mapLocation) => {
