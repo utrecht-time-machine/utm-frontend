@@ -8,7 +8,6 @@ import { License } from '../../models/license';
   styleUrls: ['./license.component.scss'],
 })
 export class LicenseComponent {
-  // @Input() license: License | undefined = undefined;
   @Input() licenseLabel: string | undefined = undefined;
 
   readonly LICENSE_IMAGE_FOLDER: string =
