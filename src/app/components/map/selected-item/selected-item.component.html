@@ -27,7 +27,17 @@
                       locationDetails?.source_name
                     }}</a></span
                   >
-                  <span><em>All rights reserved</em></span>
+                  <span *ngIf="!licenseUrl(locationDetails?.license)"
+                    ><em>{{ licenseUrl(locationDetails?.license) }}</em></span
+                  >
+                  <span
+                    *ngIf="licenseUrl(locationDetails?.license)"
+                    class="license"
+                    ><a
+                      [href]="licenseUrl(locationDetails?.license)"
+                      target="_blank"
+                      ><img [src]="licenseImage(locationDetails?.license)" /></a
+                  ></span>
                 </div>
               </div>
             </div>
@@ -77,8 +87,9 @@
                 </div>
               </div>
               <div class="core">
-                <span class="name" [innerHtml]="story.title"></span></div
-            ></a>
+                <span class="name" [innerHtml]="story.title"></span>
+              </div>
+            </a>
           </div>
         </div>
       </div>
