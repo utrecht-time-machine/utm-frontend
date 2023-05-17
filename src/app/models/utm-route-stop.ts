@@ -5,4 +5,5 @@ export interface UtmRouteStop {
   route_id: string;
   geo: string;
   coords: { lat: number; long: number };
+  audio: string;
 }

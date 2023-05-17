@@ -168,6 +168,9 @@ export class ApiService {
         lat: parseFloat(lat.trim()),
         long: parseFloat(long.trim()),
       };
+      if (element.audio) {
+        element.audio = environment.audioBaseUrl + element.audio;
+      }
     });
 
     console.log('STOPS', utmRouteStops);
