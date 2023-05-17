@@ -3997,6 +3997,7 @@ div.user-bar ul > li > a:not(.is-active):hover {
   visibility: hidden;
 }
 
+/* TODO: Bring back story popup animation */
 .dock-story::after {
   z-index: 2;
   position: absolute;
