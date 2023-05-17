@@ -7,6 +7,7 @@ import { SelectedRouteComponent } from './selected-route/selected-route.componen
 import { RouteStepsComponent } from './route-steps/route-steps.component';
 import { SelectedStopModule } from './selected-stop/selected-stop.module';
 import { StoryModule } from './story/story.module';
+import { LicenseModule } from '../license/license.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,12 @@ import { StoryModule } from './story/story.module';
     RouteStepsComponent,
   ],
   exports: [MapComponent],
-  imports: [CommonModule, RouterModule, SelectedStopModule, StoryModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    SelectedStopModule,
+    StoryModule,
+    LicenseModule,
+  ],
 })
 export class MapModule {}

@@ -47,17 +47,7 @@
               }}</a></span
             >
 
-            <span class="license"
-              ><a
-                href="https://creativecommons.org/licenses/by/3.0/nl"
-                target="_blank"
-              >
-                <!--                  TODO: Use license image and link -->
-                {{ mediaItem.license }}
-                <!--                    <img-->
-                <!--                      src="https://medialabutrecht.nl/utmnew/themes/utm/ui/svg/cc/by.png" />-->
-              </a></span
-            >
+            <app-license [licenseLabel]="mediaItem.license"></app-license>
           </div>
         </div>
       </div>

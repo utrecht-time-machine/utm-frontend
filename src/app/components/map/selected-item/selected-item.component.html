@@ -27,17 +27,9 @@
                       locationDetails?.source_name
                     }}</a></span
                   >
-                  <span *ngIf="!licenseUrl(locationDetails?.license)"
-                    ><em>{{ licenseUrl(locationDetails?.license) }}</em></span
-                  >
-                  <span
-                    *ngIf="licenseUrl(locationDetails?.license)"
-                    class="license"
-                    ><a
-                      [href]="licenseUrl(locationDetails?.license)"
-                      target="_blank"
-                      ><img [src]="licenseImage(locationDetails?.license)" /></a
-                  ></span>
+                  <app-license
+                    [licenseLabel]="locationDetails?.license"
+                  ></app-license>
                 </div>
               </div>
             </div>

@@ -1,0 +1,6 @@
+<span *ngIf="!license || !license?.url"
+  ><em>{{ license?.title }}</em></span
+>
+<span *ngIf="license?.url" class="license"
+  ><a [href]="license?.url" target="_blank"> <img [src]="license?.image" /></a
+></span>
