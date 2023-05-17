@@ -51,7 +51,7 @@ export class MapService {
 
     this.utmRoutes.selected.subscribe(() => {
       setTimeout(() => {
-        this.addRouteMarkersOnMap();
+        void this.addRouteMarkersOnMap();
       });
     });
 
@@ -184,7 +184,7 @@ export class MapService {
       if (this.routing.getSelectedView() === SelectedView.Locations) {
         this.addLocationsOnMap(false);
       } else if (this.routing.getSelectedView() === SelectedView.Routes) {
-        this.addRouteMarkersOnMap();
+        void this.addRouteMarkersOnMap();
         this.addLocationsOnMap(true);
       }
 
@@ -225,7 +225,7 @@ export class MapService {
     }
   }
 
-  addRouteMarkersOnMap() {
+  async addRouteMarkersOnMap() {
     if (!this.map) {
       return;
     }
@@ -269,26 +269,25 @@ export class MapService {
       }),
     };
 
-    this._getRouteStopsPathFeature(routeStops).then((routePath) => {
-      if (!this.map) {
-        return;
-      }
+    const routePath = await this._getRouteStopsPathFeature(routeStops);
+    if (!this.map) {
+      return;
+    }
 
-      this.map.addSource('route_path', routePath);
+    this.map.addSource('route_path', routePath);
 
-      this.map.addLayer({
-        id: 'route_line',
-        type: 'line',
-        source: 'route_path',
-        layout: {
-          'line-join': 'round',
-          'line-cap': 'round',
-        },
-        paint: {
-          'line-color': '#fe0000',
-          'line-width': 4,
-        },
-      });
+    this.map.addLayer({
+      id: 'route_line',
+      type: 'line',
+      source: 'route_path',
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round',
+      },
+      paint: {
+        'line-color': '#fe0000',
+        'line-width': 4,
+      },
     });
 
     this.map.addSource('stops', {
