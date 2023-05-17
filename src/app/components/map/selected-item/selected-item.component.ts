@@ -12,6 +12,7 @@ import { Story } from '../../../models/story';
 })
 export class SelectedItemComponent {
   @Input() locationDetails: LocationDetails | undefined;
+  readMoreIsShown = false;
 
   constructor(
     public router: Router,

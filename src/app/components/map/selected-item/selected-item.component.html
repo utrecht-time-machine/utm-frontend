@@ -41,10 +41,15 @@
             <h3>{{ locationDetails?.address }}</h3>
           </div>
           <p [innerHtml]="locationDetails?.teaser"></p>
-          <div class="fold" *ngIf="locationDetails?.text">
-            <a>Lees meer over deze plek</a>
+          <div
+            class="fold"
+            *ngIf="locationDetails?.text"
+            (click)="readMoreIsShown = !readMoreIsShown"
+          >
+            <a [ngClass]="{ on: readMoreIsShown }">Lees meer over deze plek</a>
             <div
-              class="fold-toggle fold-toggle-hidden"
+              class="fold-toggle"
+              [ngClass]="{ 'fold-toggle-hidden': !readMoreIsShown }"
               [innerHtml]="locationDetails?.text"
             ></div>
           </div>

@@ -2035,6 +2035,7 @@ div.user-bar ul > li > a:not(.is-active):hover {
   overflow-y: hidden;
   -webkit-transition: max-height 0.5s ease-in-out;
   transition: max-height 0.5s ease-in-out;
+  /* TODO: Bring back max-height animation (needs specific pixel value, calculate in JS on toggle?) */
 }
 
 .fold div.fold-toggle-hidden {
@@ -4322,10 +4323,6 @@ div.user-bar ul > li > a:not(.is-active):hover {
   overflow-y: hidden;
   -webkit-transition: max-height 0.5s ease-in-out;
   transition: max-height 0.5s ease-in-out;
-}
-
-.fold div.fold-toggle-hidden {
-  max-height: 0;
 }
 
 .org-logo {
