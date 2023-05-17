@@ -27,90 +27,18 @@
 <!--  </div>-->
 <!--</div>-->
 
+<!--<audio controls>-->
+<!--  <source [src]="utmRoutes.selectedStop?.media_file | safe" type="audio/mpeg" />-->
+<!--  Your browser does not support the audio element.-->
+<!--</audio>-->
+
 <h2>{{ utmRoutes.selectedStop?.title }}</h2>
 <div class="media-container">
   <div
     class="views-element-container"
     *ngFor="let mediaItem of utmRoutes.shownMediaItems.getValue()"
   >
-    <div>
-      <div class="media-item has-head">
-        <div class="core">
-          <div class="core-name">
-            <h4 [innerHtml]="mediaItem.title"></h4>
-          </div>
-
-          <div
-            class="image-embed"
-            *ngIf="mediaItem.type === MediaItemType.Image"
-          >
-            <img
-              loading="lazy"
-              [src]="mediaItem.image_small"
-              [alt]="mediaItem.caption"
-            />
-          </div>
-
-          <div
-            class="video-embed"
-            *ngIf="mediaItem.type === MediaItemType.YouTube"
-          >
-            <div>
-              <iframe
-                [src]="'https://youtube.com/embed/' + mediaItem.youtube | safe"
-                allow="autoplay;clipboard-write;encrypted-media;picture-in-picture"
-                allowfullscreen=""
-                width="560"
-                height="315"
-                frameborder="0"
-              ></iframe>
-            </div>
-          </div>
-
-          <!--          TODO: Style audio player-->
-          <div
-            class="audio-embed"
-            *ngIf="mediaItem.type === MediaItemType.Audio"
-          >
-            <div>
-              <audio controls>
-                <source [src]="mediaItem.media_file | safe" type="audio/mpeg" />
-                Your browser does not support the audio element.
-              </audio>
-            </div>
-          </div>
-
-          <div class="media-source">
-            <div class="views-element-container">
-              <div>
-                <span>{{ mediaItem.caption }}</span>
-                <span
-                  >Bron:
-                  <a [href]="mediaItem.source_link" target="_blank">{{
-                    mediaItem.source_name
-                  }}</a></span
-                >
-                <span class="license"
-                  ><a
-                    href="https://creativecommons.org/licenses/by/3.0/nl"
-                    target="_blank"
-                  >
-                    <!--                  TODO: Use license image and link -->
-                    {{ mediaItem.license }}
-                    <!--                    <img-->
-                    <!--                      src="https://medialabutrecht.nl/utmnew/themes/utm/ui/svg/cc/by.png" />-->
-                  </a></span
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="head">
-          <h4 [innerHtml]="mediaItem.title"></h4>
-          <div [innerHtml]="mediaItem.text"></div>
-        </div>
-      </div>
-    </div>
+    <app-media-item [mediaItem]="mediaItem"></app-media-item>
   </div>
 
   <!--  <div class="views-element-container">-->

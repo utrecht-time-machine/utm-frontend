@@ -66,12 +66,12 @@
         <div class="story-head"><h2>Verhalen op deze locatie</h2></div>
         <div class="story-hold">
           <div class="story" *ngFor="let story of locationDetails?.stories">
-            <a
-              (click)="router.navigateByUrl('story/REPLACE')"
-              data-story-id="390"
-            >
-              <!--              TODO: Dynamically check if video or not-->
-              <div class="head has-video-0">
+            <a (click)="router.navigateByUrl(story.story_link)">
+              <div
+                class="head has-video-{{
+                  storyHasVideoIcon(story) ? '1' : '0'
+                }}"
+              >
                 <div>
                   <img loading="lazy" [src]="story?.photo" />
                 </div>

@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { SelectedView } from '../models/selected-view';
+import { StoryService } from './story.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoutingService {
-  constructor(public router: Router) {
+  constructor(public router: Router, private story: StoryService) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
-        if (this.getSelectedView() === SelectedView.Story) {
-          this.showStoryView();
+        if (e.url.startsWith('/story')) {
+          this.story.showView();
         } else {
-          this.hideStoryView();
+          this.story.hideView();
         }
       }
     });
@@ -31,18 +32,10 @@ export class RoutingService {
       return SelectedView.About;
     }
 
-    if (this.router.url.startsWith('/story')) {
+    if (this.story.showingStoryView.getValue()) {
       return SelectedView.Story;
     }
 
     return SelectedView.Undefined;
-  }
-
-  showStoryView() {
-    document.getElementsByTagName('body')[0].classList.add('dock-story-on');
-  }
-
-  hideStoryView() {
-    document.getElementsByTagName('body')[0].classList.remove('dock-story-on');
   }
 }

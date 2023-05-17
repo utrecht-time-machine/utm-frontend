@@ -1,47 +1,11 @@
 <div class="pad">
-  <h2>Test verhaal voor locatie 494 De Domkerk - Sint Maarten</h2>
+  <h2>{{ story.shownStory.getValue()?.title }}</h2>
   <div class="media-container">
-    <div class="views-element-container">
-      <div>
-        <div class="media-item has-head">
-          <div class="core">
-            <div class="core-name">
-              <h4>test media item bij testverhaal</h4>
-            </div>
-            <div class="video-embed">
-              <div>
-                <iframe
-                  src="https://www.youtube.com/embed/ns8wu4gcURk"
-                  allow="autoplay;clipboard-write;encrypted-media;picture-in-picture"
-                  allowfullscreen=""
-                  width="560"
-                  height="315"
-                  frameborder="0"
-                ></iframe>
-              </div>
-            </div>
-
-            <div class="image-embed">
-              <img
-                loading="lazy"
-                src="/sites/default/files/styles/resize_medium/public/2023-05/unnamed.png?itok=LexUpLY2"
-                alt=""
-                width="1000"
-                height="1404"
-              />
-            </div>
-            <div class="media-source">
-              <div class="views-element-container">
-                <div></div>
-              </div>
-            </div>
-          </div>
-          <div class="head">
-            <h4>test media item bij testverhaal</h4>
-            <p>test123</p>
-          </div>
-        </div>
-      </div>
+    <div
+      class="views-element-container"
+      *ngFor="let mediaItem of story.shownStoryMediaItems.getValue()"
+    >
+      <app-media-item [mediaItem]="mediaItem"></app-media-item>
     </div>
   </div>
 </div>

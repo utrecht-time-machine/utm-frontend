@@ -50,6 +50,21 @@ export class ApiService {
     return utmRoutes;
   }
 
+  async getStoryDetailsById(storyId: string): Promise<Story | undefined> {
+    let storyDetails: Story[] = await lastValueFrom(
+      this.http.get<Story[]>(
+        environment.apiUrl + environment.apiSuffixes.storyDetailsById + storyId
+      )
+    );
+
+    if (storyDetails.length < 1) {
+      return undefined;
+    }
+    let story: Story = storyDetails[0];
+    story = this._addImageUrlPrefix(story, 'photo');
+    return story;
+  }
+
   async getMediaItemsByStoryId(storyId: string): Promise<MediaItem[]> {
     let mediaItems: MediaItem[] = await lastValueFrom(
       this.http.get<MediaItem[]>(
@@ -62,9 +77,10 @@ export class ApiService {
 
       if (mediaItem.youtube) {
         mediaItem.type = MediaItemType.YouTube;
-        mediaItem.youtube = mediaItem.youtube.replace(
-          environment.mediaItemYouTubePrefixToRemove,
-          ''
+        environment.mediaItemYouTubePrefixToRemove.forEach(
+          (prefixToRemove: string) => {
+            mediaItem.youtube = mediaItem.youtube.replace(prefixToRemove, '');
+          }
         );
       }
 
@@ -96,7 +112,7 @@ export class ApiService {
     return mediaItems;
   }
 
-  async getLocationDetailsFromId(
+  async getLocationDetailsById(
     locationId: string
   ): Promise<LocationDetails | undefined> {
     const locationsDetails: LocationDetails[] = await lastValueFrom(

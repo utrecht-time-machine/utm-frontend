@@ -644,7 +644,7 @@ export class MapService {
     await this.router.navigateByUrl(url);
 
     const locationDetails: LocationDetails | undefined =
-      await this.apiService.getLocationDetailsFromId(locationId);
+      await this.apiService.getLocationDetailsById(locationId);
     if (locationDetails) {
       this.selectedLocation.next(locationDetails);
     }
