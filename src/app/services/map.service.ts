@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import mapboxgl from 'mapbox-gl';
+import mapboxgl, { Map, Popup } from 'mapbox-gl';
 import { ApiService } from './api.service';
 import { GeoJSON } from 'geojson';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
@@ -23,6 +23,8 @@ export class MapService {
   allLocations: BehaviorSubject<MapLocation[]> = new BehaviorSubject<
     MapLocation[]
   >([]);
+
+  shownLocationPopup: Popup | undefined = undefined;
 
   mapLocationsFeatures: GeoJSON.FeatureCollection | undefined = undefined;
 
@@ -194,37 +196,6 @@ export class MapService {
     });
   }
 
-  removeRouteMarkersFromMap() {
-    if (!this.map) {
-      return;
-    }
-
-    const stopsLayer = this.map.getLayer('stops-marker');
-    if (stopsLayer) {
-      this.map.removeLayer('stops-marker');
-    }
-
-    const stopsLabelsLayer = this.map.getLayer('stops-marker-labels');
-    if (stopsLabelsLayer) {
-      this.map.removeLayer('stops-marker-labels');
-    }
-
-    const stopsSource = this.map.getSource('stops');
-    if (stopsSource) {
-      this.map.removeSource('stops');
-    }
-
-    const routeLineLayer = this.map.getLayer('route_line');
-    if (routeLineLayer) {
-      this.map.removeLayer('route_line');
-    }
-
-    const routePathSource = this.map.getSource('route_path');
-    if (routePathSource) {
-      this.map.removeSource('route_path');
-    }
-  }
-
   async addRouteMarkersOnMap() {
     if (!this.map) {
       return;
@@ -339,7 +310,7 @@ export class MapService {
       }
 
       const feature = e.features[0];
-      const popup = new mapboxgl.Popup({
+      const popup: Popup = new mapboxgl.Popup({
         offset: [0, 0],
       })
         .setLngLat(feature.geometry.coordinates)
@@ -364,36 +335,37 @@ export class MapService {
     });
   }
 
-  private async _getRouteStopsPathFeature(
-    routeStops: UtmRouteStop[]
-  ): Promise<any> {
-    const directionsRequest =
-      `https://api.mapbox.com/directions/v5/mapbox/walking/${routeStops
-        .map((stop) => `${stop.coords.long},${stop.coords.lat}`)
-        .join(';')}` +
-      '?continue_straight=true&geometries=geojson&overview=simplified&access_token=' +
-      environment.mapboxAccessToken;
-    console.log(directionsRequest);
-    const directionsData: any = await lastValueFrom(
-      this.http.get(directionsRequest)
-    );
-
-    let coordinates = [];
-    if (directionsData.routes.length > 0) {
-      coordinates = directionsData.routes[0].geometry.coordinates;
+  removeRouteMarkersFromMap() {
+    if (!this.map) {
+      return;
     }
-    return {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: coordinates,
-        },
-      },
-    };
+
+    const stopsLayer = this.map.getLayer('stops-marker');
+    if (stopsLayer) {
+      this.map.removeLayer('stops-marker');
+    }
+
+    const stopsLabelsLayer = this.map.getLayer('stops-marker-labels');
+    if (stopsLabelsLayer) {
+      this.map.removeLayer('stops-marker-labels');
+    }
+
+    const stopsSource = this.map.getSource('stops');
+    if (stopsSource) {
+      this.map.removeSource('stops');
+    }
+
+    const routeLineLayer = this.map.getLayer('route_line');
+    if (routeLineLayer) {
+      this.map.removeLayer('route_line');
+    }
+
+    const routePathSource = this.map.getSource('route_path');
+    if (routePathSource) {
+      this.map.removeSource('route_path');
+    }
   }
+
   addLocationsOnMap(hideLocations = false) {
     if (!this.map) {
       console.warn('Map not yet initialized... Not adding locations to map.');
@@ -499,90 +471,6 @@ export class MapService {
     this.map.setLayoutProperty('unclustered-point', 'visibility', 'none');
   }
 
-  private _initMapInteractivity() {
-    this.map?.on('click', 'clusters', (e: any) => {
-      const features = this.map?.queryRenderedFeatures(e.point, {
-        layers: ['clusters'],
-      });
-      // @ts-ignore
-      const clusterId = features[0].properties.cluster_id;
-      this.map
-        ?.getSource('locations')
-        // @ts-ignore
-        .getClusterExpansionZoom(clusterId, (err, zoom) => {
-          if (err) return;
-          this.map?.easeTo({
-            // @ts-ignore
-            center: features[0].geometry.coordinates,
-            zoom: zoom,
-          });
-        });
-    });
-    this.map?.on('mouseenter', 'clusters', () => {
-      // @ts-ignore
-      this.map.getCanvas().style.cursor = 'pointer';
-    });
-    this.map?.on('mouseenter', 'unclustered-point', () => {
-      // @ts-ignore
-      this.map.getCanvas().style.cursor = 'pointer';
-    });
-    this.map?.on('mouseleave', 'clusters', () => {
-      // @ts-ignore
-      this.map.getCanvas().style.cursor = '';
-    });
-    this.map?.on('mouseleave', 'unclustered-point', () => {
-      // @ts-ignore
-      this.map.getCanvas().style.cursor = '';
-    });
-    this.map?.on('click', 'unclustered-point', (e: any) => {
-      const feature = e.features[0];
-      const popup = new mapboxgl.Popup({
-        offset: [0, 0],
-      })
-        .setLngLat(feature.geometry.coordinates)
-        .setHTML(
-          `
-<a data-url="${feature.properties.url}" class="popup-location-link">
-  <div>
-    <div>
-      <div class="thumb">
-          <img src="${feature.properties.thumb}">
-      </div>
-    </div>
-    <div>
-      <span class="name">${feature.properties.title}</span>
-      <span class="addr">${feature.properties.address} ${feature.properties.city}</span>
-    </div>
-  </div>
-</a>`
-        )
-        .setLngLat(feature.geometry.coordinates)
-        .addTo(this.map as mapboxgl.Map);
-      // Catch popup clicks and route them to the Angular routing service
-      const link = popup.getElement()?.querySelector('.popup-location-link');
-      if (link) {
-        link.addEventListener('click', (event) => {
-          event.preventDefault();
-          const url = link.getAttribute('data-url');
-          if (url) {
-            void this.selectLocationByUrlOrId(url, feature.properties.nid);
-          } else {
-            console.warn('Clicked on popup location without a URL...');
-          }
-        });
-      }
-    });
-
-    this.map?.on('moveend', () => {
-      this.updateLocationsClosestToCenter(5);
-    });
-    this.map?.on('zoomend', () => {
-      this.updateLocationsClosestToCenter(5);
-    });
-
-    this.updateLocationsClosestToCenter(5);
-  }
-
   updateLocationsClosestToCenter(maxItems: number = 5): void {
     if (!this.map || !this.mapLocationsFeatures) {
       console.warn('Map not (yet) initialized...');
@@ -624,7 +512,9 @@ export class MapService {
     const locationDetails: LocationDetails | undefined =
       await this.apiService.getLocationDetailsById(locationId);
     if (locationDetails) {
+      console.log('NEXT', locationDetails);
       this.selectedLocation.next(locationDetails);
+      this._showMapLocationPopup(locationDetails);
     }
 
     setTimeout(() => {
@@ -652,5 +542,142 @@ export class MapService {
 
       setTimeout(() => (this.showSpinner = false));
     });
+  }
+
+  private _initMapInteractivity() {
+    this.map?.on('click', 'clusters', (e: any) => {
+      const features = this.map?.queryRenderedFeatures(e.point, {
+        layers: ['clusters'],
+      });
+      // @ts-ignore
+      const clusterId = features[0].properties.cluster_id;
+      this.map
+        ?.getSource('locations')
+        // @ts-ignore
+        .getClusterExpansionZoom(clusterId, (err, zoom) => {
+          if (err) return;
+          this.map?.easeTo({
+            // @ts-ignore
+            center: features[0].geometry.coordinates,
+            zoom: zoom,
+          });
+        });
+    });
+    this.map?.on('mouseenter', 'clusters', () => {
+      (this.map as Map).getCanvas().style.cursor = 'pointer';
+    });
+    this.map?.on('mouseenter', 'unclustered-point', () => {
+      (this.map as Map).getCanvas().style.cursor = 'pointer';
+    });
+    this.map?.on('mouseleave', 'clusters', () => {
+      (this.map as Map).getCanvas().style.cursor = '';
+    });
+    this.map?.on('mouseleave', 'unclustered-point', () => {
+      (this.map as Map).getCanvas().style.cursor = '';
+    });
+    this.map?.on('click', 'unclustered-point', (e: any) => {
+      if (e.features && e.features.length > 0) {
+        const feature = e.features[0];
+        const locationDetails: LocationDetails = {
+          nid: feature.properties.nid,
+          geo: feature.properties.geo,
+          address: feature.properties.address,
+          city: feature.properties.city,
+          coords: {
+            lat: feature.geometry.coordinates[1],
+            long: feature.geometry.coordinates[0],
+          },
+          thumb: feature.properties.thumb,
+          title: feature.properties.title,
+          url: feature.properties.url,
+        };
+        this._showMapLocationPopup(locationDetails);
+      }
+    });
+
+    this.map?.on('moveend', () => {
+      this.updateLocationsClosestToCenter(5);
+    });
+    this.map?.on('zoomend', () => {
+      this.updateLocationsClosestToCenter(5);
+    });
+
+    this.updateLocationsClosestToCenter(5);
+  }
+
+  private _showMapLocationPopup(location: LocationDetails) {
+    if (this.shownLocationPopup) {
+      this.shownLocationPopup.remove();
+      this.shownLocationPopup = undefined;
+    }
+
+    const popup: Popup = new mapboxgl.Popup({
+      offset: [0, 0],
+    })
+      .setHTML(
+        `
+<a data-url="${location.url}" class="popup-location-link">
+  <div>
+    <div>
+      <div class="thumb">
+          <img src="${location.thumb}">
+      </div>
+    </div>
+    <div>
+      <span class="name">${location.title}</span>
+      <span class="addr">${location.address} ${location.city}</span>
+    </div>
+  </div>
+</a>`
+      )
+      .setLngLat([location.coords.long, location.coords.lat])
+      .addTo(this.map as mapboxgl.Map);
+
+    this.shownLocationPopup = popup;
+
+    // Catch popup clicks and route them to the Angular routing service
+    const link = popup.getElement()?.querySelector('.popup-location-link');
+    if (link) {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const url = link.getAttribute('data-url');
+        if (url) {
+          void this.selectLocationByUrlOrId(url, location.nid);
+        } else {
+          console.warn('Clicked on popup location without a URL...');
+        }
+      });
+    }
+  }
+
+  private async _getRouteStopsPathFeature(
+    routeStops: UtmRouteStop[]
+  ): Promise<any> {
+    const directionsRequest =
+      `https://api.mapbox.com/directions/v5/mapbox/walking/${routeStops
+        .map((stop) => `${stop.coords.long},${stop.coords.lat}`)
+        .join(';')}` +
+      '?continue_straight=true&geometries=geojson&overview=simplified&access_token=' +
+      environment.mapboxAccessToken;
+    console.log(directionsRequest);
+    const directionsData: any = await lastValueFrom(
+      this.http.get(directionsRequest)
+    );
+
+    let coordinates = [];
+    if (directionsData.routes.length > 0) {
+      coordinates = directionsData.routes[0].geometry.coordinates;
+    }
+    return {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: coordinates,
+        },
+      },
+    };
   }
 }

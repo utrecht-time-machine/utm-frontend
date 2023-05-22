@@ -129,6 +129,7 @@ export class ApiService {
     const locationDetails: LocationDetails = locationsDetails[0];
 
     this._addImageUrlPrefix(locationDetails, 'image');
+    this._addImageUrlPrefix(locationDetails, 'thumb');
 
     const splitGeoCoords: string[] = locationDetails.geo.split(', ');
     locationDetails.coords = {
@@ -226,9 +227,8 @@ export class ApiService {
   ): GeoJSON.FeatureCollection {
     const features: GeoJSON.Feature[] = mapLocations.map((mapLocation) => {
       const [latitude, longitude] = mapLocation.geo.split(',').map(Number);
-      mapLocation.thumb = environment.imageBaseUrl + mapLocation.thumb;
-      mapLocation.image_small =
-        environment.imageBaseUrl + mapLocation.image_small;
+      this._addImageUrlPrefix(mapLocation, 'thumb');
+      this._addImageUrlPrefix(mapLocation, 'image_small');
 
       return {
         type: 'Feature',
