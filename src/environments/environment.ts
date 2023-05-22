@@ -21,4 +21,6 @@ export const environment = {
   ],
   mapboxAccessToken:
     'pk.eyJ1IjoiY2Itc3R1ZGlvIiwiYSI6ImNrcDUxZW04MjBjZ3gydHF0bmUyano0bncifQ.MLaKn3TF2V4b4ICX1HJnnA',
+  liveSearchUrl:
+    'https://cors-anywhere.herokuapp.com/https://medialabutrecht.nl/utmnew/search_api_autocomplete/utm_search?display=livesearch&filter=livesearch&q=',
 };

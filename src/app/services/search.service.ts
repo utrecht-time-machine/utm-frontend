@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LiveSearchResult } from '../models/live-search-result';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, lastValueFrom } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +39,7 @@ export class SearchService {
   showLiveSearchResults = false;
   isLoadingLiveSearchResults = false;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   async updateLiveSearchResults(searchInput: string) {
     if (!searchInput) {
@@ -46,8 +48,15 @@ export class SearchService {
     }
 
     this.isLoadingLiveSearchResults = true;
+    const searchResults: LiveSearchResult[] = await lastValueFrom(
+      this.http.get<LiveSearchResult[]>(environment.liveSearchUrl + searchInput)
+    );
+    console.log(searchResults);
+    for (const searchResult of searchResults) {
+      searchResult.url = searchResult.url.replace('/utmnew', '');
+    }
     setTimeout(() => {
-      this.liveSearchResults.next(this.mockLiveSearchResults);
+      this.liveSearchResults.next(searchResults); // this.mockLiveSearchResults
       this.isLoadingLiveSearchResults = false;
     }, 500);
   }
