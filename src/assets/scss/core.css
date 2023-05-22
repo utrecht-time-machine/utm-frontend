@@ -2152,6 +2152,11 @@ div.user-bar ul > li > a:not(.is-active):hover {
   font-family: 'Inter', sans-serif;
 }
 
+.search-api-autocomplete-search > li:hover {
+  background: #eeeeee;
+  cursor: pointer;
+}
+
 .search-api-autocomplete-search > li .search-view .name {
   font-size: 0.9em;
   line-height: 1.4em;
