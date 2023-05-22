@@ -4,6 +4,7 @@ import { RoutingService } from '../../services/routing.service';
 import { SelectedView } from '../../models/selected-view';
 import { SearchService } from '../../services/search.service';
 import { debounceTime, Subject } from 'rxjs';
+import { MapService } from '../../services/map.service';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,8 @@ export class HeaderComponent {
   constructor(
     public router: Router,
     public routing: RoutingService,
-    public search: SearchService
+    public search: SearchService,
+    public map: MapService
   ) {
     this.searchInputSubject.pipe(debounceTime(300)).subscribe((searchInput) => {
       void this.search.updateLiveSearchResults(searchInput);

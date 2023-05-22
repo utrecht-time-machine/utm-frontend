@@ -10,21 +10,21 @@ export class SearchService {
     {
       value:
         'Kasteel Duurstede - David van Bourgondië\tInudatiekanaal 6 Wijk bij Duurstede',
-      url: '/locaties/kasteel-duurstede-david-van-bourgondie',
+      url: '/locaties/fort-blauwkapel',
       label:
         '<div class="search-view">\t<div class="name"><span>Kasteel Duurstede - David van Bourgondië</span></div>\t<div class="addr">Inudatiekanaal 6 Wijk bij Duurstede</div></div>',
     },
     {
       value:
         'Kasteel Duurstede - David van Bourgondië\tInudatiekanaal 6 Wijk bij Duurstede',
-      url: '/locaties/kasteel-duurstede-david-van-bourgondie',
+      url: '/locaties/fort-blauwkapel',
       label:
         '<div class="search-view">\t<div class="name"><span>Kasteel Duurstede - David van Bourgondië</span></div>\t<div class="addr">Inudatiekanaal 6 Wijk bij Duurstede</div></div>',
     },
     {
       value:
         'Kasteel Duurstede - David van Bourgondië\tInudatiekanaal 6 Wijk bij Duurstede',
-      url: '/locaties/kasteel-duurstede-david-van-bourgondie',
+      url: '/locaties/fort-blauwkapel',
       label:
         '<div class="search-view">\t<div class="name"><span>Kasteel Duurstede - David van Bourgondië</span></div>\t<div class="addr">Inudatiekanaal 6 Wijk bij Duurstede</div></div>',
     },
@@ -34,6 +34,7 @@ export class SearchService {
     LiveSearchResult[]
   >([]);
 
+  showLiveSearchResults = false;
   isLoadingLiveSearchResults = false;
 
   constructor() {}
@@ -53,5 +54,10 @@ export class SearchService {
 
   removeLiveSearchResults() {
     this.liveSearchResults.next([]);
+  }
+
+  hideLiveSearchResults() {
+    // TODO: Find more elegant fix for this (hiding on search results on blur disallows click on results)
+    setTimeout(() => (this.showLiveSearchResults = false), 100);
   }
 }

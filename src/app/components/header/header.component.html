@@ -16,10 +16,8 @@
       <div class="site-live">
         <div class="views-element-container">
           <div>
-            <form
+            <div
               class="views-exposed-form"
-              action="/nl/zoeken"
-              method="get"
               id="views-exposed-form-utm-search-livesearch"
               accept-charset="UTF-8"
             >
@@ -36,19 +34,30 @@
                   value=""
                   size="30"
                   maxlength="128"
+                  autocomplete="off"
                   (input)="onSearchInputChange($event)"
+                  (blur)="search.hideLiveSearchResults()"
+                  (focus)="search.showLiveSearchResults = true"
                 />
 
-                <ul class="search-api-autocomplete-search">
+                <ul
+                  class="search-api-autocomplete-search"
+                  [ngStyle]="{
+                    visibility: search.showLiveSearchResults
+                      ? 'visible'
+                      : 'hidden'
+                  }"
+                >
                   <li
                     *ngFor="
                       let searchResult of search.liveSearchResults.getValue()
                     "
                     [innerHtml]="searchResult.label"
+                    (click)="map.selectLocationByUrlOrId(searchResult.url)"
                   ></li>
                 </ul>
               </div>
-            </form>
+            </div>
           </div>
           <!--          <div-->
           <!--            class="js-view-dom-id-d70b04c18c038f84e15eabe941d003819d0d7c6166a9d51f94e5bb168bf42128"-->
