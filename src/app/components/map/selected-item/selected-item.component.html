@@ -4,7 +4,7 @@
       <div class="node-column">
         <div>
           <div class="screen-mode" data-mobile="1">
-            <h1>{{ locationDetails?.title }}</h1>
+            <h1 [innerHtml]="locationDetails?.title"></h1>
             <h3>{{ locationDetails?.address }}</h3>
           </div>
           <div class="photo-hold">
@@ -37,7 +37,7 @@
         </div>
         <div>
           <div class="screen-mode" data-mobile="0">
-            <h1>{{ locationDetails?.title }}</h1>
+            <h1 [innerHtml]="locationDetails?.title"></h1>
             <h3>{{ locationDetails?.address }}</h3>
           </div>
           <p [innerHtml]="locationDetails?.teaser"></p>
