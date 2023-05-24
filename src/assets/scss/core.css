@@ -4368,8 +4368,8 @@ div.user-bar ul > li > a:not(.is-active):hover {
 }
 
 .org-logo a > img {
-  max-width: 60px;
-  max-height: 24px;
+  max-width: 100px; /* 60px; */
+  max-height: 40px; /* 24px; */
 }
 
 .org-logo a:hover {
@@ -4378,8 +4378,8 @@ div.user-bar ul > li > a:not(.is-active):hover {
 
 @media only screen and (min-width: 600px) {
   .org-logo a > img {
-    max-width: 100px;
-    max-height: 40px;
+    max-width: 120px; /* 100px; */
+    max-height: 60px; /* 40px; */
   }
 }
 
