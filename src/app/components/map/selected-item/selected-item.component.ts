@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { RoutingService } from '../../../services/routing.service';
 import { Story } from '../../../models/story';
+import { StoryService } from '../../../services/story.service';
 
 @Component({
   selector: 'app-selected-item',
@@ -17,7 +18,8 @@ export class SelectedItemComponent {
   constructor(
     public router: Router,
     public routing: RoutingService,
-    public location: Location
+    public location: Location,
+    public storyService: StoryService
   ) {}
 
   locationHasStories(): boolean {
@@ -36,5 +38,13 @@ export class SelectedItemComponent {
 
   storyHasVideoIcon(story: Story): boolean {
     return story.has_video_icon !== 'Uit';
+  }
+
+  onCloseStoryClicked() {
+    const locationUrl: string | undefined =
+      this.storyService.shownStory.getValue()?.location_url;
+    if (locationUrl) {
+      void this.router.navigateByUrl(locationUrl);
+    }
   }
 }

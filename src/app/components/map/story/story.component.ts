@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { StoryService } from '../../../services/story.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-story',
@@ -7,7 +8,15 @@ import { StoryService } from '../../../services/story.service';
   styleUrls: ['./story.component.scss'],
 })
 export class StoryComponent {
-  constructor(public story: StoryService) {}
+  constructor(public story: StoryService, public router: Router) {}
 
   ngOnInit() {}
+
+  onLocationLinkClicked() {
+    const locationUrl: string | undefined =
+      this.story.shownStory.getValue()?.location_url;
+    if (locationUrl) {
+      void this.router.navigateByUrl(locationUrl);
+    }
+  }
 }

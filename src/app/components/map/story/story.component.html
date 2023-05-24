@@ -1,5 +1,11 @@
 <div class="pad">
   <h2>{{ story.shownStory.getValue()?.title }}</h2>
+  <p class="story-location" *ngIf="story.shownStory.getValue()?.location_title">
+    Locatie:
+    <a (click)="onLocationLinkClicked()">{{
+      story.shownStory.getValue()?.location_title
+    }}</a>
+  </p>
   <div class="media-container">
     <div
       class="views-element-container"
