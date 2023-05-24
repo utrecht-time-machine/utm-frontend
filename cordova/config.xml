@@ -8,4 +8,12 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+
+    <icon src="res/logo/logo.png" />
+
+    <platform name="android">
+      <preference name="AndroidWindowSplashScreenBackground" value="#fe003e" />
+    </platform>
+
+    <preference name="FadeSplashScreen" value="true"/>
 </widget>
