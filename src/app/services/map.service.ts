@@ -501,6 +501,10 @@ export class MapService {
     this.locationsClosestToCenter.next(locationsWithDistances);
   }
 
+  deselectLocation() {
+    this.selectedLocation.next(undefined);
+  }
+
   async selectLocationByUrlOrId(url: string, locationId?: string) {
     setTimeout(() => (this.showSpinner = true));
     if (!locationId) {
@@ -512,7 +516,6 @@ export class MapService {
     const locationDetails: LocationDetails | undefined =
       await this.apiService.getLocationDetailsById(locationId);
     if (locationDetails) {
-      console.log('NEXT', locationDetails);
       this.selectedLocation.next(locationDetails);
       this._showMapLocationPopup(locationDetails);
     }
