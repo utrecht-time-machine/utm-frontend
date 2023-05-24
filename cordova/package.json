@@ -1,0 +1,26 @@
+{
+  "name": "com.utm.utrechttimemachine",
+  "displayName": "Utrecht Time Machine",
+  "version": "1.0.0",
+  "description": "Utrecht Time Machine application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Utrecht Time Machine",
+  "devDependencies": {
+    "cordova-android": "^12.0.0",
+    "cordova-browser": "^7.0.0",
+    "cordova-ios": "^6.3.0"
+  },
+  "cordova": {
+    "platforms": [
+      "android",
+      "ios",
+      "browser"
+    ]
+  }
+}
