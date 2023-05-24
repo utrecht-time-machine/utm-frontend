@@ -213,6 +213,9 @@ export class MapService {
     const stopsFeatureCollection = {
       type: 'FeatureCollection',
       features: routeStops.map((stop, idx) => {
+        if (!stop || !stop.coords) {
+          return {};
+        }
         return {
           type: 'Feature',
           geometry: {
@@ -656,10 +659,32 @@ export class MapService {
   private async _getRouteStopsPathFeature(
     routeStops: UtmRouteStop[]
   ): Promise<any> {
+    const coordsStr: string = routeStops
+      .map((stop) => {
+        if (stop.coords) {
+          return `${stop.coords.long},${stop.coords.lat}`;
+        }
+        return undefined;
+      })
+      .join(';');
+
+    const stopsPathFeature: any = {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: [],
+        },
+      },
+    };
+    if (!coordsStr) {
+      return stopsPathFeature;
+    }
+
     const directionsRequest =
-      `https://api.mapbox.com/directions/v5/mapbox/walking/${routeStops
-        .map((stop) => `${stop.coords.long},${stop.coords.lat}`)
-        .join(';')}` +
+      `https://api.mapbox.com/directions/v5/mapbox/walking/${coordsStr}` +
       '?continue_straight=true&geometries=geojson&overview=simplified&access_token=' +
       environment.mapboxAccessToken;
     console.log(directionsRequest);
@@ -671,16 +696,7 @@ export class MapService {
     if (directionsData.routes.length > 0) {
       coordinates = directionsData.routes[0].geometry.coordinates;
     }
-    return {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: coordinates,
-        },
-      },
-    };
+    stopsPathFeature.data.geometry.coordinates = coordinates;
+    return stopsPathFeature;
   }
 }

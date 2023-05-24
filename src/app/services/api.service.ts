@@ -66,6 +66,10 @@ export class ApiService {
   }
 
   async getMediaItemsByStoryId(storyId: string): Promise<MediaItem[]> {
+    if (!storyId) {
+      return [];
+    }
+
     let mediaItems: MediaItem[] = await lastValueFrom(
       this.http.get<MediaItem[]>(
         environment.apiUrl + environment.apiSuffixes.mediaByStory + storyId
