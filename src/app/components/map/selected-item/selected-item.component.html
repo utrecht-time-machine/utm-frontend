@@ -21,7 +21,10 @@
             >
               <div class="views-element-container">
                 <div>
-                  <span
+                  <span *ngIf="locationDetails?.caption">{{
+                    locationDetails?.caption
+                  }}</span>
+                  <span *ngIf="locationDetails?.source_name"
                     >Bron:
                     <a [href]="locationDetails?.source_link" target="_blank">{{
                       locationDetails?.source_name
@@ -41,12 +44,12 @@
             <h3>{{ locationDetails?.address }}</h3>
           </div>
           <p [innerHtml]="locationDetails?.teaser"></p>
-          <div
-            class="fold"
-            *ngIf="locationDetails?.text"
-            (click)="readMoreIsShown = !readMoreIsShown"
-          >
-            <a [ngClass]="{ on: readMoreIsShown }">Lees meer over deze plek</a>
+          <div class="fold" *ngIf="locationDetails?.text">
+            <a
+              [ngClass]="{ on: readMoreIsShown }"
+              (click)="readMoreIsShown = !readMoreIsShown"
+              >Lees meer over deze plek</a
+            >
             <div
               class="fold-toggle"
               [ngClass]="{ 'fold-toggle-hidden': !readMoreIsShown }"

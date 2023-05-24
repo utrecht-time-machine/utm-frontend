@@ -40,7 +40,7 @@
         <div class="views-element-container">
           <div>
             <span>{{ mediaItem.caption }}</span>
-            <span
+            <span *ngIf="mediaItem?.source_name"
               >Bron:
               <a [href]="mediaItem.source_link" target="_blank">{{
                 mediaItem.source_name
