@@ -5,7 +5,7 @@ import { GeoJSON } from 'geojson';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { MapLocation } from '../models/map-location';
 import { LocationDistanceFromCenter } from '../models/location-distance-from-center';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { LocationDetails } from '../models/location-details';
 import { UtilService } from './util.service';
 import { RoutingService } from './routing.service';
@@ -44,6 +44,23 @@ export class MapService {
     private routing: RoutingService,
     private http: HttpClient
   ) {
+    this.router.events.subscribe((e) => {
+      if (!(e instanceof NavigationEnd)) {
+        return;
+      }
+      const loadedLocationsPage =
+        this.routing.getSelectedView() === SelectedView.Locations;
+      if (loadedLocationsPage) {
+        if (this.router.url === '/') {
+          void this.deselectLocation();
+        } else {
+          void this.selectLocationByUrlOrId(this.router.url);
+        }
+      } else {
+        void this.deselectLocation();
+      }
+    });
+
     this.locationsClosestToCenter.subscribe(() => {
       console.log(
         'Locations closest to center updated:',

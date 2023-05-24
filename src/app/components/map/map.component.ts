@@ -23,16 +23,6 @@ export class MapComponent {
 
   ngOnInit(): void {
     this.mapService.initMap();
-
-    const loadedLocationsPage =
-      this.routing.getSelectedView() === SelectedView.Locations;
-    if (loadedLocationsPage) {
-      if (this.router.url === '/') {
-        void this.mapService.deselectLocation();
-      } else {
-        void this.mapService.selectLocationByUrlOrId(this.router.url);
-      }
-    }
   }
 
   public getSelectedLocation(): LocationDetails | undefined {
