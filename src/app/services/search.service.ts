@@ -8,30 +8,6 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class SearchService {
-  mockLiveSearchResults: LiveSearchResult[] = [
-    {
-      value:
-        'Kasteel Duurstede - David van Bourgondië\tInudatiekanaal 6 Wijk bij Duurstede',
-      url: '/locaties/fort-blauwkapel',
-      label:
-        '<div class="search-view">\t<div class="name"><span>Kasteel Duurstede - David van Bourgondië</span></div>\t<div class="addr">Inudatiekanaal 6 Wijk bij Duurstede</div></div>',
-    },
-    {
-      value:
-        'Kasteel Duurstede - David van Bourgondië\tInudatiekanaal 6 Wijk bij Duurstede',
-      url: '/locaties/fort-blauwkapel',
-      label:
-        '<div class="search-view">\t<div class="name"><span>Kasteel Duurstede - David van Bourgondië</span></div>\t<div class="addr">Inudatiekanaal 6 Wijk bij Duurstede</div></div>',
-    },
-    {
-      value:
-        'Kasteel Duurstede - David van Bourgondië\tInudatiekanaal 6 Wijk bij Duurstede',
-      url: '/locaties/fort-blauwkapel',
-      label:
-        '<div class="search-view">\t<div class="name"><span>Kasteel Duurstede - David van Bourgondië</span></div>\t<div class="addr">Inudatiekanaal 6 Wijk bij Duurstede</div></div>',
-    },
-  ];
-
   liveSearchResults: BehaviorSubject<LiveSearchResult[]> = new BehaviorSubject<
     LiveSearchResult[]
   >([]);
@@ -51,12 +27,8 @@ export class SearchService {
     const searchResults: LiveSearchResult[] = await lastValueFrom(
       this.http.get<LiveSearchResult[]>(environment.liveSearchUrl + searchInput)
     );
-    console.log(searchResults);
-    for (const searchResult of searchResults) {
-      searchResult.url = searchResult.url.replace('/utmnew', '');
-    }
     setTimeout(() => {
-      this.liveSearchResults.next(searchResults); // this.mockLiveSearchResults
+      this.liveSearchResults.next(searchResults);
       this.isLoadingLiveSearchResults = false;
     }, 500);
   }
