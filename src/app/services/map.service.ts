@@ -496,7 +496,11 @@ export class MapService {
           const location: MapLocation = feature?.properties;
           return { location, distanceFromCenterInKm: distance };
         })
-        .filter((item: any) => !isNaN(item.distanceFromCenterInKm));
+        .filter((item: any) => {
+          const locationIsSelected: boolean =
+            this.selectedLocation.getValue()?.nid === item.location.nid;
+          return !isNaN(item.distanceFromCenterInKm) && !locationIsSelected;
+        });
     locationsWithDistances.sort(
       (a, b) => a.distanceFromCenterInKm - b.distanceFromCenterInKm
     );
