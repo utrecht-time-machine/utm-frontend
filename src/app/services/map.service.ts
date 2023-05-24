@@ -541,7 +541,7 @@ export class MapService {
       // const headerHeight: number =
       //   document.getElementsByClassName('utm-header')[0].clientHeight;
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 200, behavior: 'smooth' });
 
       setTimeout(() => (this.showSpinner = false));
     });
