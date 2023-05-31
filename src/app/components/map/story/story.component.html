@@ -1,7 +1,7 @@
 <div class="pad">
   <h2>{{ story.shownStory.getValue()?.title }}</h2>
   <p class="story-location" *ngIf="story.shownStory.getValue()?.location_title">
-    Locatie:
+    {{ "location" | translate }}:
     <a (click)="onLocationLinkClicked()">{{
       story.shownStory.getValue()?.location_title
     }}</a>
