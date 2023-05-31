@@ -10,13 +10,16 @@ import { Organisation } from '../models/organisation';
 import { UtmRoute } from '../models/utm-route';
 import { UtmRouteStop } from '../models/utm-route-stop';
 import { MediaItem, MediaItemType } from '../models/media-item';
-import { TranslateService } from './translate.service';
+import { UtmTranslateService } from './utm-translate.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient, private translate: TranslateService) {}
+  constructor(
+    private http: HttpClient,
+    private utmTranslate: UtmTranslateService
+  ) {}
 
   async getNidFromUrlAlias(url: string): Promise<string> {
     console.log('Retrieving Nid from URL alias', url + '...');
@@ -41,7 +44,7 @@ export class ApiService {
       )
     );
     this._addImageUrlPrefixes(utmRoutes, 'photo');
-    this.translate.translateObjectsByKeys(
+    this.utmTranslate.translateObjectsByKeys(
       utmRoutes,
       environment.translateKeys.routes
     );
@@ -60,7 +63,7 @@ export class ApiService {
     }
     const story: Story = storyDetails[0];
     this._addImageUrlPrefix(story, 'photo');
-    this.translate.translateObjectByKeys(
+    this.utmTranslate.translateObjectByKeys(
       story,
       environment.translateKeys.storyDetails
     );
@@ -79,7 +82,7 @@ export class ApiService {
     );
 
     mediaItems.forEach((mediaItem) => {
-      this.translate.translateObjectByKeys(
+      this.utmTranslate.translateObjectByKeys(
         mediaItem,
         environment.translateKeys.mediaItem
       );
@@ -149,7 +152,7 @@ export class ApiService {
     this._addImageUrlPrefix(locationDetails, 'image');
     this._addImageUrlPrefix(locationDetails, 'thumb');
 
-    this.translate.translateObjectByKeys(
+    this.utmTranslate.translateObjectByKeys(
       locationDetails,
       environment.translateKeys.locationDetails
     );
@@ -197,7 +200,7 @@ export class ApiService {
       }
       this._addImageUrlPrefix(stop, 'stop_image');
       this._addImageUrlPrefix(stop, 'stop_thumb');
-      this.translate.translateObjectByKeys(
+      this.utmTranslate.translateObjectByKeys(
         stop,
         environment.translateKeys.stop
       );
@@ -228,7 +231,7 @@ export class ApiService {
       )
     );
     this._addImageUrlPrefixes(stories, 'photo');
-    this.translate.translateObjectsByKeys(
+    this.utmTranslate.translateObjectsByKeys(
       stories,
       environment.translateKeys.storyDetails
     );
@@ -246,7 +249,7 @@ export class ApiService {
       )
     );
     this._addImageUrlPrefixes(organisations, 'logo');
-    this.translate.translateObjectsByKeys(
+    this.utmTranslate.translateObjectsByKeys(
       organisations,
       environment.translateKeys.organisation
     );

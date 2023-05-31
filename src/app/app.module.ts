@@ -7,8 +7,14 @@ import { HeaderModule } from './components/header/header.module';
 import { FooterModule } from './components/footer/footer.module';
 import { MapModule } from './components/map/map.module';
 import { MenuButtonModule } from './components/menu-button/menu-button.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RoutesModule } from './components/routes/routes.module';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +27,14 @@ import { RoutesModule } from './components/routes/routes.module';
     MenuButtonModule,
     HttpClientModule,
     RoutesModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'nl',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

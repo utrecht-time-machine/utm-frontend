@@ -6,7 +6,7 @@
         routing.getSelectedView() === SelectedView.Locations
     }"
   >
-    <a (click)="clickOnLink('/')">Locaties</a>
+    <a (click)="clickOnLink('/')">{{ "locations" | translate }}</a>
   </li>
   <li
     class="menu-item"
@@ -15,7 +15,7 @@
         routing.getSelectedView() === SelectedView.Routes
     }"
   >
-    <a (click)="clickOnLink('/routes')">Routes</a>
+    <a (click)="clickOnLink('/routes')">{{ "routes" | translate }}</a>
   </li>
   <li
     class="menu-item"
@@ -24,6 +24,6 @@
         routing.getSelectedView() === SelectedView.About
     }"
   >
-    <a (click)="clickOnLink('/over')">Over</a>
+    <a (click)="clickOnLink('/over')">{{ "about" | translate }}</a>
   </li>
 </ul>

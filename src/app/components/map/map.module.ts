@@ -8,6 +8,7 @@ import { RouteStepsComponent } from './route-steps/route-steps.component';
 import { SelectedStopModule } from './selected-stop/selected-stop.module';
 import { StoryModule } from './story/story.module';
 import { LicenseModule } from '../license/license.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { LicenseModule } from '../license/license.module';
     SelectedStopModule,
     StoryModule,
     LicenseModule,
+    TranslateModule,
   ],
 })
 export class MapModule {}

@@ -14,7 +14,7 @@ import { UtmRoutesService } from './utm-routes.service';
 import { UtmRouteStop } from '../models/utm-route-stop';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { TranslateService } from './translate.service';
+import { UtmTranslateService } from './utm-translate.service';
 
 @Injectable({
   providedIn: 'root',
@@ -44,7 +44,7 @@ export class MapService {
     private router: Router,
     private routing: RoutingService,
     private http: HttpClient,
-    private translate: TranslateService
+    private utmTranslate: UtmTranslateService
   ) {
     this.router.events.subscribe((e) => {
       if (!(e instanceof NavigationEnd)) {
@@ -70,7 +70,7 @@ export class MapService {
       );
 
       this.locationsClosestToCenter.getValue().map((locationCloseToCenter) => {
-        this.translate.translateObjectByKeys(
+        this.utmTranslate.translateObjectByKeys(
           locationCloseToCenter.location,
           environment.translateKeys.mapLocation
         );
@@ -344,7 +344,7 @@ export class MapService {
         .addTo(this.map);
 
       // TODO: Use environment translateKeys here
-      this.translate
+      this.utmTranslate
         .translateString(feature.properties.stop_title)
         .then((translatedTitle) => {
           popup.setHTML(
@@ -722,7 +722,7 @@ export class MapService {
       .setLngLat([location.coords.long, location.coords.lat])
       .addTo(this.map as mapboxgl.Map);
 
-    this.translate
+    this.utmTranslate
       .translateObjectByKeys(location, environment.translateKeys.mapLocation)
       .then(() => {
         popup.setHTML(this._getLocationPopupHtml(location));

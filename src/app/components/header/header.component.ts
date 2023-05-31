@@ -5,6 +5,7 @@ import { SelectedView } from '../../models/selected-view';
 import { SearchService } from '../../services/search.service';
 import { debounceTime, Subject } from 'rxjs';
 import { MapService } from '../../services/map.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +21,8 @@ export class HeaderComponent {
     public router: Router,
     public routing: RoutingService,
     public search: SearchService,
-    public map: MapService
+    public map: MapService,
+    public translate: TranslateService
   ) {
     this.searchInputSubject.pipe(debounceTime(300)).subscribe((searchInput) => {
       void this.search.updateLiveSearchResults(searchInput);

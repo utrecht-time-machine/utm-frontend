@@ -26,7 +26,7 @@ export const environment = {
     'https://dev-data.utrechttimemachine.nl/search_api_autocomplete/utm_search?display=livesearch&filter=livesearch&q=',
   translateUrl: 'https://services.utrechttimemachine.nl/translate',
   translateKeys: {
-    routes: ['head', 'teaser', 'title'],
+    routes: ['head', 'teaser', 'title', 'type'],
     locationDetails: ['caption', 'teaser', 'head', 'title', 'text'],
     storyDetails: ['title', 'location_title'],
     mediaItem: ['title', 'caption', 'text'],

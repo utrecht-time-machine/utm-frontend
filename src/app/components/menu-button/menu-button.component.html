@@ -36,14 +36,14 @@
         }"
         (click)="toggleMenuSort()"
       >
-        <div>Naam</div>
+        <div>{{ "name" | translate }}</div>
         <div>
           <div class="switch">
             <div></div>
             <div></div>
           </div>
         </div>
-        <div>Adres</div>
+        <div>{{ "address" | translate }}</div>
       </div>
       <div class="az-view on" data-id="a">
         <div class="views-element-container" *ngIf="locationsByLetterAreLoaded">

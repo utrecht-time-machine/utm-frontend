@@ -48,7 +48,7 @@
             <a
               [ngClass]="{ on: readMoreIsShown }"
               (click)="readMoreIsShown = !readMoreIsShown"
-              >Lees meer over deze plek</a
+              >{{ "readMore" | translate }}</a
             >
             <div
               class="fold-toggle"
@@ -73,7 +73,9 @@
       </div>
 
       <div class="views-element-container" *ngIf="locationHasStories()">
-        <div class="story-head"><h2>Verhalen op deze locatie</h2></div>
+        <div class="story-head">
+          <h2>{{ "storiesForLocation" | translate }}</h2>
+        </div>
         <div class="story-hold">
           <div class="story" *ngFor="let story of locationDetails?.stories">
             <a (click)="router.navigateByUrl(story.story_link)">

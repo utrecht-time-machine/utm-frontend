@@ -2,24 +2,35 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TranslateService {
+export class UtmTranslateService {
   readonly SOURCE_LANG = 'nl-NL';
   readonly TARGET_LANG = 'en-US';
   shouldTranslate: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     true
   );
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private translateService: TranslateService
+  ) {}
 
   async translateString(
     stringToTranslate: string | undefined
   ): Promise<string> {
     if (!stringToTranslate) {
       return '';
+    }
+
+    const doesNotNeedTranslation =
+      !this.translateService.currentLang ||
+      this.translateService.currentLang === 'nl';
+    if (doesNotNeedTranslation) {
+      return stringToTranslate;
     }
 
     if (!this.shouldTranslate.getValue()) {

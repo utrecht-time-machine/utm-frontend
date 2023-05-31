@@ -1,6 +1,6 @@
 <div class="section section-routes">
   <div class="pad">
-    <h1>Routes</h1>
+    <h1>{{ "routes" | translate }}</h1>
     <div class="views-element-container">
       <div class="card-hold promote">
         <div class="card" *ngFor="let r of utmRoutes.all">
@@ -14,7 +14,7 @@
             </div>
 
             <div class="core">
-              <span class="type">Wandelroute</span
+              <span class="type">{{ r.type }}</span
               ><span class="name">{{ r.title }}</span
               ><span class="desc">{{ r.head }}</span
               ><span class="dist" *ngIf="r.duration_minutes"
