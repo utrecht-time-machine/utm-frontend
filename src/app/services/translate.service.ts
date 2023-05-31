@@ -1,0 +1,75 @@
+import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, lastValueFrom } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class TranslateService {
+  readonly SOURCE_LANG = 'nl-NL';
+  readonly TARGET_LANG = 'en-US';
+  shouldTranslate: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    true
+  );
+
+  constructor(private http: HttpClient) {}
+
+  async translateString(
+    stringToTranslate: string | undefined
+  ): Promise<string> {
+    if (!stringToTranslate) {
+      return '';
+    }
+
+    if (!this.shouldTranslate.getValue()) {
+      return stringToTranslate;
+    }
+
+    const requestBody = {
+      contents: stringToTranslate,
+      sourceLanguageCode: this.SOURCE_LANG,
+      targetLanguageCode: this.TARGET_LANG,
+    };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+
+    const response: { translation: string } = await lastValueFrom(
+      this.http.post<{ translation: string }>(
+        environment.translateUrl,
+        requestBody,
+        httpOptions
+      )
+    );
+    return response.translation.toString();
+  }
+
+  public async translateObjectByKey(obj: any, key: string): Promise<void> {
+    if (key in obj) {
+      obj[key] = await this.translateString(obj[key]);
+    }
+  }
+
+  public async translateObjectByKeys(obj: any, keys: string[]): Promise<void> {
+    const promises = [];
+    for (const key of keys) {
+      promises.push(this.translateObjectByKey(obj, key));
+    }
+    await Promise.all(promises);
+  }
+
+  public async translateObjectsByKeys(
+    objs: any[],
+    keys: string[]
+  ): Promise<void> {
+    const promises = [];
+    for (const obj of objs) {
+      promises.push(this.translateObjectByKeys(obj, keys));
+    }
+    await Promise.all(promises);
+  }
+}

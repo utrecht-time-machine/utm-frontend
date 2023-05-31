@@ -10,12 +10,13 @@ import { Organisation } from '../models/organisation';
 import { UtmRoute } from '../models/utm-route';
 import { UtmRouteStop } from '../models/utm-route-stop';
 import { MediaItem, MediaItemType } from '../models/media-item';
+import { TranslateService } from './translate.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private translate: TranslateService) {}
 
   async getNidFromUrlAlias(url: string): Promise<string> {
     console.log('Retrieving Nid from URL alias', url + '...');
@@ -33,20 +34,17 @@ export class ApiService {
     );
   }
 
-  async getMapLocationsGeoJson(): Promise<GeoJSON.FeatureCollection> {
-    const mapLocations: MapLocation[] = await lastValueFrom(
-      this.getMapLocations()
-    );
-    return this.convertMapLocationsToGeoJson(mapLocations);
-  }
-
   async getUtmRoutes(): Promise<UtmRoute[]> {
     let utmRoutes: UtmRoute[] = await lastValueFrom(
       this.http.get<UtmRoute[]>(
         environment.apiUrl + environment.apiSuffixes.routes
       )
     );
-    utmRoutes = this._addImageUrlPrefixes(utmRoutes, 'photo');
+    this._addImageUrlPrefixes(utmRoutes, 'photo');
+    this.translate.translateObjectsByKeys(
+      utmRoutes,
+      environment.translateKeys.routes
+    );
     return utmRoutes;
   }
 
@@ -60,8 +58,12 @@ export class ApiService {
     if (storyDetails.length < 1) {
       return undefined;
     }
-    let story: Story = storyDetails[0];
-    story = this._addImageUrlPrefix(story, 'photo');
+    const story: Story = storyDetails[0];
+    this._addImageUrlPrefix(story, 'photo');
+    this.translate.translateObjectByKeys(
+      story,
+      environment.translateKeys.storyDetails
+    );
     return story;
   }
 
@@ -77,12 +79,16 @@ export class ApiService {
     );
 
     mediaItems.forEach((mediaItem) => {
+      this.translate.translateObjectByKeys(
+        mediaItem,
+        environment.translateKeys.mediaItem
+      );
       mediaItem.type = MediaItemType.Undefined;
 
       const isImageItem = mediaItem.image_small;
       if (isImageItem) {
         mediaItem.type = MediaItemType.Image;
-        mediaItem = this._addImageUrlPrefix(mediaItem, 'image_small');
+        this._addImageUrlPrefix(mediaItem, 'image_small');
       }
 
       if (mediaItem.youtube) {
@@ -135,6 +141,11 @@ export class ApiService {
     this._addImageUrlPrefix(locationDetails, 'image');
     this._addImageUrlPrefix(locationDetails, 'thumb');
 
+    this.translate.translateObjectByKeys(
+      locationDetails,
+      environment.translateKeys.locationDetails
+    );
+
     const splitGeoCoords: string[] = locationDetails.geo.split(', ');
     locationDetails.coords = {
       lat: parseFloat(splitGeoCoords[0]),
@@ -164,65 +175,73 @@ export class ApiService {
       )
     );
 
-    utmRouteStops.forEach((element) => {
-      if (!element.geo) {
+    utmRouteStops.forEach((stop) => {
+      if (!stop.geo) {
         return;
       }
-      const [lat, long] = element.geo.split(',');
-      element.coords = {
+      const [lat, long] = stop.geo.split(',');
+      stop.coords = {
         lat: parseFloat(lat.trim()),
         long: parseFloat(long.trim()),
       };
-      if (element.audio) {
-        element.audio = environment.audioBaseUrl + element.audio;
+      if (stop.audio) {
+        stop.audio = environment.audioBaseUrl + stop.audio;
       }
-      element = this._addImageUrlPrefix(element, 'stop_image');
-      element = this._addImageUrlPrefix(element, 'stop_thumb');
+      this._addImageUrlPrefix(stop, 'stop_image');
+      this._addImageUrlPrefix(stop, 'stop_thumb');
+      this.translate.translateObjectByKeys(
+        stop,
+        environment.translateKeys.stop
+      );
     });
 
     console.log('STOPS', utmRouteStops);
     return utmRouteStops;
   }
 
-  private _addImageUrlPrefix(obj: any, imageKey: string): any {
+  private _addImageUrlPrefix(obj: any, imageKey: string): void {
     if (imageKey in obj) {
       obj[imageKey] = environment.imageBaseUrl + obj[imageKey];
     }
-    return obj;
   }
 
-  private _addImageUrlPrefixes(objs: any[], imageKey: string): any[] {
-    const updatedObjs: any[] = [];
+  private _addImageUrlPrefixes(objs: any[], imageKey: string): void {
     for (const obj of objs) {
-      const updatedObj: any = this._addImageUrlPrefix(obj, imageKey);
-      updatedObjs.push(updatedObj);
+      this._addImageUrlPrefix(obj, imageKey);
     }
-    return updatedObjs;
   }
 
   private async _getStoriesByLocationId(locationId: string): Promise<Story[]> {
-    let stories: Story[] = await lastValueFrom(
+    const stories: Story[] = await lastValueFrom(
       this.http.get<Story[]>(
         environment.apiUrl +
           environment.apiSuffixes.storiesByLocationId +
           locationId
       )
     );
-    stories = this._addImageUrlPrefixes(stories, 'photo');
+    this._addImageUrlPrefixes(stories, 'photo');
+    this.translate.translateObjectsByKeys(
+      stories,
+      environment.translateKeys.storyDetails
+    );
     return stories;
   }
 
   private async _getOrganisationsByLocationId(
     locationId: string
   ): Promise<Organisation[]> {
-    let organisations: Organisation[] = await lastValueFrom(
+    const organisations: Organisation[] = await lastValueFrom(
       this.http.get<Organisation[]>(
         environment.apiUrl +
           environment.apiSuffixes.organisationsByLocation +
           locationId
       )
     );
-    organisations = this._addImageUrlPrefixes(organisations, 'logo');
+    this._addImageUrlPrefixes(organisations, 'logo');
+    this.translate.translateObjectsByKeys(
+      organisations,
+      environment.translateKeys.organisation
+    );
     return organisations;
   }
 

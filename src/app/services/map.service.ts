@@ -14,6 +14,7 @@ import { UtmRoutesService } from './utm-routes.service';
 import { UtmRouteStop } from '../models/utm-route-stop';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { TranslateService } from './translate.service';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +43,8 @@ export class MapService {
     private utmRoutes: UtmRoutesService,
     private router: Router,
     private routing: RoutingService,
-    private http: HttpClient
+    private http: HttpClient,
+    private translate: TranslateService
   ) {
     this.router.events.subscribe((e) => {
       if (!(e instanceof NavigationEnd)) {
@@ -66,6 +68,13 @@ export class MapService {
         'Locations closest to center updated:',
         this.locationsClosestToCenter.getValue()
       );
+
+      this.locationsClosestToCenter.getValue().map((locationCloseToCenter) => {
+        this.translate.translateObjectByKeys(
+          locationCloseToCenter.location,
+          environment.translateKeys.mapLocation
+        );
+      });
     });
 
     this.utmRoutes.selected.subscribe(() => {
@@ -241,20 +250,10 @@ export class MapService {
           },
           properties: {
             label: idx + 1,
-            map_pop: `
-<a data-stop-idx="${idx}" class="popup-stop-link">
-  <div>
-    <div>
-      <div class="thumb">
-          <img src="${stop.stop_thumb}">
-      </div>
-    </div>
-    <div>
-      <span class="name">${stop.title}</span>
-      <span class="addr">${stop.address}</span>
-    </div>
-  </div>
-</a>`,
+            stop_title: stop.title,
+            stop_address: stop.address,
+            stop_thumb: stop.stop_thumb,
+            idx: idx,
           },
         };
       }),
@@ -334,24 +333,32 @@ export class MapService {
         offset: [0, 0],
       })
         .setLngLat(feature.geometry.coordinates)
-        .setHTML(feature.properties.map_pop)
+        .setHTML(
+          this._getStopPopupHtml(
+            feature.properties.stop_title,
+            feature.properties.stop_address,
+            feature.properties.stop_thumb,
+            feature.properties.idx
+          )
+        )
         .addTo(this.map);
 
-      // Catch popup route stop clicks
-      const link = popup.getElement()?.querySelector('.popup-stop-link');
-      if (link) {
-        link.addEventListener('click', (event) => {
-          event.preventDefault();
-          const stopIdx = link.getAttribute('data-stop-idx');
-          if (stopIdx) {
-            void this.utmRoutes.selectStopByIdx(parseInt(stopIdx));
-          } else {
-            console.warn(
-              'Clicked on popup route stop without a known index...'
-            );
-          }
+      // TODO: Use environment translateKeys here
+      this.translate
+        .translateString(feature.properties.stop_title)
+        .then((translatedTitle) => {
+          popup.setHTML(
+            this._getStopPopupHtml(
+              translatedTitle,
+              feature.properties.stop_address,
+              feature.properties.stop_thumb,
+              feature.properties.idx
+            )
+          );
+          this._initStopPopupClicking(popup);
         });
-      }
+
+      this._initStopPopupClicking(popup);
     });
   }
 
@@ -632,7 +639,77 @@ export class MapService {
     this.updateLocationsClosestToCenter(5);
   }
 
-  private _showMapLocationPopup(location: LocationDetails) {
+  private _initStopPopupClicking(popup: Popup) {
+    const link = popup.getElement()?.querySelector('.popup-stop-link');
+    if (link) {
+      link.addEventListener('click', (event: any) => {
+        event.preventDefault();
+        const stopIdx = link.getAttribute('data-stop-idx');
+        if (stopIdx) {
+          void this.utmRoutes.selectStopByIdx(parseInt(stopIdx));
+        } else {
+          console.warn('Clicked on popup route stop without a known index...');
+        }
+      });
+    }
+  }
+
+  private _initLocationPopupClicking(popup: Popup, nid: string) {
+    // Catch popup clicks and route them to the Angular routing service
+    const link = popup.getElement()?.querySelector('.popup-location-link');
+    if (link) {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const url = link.getAttribute('data-url');
+        if (url) {
+          void this.selectLocationByUrlOrId(url, nid);
+        } else {
+          console.warn('Clicked on popup location without a URL...');
+        }
+      });
+    }
+  }
+
+  private _getStopPopupHtml(
+    title: string,
+    address: string,
+    thumb: string,
+    idx: number
+  ): string {
+    return `
+    <a data-stop-idx="${idx}" class="popup-stop-link">
+      <div>
+        <div>
+          <div class="thumb">
+              <img src="${thumb}">
+          </div>
+        </div>
+        <div>
+          <span class="name">${title}</span>
+          <span class="addr">${address}</span>
+        </div>
+      </div>
+    </a>`;
+  }
+
+  private _getLocationPopupHtml(location: LocationDetails): string {
+    return `
+      <a data-url="${location.url}" class="popup-location-link">
+        <div>
+          <div>
+            <div class="thumb">
+                <img src="${location.thumb}">
+            </div>
+          </div>
+          <div>
+            <span class="name">${location.title}</span>
+            <span class="addr">${location.address} ${location.city}</span>
+          </div>
+        </div>
+      </a>`;
+  }
+
+  private async _showMapLocationPopup(location: LocationDetails) {
     if (this.shownLocationPopup) {
       this.shownLocationPopup.remove();
       this.shownLocationPopup = undefined;
@@ -641,40 +718,20 @@ export class MapService {
     const popup: Popup = new mapboxgl.Popup({
       offset: [0, 0],
     })
-      .setHTML(
-        `
-<a data-url="${location.url}" class="popup-location-link">
-  <div>
-    <div>
-      <div class="thumb">
-          <img src="${location.thumb}">
-      </div>
-    </div>
-    <div>
-      <span class="name">${location.title}</span>
-      <span class="addr">${location.address} ${location.city}</span>
-    </div>
-  </div>
-</a>`
-      )
+      .setHTML(this._getLocationPopupHtml(location))
       .setLngLat([location.coords.long, location.coords.lat])
       .addTo(this.map as mapboxgl.Map);
 
-    this.shownLocationPopup = popup;
-
-    // Catch popup clicks and route them to the Angular routing service
-    const link = popup.getElement()?.querySelector('.popup-location-link');
-    if (link) {
-      link.addEventListener('click', (event) => {
-        event.preventDefault();
-        const url = link.getAttribute('data-url');
-        if (url) {
-          void this.selectLocationByUrlOrId(url, location.nid);
-        } else {
-          console.warn('Clicked on popup location without a URL...');
-        }
+    this.translate
+      .translateObjectByKeys(location, environment.translateKeys.mapLocation)
+      .then(() => {
+        popup.setHTML(this._getLocationPopupHtml(location));
+        this._initLocationPopupClicking(popup, location.nid);
       });
-    }
+
+    this._initLocationPopupClicking(popup, location.nid);
+
+    this.shownLocationPopup = popup;
   }
 
   private async _getRouteStopsPathFeature(

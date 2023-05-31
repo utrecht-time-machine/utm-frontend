@@ -23,4 +23,14 @@ export const environment = {
     'pk.eyJ1IjoiY2Itc3R1ZGlvIiwiYSI6ImNrcDUxZW04MjBjZ3gydHF0bmUyano0bncifQ.MLaKn3TF2V4b4ICX1HJnnA',
   liveSearchUrl:
     'https://dev-data.utrechttimemachine.nl/search_api_autocomplete/utm_search?display=livesearch&filter=livesearch&q=',
+  translateUrl: 'https://services.utrechttimemachine.nl/translate',
+  translateKeys: {
+    routes: ['head', 'teaser', 'title'],
+    locationDetails: ['caption', 'teaser', 'head', 'title', 'text'],
+    storyDetails: ['title', 'location_title'],
+    mediaItem: ['title', 'caption', 'text'],
+    stop: ['title'],
+    organisation: ['title'],
+    mapLocation: ['title', 'head'],
+  },
 };
