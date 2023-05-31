@@ -13,15 +13,12 @@
         />
       </div>
 
-      <div class="video-embed" *ngIf="mediaItem.type === MediaItemType.YouTube">
+      <div class="video-embed" *ngIf="mediaItem.type === MediaItemType.Embed">
         <div>
           <iframe
-            [src]="'https://youtube.com/embed/' + mediaItem.youtube | safe"
-            allow="autoplay;clipboard-write;encrypted-media;picture-in-picture"
-            allowfullscreen=""
+            [src]="mediaItem.embed_url | safe"
             width="560"
             height="315"
-            frameborder="0"
           ></iframe>
         </div>
       </div>

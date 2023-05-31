@@ -15,10 +15,11 @@ export const environment = {
   aliasToNidUrl: 'https://dev-data.utrechttimemachine.nl/alias_to_nid?alias=',
   mediaItemImageExtensions: ['.png', '.jpg'],
   mediaItemAudioExtensions: ['.mp3', '.ogg'],
-  mediaItemYouTubePrefixToRemove: [
+  mediaItemYouTubePrefixToReplace: [
     'https://www.youtube.com/watch?v=',
     'https://youtu.be/',
   ],
+  mediaItemYouTubeEmbedUrl: 'https://youtube.com/embed/',
   mapboxAccessToken:
     'pk.eyJ1IjoiY2Itc3R1ZGlvIiwiYSI6ImNrcDUxZW04MjBjZ3gydHF0bmUyano0bncifQ.MLaKn3TF2V4b4ICX1HJnnA',
   liveSearchUrl:
@@ -27,7 +28,7 @@ export const environment = {
   translateKeys: {
     routes: ['head', 'teaser', 'title'],
     locationDetails: ['caption', 'teaser', 'head', 'title', 'text'],
-    storyDetails: ['title', 'location_title'],
+    storyDetails: ['title'],
     mediaItem: ['title', 'caption', 'text'],
     stop: ['title'],
     organisation: ['title'],

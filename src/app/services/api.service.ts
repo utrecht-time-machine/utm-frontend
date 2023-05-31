@@ -91,13 +91,21 @@ export class ApiService {
         this._addImageUrlPrefix(mediaItem, 'image_small');
       }
 
-      if (mediaItem.youtube) {
-        mediaItem.type = MediaItemType.YouTube;
-        environment.mediaItemYouTubePrefixToRemove.forEach(
-          (prefixToRemove: string) => {
-            mediaItem.youtube = mediaItem.youtube.replace(prefixToRemove, '');
+      if (mediaItem.embed_url) {
+        mediaItem.type = MediaItemType.Embed;
+
+        for (const youTubePrefix of environment.mediaItemYouTubePrefixToReplace) {
+          const isYouTubeEmbed = mediaItem.embed_url.includes(youTubePrefix);
+          if (isYouTubeEmbed) {
+            mediaItem.embed_url = mediaItem.embed_url.replace(
+              youTubePrefix,
+              ''
+            );
+            mediaItem.embed_url =
+              environment.mediaItemYouTubeEmbedUrl + mediaItem.embed_url;
+            break;
           }
-        );
+        }
       }
 
       const isAudioItem = environment.mediaItemAudioExtensions.some(

@@ -8,7 +8,7 @@ export interface MediaItem {
   license: string;
   caption: string;
   text: string;
-  youtube: string;
+  embed_url: string;
   type: MediaItemType;
 }
 
@@ -16,5 +16,5 @@ export enum MediaItemType {
   Undefined,
   Image,
   Audio,
-  YouTube,
+  Embed,
 }
