@@ -79,6 +79,12 @@ export class ApiService {
     mediaItems.forEach((mediaItem) => {
       mediaItem.type = MediaItemType.Undefined;
 
+      const isImageItem = mediaItem.image_small;
+      if (isImageItem) {
+        mediaItem.type = MediaItemType.Image;
+        mediaItem = this._addImageUrlPrefix(mediaItem, 'image_small');
+      }
+
       if (mediaItem.youtube) {
         mediaItem.type = MediaItemType.YouTube;
         environment.mediaItemYouTubePrefixToRemove.forEach(
@@ -94,12 +100,6 @@ export class ApiService {
       if (isAudioItem) {
         mediaItem.type = MediaItemType.Audio;
         mediaItem.media_file = environment.audioBaseUrl + mediaItem.media_file;
-      }
-
-      const isImageItem = mediaItem.image_small;
-      if (isImageItem) {
-        mediaItem.type = MediaItemType.Image;
-        mediaItem = this._addImageUrlPrefix(mediaItem, 'image_small');
       }
 
       // const isImageItem = environment.mediaItemImageExtensions.some(
