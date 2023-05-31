@@ -28,7 +28,7 @@ export const environment = {
   translateKeys: {
     routes: ['head', 'teaser', 'title'],
     locationDetails: ['caption', 'teaser', 'head', 'title', 'text'],
-    storyDetails: ['title'],
+    storyDetails: ['title', 'location_title'],
     mediaItem: ['title', 'caption', 'text'],
     stop: ['title'],
     organisation: ['title'],
