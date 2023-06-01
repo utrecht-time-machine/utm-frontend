@@ -30,7 +30,7 @@ export const environment = {
     locationDetails: ['caption', 'teaser', 'head', 'title', 'text'],
     storyDetails: ['title', 'location_title'],
     mediaItem: ['title', 'caption', 'text'],
-    stop: ['title'],
+    stop: ['title', 'location_teaser'],
     organisation: ['title'],
     mapLocation: ['title', 'head'],
   },

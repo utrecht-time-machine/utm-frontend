@@ -9,4 +9,6 @@ export interface UtmRouteStop {
   audio: string;
   stop_image: string;
   stop_thumb: string;
+  location_text: string;
+  location_teaser: string;
 }

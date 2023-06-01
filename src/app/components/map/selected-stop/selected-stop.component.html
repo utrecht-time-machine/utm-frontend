@@ -33,12 +33,23 @@
 </audio>
 
 <h2>{{ utmRoutes.selectedStop?.title }}</h2>
+
 <div class="media-container">
-  <div
-    class="views-element-container"
-    *ngFor="let mediaItem of utmRoutes.shownMediaItems.getValue()"
-  >
-    <app-media-item [mediaItem]="mediaItem"></app-media-item>
+  <div *ngIf="stopAsLocationMediaItems.length > 0">
+    <div
+      class="views-element-container"
+      *ngFor="let mediaItem of stopAsLocationMediaItems"
+    >
+      <app-media-item [mediaItem]="mediaItem"></app-media-item>
+    </div>
+  </div>
+  <div *ngIf="stopAsLocationMediaItems.length <= 0">
+    <div
+      class="views-element-container"
+      *ngFor="let mediaItem of utmRoutes.shownMediaItems.getValue()"
+    >
+      <app-media-item [mediaItem]="mediaItem"></app-media-item>
+    </div>
   </div>
 
   <!--  <div class="views-element-container">-->
