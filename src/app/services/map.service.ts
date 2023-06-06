@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import mapboxgl, { Map, Popup } from 'mapbox-gl';
+import mapboxgl, {
+  LngLatBounds,
+  Map,
+  MapboxGeoJSONFeature,
+  Popup,
+} from 'mapbox-gl';
 import { ApiService } from './api.service';
 import { GeoJSON } from 'geojson';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
@@ -222,6 +227,36 @@ export class MapService {
     });
   }
 
+  getBoundingBoxByFeatures(features: MapboxGeoJSONFeature[]): LngLatBounds {
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+
+    features.forEach((feature: any) => {
+      console.log(feature);
+      const coordinates = feature.geometry.coordinates;
+      const lon = coordinates[0];
+      const lat = coordinates[1];
+
+      if (lon < minX) {
+        minX = lon;
+      }
+      if (lat < minY) {
+        minY = lat;
+      }
+      if (lon > maxX) {
+        maxX = lon;
+      }
+      if (lat > maxY) {
+        maxY = lat;
+      }
+    });
+
+    const boundingBox = new LngLatBounds([minX, minY], [maxX, maxY]);
+    return boundingBox;
+  }
+
   async addRouteMarkersOnMap() {
     if (!this.map) {
       return;
@@ -359,6 +394,15 @@ export class MapService {
         });
 
       this._initStopPopupClicking(popup);
+    });
+
+    const stopsBounds: LngLatBounds = this.getBoundingBoxByFeatures(
+      stopsFeatureCollection.features as any
+    );
+
+    this.map.fitBounds(stopsBounds, {
+      padding: 100,
+      duration: 2000,
     });
   }
 
