@@ -5,6 +5,7 @@ import { ApiService } from './api.service';
 import { Router } from '@angular/router';
 import { UtmRouteStop } from '../models/utm-route-stop';
 import { MediaItem, MediaItemType } from '../models/media-item';
+import { SpinnerService } from './spinner.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,11 @@ export class UtmRoutesService {
   shownMediaItems: BehaviorSubject<MediaItem[] | undefined> =
     new BehaviorSubject<MediaItem[] | undefined>(undefined);
 
-  constructor(private apiService: ApiService, private router: Router) {
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private spinner: SpinnerService
+  ) {
     void this.load();
 
     this.selectedStopIdx.subscribe(() => {
@@ -89,6 +94,8 @@ export class UtmRoutesService {
   }
 
   public async selectByUrlOrId(url: string, id?: string) {
+    this.spinner.loadingRoute = true;
+
     await this.router.navigateByUrl(url);
 
     if (!id) {
@@ -123,6 +130,8 @@ export class UtmRoutesService {
     }
 
     this.selected.next(routeToSelect);
+
+    this.spinner.loadingRoute = false;
   }
 
   public selectStopByIdx(stopIdx: number | undefined) {

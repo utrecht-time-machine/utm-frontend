@@ -12,7 +12,8 @@
     class="menu-item"
     [ngClass]="{
       'menu-item--active-trail':
-        routing.getSelectedView() === SelectedView.Routes
+        routing.getSelectedView() === SelectedView.Routes ||
+        routing.getSelectedView() === SelectedView.SelectedRoute
     }"
   >
     <a (click)="clickOnLink('/routes')">{{ "routes" | translate }}</a>

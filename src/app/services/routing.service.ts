@@ -24,6 +24,10 @@ export class RoutingService {
       return SelectedView.Locations;
     }
 
+    if (this.router.url.startsWith('/routes/')) {
+      return SelectedView.SelectedRoute;
+    }
+
     if (this.router.url.startsWith('/routes')) {
       return SelectedView.Routes;
     }

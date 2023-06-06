@@ -22,7 +22,7 @@ export class SelectedRouteComponent {
 
   ngOnInit() {
     const navigatedToUtmRoutePage =
-      this.routing.getSelectedView() == SelectedView.Routes;
+      this.routing.getSelectedView() == SelectedView.SelectedRoute;
 
     if (navigatedToUtmRoutePage) {
       void this.utmRoutes.selectByUrlOrId(this.router.url);

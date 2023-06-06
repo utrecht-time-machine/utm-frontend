@@ -180,6 +180,7 @@ export class ApiService {
     routeId: string
   ): Promise<UtmRouteStop[] | undefined> {
     console.log('Retrieving route stops', routeId);
+
     const utmRouteStops: UtmRouteStop[] = await lastValueFrom(
       this.http.get<UtmRouteStop[]>(
         environment.apiUrl + environment.apiSuffixes.stopsByRoute + routeId

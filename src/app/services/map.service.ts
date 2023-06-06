@@ -20,6 +20,7 @@ import { UtmRouteStop } from '../models/utm-route-stop';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { UtmTranslateService } from './utm-translate.service';
+import { SpinnerService } from './spinner.service';
 
 @Injectable({
   providedIn: 'root',
@@ -41,15 +42,14 @@ export class MapService {
     []
   );
 
-  showSpinner = false;
-
   constructor(
     private apiService: ApiService,
     private utmRoutes: UtmRoutesService,
     private router: Router,
     private routing: RoutingService,
     private http: HttpClient,
-    private utmTranslate: UtmTranslateService
+    private utmTranslate: UtmTranslateService,
+    private spinner: SpinnerService
   ) {
     this.router.events.subscribe((e) => {
       if (!(e instanceof NavigationEnd)) {
@@ -58,13 +58,21 @@ export class MapService {
       const loadedLocationsPage =
         this.routing.getSelectedView() === SelectedView.Locations;
       if (loadedLocationsPage) {
-        if (this.router.url === '/') {
+        const loadedHomePage = this.router.url === '/';
+        if (loadedHomePage) {
           void this.deselectLocation();
         } else {
           void this.selectLocationByUrlOrId(this.router.url);
         }
       } else {
         void this.deselectLocation();
+      }
+
+      const loadedRoutePage =
+        this.routing.getSelectedView() === SelectedView.SelectedRoute;
+      if (!loadedRoutePage) {
+        this.removeRouteMarkersFromMap();
+        this.utmRoutes.selected.next(undefined);
       }
     });
 
@@ -216,7 +224,9 @@ export class MapService {
 
       if (this.routing.getSelectedView() === SelectedView.Locations) {
         this.addLocationsOnMap(false);
-      } else if (this.routing.getSelectedView() === SelectedView.Routes) {
+      } else if (
+        this.routing.getSelectedView() === SelectedView.SelectedRoute
+      ) {
         void this.addRouteMarkersOnMap();
         this.addLocationsOnMap(true);
       }
@@ -234,7 +244,6 @@ export class MapService {
     let maxY = -Infinity;
 
     features.forEach((feature: any) => {
-      console.log(feature);
       const coordinates = feature.geometry.coordinates;
       const lon = coordinates[0];
       const lat = coordinates[1];
@@ -445,7 +454,7 @@ export class MapService {
 
     this.map.on('load', async () => {
       if (!hideLocations) {
-        setTimeout(() => (this.showSpinner = true));
+        setTimeout(() => (this.spinner.loadingLocations = true));
       }
 
       this.allLocations.next(
@@ -528,7 +537,7 @@ export class MapService {
 
       this._initMapInteractivity();
 
-      setTimeout(() => (this.showSpinner = false));
+      setTimeout(() => (this.spinner.loadingLocations = false));
     });
   }
 
@@ -589,7 +598,7 @@ export class MapService {
   }
 
   async selectLocationByUrlOrId(url: string, locationId?: string) {
-    setTimeout(() => (this.showSpinner = true));
+    setTimeout(() => (this.spinner.loadingLocation = true));
     if (!locationId) {
       locationId = await this.apiService.getNidFromUrlAlias(url);
     }
@@ -626,7 +635,7 @@ export class MapService {
 
       window.scrollTo({ top: 200, behavior: 'smooth' });
 
-      setTimeout(() => (this.showSpinner = false));
+      setTimeout(() => (this.spinner.loadingLocation = false));
     });
   }
 

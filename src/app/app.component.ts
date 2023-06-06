@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MapService } from './services/map.service';
+import { SpinnerService } from './services/spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +9,5 @@ import { MapService } from './services/map.service';
 export class AppComponent {
   title = 'Utrecht Time Machine';
 
-  constructor(public map: MapService) {}
+  constructor(public spinner: SpinnerService) {}
 }

@@ -5,7 +5,7 @@
   <div class="map-data">
     <div class="map-data-handle"></div>
     <app-route-steps
-      *ngIf="routing.getSelectedView() === SelectedView.Routes"
+      *ngIf="routing.getSelectedView() === SelectedView.SelectedRoute"
     ></app-route-steps>
     <div
       class="map-data-dock"
@@ -13,6 +13,7 @@
       *ngIf="
         getSelectedLocation() ||
         routing.getSelectedView() === SelectedView.Routes ||
+        routing.getSelectedView() === SelectedView.SelectedRoute ||
         routing.getSelectedView() === SelectedView.Story
       "
     >
@@ -26,7 +27,7 @@
         ></app-selected-item>
 
         <app-selected-route
-          *ngIf="routing.getSelectedView() === SelectedView.Routes"
+          *ngIf="routing.getSelectedView() === SelectedView.SelectedRoute"
         ></app-selected-route>
       </div>
     </div>

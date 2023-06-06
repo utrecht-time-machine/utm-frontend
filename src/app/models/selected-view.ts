@@ -4,4 +4,5 @@ export enum SelectedView {
   About,
   Routes,
   Story,
+  SelectedRoute,
 }
