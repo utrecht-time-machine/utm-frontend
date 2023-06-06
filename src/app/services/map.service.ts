@@ -115,7 +115,7 @@ export class MapService {
       // style: 'mapbox://styles/mapbox/satellite-v9',
       style: 'mapbox://styles/mapbox/light-v11',
       center: [5.122222, 52.090833],
-      zoom: 10,
+      zoom: 12,
       pitch: 45, //24
       bearing: 0,
       attributionControl: false,
