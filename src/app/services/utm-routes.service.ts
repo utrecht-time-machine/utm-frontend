@@ -4,7 +4,7 @@ import { UtmRoute } from '../models/utm-route';
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
 import { UtmRouteStop } from '../models/utm-route-stop';
-import { MediaItem } from '../models/media-item';
+import { MediaItem, MediaItemType } from '../models/media-item';
 
 @Injectable({
   providedIn: 'root',
@@ -27,18 +27,38 @@ export class UtmRoutesService {
     void this.load();
 
     this.selectedStopIdx.subscribe(() => {
-      void this._updateShownMediaItems();
+      void this._updateSelectedStopMediaItems();
     });
   }
 
-  private async _updateShownMediaItems() {
+  private async _updateSelectedStopMediaItems() {
     if (!this.selectedStop) {
       return;
     }
 
-    const retrievedMediaItems: MediaItem[] =
-      await this.apiService.getMediaItemsByStoryId(this.selectedStop.stop_id);
-    this.shownMediaItems.next(retrievedMediaItems);
+    const stopIsLocation = this.selectedStop.stop_type === 'Locatie';
+    if (stopIsLocation) {
+      const locationStopMediaItems: MediaItem[] = [
+        {
+          caption: '',
+          embed_url: '',
+          image_small: this.selectedStop.stop_image as string,
+          license: '',
+          media_file: '',
+          media_id: '',
+          source_link: '',
+          source_name: '',
+          text: this.selectedStop.location_teaser as string,
+          type: MediaItemType.Image,
+          title: '',
+        },
+      ];
+      this.selectedStop.media_items = locationStopMediaItems;
+    } else {
+      const retrievedMediaItems: MediaItem[] =
+        await this.apiService.getMediaItemsByStoryId(this.selectedStop.stop_id);
+      this.selectedStop.media_items = retrievedMediaItems;
+    }
   }
 
   public get selectedStop(): UtmRouteStop | undefined {
@@ -53,6 +73,13 @@ export class UtmRoutesService {
     }
 
     return selectedRoute.stops[selectedStopIdx];
+  }
+
+  public selectedStopHasMediaItems(): boolean {
+    return (
+      this.selectedStop !== undefined &&
+      this.selectedStop?.media_items.length > 0
+    );
   }
 
   public async load() {

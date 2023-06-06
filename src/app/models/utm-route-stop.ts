@@ -1,3 +1,5 @@
+import { MediaItem } from './media-item';
+
 export interface UtmRouteStop {
   stop_id: string;
   stop_type: string;
@@ -11,4 +13,5 @@ export interface UtmRouteStop {
   stop_thumb: string;
   location_text: string;
   location_teaser: string;
+  media_items: MediaItem[];
 }
