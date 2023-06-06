@@ -113,6 +113,11 @@ export class UtmRoutesService {
 
     if (selectedRoute) {
       this.selectedStopIdx.next(stopIdx);
+
+      if (window.scrollY == 0) {
+        // TODO: Fine-tune this value, where do we want to scroll to when selecting a new stop?
+        window.scrollTo({ top: 200, behavior: 'smooth' });
+      }
     }
   }
 }
