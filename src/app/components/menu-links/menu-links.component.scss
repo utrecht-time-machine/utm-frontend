@@ -1,4 +1,41 @@
-.language-toggle {
+.menu-mb-inner .language-toggle {
+  display: block;
+  padding: 4px 0;
+  font-size: 1.5em;
+  line-height: 1.2em;
+  text-align: center;
+}
+
+.menu-mb-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  & .brand {
+    margin-bottom: auto;
+  }
+
+  & app-menu-links {
+    flex-grow: 1;
+  }
+
+  & .menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  & .menu-item.language-toggle {
+    margin-top: auto;
+  }
+}
+
+.menu-mb-on .menu-mb-btn {
+  position: fixed !important;
+}
+
+.site-menu .language-toggle {
   float: right;
   margin-right: 1rem;
 }
