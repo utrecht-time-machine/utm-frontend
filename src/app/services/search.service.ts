@@ -25,9 +25,16 @@ export class SearchService {
     }
 
     this.isLoadingLiveSearchResults = true;
-    const searchResults: LiveSearchResult[] = await lastValueFrom(
+    const searchResults: LiveSearchResult[] | void = await lastValueFrom(
       this.http.get<LiveSearchResult[]>(environment.liveSearchUrl + searchInput)
-    );
+    ).catch((err) => {
+      console.error(err);
+    });
+
+    if (!searchResults) {
+      this.isLoadingLiveSearchResults = false;
+      return;
+    }
 
     for (const searchResult of searchResults) {
       searchResult.label = this._convertSearchResultLabelHtmlFormat(
