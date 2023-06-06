@@ -522,8 +522,16 @@ export class MapService {
         })
         .filter((item: any) => {
           const locationIsSelected: boolean =
-            this.selectedLocation.getValue()?.nid === item.location.nid;
-          return !isNaN(item.distanceFromCenterInKm) && !locationIsSelected;
+            this.selectedLocation.getValue()?.nid ===
+            item.location.nid.toString();
+          const locationIsSelectedAsStop =
+            this.utmRoutes.selectedStop?.stop_id ===
+            item.location.nid.toString();
+          return (
+            !isNaN(item.distanceFromCenterInKm) &&
+            !locationIsSelected &&
+            !locationIsSelectedAsStop
+          );
         });
     locationsWithDistances.sort(
       (a, b) => a.distanceFromCenterInKm - b.distanceFromCenterInKm
