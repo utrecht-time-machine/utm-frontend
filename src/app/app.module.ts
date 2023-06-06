@@ -39,7 +39,7 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     NgxMatomoTrackerModule.forRoot({
       siteId: '1',
-      trackerUrl: 'https://analytics.utrechttimemachine.nl/matomo.php',
+      trackerUrl: 'https://analytics.utrechttimemachine.nl/',
     }),
     NgxMatomoRouterModule,
   ],
