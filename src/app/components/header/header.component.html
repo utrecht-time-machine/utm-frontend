@@ -38,6 +38,7 @@
                   (input)="onSearchInputChange($event)"
                   (blur)="search.hideLiveSearchResults()"
                   (focus)="search.showLiveSearchResults = true"
+                  (keyup.enter)="search.navigateToFirstSearchResult()"
                 />
 
                 <ul

@@ -3,6 +3,7 @@ import { LiveSearchResult } from '../models/live-search-result';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class SearchService {
   showLiveSearchResults = false;
   isLoadingLiveSearchResults = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   async updateLiveSearchResults(searchInput: string) {
     if (!searchInput) {
@@ -38,6 +39,19 @@ export class SearchService {
       this.liveSearchResults.next(searchResults);
       this.isLoadingLiveSearchResults = false;
     }, 500);
+  }
+
+  navigateToFirstSearchResult() {
+    if (this.liveSearchResults.getValue().length <= 0) {
+      return;
+    }
+    const firstSearchResult: LiveSearchResult =
+      this.liveSearchResults.getValue()[0];
+    if (!firstSearchResult.url) {
+      return;
+    }
+
+    void this.router.navigateByUrl(firstSearchResult.url);
   }
 
   private _convertSearchResultLabelHtmlFormat(labelHtml: string): string {
