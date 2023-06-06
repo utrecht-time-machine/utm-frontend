@@ -608,6 +608,13 @@ div.user-bar ul > li > a:not(.is-active):hover {
   color: #000;
 }
 
+.utm-header .site-menu ul > li > app-lang-toggle {
+  display: block;
+  padding: 0 10px;
+  font-size: 1.3em;
+  color: #000;
+}
+
 .utm-header .site-menu ul > li > a:hover {
   text-decoration: underline;
 }

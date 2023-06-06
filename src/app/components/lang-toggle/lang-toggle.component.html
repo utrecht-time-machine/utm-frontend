@@ -1,1 +1,3 @@
-<div (click)="toggleLanguage()">{{ translate.currentLang.toUpperCase() }}</div>
+<a (click)="toggleLanguage()">{{
+  translate.currentLang.toUpperCase() === "EN" ? "NL" : "EN"
+}}</a>
