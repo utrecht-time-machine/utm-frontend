@@ -1,4 +1,7 @@
-<div class="menu-mb-btn">
+<div
+  class="menu-mb-btn"
+  *ngIf="routing.getSelectedView() !== SelectedView.Story"
+>
   <a (click)="menuService.toggleMbMenu()">
     <div></div>
     <div></div>
