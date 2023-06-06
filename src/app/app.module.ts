@@ -11,6 +11,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RoutesModule } from './components/routes/routes.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
+import { NgxMatomoRouterModule } from '@ngx-matomo/router';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -35,6 +37,11 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
+    NgxMatomoTrackerModule.forRoot({
+      siteId: '1',
+      trackerUrl: 'https://analytics.utrechttimemachine.nl/matomo.php',
+    }),
+    NgxMatomoRouterModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
