@@ -1,4 +1,8 @@
 <div class="pad">
+  <app-edit-button
+    [nid]="story.shownStory.getValue()?.story_id"
+  ></app-edit-button>
+
   <h2>{{ story.shownStory.getValue()?.title }}</h2>
   <p class="story-location" *ngIf="story.shownStory.getValue()?.location_title">
     {{ "location" | translate }}:

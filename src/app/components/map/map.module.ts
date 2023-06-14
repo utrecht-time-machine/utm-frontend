@@ -9,6 +9,7 @@ import { SelectedStopModule } from './selected-stop/selected-stop.module';
 import { StoryModule } from './story/story.module';
 import { LicenseModule } from '../license/license.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { EditButtonModule } from '../edit-button/edit-button.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { TranslateModule } from '@ngx-translate/core';
     StoryModule,
     LicenseModule,
     TranslateModule,
+    EditButtonModule,
   ],
 })
 export class MapModule {}
