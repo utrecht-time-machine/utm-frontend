@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoutingService } from '../../services/routing.service';
 import { SelectedView } from '../../models/selected-view';
@@ -10,6 +10,8 @@ import { SelectedView } from '../../models/selected-view';
   encapsulation: ViewEncapsulation.None,
 })
 export class MenuLinksComponent {
+  @Input() showLanguageToggle = true;
+
   SelectedView = SelectedView;
 
   constructor(public router: Router, public routing: RoutingService) {}

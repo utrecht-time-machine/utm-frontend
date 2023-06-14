@@ -9,5 +9,7 @@
   "exploreArea": "Explore this area",
   "startRoute": "Start route",
   "name": "Name",
-  "address": "Address"
+  "address": "Address",
+  "storyFeedbackTitle": "What do you think of this story?",
+  "storyFeedbackGiven": "Thank you for your feedback!"
 }

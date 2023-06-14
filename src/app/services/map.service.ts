@@ -446,6 +446,11 @@ export class MapService {
     }
   }
 
+  async updateAllLocationsFromServer() {
+    this.allLocations.next(
+      await lastValueFrom(this.apiService.getMapLocations())
+    );
+  }
   addLocationsOnMap(hideLocations = false) {
     if (!this.map) {
       console.warn('Map not yet initialized... Not adding locations to map.');
@@ -457,9 +462,8 @@ export class MapService {
         setTimeout(() => (this.spinner.loadingLocations = true));
       }
 
-      this.allLocations.next(
-        await lastValueFrom(this.apiService.getMapLocations())
-      );
+      await this.updateAllLocationsFromServer();
+
       this.mapLocationsFeatures = this.apiService.convertMapLocationsToGeoJson(
         this.allLocations.getValue()
       );
@@ -824,8 +828,9 @@ export class MapService {
 
     const directionsRequest =
       `https://api.mapbox.com/directions/v5/mapbox/walking/${coordsStr}` +
-      '?continue_straight=true&geometries=geojson&overview=simplified&access_token=' +
+      '?continue_straight=true&geometries=geojson&overview=full&access_token=' +
       environment.mapboxAccessToken;
+
     console.log(directionsRequest);
     const directionsData: any = await lastValueFrom(
       this.http.get(directionsRequest)

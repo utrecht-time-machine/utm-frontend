@@ -11,6 +11,7 @@ export const environment = {
     routes: 'routes',
     stopsByRoute: 'stops_by_route?nid=',
     mediaByStory: 'media_by_story?nid=',
+    staticPage: 'page?title=',
   },
   aliasToNidUrl: 'https://dev-data.utrechttimemachine.nl/alias_to_nid?alias=',
   mediaItemImageExtensions: ['.png', '.jpg'],
@@ -33,5 +34,7 @@ export const environment = {
     stop: ['title', 'location_teaser'],
     organisation: ['title'],
     mapLocation: ['title', 'head'],
+    staticPage: ['title', 'body'],
   },
+  feedbackPostUrl: 'https://services.utrechttimemachine.nl/feedback',
 };

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MapLocation } from '../models/map-location';
 import { lastValueFrom, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { GeoJSON } from 'geojson';
 import { LocationDetails } from '../models/location-details';
@@ -11,6 +11,7 @@ import { UtmRoute } from '../models/utm-route';
 import { UtmRouteStop } from '../models/utm-route-stop';
 import { MediaItem, MediaItemType } from '../models/media-item';
 import { UtmTranslateService } from './utm-translate.service';
+import { StaticPage } from '../models/static-page';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,24 @@ export class ApiService {
       this.http.get<{ nid: string }>(environment.aliasToNidUrl + url)
     );
     return response.nid;
+  }
+
+  async getStaticPage(title: string): Promise<StaticPage | undefined> {
+    const staticPages: StaticPage[] = await lastValueFrom(
+      this.http.get<StaticPage[]>(
+        environment.apiUrl + environment.apiSuffixes.staticPage + title
+      )
+    );
+    if (staticPages.length <= 0) {
+      return undefined;
+    }
+
+    const staticPage: StaticPage = staticPages[0];
+    await this.utmTranslate.translateObjectByKeys(
+      staticPage,
+      environment.translateKeys.staticPage
+    );
+    return staticPage;
   }
 
   getMapLocations(): Observable<MapLocation[]> {
@@ -128,7 +147,7 @@ export class ApiService {
       // }
     });
 
-    console.log(mediaItems);
+    // console.log(mediaItems);
     // mediaItems = this._addImageUrlPrefixes(mediaItems, 'media_file');
     return mediaItems;
   }
@@ -279,5 +298,18 @@ export class ApiService {
       type: 'FeatureCollection',
       features,
     };
+  }
+
+  public async post(url: string, body: any): Promise<any> {
+    const requestBody = body;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+
+    // console.log(requestBody, url);
+    return await lastValueFrom(this.http.post(url, requestBody, httpOptions));
   }
 }

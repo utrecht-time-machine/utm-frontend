@@ -14,4 +14,8 @@
       <app-media-item [mediaItem]="mediaItem"></app-media-item>
     </div>
   </div>
+
+  <app-feedback
+    [storyId]="story.shownStory.getValue()?.story_id"
+  ></app-feedback>
 </div>
