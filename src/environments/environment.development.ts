@@ -36,4 +36,5 @@ export const environment = {
     mapLocation: ['title', 'head'],
     staticPage: ['title', 'body'],
   },
+  feedbackPostUrl: 'https://services.utrechttimemachine.nl/feedback',
 };

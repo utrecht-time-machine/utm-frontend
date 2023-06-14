@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MapLocation } from '../models/map-location';
 import { lastValueFrom, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { GeoJSON } from 'geojson';
 import { LocationDetails } from '../models/location-details';
@@ -147,7 +147,7 @@ export class ApiService {
       // }
     });
 
-    console.log(mediaItems);
+    // console.log(mediaItems);
     // mediaItems = this._addImageUrlPrefixes(mediaItems, 'media_file');
     return mediaItems;
   }
@@ -298,5 +298,18 @@ export class ApiService {
       type: 'FeatureCollection',
       features,
     };
+  }
+
+  public async post(url: string, body: any): Promise<any> {
+    const requestBody = body;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+
+    // console.log(requestBody, url);
+    return await lastValueFrom(this.http.post(url, requestBody, httpOptions));
   }
 }
