@@ -16,7 +16,12 @@
   <body>
     <app-root></app-root>
 
-    <!-- TODO: Do not load when in browser -->
-    <script type="text/javascript" src="cordova.js"></script>
+    <script>
+      if (window["cordova"]) {
+        const cordovaScript = document.createElement("script");
+        cordovaScript.src = "cordova.js";
+        document.body.appendChild(cordovaScript);
+      }
+    </script>
   </body>
 </html>
