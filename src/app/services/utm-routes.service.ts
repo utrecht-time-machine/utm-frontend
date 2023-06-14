@@ -150,6 +150,12 @@ export class UtmRoutesService {
     if (selectedRoute) {
       this.selectedStopIdx.next(stopIdx);
 
+      const selectingHome = stopIdx === undefined;
+      if (selectingHome) {
+        window.scrollTo({ top: selectingHome ? 0 : 200, behavior: 'smooth' });
+        return;
+      }
+
       if (window.scrollY == 0) {
         // TODO: Fine-tune this value, where do we want to scroll to when selecting a new stop?
         window.scrollTo({ top: 200, behavior: 'smooth' });

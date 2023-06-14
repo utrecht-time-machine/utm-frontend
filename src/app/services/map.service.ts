@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import mapboxgl, {
-  LngLatBounds,
-  Map,
-  MapboxGeoJSONFeature,
-  Popup,
-} from 'mapbox-gl';
+import mapboxgl, { LngLat, LngLatBounds, Map, Popup } from 'mapbox-gl';
 import { ApiService } from './api.service';
 import { GeoJSON } from 'geojson';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
@@ -97,8 +92,12 @@ export class MapService {
     });
 
     this.utmRoutes.selectedStopIdx.subscribe((stopIdx) => {
-      if (!this.map || !this.utmRoutes.selectedStop) {
+      if (!this.map) {
         return;
+      }
+
+      if (!this.utmRoutes.selectedStop) {
+        this.fitMapToRouteBounds();
       }
 
       const stopCoords = this.utmRoutes.selectedStop?.coords;
@@ -237,25 +236,24 @@ export class MapService {
     });
   }
 
-  getBoundingBoxByFeatures(features: MapboxGeoJSONFeature[]): LngLatBounds {
+  getBoundingBoxByCoordinates(coordinates: LngLat[]): LngLatBounds {
     let minX = Infinity;
     let minY = Infinity;
     let maxX = -Infinity;
     let maxY = -Infinity;
 
-    features.forEach((feature: any) => {
-      const coordinates = feature.geometry.coordinates;
-      const lon = coordinates[0];
-      const lat = coordinates[1];
+    coordinates.forEach((coordinate: LngLat) => {
+      const lng = coordinate.lng;
+      const lat = coordinate.lat;
 
-      if (lon < minX) {
-        minX = lon;
+      if (lng < minX) {
+        minX = lng;
       }
       if (lat < minY) {
         minY = lat;
       }
-      if (lon > maxX) {
-        maxX = lon;
+      if (lng > maxX) {
+        maxX = lng;
       }
       if (lat > maxY) {
         maxY = lat;
@@ -405,14 +403,29 @@ export class MapService {
       this._initStopPopupClicking(popup);
     });
 
-    const stopsBounds: LngLatBounds = this.getBoundingBoxByFeatures(
-      stopsFeatureCollection.features as any
-    );
+    this.fitMapToRouteBounds();
+  }
 
-    this.map.fitBounds(stopsBounds, {
-      padding: 100,
-      duration: 2000,
-    });
+  fitMapToRouteBounds() {
+    if (!this.map || !this.utmRoutes.selected.getValue()?.stops) {
+      return;
+    }
+
+    const stopsCoordinates: LngLat[] | undefined = this.utmRoutes.selected
+      .getValue()
+      ?.stops?.map((stop) => {
+        return new LngLat(stop.coords.long, stop.coords.lat);
+      });
+
+    if (stopsCoordinates) {
+      const stopsBounds: LngLatBounds =
+        this.getBoundingBoxByCoordinates(stopsCoordinates);
+
+      this.map.fitBounds(stopsBounds, {
+        padding: 100,
+        duration: 2000,
+      });
+    }
   }
 
   removeRouteMarkersFromMap() {
