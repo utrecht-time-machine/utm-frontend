@@ -9,5 +9,7 @@
   "exploreArea": "Ontdek deze buurt",
   "startRoute": "Route starten",
   "name": "Naam",
-  "address": "Adres"
+  "address": "Adres",
+  "storyFeedbackTitle": "Wat vind je van dit verhaal?",
+  "storyFeedbackGiven": "Bedankt voor je feedback!"
 }
