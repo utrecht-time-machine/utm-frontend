@@ -27,10 +27,17 @@
 <!--  </div>-->
 <!--</div>-->
 
-<audio controls *ngIf="utmRoutes.selectedStop && utmRoutes.selectedStop.audio">
-  <source [src]="utmRoutes.selectedStop.audio | safe" type="audio/mpeg" />
-  Your browser does not support the audio element.
-</audio>
+<div
+  class="audio-embed"
+  *ngIf="utmRoutes.selectedStop && utmRoutes.selectedStop.audio"
+>
+  <div class="audioplayer">
+    <audio controls #audioElement>
+      <source [src]="utmRoutes.selectedStop.audio | safe" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+</div>
 
 <h2 [innerHtml]="utmRoutes.selectedStop?.title"></h2>
 

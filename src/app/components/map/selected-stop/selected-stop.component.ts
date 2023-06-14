@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { UtmRoutesService } from '../../../services/utm-routes.service';
 
 @Component({
@@ -7,7 +7,17 @@ import { UtmRoutesService } from '../../../services/utm-routes.service';
   styleUrls: ['./selected-stop.component.scss'],
 })
 export class SelectedStopComponent {
-  constructor(public utmRoutes: UtmRoutesService) {}
+  @ViewChild('audioElement', { static: false }) audioElement!: ElementRef;
+
+  constructor(public utmRoutes: UtmRoutesService) {
+    utmRoutes.selectedStopIdx.subscribe(() => {
+      setTimeout(() => {
+        if (this.audioElement) {
+          this.audioElement.nativeElement.load();
+        }
+      });
+    });
+  }
 
   ngOnInit() {}
 }
