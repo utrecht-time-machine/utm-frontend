@@ -828,8 +828,9 @@ export class MapService {
 
     const directionsRequest =
       `https://api.mapbox.com/directions/v5/mapbox/walking/${coordsStr}` +
-      '?continue_straight=true&geometries=geojson&overview=simplified&access_token=' +
+      '?continue_straight=true&geometries=geojson&overview=full&access_token=' +
       environment.mapboxAccessToken;
+
     console.log(directionsRequest);
     const directionsData: any = await lastValueFrom(
       this.http.get(directionsRequest)
