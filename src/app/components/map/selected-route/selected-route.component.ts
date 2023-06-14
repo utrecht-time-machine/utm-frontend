@@ -3,6 +3,7 @@ import { UtmRoutesService } from '../../../services/utm-routes.service';
 import { SelectedView } from '../../../models/selected-view';
 import { Router } from '@angular/router';
 import { RoutingService } from '../../../services/routing.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-selected-route',
@@ -10,6 +11,8 @@ import { RoutingService } from '../../../services/routing.service';
   styleUrls: ['./selected-route.component.scss'],
 })
 export class SelectedRouteComponent {
+  environment = environment;
+
   constructor(
     public utmRoutes: UtmRoutesService,
     private routing: RoutingService,

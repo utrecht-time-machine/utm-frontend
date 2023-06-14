@@ -1,6 +1,17 @@
 <div>
   <div class="dock-inner route-container" *ngIf="!utmRoutes.selectedStop">
     <div class="pad">
+      <div class="edit-route-btn-container" *ngIf="environment.dev">
+        <a
+          class="edit-route-btn"
+          [href]="
+            environment.backendEditUrl + this.utmRoutes.selected.getValue()?.nid
+          "
+          target="_blank"
+          >Edit route</a
+        >
+      </div>
+
       <h2>{{ selectedRoute?.title }}</h2>
       <div class="route-container-inner">
         <div [innerHtml]="selectedRoute?.teaser"></div>
@@ -11,6 +22,7 @@
           >{{ "startRoute" | translate }}</a
         >
       </div>
+
       <div class="photo-hold">
         <div class="photo">
           <div>
@@ -18,7 +30,9 @@
           </div>
         </div>
         <div class="media-source">
-          <div class="views-element-container"><div></div></div>
+          <div class="views-element-container">
+            <div></div>
+          </div>
         </div>
       </div>
     </div>

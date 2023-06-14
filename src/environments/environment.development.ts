@@ -1,4 +1,5 @@
 export const environment = {
+  dev: true,
   apiUrl: 'https://dev-data.utrechttimemachine.nl/rest/',
   imageBaseUrl: 'https://dev-data.utrechttimemachine.nl',
   audioBaseUrl: 'https://dev-data.utrechttimemachine.nl',
@@ -37,4 +38,5 @@ export const environment = {
     staticPage: ['title', 'body'],
   },
   feedbackPostUrl: 'https://services.utrechttimemachine.nl/feedback',
+  backendEditUrl: 'https://dev-data.utrechttimemachine.nl/node/',
 };
