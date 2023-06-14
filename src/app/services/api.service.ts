@@ -11,6 +11,7 @@ import { UtmRoute } from '../models/utm-route';
 import { UtmRouteStop } from '../models/utm-route-stop';
 import { MediaItem, MediaItemType } from '../models/media-item';
 import { UtmTranslateService } from './utm-translate.service';
+import { StaticPage } from '../models/static-page';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,24 @@ export class ApiService {
       this.http.get<{ nid: string }>(environment.aliasToNidUrl + url)
     );
     return response.nid;
+  }
+
+  async getStaticPage(title: string): Promise<StaticPage | undefined> {
+    const staticPages: StaticPage[] = await lastValueFrom(
+      this.http.get<StaticPage[]>(
+        environment.apiUrl + environment.apiSuffixes.staticPage + title
+      )
+    );
+    if (staticPages.length <= 0) {
+      return undefined;
+    }
+
+    const staticPage: StaticPage = staticPages[0];
+    await this.utmTranslate.translateObjectByKeys(
+      staticPage,
+      environment.translateKeys.staticPage
+    );
+    return staticPage;
   }
 
   getMapLocations(): Observable<MapLocation[]> {

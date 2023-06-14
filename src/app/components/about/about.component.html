@@ -1,14 +1,10 @@
-<!-- TODO: Insert this content through API -->
 <div>
   <div>
-    <div
-      class="section section-header"
-      style="background-image: url(/assets/img/about.jpg)"
-    >
+    <div class="section section-header">
       <div>
         <div>
           <div>
-            <h1>Over Utrecht Time Machine</h1>
+            <h1 [innerHtml]="content?.title"></h1>
           </div>
         </div>
       </div>
@@ -17,96 +13,7 @@
   <div>
     <div class="section section-ck">
       <div class="pad">
-        <div>
-          <p class="intro">
-            Utrecht Time Machine (UTM) beoogt het zichtbaar en ervaarbaar maken
-            van de rijke Utrechtse geschiedenis via een combinatie tussen linked
-            data en visualisatie technologie. Dit resulteert in vernieuwende
-            interactieve presentatievormen voor een breed publiek. Deelnemers
-            aan UTM stellen bronnen en resources beschikbaar. Ook moedigen zij
-            andere geïnteresseerde ontwerpers en ontwikkelaars aan om aan de
-            slag te gaan met de gecombineerde data van verschillende
-            erfgoedpartners.
-          </p>
-          <p>
-            Utrecht Time Machine (UTM) gebruikt talloze historische artefacten
-            en data en maakt deze voor iedereen toegankelijk, door ze op
-            intuïtieve wijze aan hun locatie te verbinden, en met innovatieve
-            technologie toegankelijk te maken. Hiermee draagt UTM bij aan de
-            digitale en culturele geletterdheid in Utrecht. Met iedere
-            smartphone en een speciale app kunnen geïnteresseerden kijken naar
-            wie er waar woonde, werkte, handelde en consumeerde, tot tweeduizend
-            jaar geleden.
-          </p>
-          <h3>Consortium</h3>
-          <p>
-            Utrecht Time Machine is een consortium waaraan verschillende
-            Utrechtse erfgoedinstellingen deelnemen: Het Utrechts Archief,
-            Historische Vereniging Oud-Utrecht, de Gemeente Utrecht en de
-            Universiteit Utrecht. Samen willen we open data over de Utrechtse
-            geschiedenis verbinden en presenteren in een voor iedereen
-            toegankelijke vorm; een soort tijdmachine dus. De producten en
-            pilots voor Utrecht Time Machine worden ontwikkeld in het vak '<a
-              href="https://www.uu.nl/en/news/living-pasts-a-multidisciplinary-course-on-the-history-of-utrecht"
-              ><u>Living Pasts</u></a
-            >' van de Universiteit Utrecht.
-          </p>
-          <p>
-            Utrecht Time Machine is onderdeel van het Europese initiatief
-            <a href="https://www.timemachine.eu/"
-              ><u>Time Machine FET Flagship</u></a
-            >. Het project heeft tot doel 2000 jaar Europese geschiedenis in
-            kaart te brengen.
-          </p>
-          <h3>Deelnemers</h3>
-          <p>
-            De Utrecht Time Machine app is een project dat in samenwerking met
-            verschillende partners tot stand is gekomen.
-          </p>
-          <p><strong>Partnerorganisaties</strong></p>
-          <p>
-            Het Utrechts Archief, Universiteit Utrecht, UMC Utrecht, Gemeente
-            Utrecht, Historische Vereniging Oud-Utrecht, Landschap Erfgoed
-            Utrecht, RTV Utrecht, Museum Catharijne Convent, Utrechts Monumenten
-            Fonds, Utrechts Documentatie Systeem, Sociëteit de Constructieve,
-            DOMunder en Utrechts Geveltekenfonds.
-          </p>
-          <p><strong>Contactpersonen</strong></p>
-          <p>
-            Toine Pieters (Universiteit Utrecht), Rick Companje (Het Utrechts
-            Achief), Rianne Pruis (Gemeente Utrecht) en Dick de Jong (Oud
-            Utrecht).
-          </p>
-          <p>
-            <strong>Redacteuren:</strong> Tessa Nauta, Shahin Nazar Kermanshahi,
-            Tim Overkempe en Wieke Hendriks&nbsp;<br /><strong
-              >Vormgeving en website:</strong
-            >
-            Frank-Jan van Lunteren&nbsp;<br /><strong
-              >Technische ontwikkeling:</strong
-            >
-            Frank-Jan van Lunteren, Simon Dirks en Rick Companje&nbsp;<br /><strong
-              >Logistieke ondersteuning:</strong
-            >
-            Fred Nuwenhuis&nbsp;<br /><strong
-              >Met redactionele ondersteuning van:</strong
-            >
-            Armand Heijnen en Peter Drehmanns
-          </p>
-          <p>
-            Overname van teksten en afbeeldingen is toegestaan. Bronvermelding
-            wordt op prijs gesteld.
-          </p>
-          <h3>Vragen of opmerkingen?</h3>
-          <p>
-            <a
-              class="button"
-              href="https://forms.gle/wsMhE4vLzXjhBEQ96"
-              target="_blank"
-              >Reactieformulier</a
-            >
-          </p>
-        </div>
+        <div [innerHtml]="content?.body"></div>
       </div>
     </div>
   </div>
