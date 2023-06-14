@@ -10,7 +10,10 @@
 <!--  </div>-->
 <!--</div>-->
 
-<div class="audio-container">
+<div
+  class="audio-container"
+  *ngIf="utmRoutes.selectedStop && utmRoutes.selectedStop.audio"
+>
   <div
     class="audioplayer"
     [ngClass]="{ 'audioplayer-playing': audio.isPlaying }"
