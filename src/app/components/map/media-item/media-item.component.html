@@ -25,7 +25,7 @@
 
       <!--          TODO: Style audio player-->
       <div class="audio-embed" *ngIf="mediaItem.type === MediaItemType.Audio">
-        <div>
+        <div class="audioplayer">
           <audio controls>
             <source [src]="mediaItem.media_file | safe" type="audio/mpeg" />
             Your browser does not support the audio element.

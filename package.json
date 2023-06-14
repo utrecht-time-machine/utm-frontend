@@ -9,6 +9,7 @@
     "test": "ng test",
     "build:android": "cd cordova; ng build --output-path cordova/www; cordova build android",
     "build:ios": "cd cordova; ng build --output-path cordova/www; cordova build ios",
+    "run:ios": "cd cordova; ng build --output-path cordova/www; cordova run ios",
     "emulate:android": "cd cordova; cordova emulate android",
     "emulate:ios": "cd cordova; cordova emulate ios",
     "dev:ssr": "ng run utm2023-frontend:serve-ssr",
