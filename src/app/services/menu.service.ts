@@ -48,7 +48,14 @@ export class MenuService {
     document.getElementsByTagName('body')[0].classList.toggle('menu-mb-on');
   }
 
-  private _updateAllLocationsByLetter() {
+  private async _updateAllLocationsByLetter() {
+    if (
+      !this.map.allLocations.getValue() ||
+      this.map.allLocations.getValue().length <= 0
+    ) {
+      await this.map.updateAllLocationsFromServer();
+    }
+
     for (const sortKey of ['title', 'address']) {
       const sortedLocations = this.map.allLocations.getValue().sort((a, b) => {
         return (a as any)[sortKey].localeCompare((b as any)[sortKey]);
