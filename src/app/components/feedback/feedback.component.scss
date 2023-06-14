@@ -82,7 +82,7 @@
   &:hover {
     opacity: 0.8 !important;
   }
-  //pointer-events: none; // Edit this to allow re-voting
+  pointer-events: none; // Edit this to allow re-voting
 }
 .done.feed a.on {
   opacity: 1 !important;
