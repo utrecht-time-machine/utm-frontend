@@ -3799,6 +3799,10 @@ div.user-bar ul > li > a:not(.is-active):hover {
   height: 64vh;
 }
 
+.mapboxgl-popup-close-button {
+  outline: none;
+}
+
 .dock-inner {
   padding: 80px 0 60px 0;
 }
