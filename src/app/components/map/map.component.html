@@ -32,7 +32,13 @@
       </div>
     </div>
 
-    <div class="map-data-near">
+    <div
+      class="map-data-near"
+      *ngIf="
+        routing.getSelectedView() === SelectedView.Locations ||
+        routing.getSelectedView() === SelectedView.Story
+      "
+    >
       <div class="pad">
         <h2>
           {{ "exploreArea" | translate }}
