@@ -4,9 +4,11 @@ import { MapComponent } from './components/map/map.component';
 import { RoutesComponent } from './components/routes/routes.component';
 import { AboutComponent } from './components/about/about.component';
 import { qrCodeRoutes } from '../assets/routing/qr-code-routes';
+import { previousUtmRoutes } from '../assets/routing/previous-utm-routes';
 
 export const routes: Routes = [
   ...qrCodeRoutes,
+  ...previousUtmRoutes,
   { path: '', component: MapComponent },
   { path: 'locaties', component: MapComponent },
   { path: 'locaties/:id', component: MapComponent },
