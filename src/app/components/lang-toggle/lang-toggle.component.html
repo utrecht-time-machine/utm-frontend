@@ -1,3 +1,15 @@
-<a (click)="toggleLanguage()">{{
-  translate.currentLang.toUpperCase() === "EN" ? "NL" : "EN"
-}}</a>
+<a
+  (click)="onLanguageSelect('nl')"
+  class="nl-lang-toggle"
+  [ngClass]="{ 'selected-lang-toggle': this.translate.currentLang === 'nl' }"
+>
+  <span class="desktop-lang-toggle-text">Nederlands</span>
+  <span class="mobile-lang-toggle-text">NL</span>
+</a>
+<a
+  (click)="onLanguageSelect('en')"
+  [ngClass]="{ 'selected-lang-toggle': this.translate.currentLang === 'en' }"
+>
+  <span class="desktop-lang-toggle-text">English</span>
+  <span class="mobile-lang-toggle-text">EN</span></a
+>

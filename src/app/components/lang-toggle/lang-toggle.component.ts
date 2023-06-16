@@ -11,18 +11,14 @@ export class LangToggleComponent {
 
   constructor(public translate: TranslateService) {}
 
-  toggleLanguage() {
-    localStorage.setItem(this.LOCAL_STORAGE_LANG_KEY, 'nl');
-
-    if (this.translate.currentLang === 'nl') {
-      localStorage.setItem(this.LOCAL_STORAGE_LANG_KEY, 'en');
-      this.translate.use('en');
-      location.reload();
-    } else {
-      localStorage.setItem(this.LOCAL_STORAGE_LANG_KEY, 'nl');
-      this.translate.use('nl');
-      location.reload();
+  onLanguageSelect(language: string) {
+    if (this.translate.currentLang === language) {
+      return;
     }
+
+    localStorage.setItem(this.LOCAL_STORAGE_LANG_KEY, language);
+    this.translate.use(language);
+    location.reload();
   }
 
   ngOnInit() {

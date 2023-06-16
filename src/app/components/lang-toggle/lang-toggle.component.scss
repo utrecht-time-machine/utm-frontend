@@ -1,0 +1,31 @@
+.nl-lang-toggle {
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+a {
+  padding: 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.selected-lang-toggle {
+  color: white;
+}
+
+.mobile-lang-toggle-text {
+  display: none;
+}
+
+@media only screen and (max-width: 1200px) {
+  .mobile-lang-toggle-text {
+    display: inline;
+  }
+
+  .desktop-lang-toggle-text {
+    display: none;
+  }
+}
