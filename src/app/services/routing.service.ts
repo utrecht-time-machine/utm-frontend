@@ -2,11 +2,16 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { SelectedView } from '../models/selected-view';
 import { StoryService } from './story.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoutingService {
+  public readonly selectedView = new BehaviorSubject<SelectedView>(
+    SelectedView.Undefined
+  );
+
   constructor(public router: Router, private story: StoryService) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
@@ -19,7 +24,7 @@ export class RoutingService {
     });
   }
 
-  getSelectedView(): SelectedView {
+  private determineSelectedView(): SelectedView {
     if (this.router.url === '/' || this.router.url.startsWith('/locaties')) {
       return SelectedView.Locations;
     }
@@ -41,5 +46,13 @@ export class RoutingService {
     }
 
     return SelectedView.Undefined;
+  }
+
+  getSelectedView(): SelectedView {
+    const currentView = this.determineSelectedView();
+    if (this.selectedView.getValue() !== currentView) {
+      this.selectedView.next(currentView);
+    }
+    return currentView;
   }
 }
