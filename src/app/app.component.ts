@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SpinnerService } from './services/spinner.service';
+import { SeoService } from './services/seo.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,5 @@ import { SpinnerService } from './services/spinner.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'Utrecht Time Machine';
-
-  constructor(public spinner: SpinnerService) {}
+  constructor(public spinner: SpinnerService, public seoService: SeoService) {}
 }
