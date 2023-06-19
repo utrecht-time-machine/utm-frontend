@@ -219,7 +219,7 @@ export class ApiService {
       const [lat, long] = stop.geo.split(',');
       stop.coords = {
         lat: parseFloat(lat.trim()),
-        long: parseFloat(long.trim()),
+        lng: parseFloat(long.trim()),
       };
       if (stop.audio) {
         stop.audio = environment.audioBaseUrl + stop.audio;

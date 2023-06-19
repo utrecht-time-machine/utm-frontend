@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import mapboxgl, { LngLat, LngLatBounds, Map, Popup } from 'mapbox-gl';
+import mapboxgl, {
+  LngLat,
+  LngLatBounds,
+  LngLatLike,
+  Map,
+  Popup,
+} from 'mapbox-gl';
 import { ApiService } from './api.service';
 import { GeoJSON } from 'geojson';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
@@ -27,6 +33,7 @@ export class MapService {
   >([]);
 
   shownLocationPopup: Popup | undefined = undefined;
+  shownStopPopup: Popup | undefined = undefined;
 
   mapLocationsFeatures: GeoJSON.FeatureCollection | undefined = undefined;
 
@@ -92,7 +99,7 @@ export class MapService {
     });
 
     this.utmRoutes.selectedStopIdx.subscribe((stopIdx) => {
-      if (!this.map) {
+      if (!this.map || stopIdx === undefined) {
         return;
       }
 
@@ -100,13 +107,27 @@ export class MapService {
         this.fitMapToRouteBounds();
       }
 
-      const stopCoords = this.utmRoutes.selectedStop?.coords;
+      const selectedStop: UtmRouteStop | undefined =
+        this.utmRoutes.selectedStop;
+      if (!selectedStop) {
+        return;
+      }
+
+      const stopCoords = selectedStop.coords;
       if (stopCoords) {
         this.map.flyTo({
-          center: [stopCoords.long, stopCoords.lat],
+          center: [stopCoords.lng, stopCoords.lat],
           essential: true,
           zoom: 18,
         });
+
+        this._showMapStopPopup(
+          stopCoords,
+          selectedStop.title,
+          selectedStop.address,
+          selectedStop.stop_thumb,
+          stopIdx
+        );
       }
     });
   }
@@ -288,7 +309,7 @@ export class MapService {
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [stop.coords.long, stop.coords.lat],
+            coordinates: [stop.coords.lng, stop.coords.lat],
           },
           properties: {
             label: idx + 1,
@@ -371,36 +392,17 @@ export class MapService {
       }
 
       const feature = e.features[0];
-      const popup: Popup = new mapboxgl.Popup({
-        offset: [0, 0],
-      })
-        .setLngLat(feature.geometry.coordinates)
-        .setHTML(
-          this._getStopPopupHtml(
-            feature.properties.stop_title,
-            feature.properties.stop_address,
-            feature.properties.stop_thumb,
-            feature.properties.idx
-          )
-        )
-        .addTo(this.map);
-
-      // TODO: Use environment translateKeys here
-      this.utmTranslate
-        .translateString(feature.properties.stop_title)
-        .then((translatedTitle) => {
-          popup.setHTML(
-            this._getStopPopupHtml(
-              translatedTitle,
-              feature.properties.stop_address,
-              feature.properties.stop_thumb,
-              feature.properties.idx
-            )
-          );
-          this._initStopPopupClicking(popup);
-        });
-
-      this._initStopPopupClicking(popup);
+      const coords: LngLatLike = {
+        lng: feature.geometry.coordinates[0],
+        lat: feature.geometry.coordinates[1],
+      };
+      this._showMapStopPopup(
+        coords,
+        feature.properties.stop_title,
+        feature.properties.stop_address,
+        feature.properties.stop_thumb,
+        feature.properties.idx
+      );
     });
 
     this.fitMapToRouteBounds();
@@ -414,7 +416,7 @@ export class MapService {
     const stopsCoordinates: LngLat[] | undefined = this.utmRoutes.selected
       .getValue()
       ?.stops?.map((stop) => {
-        return new LngLat(stop.coords.long, stop.coords.lat);
+        return new LngLat(stop.coords.lng, stop.coords.lat);
       });
 
     if (stopsCoordinates) {
@@ -821,13 +823,44 @@ export class MapService {
     this.shownLocationPopup = popup;
   }
 
+  private async _showMapStopPopup(
+    coords: LngLatLike,
+    title: string,
+    address: string,
+    thumb: string,
+    idx: number
+  ) {
+    if (this.shownStopPopup) {
+      this.shownStopPopup.remove();
+      this.shownStopPopup = undefined;
+    }
+
+    const popup: Popup = new mapboxgl.Popup({
+      offset: [0, 0],
+    })
+      .setHTML(this._getStopPopupHtml(title, address, thumb, idx))
+      .setLngLat(coords)
+      .addTo(this.map as mapboxgl.Map);
+
+    this.utmTranslate
+      .translateObjectByKeys(stop, environment.translateKeys.mapLocation)
+      .then(() => {
+        popup.setHTML(this._getStopPopupHtml(title, address, thumb, idx));
+        this._initStopPopupClicking(popup);
+      });
+
+    this._initStopPopupClicking(popup);
+
+    this.shownStopPopup = popup;
+  }
+
   private async _getRouteStopsPathFeature(
     routeStops: UtmRouteStop[]
   ): Promise<any> {
     const coordsStr: string = routeStops
       .map((stop) => {
         if (stop.coords) {
-          return `${stop.coords.long},${stop.coords.lat}`;
+          return `${stop.coords.lng},${stop.coords.lat}`;
         }
         return undefined;
       })

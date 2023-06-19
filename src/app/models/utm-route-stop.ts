@@ -7,7 +7,7 @@ export interface UtmRouteStop {
   address: string;
   route_id: string;
   geo: string;
-  coords: { lat: number; long: number };
+  coords: { lat: number; lng: number };
   audio: string;
   stop_image: string;
   stop_thumb: string;
