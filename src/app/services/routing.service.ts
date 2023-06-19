@@ -19,7 +19,7 @@ export class RoutingService {
   ) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
-        if (e.url.startsWith('/story') || e.url.includes('?story=')) {
+        if (e.url.includes('/story/') || e.url.includes('?story=')) {
           this.story.showView();
         } else {
           this.story.hideView();
