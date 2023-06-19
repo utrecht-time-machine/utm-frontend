@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Story } from '../models/story';
 import { ApiService } from './api.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MediaItem } from '../models/media-item';
 
 @Injectable({
@@ -19,10 +19,11 @@ export class StoryService {
     false
   );
 
-  constructor(private api: ApiService, private router: Router) {
-    this.showingStoryView.subscribe((storyViewIsShown) => {
-      if (storyViewIsShown) {
-        void this._updateShownStoryDetailsFromServer();
+  constructor(private route: ActivatedRoute, private api: ApiService) {
+    this.route.queryParams.subscribe((params) => {
+      const storyAlias: string = params['story'];
+      if (storyAlias) {
+        void this._updateShownStoryDetailsFromServer(storyAlias);
       } else {
         this.shownStoryMediaItems.next([]);
         this.shownStory.next(undefined);
@@ -30,8 +31,10 @@ export class StoryService {
     });
   }
 
-  private async _updateShownStoryDetailsFromServer() {
-    const storyNid: string = await this.api.getNidFromUrlAlias(this.router.url);
+  private async _updateShownStoryDetailsFromServer(storyAlias: string) {
+    const storyNid: string = await this.api.getNidFromUrlAlias(
+      '/story/' + storyAlias
+    );
 
     this.api
       .getStoryDetailsById(storyNid)

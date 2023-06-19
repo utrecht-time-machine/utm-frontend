@@ -80,7 +80,13 @@
         </div>
         <div class="story-hold">
           <div class="story" *ngFor="let story of locationDetails?.stories">
-            <a (click)="router.navigateByUrl(story.story_link)">
+            <a
+              (click)="
+                router.navigateByUrl(
+                  locationDetails?.url + '?story=' + story.story_url_alias
+                )
+              "
+            >
               <div
                 class="head has-video-{{
                   storyHasVideoIcon(story) ? '1' : '0'

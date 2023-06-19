@@ -12,9 +12,10 @@ export const routes: Routes = [
   { path: '', component: MapComponent },
   { path: 'locaties', component: MapComponent },
   { path: 'locaties/:id', component: MapComponent },
+  { path: 'locaties/:id/:storyId', component: MapComponent },
   { path: 'routes', component: RoutesComponent },
   { path: 'routes/:id', component: MapComponent },
-  { path: 'story/:id', component: MapComponent },
+  // { path: 'story/:id', component: MapComponent },
   { path: 'over', component: AboutComponent },
 ];
 

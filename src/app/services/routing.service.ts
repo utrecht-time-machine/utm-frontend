@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SelectedView } from '../models/selected-view';
 import { StoryService } from './story.service';
 import { BehaviorSubject } from 'rxjs';
@@ -12,14 +12,17 @@ export class RoutingService {
     SelectedView.Undefined
   );
 
-  constructor(public router: Router, private story: StoryService) {
-    router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        if (e.url.startsWith('/story')) {
-          this.story.showView();
-        } else {
-          this.story.hideView();
-        }
+  constructor(
+    private route: ActivatedRoute,
+    public router: Router,
+    private story: StoryService
+  ) {
+    this.route.queryParams.subscribe((params) => {
+      const storyId = params['story'];
+      if (storyId) {
+        this.story.showView();
+      } else {
+        this.story.hideView();
       }
     });
   }

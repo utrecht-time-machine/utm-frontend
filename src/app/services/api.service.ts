@@ -251,6 +251,12 @@ export class ApiService {
       )
     );
     this._addImageUrlPrefixes(stories, 'photo');
+
+    stories.map(
+      (story) =>
+        (story.story_url_alias = story.story_link.replace('/story/', ''))
+    );
+
     this.utmTranslate.translateObjectsByKeys(
       stories,
       environment.translateKeys.storyDetails

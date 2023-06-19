@@ -83,7 +83,7 @@ export class UtmRoutesService {
   public selectedStopHasMediaItems(): boolean {
     return (
       this.selectedStop !== undefined &&
-      this.selectedStop?.media_items.length > 0
+      this.selectedStop?.media_items?.length > 0
     );
   }
 
