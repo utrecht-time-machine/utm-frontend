@@ -35,7 +35,11 @@ export class ApiService {
       this.http.get<StaticPage[]>(
         environment.apiUrl + environment.apiSuffixes.staticPage + title
       )
-    );
+    ).catch((err) => {
+      console.error(err);
+      return [];
+    });
+
     if (staticPages.length <= 0) {
       return undefined;
     }
@@ -61,7 +65,10 @@ export class ApiService {
       this.http.get<UtmRoute[]>(
         environment.apiUrl + environment.apiSuffixes.routes
       )
-    );
+    ).catch((err) => {
+      console.error(err);
+      return [];
+    });
     this._addImageUrlPrefixes(utmRoutes, 'photo');
     this.utmTranslate.translateObjectsByKeys(
       utmRoutes,

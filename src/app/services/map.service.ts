@@ -469,7 +469,10 @@ export class MapService {
 
   async updateAllLocationsFromServer() {
     this.allLocations.next(
-      await lastValueFrom(this.apiService.getMapLocations())
+      await lastValueFrom(this.apiService.getMapLocations()).catch((err) => {
+        console.error(err);
+        return [];
+      })
     );
   }
 
