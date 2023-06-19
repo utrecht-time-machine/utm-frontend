@@ -13,6 +13,7 @@
 
   <platform name="android">
     <preference name="AndroidWindowSplashScreenBackground" value="#fe003e"/>
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/android/splashscreen.xml" />
 
     <allow-intent href="market:*"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
