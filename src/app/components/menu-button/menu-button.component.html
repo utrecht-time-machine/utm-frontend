@@ -11,7 +11,7 @@
 <div class="menu-mb">
   <div>
     <div class="menu-mb-inner">
-      <div class="brand">
+      <div class="brand" (click)="onBrandLogoClicked()">
         <div>Utrecht<br />Time Machine</div>
       </div>
       <app-menu-links></app-menu-links>
@@ -30,7 +30,7 @@
 <div class="menu-az">
   <div>
     <div class="menu-az-inner" *ngIf="menuService.azMenuIsShown">
-      <div class="brand white">
+      <div class="brand white" (click)="onBrandLogoClicked()">
         <div>Utrecht<br />Time Machine</div>
       </div>
       <div

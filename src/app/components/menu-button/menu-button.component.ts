@@ -91,4 +91,9 @@ export class MenuButtonComponent {
       console.warn('Menu sorted on unknown variable');
     }
   }
+
+  onBrandLogoClicked() {
+    this.menuService.closeAllMenus();
+    this.router.navigateByUrl('/');
+  }
 }
