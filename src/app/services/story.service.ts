@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Story } from '../models/story';
 import { ApiService } from './api.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MediaItem } from '../models/media-item';
 
 @Injectable({
@@ -19,16 +19,41 @@ export class StoryService {
     false
   );
 
-  constructor(private route: ActivatedRoute, private api: ApiService) {
-    this.route.queryParams.subscribe((params) => {
-      const storyAlias: string = params['story'];
-      if (storyAlias) {
-        void this._updateShownStoryDetailsFromServer(storyAlias);
-      } else {
-        this.shownStoryMediaItems.next([]);
-        this.shownStory.next(undefined);
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private api: ApiService
+  ) {
+    this.showingStoryView.subscribe(async (showingStoryView) => {
+      if (!showingStoryView) {
+        this._resetShownStory();
+        return;
+      }
+
+      if (showingStoryView) {
+        this.route.queryParams.subscribe(async (urlParams) => {
+          const storyAlias: string = urlParams['story'];
+          if (storyAlias) {
+            await this._updateShownStoryDetailsFromServer(storyAlias);
+            return;
+          }
+
+          const storyUrl = this.router.url;
+          if (storyUrl) {
+            await this._updateShownStoryDetailsFromServer(
+              storyUrl.replace('/story/', '')
+            );
+          } else {
+            this._resetShownStory();
+          }
+        });
       }
     });
+  }
+
+  private _resetShownStory() {
+    this.shownStoryMediaItems.next([]);
+    this.shownStory.next(undefined);
   }
 
   private async _updateShownStoryDetailsFromServer(storyAlias: string) {
