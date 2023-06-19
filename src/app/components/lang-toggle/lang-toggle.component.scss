@@ -14,6 +14,13 @@ a {
 
 .selected-lang-toggle {
   color: white;
+
+  background-image: url(/assets/ui/svg/tick-w.svg);
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 14px auto;
+  padding-left: 20px;
+  margin-left: 0.5rem;
 }
 
 .mobile-lang-toggle-text {
