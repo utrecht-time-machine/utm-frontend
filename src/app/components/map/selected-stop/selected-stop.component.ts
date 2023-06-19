@@ -8,6 +8,8 @@ import { AudioService } from '../../../services/audio.service';
   styleUrls: ['./selected-stop.component.scss'],
 })
 export class SelectedStopComponent {
+  scrubbingAudio = false;
+
   @ViewChild('audioElement', { static: false }) audioElement!: ElementRef;
 
   constructor(public utmRoutes: UtmRoutesService, public audio: AudioService) {
@@ -18,8 +20,8 @@ export class SelectedStopComponent {
 
   ngOnInit() {}
 
-  onAudioBarClicked(event: any) {
-    if (!event.target) {
+  onAudioBarMouseMove(event: any) {
+    if (!event.target || !this.scrubbingAudio) {
       return;
     }
 
@@ -29,5 +31,13 @@ export class SelectedStopComponent {
     const percentage = (clickX / boundingRect.width) * 100;
 
     this.audio.setTimeByPercentage(percentage);
+  }
+
+  onAudioBarStartScrubbing() {
+    this.scrubbingAudio = true;
+  }
+
+  onAudioBarStopScrubbing() {
+    this.scrubbingAudio = false;
   }
 }

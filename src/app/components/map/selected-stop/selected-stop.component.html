@@ -28,7 +28,13 @@
     <div class="audioplayer-time audioplayer-time-current">
       {{ audio.formattedPlayTime }}
     </div>
-    <div class="audioplayer-bar" (click)="onAudioBarClicked($event)">
+    <div
+      class="audioplayer-bar"
+      (mousedown)="onAudioBarStartScrubbing()"
+      (mousemove)="onAudioBarMouseMove($event)"
+      (mouseup)="onAudioBarStopScrubbing()"
+      (mouseleave)="onAudioBarStopScrubbing()"
+    >
       <!--      <div class="audioplayer-bar-loaded" [ngStyle]="{ width: '0%' }"></div>-->
       <div
         class="audioplayer-bar-played"
