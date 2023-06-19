@@ -113,6 +113,12 @@ export class ApiService {
         this._addImageUrlPrefix(mediaItem, 'image_small');
       }
 
+      const isVideoItem = mediaItem.media_file;
+      if (isVideoItem) {
+        mediaItem.type = MediaItemType.Video;
+        this._addImageUrlPrefix(mediaItem, 'media_file');
+      }
+
       if (mediaItem.embed_url) {
         mediaItem.type = MediaItemType.Embed;
 

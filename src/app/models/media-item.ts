@@ -16,5 +16,6 @@ export enum MediaItemType {
   Undefined,
   Image,
   Audio,
+  Video,
   Embed,
 }

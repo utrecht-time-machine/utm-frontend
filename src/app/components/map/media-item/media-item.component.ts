@@ -9,4 +9,9 @@ import { MediaItem, MediaItemType } from '../../../models/media-item';
 export class MediaItemComponent {
   @Input() mediaItem: MediaItem | undefined;
   MediaItemType = MediaItemType;
+
+  hasHead() {
+    const hasHead = this.mediaItem?.text && this.mediaItem.text !== '<p></p>';
+    return hasHead;
+  }
 }

@@ -1,5 +1,5 @@
 <div *ngIf="mediaItem">
-  <div class="media-item has-head">
+  <div class="media-item" [ngClass]="{ 'has-head': hasHead() }">
     <div class="core">
       <div class="core-name">
         <h4 [innerHtml]="mediaItem.title"></h4>
@@ -13,13 +13,26 @@
         />
       </div>
 
-      <div class="video-embed" *ngIf="mediaItem.type === MediaItemType.Embed">
+      <div
+        class="video-embed"
+        *ngIf="
+          mediaItem.type === MediaItemType.Embed ||
+          mediaItem.type === MediaItemType.Video
+        "
+      >
         <div>
           <iframe
             [src]="mediaItem.embed_url | safe"
-            width="560"
-            height="315"
+            *ngIf="mediaItem.type === MediaItemType.Embed"
           ></iframe>
+
+          <video
+            controls=""
+            preload="auto"
+            *ngIf="mediaItem.type === MediaItemType.Video"
+          >
+            <source [src]="mediaItem.media_file" />
+          </video>
         </div>
       </div>
 
@@ -49,7 +62,7 @@
         </div>
       </div>
     </div>
-    <div class="head">
+    <div class="head" *ngIf="hasHead()">
       <h4 [innerHtml]="mediaItem.title"></h4>
       <div [innerHtml]="mediaItem.text"></div>
     </div>
