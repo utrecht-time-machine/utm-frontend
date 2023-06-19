@@ -11,5 +11,6 @@
   "name": "Name",
   "address": "Address",
   "storyFeedbackTitle": "What do you think of this story?",
-  "storyFeedbackGiven": "Thank you for your feedback!"
+  "storyFeedbackGiven": "Thank you for your feedback!",
+  "appIsOffline": "Sorry, we are currently experiencing connection issues. Please check your internet connection and try again later."
 }

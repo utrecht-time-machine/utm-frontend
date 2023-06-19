@@ -11,5 +11,6 @@
   "name": "Naam",
   "address": "Adres",
   "storyFeedbackTitle": "Wat vind je van dit verhaal?",
-  "storyFeedbackGiven": "Bedankt voor je feedback!"
+  "storyFeedbackGiven": "Bedankt voor je feedback!",
+  "appIsOffline": "Sorry, we ervaren momenteel verbindingsproblemen. Controleer uw internetverbinding en probeer het later opnieuw."
 }

@@ -13,6 +13,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { NgxMatomoRouterModule } from '@ngx-matomo/router';
+import { ConnectivityModule } from './components/connectivity/connectivity.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -42,6 +43,7 @@ export function createTranslateLoader(http: HttpClient) {
       trackerUrl: 'https://analytics.utrechttimemachine.nl/',
     }),
     NgxMatomoRouterModule,
+    ConnectivityModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

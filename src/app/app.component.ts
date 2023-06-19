@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SpinnerService } from './services/spinner.service';
 import { SeoService } from './services/seo.service';
+import { ConnectivityService } from './services/connectivity.service';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +9,9 @@ import { SeoService } from './services/seo.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor(public spinner: SpinnerService, public seoService: SeoService) {}
+  constructor(
+    public spinner: SpinnerService,
+    public seoService: SeoService,
+    public connectivity: ConnectivityService
+  ) {}
 }
