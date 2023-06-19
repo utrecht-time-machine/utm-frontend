@@ -141,14 +141,20 @@ export class MapService {
 
     mapboxgl.accessToken = environment.mapboxAccessToken;
 
+    const maxRandomXOffset = 0.002222;
+    const maxRandomYOffset = 0.000833;
+    const randomCenter: LngLatLike = [
+      5.12 + Math.random() * maxRandomXOffset,
+      52.09 + Math.random() * maxRandomYOffset,
+    ]; //[5.122222, 52.090833];
     this.map = new mapboxgl.Map({
       container: 'mapbox',
       // style: 'mapbox://styles/mapbox/streets-v12',
       // style: 'mapbox://styles/mapbox/navigation-night-v1',
       // style: 'mapbox://styles/mapbox/satellite-v9',
       style: 'mapbox://styles/mapbox/light-v11',
-      center: [5.122222, 52.090833],
-      zoom: 12,
+      center: randomCenter,
+      zoom: 16,
       pitch: 45, //24
       bearing: 0,
       attributionControl: false,
