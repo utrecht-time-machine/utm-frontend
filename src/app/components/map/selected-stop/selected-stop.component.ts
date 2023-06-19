@@ -20,11 +20,23 @@ export class SelectedStopComponent {
 
   ngOnInit() {}
 
-  onAudioBarMouseMove(event: any) {
+  onAudioBarScrubbed(event: any) {
     if (!event.target || !this.scrubbingAudio) {
       return;
     }
 
+    this.setAudioTimeByClickLocation(event);
+  }
+
+  onAudioBarClicked(event: any) {
+    if (!event.target) {
+      return;
+    }
+
+    this.setAudioTimeByClickLocation(event);
+  }
+
+  setAudioTimeByClickLocation(event: any) {
     const audioBarElem = event.target;
     const boundingRect = audioBarElem.getBoundingClientRect();
     const clickX = event.clientX - boundingRect.left;
