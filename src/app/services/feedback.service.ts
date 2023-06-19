@@ -12,7 +12,7 @@ export class FeedbackService {
   ratingsPerStory: { [storyId: string]: FeedbackRating } = {};
 
   constructor(private apiService: ApiService) {
-    const localStorageRatings = localStorage.getItem(
+    const localStorageRatings = window.localStorage.getItem(
       this.LOCAL_STORAGE_FEEDBACK_KEY
     );
     if (localStorageRatings) {
@@ -30,7 +30,7 @@ export class FeedbackService {
 
     this.ratingsPerStory[storyId] = rating;
 
-    localStorage.setItem(
+    window.localStorage.setItem(
       this.LOCAL_STORAGE_FEEDBACK_KEY,
       JSON.stringify(this.ratingsPerStory)
     );
