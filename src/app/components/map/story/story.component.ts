@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { StoryService } from '../../../services/story.service';
 import { Router } from '@angular/router';
 
@@ -17,6 +17,13 @@ export class StoryComponent {
       this.story.shownStory.getValue()?.location_url;
     if (locationUrl) {
       void this.router.navigateByUrl(locationUrl);
+    }
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  handleKeyUp(event: KeyboardEvent) {
+    if (event.code === 'Escape') {
+      this.story.hideView();
     }
   }
 }
