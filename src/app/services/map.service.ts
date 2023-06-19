@@ -57,7 +57,7 @@ export class MapService {
         if (loadedHomePage) {
           void this.deselectLocation();
         } else {
-          void this.selectLocationByUrlOrId(this.router.url, true);
+          void this.selectLocationByUrlOrId(this.router.url);
         }
       } else {
         void this.deselectLocation();
@@ -615,11 +615,14 @@ export class MapService {
     this.selectedLocation.next(undefined);
   }
 
-  async selectLocationByUrlOrId(
-    url: string,
-    scrollToTop: boolean,
-    locationId?: string
-  ) {
+  async selectLocationByUrlOrId(url: string, locationId?: string) {
+    const urlWithoutParams = url.split('?')[0];
+    const locationIsAlreadySelected =
+      urlWithoutParams === this.selectedLocation.getValue()?.url;
+    if (locationIsAlreadySelected) {
+      return;
+    }
+
     setTimeout(() => (this.spinner.loadingLocation = true));
     if (!locationId) {
       const urlWithoutParams = url.split('?')[0];
@@ -656,9 +659,7 @@ export class MapService {
       // const headerHeight: number =
       //   document.getElementsByClassName('utm-header')[0].clientHeight;
 
-      if (scrollToTop) {
-        window.scrollTo({ top: 200, behavior: 'smooth' });
-      }
+      window.scrollTo({ top: 200, behavior: 'smooth' });
 
       setTimeout(() => (this.spinner.loadingLocation = false));
     });
@@ -748,7 +749,7 @@ export class MapService {
         event.preventDefault();
         const url = link.getAttribute('data-url');
         if (url) {
-          void this.selectLocationByUrlOrId(url, true, nid);
+          void this.selectLocationByUrlOrId(url, nid);
         } else {
           console.warn('Clicked on popup location without a URL...');
         }

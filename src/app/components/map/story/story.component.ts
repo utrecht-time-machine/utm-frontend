@@ -23,7 +23,7 @@ export class StoryComponent {
   @HostListener('document:keyup', ['$event'])
   handleKeyUp(event: KeyboardEvent) {
     if (event.code === 'Escape') {
-      this.story.hideView();
+      this.onLocationLinkClicked();
     }
   }
 }

@@ -56,7 +56,7 @@
             <div *ngFor="let location of locationsByLetter[letter]">
               <a
                 (click)="
-                  map.selectLocationByUrlOrId(location.url, true, location.nid)
+                  map.selectLocationByUrlOrId(location.url, location.nid)
                 "
                 ><span
                   class="name"
