@@ -57,7 +57,7 @@ export class MapService {
         if (loadedHomePage) {
           void this.deselectLocation();
         } else {
-          void this.selectLocationByUrlOrId(this.router.url, false);
+          void this.selectLocationByUrlOrId(this.router.url, true);
         }
       } else {
         void this.deselectLocation();
@@ -625,6 +625,8 @@ export class MapService {
       locationId = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
     }
 
+    await this.router.navigateByUrl(url);
+
     const locationDetails: LocationDetails | undefined =
       await this.apiService.getLocationDetailsById(locationId);
     if (locationDetails) {
@@ -654,15 +656,8 @@ export class MapService {
       //   document.getElementsByClassName('utm-header')[0].clientHeight;
 
       if (scrollToTop) {
-        await window.scrollTo({ top: 200, behavior: 'smooth' });
+        window.scrollTo({ top: 200, behavior: 'smooth' });
       }
-
-      setTimeout(
-        () => {
-          this.router.navigateByUrl(url);
-        },
-        scrollToTop ? 200 : 0
-      );
 
       setTimeout(() => (this.spinner.loadingLocation = false));
     });
