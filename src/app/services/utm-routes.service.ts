@@ -106,7 +106,13 @@ export class UtmRoutesService {
   public async selectByUrlOrId(url: string, id?: string) {
     this.spinner.loadingRoute = true;
 
-    await this.router.navigateByUrl(url);
+    // Check if router is already at specified url
+    // If not, navigate to url - this triggers running this function again
+    // through the subscription to router events
+    if (this.router.url !== url) {
+      await this.router.navigateByUrl(url);
+      return;
+    }
 
     if (!id) {
       id = await this.apiService.getNidFromUrlAlias(url);
