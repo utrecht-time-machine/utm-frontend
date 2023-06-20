@@ -10,11 +10,14 @@ import { StoryService } from './story.service';
 import { debounceTime, mergeWith } from 'rxjs';
 import { UtmRoutesService } from './utm-routes.service';
 import { UtmRoute } from '../models/utm-route';
+import { UnescapePipe } from '../pipes/unescape.pipe';
+import { MediaItem } from '../models/media-item';
 
 const DEFAULT_DESCRIPTION =
   'In Utrecht ligt de geschiedenis voor het oprapen. Utrecht Time Machine brengt met innovatieve technieken oude tijden tot leven en plaatst ze middenin onze wereld.';
 const DEFAULT_IMAGE = 'https://utrechttimemachine.nl/assets/img/about.jpg';
 const BASE_URL = 'https://utrechttimemachine.nl';
+const DESC_MAX_LENGTH = 150;
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +31,8 @@ export class SeoService {
     public router: Router,
     public storyService: StoryService,
     public utmRoutesService: UtmRoutesService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public unescapePipe: UnescapePipe
   ) {
     // Listen to changes in url and the data being loaded
     // Handle delayed loading of SEO-required data by debouncing
@@ -53,7 +57,10 @@ export class SeoService {
         if (isHomePage) {
           this.generateHomeMeta();
         } else if (storyQueryParam) {
-          this.generateStoryMeta(this.storyService.shownStory.getValue());
+          this.generateStoryMeta(
+            this.storyService.shownStory.getValue(),
+            this.storyService.shownStoryMediaItems.getValue()
+          );
         } else {
           this.generateLocationMeta(
             this.mapService.selectedLocation.getValue()
@@ -64,7 +71,10 @@ export class SeoService {
         this.generateAboutMeta();
         break;
       case SelectedView.Story:
-        this.generateStoryMeta(this.storyService.shownStory.getValue());
+        this.generateStoryMeta(
+          this.storyService.shownStory.getValue(),
+          this.storyService.shownStoryMediaItems.getValue()
+        );
         break;
       case SelectedView.Routes:
         this.generateRoutesMeta();
@@ -109,15 +119,22 @@ export class SeoService {
     );
   }
 
-  private generateStoryMeta(story: Story | undefined) {
+  private generateStoryMeta(story: Story | undefined, mediaItems: MediaItem[]) {
     if (!story) {
       // console.warn('No story, regenerating home');
       // this.generateHomeMeta();
       return;
     }
+
+    // Description extraction from media item
+    let description = story.title;
+    if (mediaItems && mediaItems[0] && mediaItems[0].text) {
+      description = mediaItems[0].text.replace(/<[^>]+>/g, '').trim();
+    }
+
     this.setMetaTags(
       (story.title || '⏳') + ' – Utrecht Time Machine',
-      story.title,
+      description,
       story.photo,
       'article'
     );
@@ -144,21 +161,36 @@ export class SeoService {
     );
   }
 
+  private preProcessDescription(description: string): string {
+    if (description.length > DESC_MAX_LENGTH) {
+      return description.substring(0, DESC_MAX_LENGTH - 3) + '...';
+    } else {
+      return description;
+    }
+  }
+
   private setMetaTags(
     myTitle: string,
     description?: string,
     image?: string,
     type: string = 'website'
   ) {
-    this.title.setTitle(myTitle);
-    this.meta.updateTag({ name: 'og:title', content: myTitle });
+    this.title.setTitle(this.unescapePipe.transform(myTitle));
+    this.meta.updateTag({
+      name: 'og:title',
+      content: this.unescapePipe.transform(myTitle),
+    });
     this.meta.updateTag({
       name: 'description',
-      content: description || DEFAULT_DESCRIPTION,
+      content: description
+        ? this.preProcessDescription(description)
+        : DEFAULT_DESCRIPTION,
     });
     this.meta.updateTag({
       name: 'og:description',
-      content: description || DEFAULT_DESCRIPTION,
+      content: description
+        ? this.preProcessDescription(description)
+        : DEFAULT_DESCRIPTION,
     });
     this.meta.updateTag({
       name: 'og:image',

@@ -471,10 +471,17 @@ export class MapService {
 
   async updateAllLocationsFromServer() {
     this.allLocations.next(
-      await lastValueFrom(this.apiService.getMapLocations()).catch((err) => {
-        console.error(err);
-        return [];
-      })
+      await lastValueFrom(this.apiService.getMapLocations())
+        .catch((err) => {
+          console.error(err);
+          return [];
+        })
+        .then((locations) => {
+          if (!locations || !locations.length) {
+            console.error('No locations found in database');
+          }
+          return locations;
+        })
     );
   }
 
