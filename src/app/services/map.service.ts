@@ -636,6 +636,14 @@ export class MapService {
   }
 
   async selectLocationByUrlOrId(url: string, locationId?: string) {
+    // Check if router is already at specified url
+    // If not, navigate to url - this triggers running this function again
+    // through the subscription to router events
+    if (this.router.url !== url) {
+      await this.router.navigateByUrl(url);
+      return;
+    }
+
     const urlWithoutParams = url.split('?')[0];
     const locationIsAlreadySelected =
       urlWithoutParams === this.selectedLocation.getValue()?.url;
@@ -648,8 +656,6 @@ export class MapService {
       const urlWithoutParams = url.split('?')[0];
       locationId = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
     }
-
-    await this.router.navigateByUrl(url);
 
     const locationDetails: LocationDetails | undefined =
       await this.apiService.getLocationDetailsById(locationId);
