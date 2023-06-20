@@ -1,8 +1,8 @@
 export const environment = {
   dev: true,
-  apiUrl: 'https://dev-data.utrechttimemachine.nl/rest/',
-  imageBaseUrl: 'https://dev-data.utrechttimemachine.nl',
-  audioBaseUrl: 'https://dev-data.utrechttimemachine.nl',
+  apiUrl: 'https://data.utrechttimemachine.nl/rest/',
+  imageBaseUrl: 'https://data.utrechttimemachine.nl',
+  audioBaseUrl: 'https://data.utrechttimemachine.nl',
   apiSuffixes: {
     mapLocations: 'all_locations',
     locationDetailsById: 'location_details?nid=',
@@ -14,7 +14,7 @@ export const environment = {
     mediaByStory: 'media_by_story?nid=',
     staticPage: 'page?title=',
   },
-  aliasToNidUrl: 'https://dev-data.utrechttimemachine.nl/alias_to_nid?alias=',
+  aliasToNidUrl: 'https://data.utrechttimemachine.nl/alias_to_nid?alias=',
   mediaItemImageExtensions: ['.png', '.jpg'],
   mediaItemAudioExtensions: ['.mp3', '.ogg'],
   mediaItemYouTubePrefixToReplace: [
@@ -25,7 +25,7 @@ export const environment = {
   mapboxAccessToken:
     'pk.eyJ1IjoiY2Itc3R1ZGlvIiwiYSI6ImNrcDUxZW04MjBjZ3gydHF0bmUyano0bncifQ.MLaKn3TF2V4b4ICX1HJnnA',
   liveSearchUrl:
-    'https://dev-data.utrechttimemachine.nl/search_api_autocomplete/utm_search?display=livesearch&filter=livesearch&q=',
+    'https://data.utrechttimemachine.nl/search_api_autocomplete/utm_search?display=livesearch&filter=livesearch&q=',
   translateUrl: 'https://services.utrechttimemachine.nl/translate',
   translateKeys: {
     routes: ['head', 'teaser', 'title', 'type'],
@@ -38,5 +38,5 @@ export const environment = {
     staticPage: ['title', 'body'],
   },
   feedbackPostUrl: 'https://services.utrechttimemachine.nl/feedback',
-  backendEditUrl: 'https://dev-data.utrechttimemachine.nl/node/',
+  backendEditUrl: 'https://data.utrechttimemachine.nl/node/',
 };
