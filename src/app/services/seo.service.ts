@@ -4,7 +4,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { SelectedView } from '../models/selected-view';
 import { LocationDetails } from '../models/location-details';
 import { RoutingService } from './routing.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Story } from '../models/story';
 import { StoryService } from './story.service';
 import { debounceTime, mergeWith } from 'rxjs';
@@ -27,7 +27,8 @@ export class SeoService {
     public routing: RoutingService,
     public router: Router,
     public storyService: StoryService,
-    public utmRoutesService: UtmRoutesService
+    public utmRoutesService: UtmRoutesService,
+    public route: ActivatedRoute
   ) {
     // Listen to changes in url and the data being loaded
     // Handle delayed loading of SEO-required data by debouncing
@@ -46,16 +47,17 @@ export class SeoService {
     // console.log('Updating SEO', selectedView); // DEBUG
     switch (selectedView) {
       case SelectedView.Locations:
-        const loadedLocationsPage = selectedView === SelectedView.Locations;
-        const loadedHomePage = this.router.url === '/';
-        if (loadedLocationsPage) {
-          if (loadedHomePage) {
-            this.generateHomeMeta();
-          } else {
-            this.generateLocationMeta(
-              this.mapService.selectedLocation.getValue()
-            );
-          }
+        const isHomePage = this.router.url === '/';
+        // Also check if story is loaded on top of location
+        const storyQueryParam = this.route.snapshot.queryParamMap.get('story');
+        if (isHomePage) {
+          this.generateHomeMeta();
+        } else if (storyQueryParam) {
+          this.generateStoryMeta(this.storyService.shownStory.getValue());
+        } else {
+          this.generateLocationMeta(
+            this.mapService.selectedLocation.getValue()
+          );
         }
         break;
       case SelectedView.About:
