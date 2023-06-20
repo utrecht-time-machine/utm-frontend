@@ -75,12 +75,10 @@ export class StoryService {
   }
 
   showView() {
-    document.getElementsByTagName('body')[0].classList.add('dock-story-on');
     this.showingStoryView.next(true);
   }
 
   hideView() {
-    document.getElementsByTagName('body')[0].classList.remove('dock-story-on');
     this.showingStoryView.next(false);
   }
 }

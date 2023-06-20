@@ -3,6 +3,7 @@ import { SpinnerService } from './services/spinner.service';
 import { SeoService } from './services/seo.service';
 import { ConnectivityService } from './services/connectivity.service';
 import { MenuService } from './services/menu.service';
+import { StoryService } from './services/story.service';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent {
     public spinner: SpinnerService,
     public seoService: SeoService,
     public connectivity: ConnectivityService,
-    public menu: MenuService
+    public menu: MenuService,
+    public story: StoryService
   ) {}
 }
