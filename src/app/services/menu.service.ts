@@ -16,6 +16,9 @@ export class MenuService {
     [letter: string]: MapLocation[];
   }> = new BehaviorSubject<{ [p: string]: MapLocation[] }>({});
 
+  azMenuIsShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  mbMenuIsShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(private router: Router, private map: MapService) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
@@ -28,24 +31,17 @@ export class MenuService {
     });
   }
 
-  public get azMenuIsShown() {
-    return document
-      .getElementsByTagName('body')[0]
-      .classList.contains('menu-az-on');
-  }
-
   closeAllMenus() {
-    const body = document.getElementsByTagName('body')[0];
-    body.classList.remove('menu-az-on');
-    body.classList.remove('menu-mb-on');
+    this.mbMenuIsShown.next(false);
+    this.azMenuIsShown.next(false);
   }
 
   toggleAzMenu() {
-    document.getElementsByTagName('body')[0].classList.toggle('menu-az-on');
+    this.azMenuIsShown.next(!this.azMenuIsShown.getValue());
   }
 
   toggleMbMenu() {
-    document.getElementsByTagName('body')[0].classList.toggle('menu-mb-on');
+    this.mbMenuIsShown.next(!this.mbMenuIsShown.getValue());
   }
 
   private async _updateAllLocationsByLetter() {

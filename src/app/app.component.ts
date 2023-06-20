@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SpinnerService } from './services/spinner.service';
 import { SeoService } from './services/seo.service';
 import { ConnectivityService } from './services/connectivity.service';
+import { MenuService } from './services/menu.service';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ export class AppComponent {
   constructor(
     public spinner: SpinnerService,
     public seoService: SeoService,
-    public connectivity: ConnectivityService
+    public connectivity: ConnectivityService,
+    public menu: MenuService
   ) {}
 }

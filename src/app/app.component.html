@@ -1,23 +1,36 @@
-<style></style>
+<body
+  [ngClass]="{
+    'menu-az-on': menu.azMenuIsShown.getValue(),
+    'menu-mb-on': menu.mbMenuIsShown.getValue()
+  }"
+>
+  <script>
+    if (window["cordova"]) {
+      const cordovaScript = document.createElement("script");
+      cordovaScript.src = "cordova.js";
+      document.body.appendChild(cordovaScript);
+    }
+  </script>
 
-<app-connectivity></app-connectivity>
-<app-header></app-header>
+  <app-connectivity></app-connectivity>
+  <app-header></app-header>
 
-<main role="main">
-  <a id="main-content" tabindex="-1"></a>
-  <div class="layout-content">
-    <div>
-      <article role="article">
-        <div [ngClass]="{ 'map-spin': spinner.show }">
-          <div></div>
-        </div>
+  <main role="main">
+    <a id="main-content" tabindex="-1"></a>
+    <div class="layout-content">
+      <div>
+        <article role="article">
+          <div [ngClass]="{ 'map-spin': spinner.show }">
+            <div></div>
+          </div>
 
-        <router-outlet></router-outlet>
-      </article>
+          <router-outlet></router-outlet>
+        </article>
+      </div>
     </div>
-  </div>
-</main>
+  </main>
 
-<app-footer></app-footer>
+  <app-footer></app-footer>
 
-<app-menu-button></app-menu-button>
+  <app-menu-button></app-menu-button>
+</body>
