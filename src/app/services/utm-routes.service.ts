@@ -33,8 +33,16 @@ export class UtmRoutesService {
   ) {
     void this.load();
 
+    this._resetPreviousStopIndexOnRouteChange();
+
     this.selectedStopIdx.subscribe(() => {
       void this._updateSelectedStopMediaItems();
+    });
+  }
+
+  private _resetPreviousStopIndexOnRouteChange() {
+    this.selected.subscribe(() => {
+      this.selectedStopIdx.next(undefined);
     });
   }
 
