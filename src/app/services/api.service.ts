@@ -120,8 +120,15 @@ export class ApiService {
         this._addImageUrlPrefix(mediaItem, 'image_small');
       }
 
+      const isAudioItem = environment.mediaItemAudioExtensions.some(
+        (audioExtension) => mediaItem.media_file.endsWith(audioExtension)
+      );
       const isVideoItem = mediaItem.media_file;
-      if (isVideoItem) {
+
+      if (isAudioItem) {
+        mediaItem.type = MediaItemType.Audio;
+        mediaItem.media_file = environment.audioBaseUrl + mediaItem.media_file;
+      } else if (isVideoItem) {
         mediaItem.type = MediaItemType.Video;
         this._addImageUrlPrefix(mediaItem, 'media_file');
       }
@@ -141,14 +148,6 @@ export class ApiService {
             break;
           }
         }
-      }
-
-      const isAudioItem = environment.mediaItemAudioExtensions.some(
-        (audioExtension) => mediaItem.media_file.endsWith(audioExtension)
-      );
-      if (isAudioItem) {
-        mediaItem.type = MediaItemType.Audio;
-        mediaItem.media_file = environment.audioBaseUrl + mediaItem.media_file;
       }
 
       // const isImageItem = environment.mediaItemImageExtensions.some(
