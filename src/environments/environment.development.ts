@@ -39,4 +39,5 @@ export const environment = {
   },
   feedbackPostUrl: 'https://services.utrechttimemachine.nl/feedback',
   backendEditUrl: 'https://data.utrechttimemachine.nl/node/',
+  backendEditPostFix: '/edit',
 };
