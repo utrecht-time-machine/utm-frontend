@@ -3,7 +3,7 @@
     [nid]="story.shownStory.getValue()?.story_id"
   ></app-edit-button>
 
-  <h2>{{ story.shownStory.getValue()?.title }}</h2>
+  <h2>{{ story.shownStory.getValue()?.title | unescape }}</h2>
   <p class="story-location" *ngIf="story.shownStory.getValue()?.location_title">
     {{ "location" | translate }}:
     <a

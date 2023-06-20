@@ -10,6 +10,7 @@ import { StoryService } from './story.service';
 import { debounceTime, mergeWith } from 'rxjs';
 import { UtmRoutesService } from './utm-routes.service';
 import { UtmRoute } from '../models/utm-route';
+import { UnescapePipe } from '../pipes/unescape.pipe';
 
 const DEFAULT_DESCRIPTION =
   'In Utrecht ligt de geschiedenis voor het oprapen. Utrecht Time Machine brengt met innovatieve technieken oude tijden tot leven en plaatst ze middenin onze wereld.';
@@ -28,7 +29,8 @@ export class SeoService {
     public router: Router,
     public storyService: StoryService,
     public utmRoutesService: UtmRoutesService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public unescapePipe: UnescapePipe
   ) {
     // Listen to changes in url and the data being loaded
     // Handle delayed loading of SEO-required data by debouncing
@@ -116,7 +118,8 @@ export class SeoService {
       return;
     }
     this.setMetaTags(
-      (story.title || '⏳') + ' – Utrecht Time Machine',
+      (this.unescapePipe.transform(story.title) || '⏳') +
+        ' – Utrecht Time Machine',
       story.title,
       story.photo,
       'article'
