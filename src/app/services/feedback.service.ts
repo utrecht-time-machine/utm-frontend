@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FeedbackRating } from '../models/feedback-rating';
 import { environment } from '../../environments/environment';
 import { ApiService } from './api.service';
+import { PlatformService } from './platform.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,10 +12,16 @@ export class FeedbackService {
 
   ratingsPerStory: { [storyId: string]: FeedbackRating } = {};
 
-  constructor(private apiService: ApiService) {
-    const localStorageRatings = window.localStorage.getItem(
-      this.LOCAL_STORAGE_FEEDBACK_KEY
-    );
+  constructor(
+    private apiService: ApiService,
+    private platform: PlatformService
+  ) {
+    const localStorageRatings: string | null = null;
+
+    if (this.platform.isBrowser()) {
+      window.localStorage.getItem(this.LOCAL_STORAGE_FEEDBACK_KEY);
+    }
+
     if (localStorageRatings) {
       this.ratingsPerStory = JSON.parse(localStorageRatings);
     }
@@ -30,10 +37,12 @@ export class FeedbackService {
 
     this.ratingsPerStory[storyId] = rating;
 
-    window.localStorage.setItem(
-      this.LOCAL_STORAGE_FEEDBACK_KEY,
-      JSON.stringify(this.ratingsPerStory)
-    );
+    if (this.platform.isBrowser()) {
+      window.localStorage.setItem(
+        this.LOCAL_STORAGE_FEEDBACK_KEY,
+        JSON.stringify(this.ratingsPerStory)
+      );
+    }
 
     const postResult = await this.apiService.post(environment.feedbackPostUrl, {
       storyId: storyId,

@@ -8,8 +8,9 @@ export class ConnectivityService {
   isOffline: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor() {
-    window.addEventListener('online', this.onOnline.bind(this));
-    window.addEventListener('offline', this.onOffline.bind(this));
+    // TODO: Replace with alternative method (that works with Cordova as well)
+    // window.addEventListener('online', this.onOnline.bind(this));
+    // window.addEventListener('offline', this.onOffline.bind(this));
   }
 
   onOnline(e: any) {

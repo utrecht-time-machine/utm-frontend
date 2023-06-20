@@ -22,6 +22,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { UtmTranslateService } from './utm-translate.service';
 import { SpinnerService } from './spinner.service';
+import { PlatformService } from './platform.service';
 
 @Injectable({
   providedIn: 'root',
@@ -51,7 +52,8 @@ export class MapService {
     private routing: RoutingService,
     private http: HttpClient,
     private utmTranslate: UtmTranslateService,
-    private spinner: SpinnerService
+    private spinner: SpinnerService,
+    private platform: PlatformService
   ) {
     this.router.events.subscribe((e) => {
       if (!(e instanceof NavigationEnd)) {
@@ -670,7 +672,9 @@ export class MapService {
       // const headerHeight: number =
       //   document.getElementsByClassName('utm-header')[0].clientHeight;
 
-      window.scrollTo({ top: 200, behavior: 'smooth' });
+      if (this.platform.isBrowser()) {
+        window.scrollTo({ top: 200, behavior: 'smooth' });
+      }
 
       setTimeout(() => (this.spinner.loadingLocation = false));
     });

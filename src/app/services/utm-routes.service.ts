@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { UtmRouteStop } from '../models/utm-route-stop';
 import { MediaItem, MediaItemType } from '../models/media-item';
 import { SpinnerService } from './spinner.service';
+import { PlatformService } from './platform.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +28,8 @@ export class UtmRoutesService {
   constructor(
     private apiService: ApiService,
     private router: Router,
-    private spinner: SpinnerService
+    private spinner: SpinnerService,
+    private platform: PlatformService
   ) {
     void this.load();
 
@@ -151,12 +153,12 @@ export class UtmRoutesService {
       this.selectedStopIdx.next(stopIdx);
 
       const selectingHome = stopIdx === undefined;
-      if (selectingHome) {
+      if (selectingHome && this.platform.isBrowser()) {
         window.scrollTo({ top: selectingHome ? 0 : 200, behavior: 'smooth' });
         return;
       }
 
-      if (window.scrollY == 0) {
+      if (this.platform.isBrowser() && window.scrollY == 0) {
         // TODO: Fine-tune this value, where do we want to scroll to when selecting a new stop?
         window.scrollTo({ top: 200, behavior: 'smooth' });
       }

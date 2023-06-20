@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { UtmRoutesService } from '../../services/utm-routes.service';
+import { PlatformService } from '../../services/platform.service';
 
 @Component({
   selector: 'app-lang-toggle',
@@ -14,7 +15,8 @@ export class LangToggleComponent {
   constructor(
     public translate: TranslateService,
     private router: Router,
-    private utmRoutes: UtmRoutesService
+    private utmRoutes: UtmRoutesService,
+    private platform: PlatformService
   ) {}
 
   onLanguageSelect(language: string) {
@@ -22,14 +24,17 @@ export class LangToggleComponent {
       return;
     }
 
-    window.localStorage.setItem(this.LOCAL_STORAGE_LANG_KEY, language);
+    if (this.platform.isBrowser()) {
+      window.localStorage.setItem(this.LOCAL_STORAGE_LANG_KEY, language);
+    }
+
     this.translate.use(language);
 
     this.utmRoutes.load();
 
     // TODO: Better way of checking if running in Cordova
     const isCordova = window['_cordovaNative' as any];
-    if (!isCordova) {
+    if (!isCordova && this.platform.isBrowser()) {
       window.location.reload();
     }
   }
@@ -39,9 +44,14 @@ export class LangToggleComponent {
       this.translate.use(this.translate.defaultLang);
     }
 
-    const localStorageLang: string | null = window.localStorage.getItem(
-      this.LOCAL_STORAGE_LANG_KEY
-    );
+    let localStorageLang: string | null = null;
+
+    if (this.platform.isBrowser()) {
+      localStorageLang = window.localStorage.getItem(
+        this.LOCAL_STORAGE_LANG_KEY
+      );
+    }
+
     if (localStorageLang) {
       this.translate.use(localStorageLang);
     }
