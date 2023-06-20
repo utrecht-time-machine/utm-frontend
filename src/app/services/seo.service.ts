@@ -11,6 +11,7 @@ import { debounceTime, mergeWith } from 'rxjs';
 import { UtmRoutesService } from './utm-routes.service';
 import { UtmRoute } from '../models/utm-route';
 import { UnescapePipe } from '../pipes/unescape.pipe';
+import { MediaItem } from '../models/media-item';
 
 const DEFAULT_DESCRIPTION =
   'In Utrecht ligt de geschiedenis voor het oprapen. Utrecht Time Machine brengt met innovatieve technieken oude tijden tot leven en plaatst ze middenin onze wereld.';
@@ -55,7 +56,10 @@ export class SeoService {
         if (isHomePage) {
           this.generateHomeMeta();
         } else if (storyQueryParam) {
-          this.generateStoryMeta(this.storyService.shownStory.getValue());
+          this.generateStoryMeta(
+            this.storyService.shownStory.getValue(),
+            this.storyService.shownStoryMediaItems.getValue()
+          );
         } else {
           this.generateLocationMeta(
             this.mapService.selectedLocation.getValue()
@@ -66,7 +70,10 @@ export class SeoService {
         this.generateAboutMeta();
         break;
       case SelectedView.Story:
-        this.generateStoryMeta(this.storyService.shownStory.getValue());
+        this.generateStoryMeta(
+          this.storyService.shownStory.getValue(),
+          this.storyService.shownStoryMediaItems.getValue()
+        );
         break;
       case SelectedView.Routes:
         this.generateRoutesMeta();
@@ -111,15 +118,22 @@ export class SeoService {
     );
   }
 
-  private generateStoryMeta(story: Story | undefined) {
+  private generateStoryMeta(story: Story | undefined, mediaItems: MediaItem[]) {
     if (!story) {
       // console.warn('No story, regenerating home');
       // this.generateHomeMeta();
       return;
     }
+
+    // Description extraction from media item
+    let description = story.title;
+    if (mediaItems && mediaItems[0] && mediaItems[0].text) {
+      description = mediaItems[0].text.replace(/<[^>]+>/g, '').trim();
+    }
+
     this.setMetaTags(
       (story.title || '⏳') + ' – Utrecht Time Machine',
-      story.title,
+      description,
       story.photo,
       'article'
     );
