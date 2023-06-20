@@ -118,8 +118,7 @@ export class SeoService {
       return;
     }
     this.setMetaTags(
-      (this.unescapePipe.transform(story.title) || '⏳') +
-        ' – Utrecht Time Machine',
+      (story.title || '⏳') + ' – Utrecht Time Machine',
       story.title,
       story.photo,
       'article'
@@ -153,8 +152,11 @@ export class SeoService {
     image?: string,
     type: string = 'website'
   ) {
-    this.title.setTitle(myTitle);
-    this.meta.updateTag({ name: 'og:title', content: myTitle });
+    this.title.setTitle(this.unescapePipe.transform(myTitle));
+    this.meta.updateTag({
+      name: 'og:title',
+      content: this.unescapePipe.transform(myTitle),
+    });
     this.meta.updateTag({
       name: 'description',
       content: description || DEFAULT_DESCRIPTION,
