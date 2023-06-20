@@ -21,7 +21,6 @@ export class AudioService {
       this.audio.unload();
     }
 
-    console.log('Loading audio', audioUrl);
     if (!audioUrl) {
       return;
     }
