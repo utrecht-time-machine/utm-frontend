@@ -1,0 +1,12 @@
+{
+  "android": {
+    "release": {
+      "keystore": "android.keystore",
+      "keystoreType": "pkcs12",
+      "storePassword": "",
+      "alias": "utm-android-app-key",
+      "password": "",
+      "packageType": "bundle"
+    }
+  }
+}
