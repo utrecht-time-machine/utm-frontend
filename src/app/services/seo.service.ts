@@ -17,6 +17,7 @@ const DEFAULT_DESCRIPTION =
   'In Utrecht ligt de geschiedenis voor het oprapen. Utrecht Time Machine brengt met innovatieve technieken oude tijden tot leven en plaatst ze middenin onze wereld.';
 const DEFAULT_IMAGE = 'https://utrechttimemachine.nl/assets/img/about.jpg';
 const BASE_URL = 'https://utrechttimemachine.nl';
+const DESC_MAX_LENGTH = 150;
 
 @Injectable({
   providedIn: 'root',
@@ -160,6 +161,14 @@ export class SeoService {
     );
   }
 
+  private preProcessDescription(description: string): string {
+    if (description.length > DESC_MAX_LENGTH) {
+      return description.substring(0, DESC_MAX_LENGTH - 3) + '...';
+    } else {
+      return description;
+    }
+  }
+
   private setMetaTags(
     myTitle: string,
     description?: string,
@@ -173,11 +182,15 @@ export class SeoService {
     });
     this.meta.updateTag({
       name: 'description',
-      content: description || DEFAULT_DESCRIPTION,
+      content: description
+        ? this.preProcessDescription(description)
+        : DEFAULT_DESCRIPTION,
     });
     this.meta.updateTag({
       name: 'og:description',
-      content: description || DEFAULT_DESCRIPTION,
+      content: description
+        ? this.preProcessDescription(description)
+        : DEFAULT_DESCRIPTION,
     });
     this.meta.updateTag({
       name: 'og:image',
