@@ -8,6 +8,7 @@ import { MediaItem, MediaItemType } from '../../../models/media-item';
 })
 export class MediaItemComponent {
   @Input() mediaItem: MediaItem | undefined;
+  @Input() addVerticalMargin = true;
   MediaItemType = MediaItemType;
 
   hasHead() {

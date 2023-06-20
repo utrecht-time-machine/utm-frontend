@@ -74,6 +74,31 @@
   </div>
 </div>
 
+<div class="media-container">
+  <div *ngIf="utmRoutes.selectedStopHasLocationStories()">
+    <div
+      *ngFor="
+        let locationStoryAndMediaItem of utmRoutes.selectedStop
+          ?.location_stories_and_media_items
+      "
+    >
+      <h3
+        class="location-story-title"
+        [innerHtml]="locationStoryAndMediaItem.story.title"
+      ></h3>
+      <div
+        class="views-element-container"
+        *ngFor="let mediaItem of locationStoryAndMediaItem.mediaItems"
+      >
+        <app-media-item
+          [mediaItem]="mediaItem"
+          [addVerticalMargin]="false"
+        ></app-media-item>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--<div class="views-element-container" *ngIf="stopHasLocationStories()">-->
 <!--  <div class="story-head">-->
 <!--    <h2>{{ "storiesForLocation" | translate }}</h2>-->

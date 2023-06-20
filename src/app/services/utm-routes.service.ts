@@ -92,7 +92,6 @@ export class UtmRoutesService {
     if (stopIsLocation) {
       const locationStories: Story[] =
         await this.apiService.getStoriesByLocationId(this.selectedStop.stop_id);
-      this.selectedStop.location_stories = locationStories;
 
       for (const locationStory of locationStories) {
         this.apiService
@@ -101,13 +100,14 @@ export class UtmRoutesService {
             if (!this.selectedStop) {
               return;
             }
-
-            if (!this.selectedStop.media_items) {
-              this.selectedStop.media_items = [];
+            if (!this.selectedStop.location_stories_and_media_items) {
+              this.selectedStop.location_stories_and_media_items = [];
             }
 
-            this.selectedStop.media_items =
-              this.selectedStop?.media_items.concat(storyMediaItems);
+            this.selectedStop.location_stories_and_media_items.push({
+              story: locationStory,
+              mediaItems: storyMediaItems,
+            });
           });
       }
     }
@@ -131,6 +131,14 @@ export class UtmRoutesService {
     return (
       this.selectedStop !== undefined &&
       this.selectedStop?.media_items?.length > 0
+    );
+  }
+
+  public selectedStopHasLocationStories(): boolean {
+    return (
+      this.selectedStop !== undefined &&
+      this.selectedStop.location_stories_and_media_items !== undefined &&
+      this.selectedStop.location_stories_and_media_items.length > 0
     );
   }
 

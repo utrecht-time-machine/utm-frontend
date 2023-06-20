@@ -60,8 +60,9 @@ export class SelectedStopComponent {
 
   stopHasLocationStories(): boolean {
     return (
-      this.utmRoutes.selectedStop?.location_stories !== undefined &&
-      this.utmRoutes.selectedStop?.location_stories.length > 0
+      this.utmRoutes.selectedStop?.location_stories_and_media_items !==
+        undefined &&
+      this.utmRoutes.selectedStop?.location_stories_and_media_items.length > 0
     );
   }
 

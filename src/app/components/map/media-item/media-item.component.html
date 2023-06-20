@@ -1,5 +1,11 @@
 <div *ngIf="mediaItem">
-  <div class="media-item" [ngClass]="{ 'has-head': hasHead() }">
+  <div
+    class="media-item"
+    [ngClass]="{
+      'has-head': hasHead(),
+      'media-item-no-margin': !addVerticalMargin
+    }"
+  >
     <div class="core">
       <div class="core-name">
         <h4 [innerHtml]="mediaItem.title"></h4>
