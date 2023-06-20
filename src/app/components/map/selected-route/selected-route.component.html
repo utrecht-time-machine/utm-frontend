@@ -7,8 +7,15 @@
 
       <h2>{{ selectedRoute?.title }}</h2>
       <div class="route-container-inner">
-        <div [innerHtml]="selectedRoute?.teaser"></div>
-        <div [innerHtml]="selectedRoute?.text"></div>
+        <div
+          class="route-container-teaser"
+          [innerHtml]="selectedRoute?.teaser"
+        ></div>
+        <div
+          class="route-container-text"
+          [innerHtml]="selectedRoute?.text"
+          *ngIf="selectedRoute?.text"
+        ></div>
         <a
           class="route-start"
           id="route_start"
