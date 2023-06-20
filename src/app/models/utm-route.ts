@@ -11,5 +11,6 @@ export interface UtmRoute {
   distance: string;
   teaser: string;
   type: string;
+  text: string;
   stops?: UtmRouteStop[];
 }

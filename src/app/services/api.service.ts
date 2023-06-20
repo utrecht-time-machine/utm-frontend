@@ -196,7 +196,7 @@ export class ApiService {
     };
 
     // TODO: Enrich location/organisation details with story data asynchronously?
-    const locationStories: Story[] = await this._getStoriesByLocationId(
+    const locationStories: Story[] = await this.getStoriesByLocationId(
       locationDetails.nid
     );
     locationDetails.stories = locationStories;
@@ -231,6 +231,7 @@ export class ApiService {
       if (stop.audio) {
         stop.audio = environment.audioBaseUrl + stop.audio;
       }
+
       this._addImageUrlPrefix(stop, 'stop_image');
       this._addImageUrlPrefix(stop, 'stop_thumb');
       this.utmTranslate.translateObjectByKeys(
@@ -255,7 +256,7 @@ export class ApiService {
     }
   }
 
-  private async _getStoriesByLocationId(locationId: string): Promise<Story[]> {
+  public async getStoriesByLocationId(locationId: string): Promise<Story[]> {
     const stories: Story[] = await lastValueFrom(
       this.http.get<Story[]>(
         environment.apiUrl +

@@ -4,10 +4,17 @@ import { SelectedStopComponent } from './selected-stop.component';
 import { SafeModule } from '../../../pipes/safe.module';
 import { MediaItemModule } from '../media-item/media-item.module';
 import { EditButtonModule } from '../../edit-button/edit-button.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [SelectedStopComponent],
-  imports: [CommonModule, SafeModule, MediaItemModule, EditButtonModule],
+  imports: [
+    CommonModule,
+    SafeModule,
+    MediaItemModule,
+    EditButtonModule,
+    TranslateModule,
+  ],
   exports: [SelectedStopComponent],
 })
 export class SelectedStopModule {}

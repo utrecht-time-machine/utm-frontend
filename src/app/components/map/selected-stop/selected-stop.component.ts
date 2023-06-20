@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { UtmRoutesService } from '../../../services/utm-routes.service';
 import { AudioService } from '../../../services/audio.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-selected-stop',
@@ -12,7 +13,11 @@ export class SelectedStopComponent {
 
   @ViewChild('audioElement', { static: false }) audioElement!: ElementRef;
 
-  constructor(public utmRoutes: UtmRoutesService, public audio: AudioService) {
+  constructor(
+    public utmRoutes: UtmRoutesService,
+    public audio: AudioService,
+    public router: Router
+  ) {
     utmRoutes.selectedStopIdx.subscribe(() => {
       this.audio.load(utmRoutes.selectedStop?.audio);
     });
@@ -52,4 +57,19 @@ export class SelectedStopComponent {
   onAudioBarStopScrubbing() {
     this.scrubbingAudio = false;
   }
+
+  stopHasLocationStories(): boolean {
+    return (
+      this.utmRoutes.selectedStop?.location_stories !== undefined &&
+      this.utmRoutes.selectedStop?.location_stories.length > 0
+    );
+  }
+
+  // storyHasVideoIcon(story: Story) {
+  //   return story.has_video_icon !== 'Uit';
+  // }
+  //
+  // getStoryUrl(storyUrlAlias: string): string {
+  //   return this.utmRoutes.selected.getValue()?.url + '?story=' + storyUrlAlias;
+  // }
 }

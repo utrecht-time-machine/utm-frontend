@@ -49,13 +49,15 @@
       <div class="media-source">
         <div class="views-element-container">
           <div>
-            <span>{{ mediaItem.caption }}</span>
+            <span [innerHtml]="mediaItem.caption"></span>
             <span *ngIf="mediaItem?.source_name"
               >Bron:
-              <a [href]="mediaItem.source_link" target="_blank">{{
-                mediaItem.source_name
-              }}</a></span
-            >
+              <a
+                [href]="mediaItem.source_link"
+                target="_blank"
+                [innerHtml]="mediaItem.source_name"
+              ></a
+            ></span>
 
             <app-license [licenseLabel]="mediaItem.license"></app-license>
           </div>

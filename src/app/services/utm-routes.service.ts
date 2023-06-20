@@ -7,6 +7,7 @@ import { UtmRouteStop } from '../models/utm-route-stop';
 import { MediaItem, MediaItemType } from '../models/media-item';
 import { SpinnerService } from './spinner.service';
 import { PlatformService } from './platform.service';
+import { Story } from '../models/story';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +38,7 @@ export class UtmRoutesService {
 
     this.selectedStopIdx.subscribe(() => {
       void this._updateSelectedStopMediaItems();
+      void this._updateSelectedStopMediaItemsFromLocationStories();
     });
   }
 
@@ -53,17 +55,22 @@ export class UtmRoutesService {
 
     const stopIsLocation = this.selectedStop.stop_type === 'Locatie';
     if (stopIsLocation) {
+      let stopText = this.selectedStop.location_teaser as string;
+
+      if (this.selectedStop.location_text) {
+        stopText += '<br/><br/>' + this.selectedStop.location_text;
+      }
       const locationStopMediaItems: MediaItem[] = [
         {
           caption: '',
           embed_url: '',
           image_small: this.selectedStop.stop_image as string,
-          license: '',
+          license: this.selectedStop.stop_image_license,
           media_file: '',
           media_id: '',
-          source_link: '',
-          source_name: '',
-          text: this.selectedStop.location_teaser as string,
+          source_link: this.selectedStop.stop_image_source_link,
+          source_name: this.selectedStop.stop_image_source_name,
+          text: stopText,
           type: MediaItemType.Image,
           title: '',
         },
@@ -73,6 +80,36 @@ export class UtmRoutesService {
       const retrievedMediaItems: MediaItem[] =
         await this.apiService.getMediaItemsByStoryId(this.selectedStop.stop_id);
       this.selectedStop.media_items = retrievedMediaItems;
+    }
+  }
+
+  private async _updateSelectedStopMediaItemsFromLocationStories() {
+    if (!this.selectedStop) {
+      return;
+    }
+
+    const stopIsLocation = this.selectedStop.stop_type === 'Locatie';
+    if (stopIsLocation) {
+      const locationStories: Story[] =
+        await this.apiService.getStoriesByLocationId(this.selectedStop.stop_id);
+      this.selectedStop.location_stories = locationStories;
+
+      for (const locationStory of locationStories) {
+        this.apiService
+          .getMediaItemsByStoryId(locationStory.story_id)
+          .then((storyMediaItems: MediaItem[]) => {
+            if (!this.selectedStop) {
+              return;
+            }
+
+            if (!this.selectedStop.media_items) {
+              this.selectedStop.media_items = [];
+            }
+
+            this.selectedStop.media_items =
+              this.selectedStop?.media_items.concat(storyMediaItems);
+          });
+      }
     }
   }
 
@@ -115,7 +152,8 @@ export class UtmRoutesService {
     }
 
     if (!id) {
-      id = await this.apiService.getNidFromUrlAlias(url);
+      const urlWithoutParams = url.split('?')[0];
+      id = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
 
       const idAlreadySelected = id === this.selected.getValue()?.nid;
       if (idAlreadySelected) {
