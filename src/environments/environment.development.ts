@@ -32,7 +32,7 @@ export const environment = {
     locationDetails: ['caption', 'teaser', 'head', 'title', 'text'],
     storyDetails: ['title', 'location_title'],
     mediaItem: ['title', 'caption', 'text'],
-    stop: ['title', 'location_teaser'],
+    stop: ['title', 'location_teaser', 'location_text'],
     organisation: ['title'],
     mapLocation: ['title', 'head'],
     staticPage: ['title', 'body'],

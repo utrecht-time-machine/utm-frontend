@@ -37,9 +37,7 @@ export class UtmTranslateService {
       return stringToTranslate;
     }
 
-    if (environment.dev) {
-      return '[TRANSLATED] ' + stringToTranslate;
-    }
+    return 'TRANSLATED';
 
     const requestBody = {
       contents: stringToTranslate,
@@ -63,28 +61,30 @@ export class UtmTranslateService {
     return response.translation.toString();
   }
 
-  public async translateObjectByKey(obj: any, key: string): Promise<void> {
+  public async translateObjectByKey(obj: any, key: string): Promise<any> {
     if (key in obj) {
       obj[key] = await this.translateString(obj[key]);
     }
+
+    return obj;
   }
 
-  public async translateObjectByKeys(obj: any, keys: string[]): Promise<void> {
+  public async translateObjectByKeys(obj: any, keys: string[]): Promise<any> {
     const promises = [];
     for (const key of keys) {
       promises.push(this.translateObjectByKey(obj, key));
     }
-    await Promise.all(promises);
+    return await Promise.all(promises);
   }
 
   public async translateObjectsByKeys(
     objs: any[],
     keys: string[]
-  ): Promise<void> {
+  ): Promise<any> {
     const promises = [];
     for (const obj of objs) {
       promises.push(this.translateObjectByKeys(obj, keys));
     }
-    await Promise.all(promises);
+    return await Promise.all(promises);
   }
 }

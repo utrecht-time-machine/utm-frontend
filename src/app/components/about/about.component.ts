@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { StaticPage } from '../../models/static-page';
 import { ApiService } from '../../services/api.service';
 import { SpinnerService } from '../../services/spinner.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-about',
@@ -11,7 +12,11 @@ import { SpinnerService } from '../../services/spinner.service';
 export class AboutComponent {
   content: StaticPage | undefined;
 
-  constructor(public apiService: ApiService, public spinner: SpinnerService) {}
+  constructor(
+    public apiService: ApiService,
+    public spinner: SpinnerService,
+    public translate: TranslateService
+  ) {}
 
   ngOnInit() {
     void this.loadContent();

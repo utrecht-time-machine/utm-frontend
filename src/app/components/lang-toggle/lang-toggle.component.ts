@@ -3,6 +3,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { UtmRoutesService } from '../../services/utm-routes.service';
 import { PlatformService } from '../../services/platform.service';
+import { MapService } from '../../services/map.service';
+import { UtmTranslateService } from '../../services/utm-translate.service';
+import { SelectedView } from '../../models/selected-view';
+import { RoutingService } from '../../services/routing.service';
 
 @Component({
   selector: 'app-lang-toggle',
@@ -16,7 +20,10 @@ export class LangToggleComponent {
     public translate: TranslateService,
     private router: Router,
     private utmRoutes: UtmRoutesService,
-    private platform: PlatformService
+    private platform: PlatformService,
+    private map: MapService,
+    private utmTranslate: UtmTranslateService,
+    private routing: RoutingService
   ) {}
 
   async onLanguageSelect(language: string) {
@@ -30,8 +37,22 @@ export class LangToggleComponent {
 
     this.translate.use(language);
 
-    await this.utmRoutes.load();
-    await this.utmRoutes.selectByUrlOrId(this.router.url, undefined, true);
+    this.utmRoutes.load().then(async () => {
+      const selectedId = this.utmRoutes.selected.getValue()?.nid;
+      if (selectedId) {
+        await this.utmRoutes.selectById(selectedId);
+      }
+    });
+
+    const showLocationsOnMap =
+      this.routing.getSelectedView() === SelectedView.Locations;
+    this.map.addMapLocationsFromServer(!showLocationsOnMap).then(async () => {
+      const selectedId = this.map.selectedLocation.getValue()?.nid;
+      if (selectedId) {
+        await this.map.selectLocationById(selectedId);
+      }
+      this.map.updateLocationsClosestToCenter();
+    });
   }
 
   ngOnInit() {

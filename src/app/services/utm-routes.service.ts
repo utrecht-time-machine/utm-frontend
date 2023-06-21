@@ -148,38 +148,8 @@ export class UtmRoutesService {
     console.log('Loaded all UTM routes:', this.all);
   }
 
-  public async selectByUrlOrId(
-    url: string,
-    id?: string,
-    forceReselect?: boolean
-  ) {
-    this.spinner.loadingRoute = true;
-
-    // Check if router is already at specified url
-    // If not, navigate to url - this triggers running this function again
-    // through the subscription to router events
-    if (this.router.url !== url) {
-      await this.router.navigateByUrl(url);
-      return;
-    }
-
-    if (!id) {
-      const urlWithoutParams = url.split('?')[0];
-      id = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
-
-      const idAlreadySelected = id === this.selected.getValue()?.nid;
-      if (idAlreadySelected && !forceReselect) {
-        this.spinner.loadingRoute = false;
-        return;
-      }
-    }
-
+  public async selectById(id: string): Promise<void> {
     if (!this.all) {
-      await this.load();
-    }
-
-    if (!url || !this.all) {
-      this.spinner.loadingRoute = false;
       return;
     }
 
@@ -201,6 +171,40 @@ export class UtmRoutesService {
     this.selected.next(routeToSelect);
 
     this.spinner.loadingRoute = false;
+  }
+
+  public async selectByUrlOrId(url: string, id?: string) {
+    this.spinner.loadingRoute = true;
+
+    // Check if router is already at specified url
+    // If not, navigate to url - this triggers running this function again
+    // through the subscription to router events
+    if (this.router.url !== url) {
+      await this.router.navigateByUrl(url);
+      return;
+    }
+
+    if (!id) {
+      const urlWithoutParams = url.split('?')[0];
+      id = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
+
+      const idAlreadySelected = id === this.selected.getValue()?.nid;
+      if (idAlreadySelected) {
+        this.spinner.loadingRoute = false;
+        return;
+      }
+    }
+
+    if (!this.all) {
+      await this.load();
+    }
+
+    if (!url || !this.all) {
+      this.spinner.loadingRoute = false;
+      return;
+    }
+
+    await this.selectById(id);
   }
 
   public selectStopByIdx(stopIdx: number | undefined) {
