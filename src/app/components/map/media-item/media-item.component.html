@@ -58,12 +58,18 @@
             <span [innerHtml]="mediaItem.caption"></span>
             <span *ngIf="mediaItem?.source_name"
               >{{ "source" | translate }}:
-              <a
-                [href]="mediaItem.source_link"
-                target="_blank"
-                [innerHtml]="mediaItem.source_name"
-              ></a
-            ></span>
+
+              <span *ngIf="mediaItem?.source_link">
+                <a
+                  [href]="mediaItem.source_link"
+                  target="_blank"
+                  [innerHtml]="mediaItem.source_name"
+                ></a>
+              </span>
+              <span *ngIf="!mediaItem?.source_link">
+                {{ mediaItem.source_name }}
+              </span>
+            </span>
 
             <app-license [licenseLabel]="mediaItem.license"></app-license>
           </div>
