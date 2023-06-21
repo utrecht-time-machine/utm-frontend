@@ -21,6 +21,8 @@
   </div>
 
   <app-feedback
-    [storyId]="story.shownStory.getValue()?.story_id"
+    [feedbackItemId]="story.shownStory.getValue()?.story_id"
+    feedbackGivenText="storyFeedbackGiven"
+    feedbackQuestionText="storyFeedbackQuestion"
   ></app-feedback>
 </div>
