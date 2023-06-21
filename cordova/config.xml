@@ -9,6 +9,12 @@
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
 
+  <preference name="AllowInlineMediaPlayback" value="true" />
+  <preference name="MediaPlaybackRequiresUserAction" value="false" />
+  <allow-navigation href="*youtube*" />
+  <allow-navigation href="*ytimg*" />
+  <allow-navigation href="*youtube-nocookie*" />
+
   <preference name="FadeSplashScreen" value="true"/>
   <preference name="permissions" value="none" />
 
