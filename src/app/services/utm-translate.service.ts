@@ -37,8 +37,6 @@ export class UtmTranslateService {
       return stringToTranslate;
     }
 
-    return 'TRANSLATED';
-
     const requestBody = {
       contents: stringToTranslate,
       sourceLanguageCode: this.SOURCE_LANG,
