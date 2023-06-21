@@ -149,6 +149,7 @@ export class UtmRoutesService {
   }
 
   public async selectById(id: string): Promise<void> {
+    // TODO: Sometimes a route is selected from this.all that is not (yet?) translated
     if (!this.all) {
       return;
     }
