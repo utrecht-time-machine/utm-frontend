@@ -15,22 +15,28 @@
                 <img loading="lazy" [src]="locationDetails?.image" />
               </div>
             </div>
-            <div
-              class="media-source"
-              *ngIf="
-                locationDetails?.source_link && locationDetails?.source_name
-              "
-            >
+            <div class="media-source" *ngIf="locationDetails?.source_name">
               <div class="views-element-container">
                 <div>
                   <span *ngIf="locationDetails?.caption">{{
                     locationDetails?.caption
                   }}</span>
-                  <span *ngIf="locationDetails?.source_name"
+                  <span
+                    *ngIf="
+                      locationDetails?.source_link &&
+                      locationDetails?.source_name
+                    "
                     >Bron:
                     <a [href]="locationDetails?.source_link" target="_blank">{{
                       locationDetails?.source_name
                     }}</a></span
+                  >
+                  <span
+                    *ngIf="
+                      !locationDetails?.source_link &&
+                      locationDetails?.source_name
+                    "
+                    >Bron: {{ locationDetails?.source_name }}</span
                   >
                   <app-license
                     [licenseLabel]="locationDetails?.license"
