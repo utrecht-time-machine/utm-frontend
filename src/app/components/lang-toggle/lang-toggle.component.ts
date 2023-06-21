@@ -19,7 +19,7 @@ export class LangToggleComponent {
     private platform: PlatformService
   ) {}
 
-  onLanguageSelect(language: string) {
+  async onLanguageSelect(language: string) {
     if (this.translate.currentLang === language) {
       return;
     }
@@ -30,13 +30,8 @@ export class LangToggleComponent {
 
     this.translate.use(language);
 
-    this.utmRoutes.load();
-
-    // TODO: Better way of checking if running in Cordova
-    const isCordova = window['_cordovaNative' as any];
-    if (!isCordova && this.platform.isBrowser()) {
-      window.location.reload();
-    }
+    await this.utmRoutes.load();
+    await this.utmRoutes.selectByUrlOrId(this.router.url, undefined, true);
   }
 
   ngOnInit() {

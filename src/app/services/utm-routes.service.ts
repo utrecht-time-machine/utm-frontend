@@ -148,7 +148,11 @@ export class UtmRoutesService {
     console.log('Loaded all UTM routes:', this.all);
   }
 
-  public async selectByUrlOrId(url: string, id?: string) {
+  public async selectByUrlOrId(
+    url: string,
+    id?: string,
+    forceReselect?: boolean
+  ) {
     this.spinner.loadingRoute = true;
 
     // Check if router is already at specified url
@@ -164,7 +168,8 @@ export class UtmRoutesService {
       id = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
 
       const idAlreadySelected = id === this.selected.getValue()?.nid;
-      if (idAlreadySelected) {
+      if (idAlreadySelected && !forceReselect) {
+        this.spinner.loadingRoute = false;
         return;
       }
     }
@@ -174,6 +179,7 @@ export class UtmRoutesService {
     }
 
     if (!url || !this.all) {
+      this.spinner.loadingRoute = false;
       return;
     }
 
@@ -182,6 +188,7 @@ export class UtmRoutesService {
     );
     if (!routeToSelect) {
       console.warn('Could not find route with ID', id, this.all);
+      this.spinner.loadingRoute = false;
       return;
     }
 
