@@ -11,7 +11,14 @@
 
   <preference name="AllowInlineMediaPlayback" value="true" />
   <preference name="MediaTypesRequiringUserActionForPlayback" value="false" />
-  .
+
+  <access origin="https://*.youtube-nocookie.com" />
+  <access origin="https://*.youtube.com" />
+  <access origin="https://*.ytimg.com" />
+  <access origin="https://*.gstatic.com" />
+  <access origin="https://*.googlevideo.com" />
+  <access origin="https://*.google.com" />
+  
   <preference name="FadeSplashScreen" value="true"/>
   <preference name="permissions" value="none" />
 
