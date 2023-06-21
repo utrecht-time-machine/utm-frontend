@@ -11,7 +11,10 @@
   "name": "Name",
   "address": "Address",
   "storyFeedbackQuestion": "What do you think of this story?",
-  "storyFeedbackGiven": "Thank you for your feedback!",
+  "pageFeedbackQuestion": "What do you think of this page?",
+  "routeFeedbackQuestion": "What do you think of this route?",
+  "routeStopFeedbackQuestion": "What do you think of this location?",
+  "feedbackGiven": "Thank you for your feedback!",
   "appIsOffline": "Sorry, we are currently experiencing connection issues. Please check your internet connection and try again later.",
   "source": "Source"
 }

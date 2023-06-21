@@ -99,6 +99,12 @@
   </div>
 </div>
 
+<app-feedback
+  [feedbackItemId]="utmRoutes.selectedStop?.stop_id"
+  feedbackGivenText="feedbackGiven"
+  feedbackQuestionText="routeStopFeedbackQuestion"
+></app-feedback>
+
 <!--<div class="views-element-container" *ngIf="stopHasLocationStories()">-->
 <!--  <div class="story-head">-->
 <!--    <h2>{{ "storiesForLocation" | translate }}</h2>-->

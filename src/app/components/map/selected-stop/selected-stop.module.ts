@@ -5,6 +5,7 @@ import { SafeModule } from '../../../pipes/safe.module';
 import { MediaItemModule } from '../media-item/media-item.module';
 import { EditButtonModule } from '../../edit-button/edit-button.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { FeedbackModule } from '../../feedback/feedback.module';
 
 @NgModule({
   declarations: [SelectedStopComponent],
@@ -14,6 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MediaItemModule,
     EditButtonModule,
     TranslateModule,
+    FeedbackModule,
   ],
   exports: [SelectedStopComponent],
 })

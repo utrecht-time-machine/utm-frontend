@@ -11,7 +11,10 @@
   "name": "Naam",
   "address": "Adres",
   "storyFeedbackQuestion": "Wat vind je van dit verhaal?",
-  "storyFeedbackGiven": "Bedankt voor je feedback!",
+  "pageFeedbackQuestion": "Wat vind je van deze pagina?",
+  "routeFeedbackQuestion": "Wat vind je van deze route?",
+  "routeStopFeedbackQuestion": "Wat vind je van deze locatie?",
+  "feedbackGiven": "Bedankt voor je feedback!",
   "appIsOffline": "Sorry, we ervaren momenteel verbindingsproblemen. Controleer uw internetverbinding en probeer het later opnieuw.",
   "source": "Bron"
 }
