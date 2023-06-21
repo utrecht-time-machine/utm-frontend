@@ -10,7 +10,11 @@
   "startRoute": "Route starten",
   "name": "Naam",
   "address": "Adres",
-  "storyFeedbackTitle": "Wat vind je van dit verhaal?",
-  "storyFeedbackGiven": "Bedankt voor je feedback!",
-  "appIsOffline": "Sorry, we ervaren momenteel verbindingsproblemen. Controleer uw internetverbinding en probeer het later opnieuw."
+  "storyFeedbackQuestion": "Wat vind je van dit verhaal?",
+  "pageFeedbackQuestion": "Wat vind je van deze pagina?",
+  "routeFeedbackQuestion": "Wat vind je van deze route?",
+  "routeStopFeedbackQuestion": "Wat vind je van deze locatie?",
+  "feedbackGiven": "Bedankt voor je feedback!",
+  "appIsOffline": "Sorry, we ervaren momenteel verbindingsproblemen. Controleer uw internetverbinding en probeer het later opnieuw.",
+  "source": "Bron"
 }

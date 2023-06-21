@@ -55,6 +55,11 @@ export class MapService {
     private spinner: SpinnerService,
     private platform: PlatformService
   ) {
+    this.allLocations.subscribe(() => {
+      this.shownLocationPopup?.remove();
+      this.shownStopPopup?.remove();
+    });
+
     this.router.events.subscribe((e) => {
       if (!(e instanceof NavigationEnd)) {
         return;
@@ -468,23 +473,6 @@ export class MapService {
       this.map.removeSource('route_path');
     }
   }
-
-  async updateAllLocationsFromServer() {
-    this.allLocations.next(
-      await lastValueFrom(this.apiService.getMapLocations())
-        .catch((err) => {
-          console.error(err);
-          return [];
-        })
-        .then((locations) => {
-          if (!locations || !locations.length) {
-            console.error('No locations found in database');
-          }
-          return locations;
-        })
-    );
-  }
-
   addLocationsOnMap(hideLocations = false) {
     if (!this.map) {
       console.warn('Map not yet initialized... Not adding locations to map.');
@@ -496,87 +484,123 @@ export class MapService {
         setTimeout(() => (this.spinner.loadingLocations = true));
       }
 
-      await this.updateAllLocationsFromServer();
-
-      this.mapLocationsFeatures = this.apiService.convertMapLocationsToGeoJson(
-        this.allLocations.getValue()
-      );
-
-      if (!this.mapLocationsFeatures) {
-        console.warn('No map locations loaded...');
-        return;
-      }
-
-      console.log('Adding map locations: ', this.mapLocationsFeatures);
-
-      this.map?.addSource('locations', {
-        type: 'geojson',
-        data: this.mapLocationsFeatures,
-        cluster: true,
-        clusterMaxZoom: 12,
-        clusterRadius: 50,
-      });
-      this.map?.addLayer({
-        id: 'clusters',
-        type: 'circle',
-        source: 'locations',
-        filter: ['has', 'point_count'],
-        paint: {
-          // 'circle-color': ['step', ['get', 'point_count'], '#ffffff', 80, '#fe0000', 200, '#fe0000'],
-          'circle-color': [
-            'step',
-            ['get', 'point_count'],
-            '#ffffff',
-            80,
-            '#ffffff',
-            200,
-            '#ffffff',
-          ],
-          'circle-radius': [
-            'step',
-            ['get', 'point_count'],
-            18,
-            80,
-            36,
-            200,
-            36,
-          ],
-          'circle-stroke-width': 2,
-          'circle-stroke-color': '#fe0000',
-        },
-      });
-      this.map?.addLayer({
-        id: 'cluster-count',
-        type: 'symbol',
-        source: 'locations',
-        filter: ['has', 'point_count'],
-        layout: {
-          'text-field': ['get', 'point_count_abbreviated'],
-          'text-font': ['Arial Unicode MS Bold'],
-          'text-size': 12,
-        },
-      });
-      this.map?.addLayer({
-        id: 'unclustered-point',
-        type: 'circle',
-        source: 'locations',
-        filter: ['!', ['has', 'point_count']],
-        paint: {
-          'circle-color': '#fe0000',
-          'circle-radius': 8,
-          'circle-stroke-width': 2,
-          'circle-stroke-color': '#ffffff',
-        },
-      });
-
-      if (hideLocations) {
-        this.hideLocationsOnMap();
-      }
+      await this.addMapLocationsFromServer(hideLocations);
 
       this._initMapInteractivity();
 
       setTimeout(() => (this.spinner.loadingLocations = false));
     });
+  }
+
+  private _removeExistingMapLocations() {
+    const clustersLayer = this.map?.getLayer('clusters');
+    if (clustersLayer) {
+      this.map?.removeLayer('clusters');
+    }
+
+    const clusterCountLayer = this.map?.getLayer('cluster-count');
+    if (clusterCountLayer) {
+      this.map?.removeLayer('cluster-count');
+    }
+
+    const unclusteredPointLayer = this.map?.getLayer('unclustered-point');
+    if (unclusteredPointLayer) {
+      this.map?.removeLayer('unclustered-point');
+    }
+
+    const locationsSource = this.map?.getSource('locations');
+    if (locationsSource) {
+      this.map?.removeSource('locations');
+    }
+  }
+
+  async addMapLocationsFromServer(hideLocations: boolean) {
+    this.allLocations.next(
+      await lastValueFrom(this.apiService.getMapLocations())
+        .catch((err) => {
+          console.error(err);
+          return [];
+        })
+        .then((locations) => {
+          if (!locations || !locations.length) {
+            console.error('No locations found in database');
+          }
+          console.log('LOCATIONS FROM SERVER', locations);
+          return locations;
+        })
+    );
+
+    this.mapLocationsFeatures = this.apiService.convertMapLocationsToGeoJson(
+      this.allLocations.getValue()
+    );
+
+    if (!this.mapLocationsFeatures) {
+      console.warn('No map locations loaded...');
+      setTimeout(() => (this.spinner.loadingLocations = false));
+      return;
+    }
+
+    this._removeExistingMapLocations();
+
+    console.log('Adding map locations: ', this.mapLocationsFeatures);
+    this.map?.addSource('locations', {
+      type: 'geojson',
+      data: this.mapLocationsFeatures,
+      cluster: true,
+      clusterMaxZoom: 12,
+      clusterRadius: 50,
+    });
+
+    this.map?.addLayer({
+      id: 'clusters',
+      type: 'circle',
+      source: 'locations',
+      filter: ['has', 'point_count'],
+      paint: {
+        // 'circle-color': ['step', ['get', 'point_count'], '#ffffff', 80, '#fe0000', 200, '#fe0000'],
+        'circle-color': [
+          'step',
+          ['get', 'point_count'],
+          '#ffffff',
+          80,
+          '#ffffff',
+          200,
+          '#ffffff',
+        ],
+        'circle-radius': ['step', ['get', 'point_count'], 18, 80, 36, 200, 36],
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#fe0000',
+      },
+    });
+
+    this.map?.addLayer({
+      id: 'cluster-count',
+      type: 'symbol',
+      source: 'locations',
+      filter: ['has', 'point_count'],
+      layout: {
+        'text-field': ['get', 'point_count_abbreviated'],
+        'text-font': ['Arial Unicode MS Bold'],
+        'text-size': 12,
+      },
+    });
+
+    this.map?.addLayer({
+      id: 'unclustered-point',
+      type: 'circle',
+      source: 'locations',
+      filter: ['!', ['has', 'point_count']],
+      paint: {
+        'circle-color': '#fe0000',
+        'circle-radius': 8,
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#ffffff',
+      },
+    });
+
+    if (hideLocations) {
+      this.hideLocationsOnMap();
+    }
   }
 
   hideLocationsOnMap() {
@@ -635,33 +659,12 @@ export class MapService {
     this.selectedLocation.next(undefined);
   }
 
-  async selectLocationByUrlOrId(url: string, locationId?: string) {
-    // Check if router is already at specified url
-    // If not, navigate to url - this triggers running this function again
-    // through the subscription to router events
-    if (this.router.url !== url) {
-      await this.router.navigateByUrl(url);
-      return;
-    }
-
-    const urlWithoutParams = url.split('?')[0];
-    const locationIsAlreadySelected =
-      urlWithoutParams === this.selectedLocation.getValue()?.url;
-    if (locationIsAlreadySelected) {
-      return;
-    }
-
-    setTimeout(() => (this.spinner.loadingLocation = true));
-    if (!locationId) {
-      const urlWithoutParams = url.split('?')[0];
-      locationId = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
-    }
-
+  async selectLocationById(locationId: string) {
     const locationDetails: LocationDetails | undefined =
       await this.apiService.getLocationDetailsById(locationId);
     if (locationDetails) {
       this.selectedLocation.next(locationDetails);
-      this._showMapLocationPopup(locationDetails);
+      await this._showMapLocationPopup(locationDetails);
     }
 
     setTimeout(async () => {
@@ -691,6 +694,30 @@ export class MapService {
 
       setTimeout(() => (this.spinner.loadingLocation = false));
     });
+  }
+  async selectLocationByUrlOrId(url: string, locationId?: string) {
+    // Check if router is already at specified url
+    // If not, navigate to url - this triggers running this function again
+    // through the subscription to router events
+    if (this.router.url !== url) {
+      await this.router.navigateByUrl(url);
+      return;
+    }
+
+    const urlWithoutParams = url.split('?')[0];
+    const locationIsAlreadySelected =
+      urlWithoutParams === this.selectedLocation.getValue()?.url;
+    if (locationIsAlreadySelected) {
+      return;
+    }
+
+    setTimeout(() => (this.spinner.loadingLocation = true));
+    if (!locationId) {
+      const urlWithoutParams = url.split('?')[0];
+      locationId = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
+    }
+
+    await this.selectLocationById(locationId);
   }
 
   private _initMapInteractivity() {

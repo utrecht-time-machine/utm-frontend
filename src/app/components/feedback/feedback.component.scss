@@ -33,30 +33,30 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 60% auto;
-  opacity: 0.8;
+  opacity: 0.4;
 }
 .feed a:hover {
-  opacity: 1;
+  opacity: 0.6;
 }
 .feed a[data-id="1"] {
   background-image: url(/assets/ui/svg/feedback/mood0.svg);
-  background-color: #ff7540;
+  //background-color: #ff7540;
 }
 .feed a[data-id="2"] {
   background-image: url(/assets/ui/svg/feedback/mood1.svg);
-  background-color: #ffa140;
+  //background-color: #ffa140;
 }
 .feed a[data-id="3"] {
   background-image: url(/assets/ui/svg/feedback/mood2.svg);
-  background-color: #ffe150;
+  //background-color: #ffe150;
 }
 .feed a[data-id="4"] {
   background-image: url(/assets/ui/svg/feedback/mood3.svg);
-  background-color: #d4ff50;
+  //background-color: #d4ff50;
 }
 .feed a[data-id="5"] {
   background-image: url(/assets/ui/svg/feedback/mood4.svg);
-  background-color: #2bd12b;
+  //background-color: #2bd12b;
 }
 .feed a > span {
   display: none;

@@ -10,7 +10,7 @@ import { PlatformService } from './platform.service';
 export class FeedbackService {
   readonly LOCAL_STORAGE_FEEDBACK_KEY = 'utrechtTimeMachineFeedback';
 
-  ratingsPerStory: { [storyId: string]: FeedbackRating } = {};
+  ratingsPerItem: { [itemId: string]: FeedbackRating } = {};
 
   constructor(
     private apiService: ApiService,
@@ -23,36 +23,36 @@ export class FeedbackService {
     }
 
     if (localStorageRatings) {
-      this.ratingsPerStory = JSON.parse(localStorageRatings);
+      this.ratingsPerItem = JSON.parse(localStorageRatings);
     }
   }
 
-  async rateStory(storyId: string, rating: FeedbackRating) {
-    if (!storyId) {
-      console.warn('No story ID passed...');
+  async rateItem(itemId: string, rating: FeedbackRating) {
+    if (!itemId) {
+      console.warn('No item ID passed...');
       return;
     }
 
-    // console.log('Sending feedback', storyId, rating);
+    // console.log('Sending feedback', itemId, rating);
 
-    this.ratingsPerStory[storyId] = rating;
+    this.ratingsPerItem[itemId] = rating;
 
     if (this.platform.isBrowser()) {
       window.localStorage.setItem(
         this.LOCAL_STORAGE_FEEDBACK_KEY,
-        JSON.stringify(this.ratingsPerStory)
+        JSON.stringify(this.ratingsPerItem)
       );
     }
 
     const postResult = await this.apiService.post(environment.feedbackPostUrl, {
-      storyId: storyId,
+      itemId: itemId,
       rating: rating,
     });
   }
 
-  getStoryRating(storyId: string): FeedbackRating | undefined {
-    if (storyId in this.ratingsPerStory) {
-      return this.ratingsPerStory[storyId];
+  getItemRating(itemId: string): FeedbackRating | undefined {
+    if (itemId in this.ratingsPerItem) {
+      return this.ratingsPerItem[itemId];
     }
     return undefined;
   }

@@ -26,7 +26,7 @@
                       locationDetails?.source_link &&
                       locationDetails?.source_name
                     "
-                    >Bron:
+                    >{{ "source" | translate }}:
                     <a [href]="locationDetails?.source_link" target="_blank">{{
                       locationDetails?.source_name
                     }}</a></span
@@ -36,7 +36,8 @@
                       !locationDetails?.source_link &&
                       locationDetails?.source_name
                     "
-                    >Bron: {{ locationDetails?.source_name }}</span
+                    >{{ "source" | translate }}:
+                    {{ locationDetails?.source_name }}</span
                   >
                   <app-license
                     [licenseLabel]="locationDetails?.license"

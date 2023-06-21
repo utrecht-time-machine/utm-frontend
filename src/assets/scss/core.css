@@ -519,6 +519,10 @@ div.user-bar ul > li > a:not(.is-active):hover {
   height: 80px;
 }
 
+main {
+  margin-top: 70px;
+}
+
 .utm-header .header-outer {
   position: absolute;
   left: 0;
@@ -622,6 +626,10 @@ div.user-bar ul > li > a:not(.is-active):hover {
 @media only screen and (min-width: 1000px) {
   .utm-header .header-inner {
     height: 90px;
+  }
+
+  main {
+    margin-top: 80px;
   }
 
   .utm-header .site-live {
@@ -2985,10 +2993,14 @@ div.user-bar ul > li > a:not(.is-active):hover {
 
 .menu-mb-btn {
   z-index: 400;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   padding: 20px;
+}
+
+.dock-story-on .menu-mb-btn {
+  display: none;
 }
 
 .menu-mb-btn > a {

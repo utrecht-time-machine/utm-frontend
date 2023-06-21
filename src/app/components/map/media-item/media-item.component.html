@@ -57,7 +57,7 @@
           <div>
             <span [innerHtml]="mediaItem.caption"></span>
             <span *ngIf="mediaItem?.source_name"
-              >Bron:
+              >{{ "source" | translate }}:
               <a
                 [href]="mediaItem.source_link"
                 target="_blank"

@@ -1,41 +1,49 @@
-<div class="feed" [ngClass]="{ done: feedbackHasBeenGiven() }" *ngIf="storyId">
+<div
+  class="feed"
+  [ngClass]="{ done: feedbackHasBeenGiven() }"
+  *ngIf="feedbackItemId"
+>
   <div>
-    <h3 *ngIf="!feedbackHasBeenGiven()">
-      {{ "storyFeedbackTitle" | translate }}
+    <h3 *ngIf="!feedbackHasBeenGiven() && feedbackQuestionText">
+      {{ feedbackQuestionText | translate }}
     </h3>
-    <h3 *ngIf="feedbackHasBeenGiven()">
-      {{ "storyFeedbackGiven" | translate }}
+    <h3 *ngIf="feedbackHasBeenGiven() && feedbackGivenText">
+      {{ feedbackGivenText | translate }}
     </h3>
   </div>
   <div>
     <a
       data-id="5"
       [ngClass]="{ on: getRating() === FeedbackRating.VeryGood }"
-      (click)="feedbackService.rateStory(storyId, FeedbackRating.VeryGood)"
+      (click)="
+        feedbackService.rateItem(feedbackItemId, FeedbackRating.VeryGood)
+      "
       ><span></span
     ></a>
     <a
       data-id="4"
       [ngClass]="{ on: getRating() === FeedbackRating.Good }"
-      (click)="feedbackService.rateStory(storyId, FeedbackRating.Good)"
+      (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Good)"
       ><span></span
     ></a>
     <a
       data-id="3"
       [ngClass]="{ on: getRating() === FeedbackRating.Fair }"
-      (click)="feedbackService.rateStory(storyId, FeedbackRating.Fair)"
+      (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Fair)"
       ><span></span
     ></a>
     <a
       data-id="2"
       [ngClass]="{ on: getRating() === FeedbackRating.Poor }"
-      (click)="feedbackService.rateStory(storyId, FeedbackRating.Poor)"
+      (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Poor)"
       ><span></span
     ></a>
     <a
       data-id="1"
       [ngClass]="{ on: getRating() === FeedbackRating.VeryPoor }"
-      (click)="feedbackService.rateStory(storyId, FeedbackRating.VeryPoor)"
+      (click)="
+        feedbackService.rateItem(feedbackItemId, FeedbackRating.VeryPoor)
+      "
       ><span></span
     ></a>
   </div>

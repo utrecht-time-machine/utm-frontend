@@ -8,24 +8,29 @@ import { FeedbackRating } from '../../models/feedback-rating';
   styleUrls: ['./feedback.component.scss'],
 })
 export class FeedbackComponent {
-  @Input() storyId: string | undefined;
+  @Input() feedbackItemId: string | undefined;
+  @Input() feedbackQuestionText: string | undefined;
+  @Input() feedbackGivenText: string | undefined;
+
   FeedbackRating = FeedbackRating;
 
   constructor(public feedbackService: FeedbackService) {}
 
   getRating(): FeedbackRating | undefined {
-    if (!this.storyId) {
+    if (!this.feedbackItemId) {
       return undefined;
     }
 
-    return this.feedbackService.getStoryRating(this.storyId);
+    return this.feedbackService.getItemRating(this.feedbackItemId);
   }
 
   feedbackHasBeenGiven(): boolean {
-    if (!this.storyId) {
+    if (!this.feedbackItemId) {
       return false;
     }
 
-    return this.feedbackService.getStoryRating(this.storyId) !== undefined;
+    return (
+      this.feedbackService.getItemRating(this.feedbackItemId) !== undefined
+    );
   }
 }

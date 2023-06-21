@@ -148,6 +148,32 @@ export class UtmRoutesService {
     console.log('Loaded all UTM routes:', this.all);
   }
 
+  public async selectById(id: string): Promise<void> {
+    // TODO: Sometimes a route is selected from this.all that is not (yet?) translated
+    if (!this.all) {
+      return;
+    }
+
+    const routeToSelect: UtmRoute | undefined = this.all.find(
+      (r) => r.nid === id
+    );
+    if (!routeToSelect) {
+      console.warn('Could not find route with ID', id, this.all);
+      this.spinner.loadingRoute = false;
+      return;
+    }
+
+    const routeStops: UtmRouteStop[] | undefined =
+      await this.apiService.getUtmRouteStopsById(id);
+    if (routeStops) {
+      routeToSelect.stops = routeStops;
+    }
+
+    this.selected.next(routeToSelect);
+
+    this.spinner.loadingRoute = false;
+  }
+
   public async selectByUrlOrId(url: string, id?: string) {
     this.spinner.loadingRoute = true;
 
@@ -165,6 +191,7 @@ export class UtmRoutesService {
 
       const idAlreadySelected = id === this.selected.getValue()?.nid;
       if (idAlreadySelected) {
+        this.spinner.loadingRoute = false;
         return;
       }
     }
@@ -174,26 +201,11 @@ export class UtmRoutesService {
     }
 
     if (!url || !this.all) {
+      this.spinner.loadingRoute = false;
       return;
     }
 
-    const routeToSelect: UtmRoute | undefined = this.all.find(
-      (r) => r.nid === id
-    );
-    if (!routeToSelect) {
-      console.warn('Could not find route with ID', id, this.all);
-      return;
-    }
-
-    const routeStops: UtmRouteStop[] | undefined =
-      await this.apiService.getUtmRouteStopsById(id);
-    if (routeStops) {
-      routeToSelect.stops = routeStops;
-    }
-
-    this.selected.next(routeToSelect);
-
-    this.spinner.loadingRoute = false;
+    await this.selectById(id);
   }
 
   public selectStopByIdx(stopIdx: number | undefined) {
