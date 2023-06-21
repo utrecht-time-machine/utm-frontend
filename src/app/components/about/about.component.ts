@@ -16,7 +16,11 @@ export class AboutComponent {
     public apiService: ApiService,
     public spinner: SpinnerService,
     public translate: TranslateService
-  ) {}
+  ) {
+    this.translate.onLangChange.subscribe(() => {
+      void this.loadContent();
+    });
+  }
 
   ngOnInit() {
     void this.loadContent();
