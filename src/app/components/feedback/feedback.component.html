@@ -12,18 +12,18 @@
     </h3>
   </div>
   <div>
+    <!--    <a-->
+    <!--      data-id="5"-->
+    <!--      [ngClass]="{ on: getRating() === FeedbackRating.VeryGood }"-->
+    <!--      (click)="-->
+    <!--        feedbackService.rateItem(feedbackItemId, FeedbackRating.VeryGood)-->
+    <!--      "-->
+    <!--      ><span></span-->
+    <!--    ></a>-->
     <a
-      data-id="5"
-      [ngClass]="{ on: getRating() === FeedbackRating.VeryGood }"
-      (click)="
-        feedbackService.rateItem(feedbackItemId, FeedbackRating.VeryGood)
-      "
-      ><span></span
-    ></a>
-    <a
-      data-id="4"
-      [ngClass]="{ on: getRating() === FeedbackRating.Good }"
-      (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Good)"
+      data-id="2"
+      [ngClass]="{ on: getRating() === FeedbackRating.Poor }"
+      (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Poor)"
       ><span></span
     ></a>
     <a
@@ -33,18 +33,19 @@
       ><span></span
     ></a>
     <a
-      data-id="2"
-      [ngClass]="{ on: getRating() === FeedbackRating.Poor }"
-      (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Poor)"
+      data-id="4"
+      [ngClass]="{ on: getRating() === FeedbackRating.Good }"
+      (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Good)"
       ><span></span
     ></a>
-    <a
-      data-id="1"
-      [ngClass]="{ on: getRating() === FeedbackRating.VeryPoor }"
-      (click)="
-        feedbackService.rateItem(feedbackItemId, FeedbackRating.VeryPoor)
-      "
-      ><span></span
-    ></a>
+
+    <!--    <a-->
+    <!--      data-id="1"-->
+    <!--      [ngClass]="{ on: getRating() === FeedbackRating.VeryPoor }"-->
+    <!--      (click)="-->
+    <!--        feedbackService.rateItem(feedbackItemId, FeedbackRating.VeryPoor)-->
+    <!--      "-->
+    <!--      ><span></span-->
+    <!--    ></a>-->
   </div>
 </div>
