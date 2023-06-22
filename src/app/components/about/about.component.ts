@@ -28,7 +28,9 @@ export class AboutComponent {
 
   async loadContent() {
     this.spinner.loadingAbout = true;
-    this.content = await this.apiService.getStaticPage('Over');
+    this.content = await this.apiService.getStaticPage(
+      'Over Utrecht Time Machine'
+    );
     this.spinner.loadingAbout = false;
   }
 }
