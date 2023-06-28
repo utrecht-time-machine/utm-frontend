@@ -87,32 +87,6 @@
     ></app-story-preview>
   </div>
 
-  <!--<div class="media-container">-->
-  <!--  {{ utmRoutes.selectedStop | json }}-->
-  <!--  <div *ngIf="utmRoutes.selectedStopHasLocationStories()">-->
-  <!--    <div-->
-  <!--      *ngFor="-->
-  <!--        let locationStoryAndMediaItem of utmRoutes.selectedStop-->
-  <!--          ?.location_stories_and_media_items-->
-  <!--      "-->
-  <!--    >-->
-  <!--      <h3-->
-  <!--        class="location-story-title"-->
-  <!--        [innerHtml]="locationStoryAndMediaItem.story.title"-->
-  <!--      ></h3>-->
-  <!--      <div-->
-  <!--        class="views-element-container"-->
-  <!--        *ngFor="let mediaItem of locationStoryAndMediaItem.mediaItems"-->
-  <!--      >-->
-  <!--        <app-media-item-->
-  <!--          [mediaItem]="mediaItem"-->
-  <!--          [addTopMargin]="false"-->
-  <!--        ></app-media-item>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--  </div>-->
-  <!--</div>-->
-
   <app-feedback
     [feedbackItemId]="utmRoutes.selectedStop?.stop_id"
     feedbackGivenText="feedbackGiven"

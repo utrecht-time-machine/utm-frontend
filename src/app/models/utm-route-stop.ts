@@ -22,10 +22,5 @@ export interface UtmRouteStop {
 
   location_stories: Story[];
 
-  // location_stories_and_media_items?: {
-  //   story: Story;
-  //   mediaItems: MediaItem[];
-  // }[];
-
   media_items: MediaItem[];
 }

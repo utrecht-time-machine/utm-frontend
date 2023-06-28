@@ -68,20 +68,4 @@ export class SelectedStopComponent {
   getStoryUrl(storyUrlAlias: string) {
     return this.utmRoutes.selected.getValue()?.url + '?story=' + storyUrlAlias;
   }
-
-  // stopHasLocationStories(): boolean {
-  //   return (
-  //     this.utmRoutes.selectedStop?.location_stories_and_media_items !==
-  //       undefined &&
-  //     this.utmRoutes.selectedStop?.location_stories_and_media_items.length > 0
-  //   );
-  // }
-
-  // storyHasVideoIcon(story: Story) {
-  //   return story.has_video_icon !== 'Uit';
-  // }
-  //
-  // getStoryUrl(storyUrlAlias: string): string {
-  //   return this.utmRoutes.selected.getValue()?.url + '?story=' + storyUrlAlias;
-  // }
 }
