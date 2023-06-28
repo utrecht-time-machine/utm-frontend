@@ -55,18 +55,19 @@
 <div class="media-container">
   <div *ngIf="utmRoutes.selectedStop?.stories">
     <ng-container *ngFor="let story of utmRoutes.selectedStop?.stories">
-      <div
-        class="story-head"
-        *ngIf="story.mediaItems && story.mediaItems.length > 1"
-      >
+      <div class="story-head" *ngIf="true">
         <h2>{{ story.title }}</h2>
       </div>
 
       <div
         class="views-element-container"
-        *ngFor="let mediaItem of story?.mediaItems"
+        *ngFor="let mediaItem of story?.mediaItems; let i = index"
       >
-        <app-media-item [mediaItem]="mediaItem"></app-media-item>
+        <app-media-item
+          [mediaItem]="mediaItem"
+          [showTitle]="i !== 0 || mediaItem.title !== story.title"
+          [addTopMargin]="false"
+        ></app-media-item>
       </div>
     </ng-container>
   </div>
