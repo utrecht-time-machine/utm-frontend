@@ -106,6 +106,14 @@ export class UtmRoutesService {
       }
 
       await Promise.all(loadingStoryDetailsPromises);
+
+      // Sort on original order of story IDs after async loading
+      stop.stories?.sort((a, b) => {
+        const indexA = stop.story_ids.indexOf(a.story_id);
+        const indexB = stop.story_ids.indexOf(b.story_id);
+        return indexA - indexB;
+      });
+
       this.spinner.loadingRouteStopStories = false;
     });
   }
