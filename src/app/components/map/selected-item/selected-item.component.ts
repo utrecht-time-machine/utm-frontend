@@ -29,13 +29,6 @@ export class SelectedItemComponent {
     return this.locationDetails.stories.length > 0;
   }
 
-  locationHasOrganisations(): boolean {
-    if (!this.locationDetails?.organisations) {
-      return false;
-    }
-    return this.locationDetails.organisations.length > 0;
-  }
-
   storyHasVideoIcon(story: Story): boolean {
     return story.has_video_icon !== 'Uit';
   }

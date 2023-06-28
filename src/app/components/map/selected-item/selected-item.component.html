@@ -65,19 +65,9 @@
               [innerHtml]="locationDetails?.text"
             ></div>
           </div>
-          <div class="org-logo" *ngIf="locationHasOrganisations()">
-            <div class="org-logo-head">Met bijdragen van</div>
-            <div class="org-logo-hold">
-              <div
-                class="views-element-container"
-                *ngFor="let org of locationDetails?.organisations"
-              >
-                <a [href]="org.link" [title]="org.title" target="_blank">
-                  <img [src]="org.logo" alt="" />
-                </a>
-              </div>
-            </div>
-          </div>
+          <app-organisations
+            [organisations]="locationDetails?.organisations"
+          ></app-organisations>
         </div>
       </div>
 

@@ -1,3 +1,5 @@
+import { Organisation } from './organisation';
+
 export interface MediaItem {
   title: string;
   media_id: string;
@@ -11,6 +13,8 @@ export interface MediaItem {
   embed_url: string;
   type: MediaItemType;
   organisation_ids: string;
+
+  organisations?: Organisation[];
 }
 
 export enum MediaItemType {

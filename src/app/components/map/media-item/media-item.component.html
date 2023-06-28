@@ -78,6 +78,7 @@
       </div>
     </div>
     <div class="head" *ngIf="hasHead()">
+      <div>{{ mediaItem.organisations | json }}</div>
       <h4 [innerHtml]="mediaItem.title" *ngIf="showTitle"></h4>
       <div [innerHtml]="mediaItem.text"></div>
     </div>

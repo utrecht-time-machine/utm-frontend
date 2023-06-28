@@ -114,6 +114,10 @@ export class ApiService {
         mediaItem,
         environment.translateKeys.mediaItem
       );
+
+      const mediaItemOrgIds: string[] = mediaItem.organisation_ids.split(',');
+      mediaItem.organisations = this.organisations.getByIds(mediaItemOrgIds);
+
       mediaItem.type = MediaItemType.Undefined;
 
       const isImageItem = mediaItem.image_small;
