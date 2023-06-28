@@ -10,6 +10,7 @@ export interface MediaItem {
   text: string;
   embed_url: string;
   type: MediaItemType;
+  organisation_ids: string;
 }
 
 export enum MediaItemType {

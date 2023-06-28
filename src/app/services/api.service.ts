@@ -6,12 +6,13 @@ import { environment } from '../../environments/environment';
 import { GeoJSON } from 'geojson';
 import { LocationDetails } from '../models/location-details';
 import { Story } from '../models/story';
-import { Organisation } from '../models/organisation';
 import { UtmRoute } from '../models/utm-route';
 import { UtmRouteStop } from '../models/utm-route-stop';
 import { MediaItem, MediaItemType } from '../models/media-item';
 import { UtmTranslateService } from './utm-translate.service';
 import { StaticPage } from '../models/static-page';
+import { OrganisationService } from './organisation.service';
+import { UtilService } from './util.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,8 @@ import { StaticPage } from '../models/static-page';
 export class ApiService {
   constructor(
     private http: HttpClient,
-    private utmTranslate: UtmTranslateService
+    private utmTranslate: UtmTranslateService,
+    private organisations: OrganisationService
   ) {}
 
   async getNidFromUrlAlias(url: string): Promise<string> {
@@ -69,7 +71,7 @@ export class ApiService {
       console.error(err);
       return [];
     });
-    this._addUrlPrefixes(utmRoutes, 'photo');
+    UtilService.addUrlPrefixes(utmRoutes, 'photo');
     this.utmTranslate.translateObjectsByKeys(
       utmRoutes,
       environment.translateKeys.routes
@@ -88,7 +90,7 @@ export class ApiService {
       return undefined;
     }
     const story: Story = storyDetails[0];
-    this._addUrlPrefix(story, 'photo');
+    UtilService.addUrlPrefix(story, 'photo');
     this.utmTranslate.translateObjectByKeys(
       story,
       environment.translateKeys.storyDetails
@@ -117,7 +119,7 @@ export class ApiService {
       const isImageItem = mediaItem.image_small;
       if (isImageItem) {
         mediaItem.type = MediaItemType.Image;
-        this._addUrlPrefix(mediaItem, 'image_small');
+        UtilService.addUrlPrefix(mediaItem, 'image_small');
       }
 
       const isAudioItem = environment.mediaItemAudioExtensions.some(
@@ -130,7 +132,7 @@ export class ApiService {
         mediaItem.media_file = environment.audioBaseUrl + mediaItem.media_file;
       } else if (isVideoItem) {
         mediaItem.type = MediaItemType.Video;
-        this._addUrlPrefix(mediaItem, 'media_file');
+        UtilService.addUrlPrefix(mediaItem, 'media_file');
       }
 
       if (mediaItem.embed_url) {
@@ -155,7 +157,7 @@ export class ApiService {
       // );
       // if (isImageItem) {
       //   mediaItem.type = MediaItemType.Image;
-      //   mediaItem = this._addUrlPrefix(mediaItem, 'media_file');
+      //   mediaItem = UtilService.addUrlPrefix(mediaItem, 'media_file');
       // }
     });
 
@@ -180,8 +182,8 @@ export class ApiService {
 
     const locationDetails: LocationDetails = locationsDetails[0];
 
-    this._addUrlPrefix(locationDetails, 'image');
-    this._addUrlPrefix(locationDetails, 'thumb');
+    UtilService.addUrlPrefix(locationDetails, 'image');
+    UtilService.addUrlPrefix(locationDetails, 'thumb');
 
     this.utmTranslate.translateObjectByKeys(
       locationDetails,
@@ -200,9 +202,10 @@ export class ApiService {
     );
     locationDetails.stories = locationStories;
 
-    const locationOrganisations: Organisation[] =
-      await this._getOrganisationsByLocationId(locationDetails.nid);
-    locationDetails.organisations = locationOrganisations;
+    if (locationDetails?.organisation_ids) {
+      const orgIds: string[] = locationDetails?.organisation_ids.split(',');
+      locationDetails.organisations = this.organisations.getByIds(orgIds);
+    }
 
     return locationDetails;
   }
@@ -228,8 +231,8 @@ export class ApiService {
         lng: parseFloat(long.trim()),
       };
 
-      this._addUrlPrefix(stop.location, 'image');
-      this._addUrlPrefix(stop.location, 'thumb');
+      UtilService.addUrlPrefix(stop.location, 'image');
+      UtilService.addUrlPrefix(stop.location, 'thumb');
 
       this.utmTranslate.translateObjectByKeys(
         stop.location,
@@ -237,7 +240,11 @@ export class ApiService {
       );
 
       if (stop?.stories) {
-        this._addUrlPrefixes(stop.stories, 'audio', environment.audioBaseUrl);
+        UtilService.addUrlPrefixes(
+          stop.stories,
+          'audio',
+          environment.audioBaseUrl
+        );
 
         this.utmTranslate.translateObjectsByKeys(
           stop.stories,
@@ -250,26 +257,6 @@ export class ApiService {
     return utmRouteStops;
   }
 
-  private _addUrlPrefix(
-    obj: any,
-    key: string,
-    prefix: string = environment.imageBaseUrl
-  ): void {
-    if (key in obj) {
-      obj[key] = environment.imageBaseUrl + obj[key];
-    }
-  }
-
-  private _addUrlPrefixes(
-    objs: any[],
-    key: string,
-    prefix: string = environment.imageBaseUrl
-  ): void {
-    for (const obj of objs) {
-      this._addUrlPrefix(obj, key);
-    }
-  }
-
   public async getStoriesByLocationId(locationId: string): Promise<Story[]> {
     const stories: Story[] = await lastValueFrom(
       this.http.get<Story[]>(
@@ -278,7 +265,7 @@ export class ApiService {
           locationId
       )
     );
-    this._addUrlPrefixes(stories, 'photo');
+    UtilService.addUrlPrefixes(stories, 'photo');
 
     stories.map(
       (story) =>
@@ -292,31 +279,13 @@ export class ApiService {
     return stories;
   }
 
-  private async _getOrganisationsByLocationId(
-    locationId: string
-  ): Promise<Organisation[]> {
-    const organisations: Organisation[] = await lastValueFrom(
-      this.http.get<Organisation[]>(
-        environment.apiUrl +
-          environment.apiSuffixes.organisationsByLocation +
-          locationId
-      )
-    );
-    this._addUrlPrefixes(organisations, 'logo');
-    this.utmTranslate.translateObjectsByKeys(
-      organisations,
-      environment.translateKeys.organisation
-    );
-    return organisations;
-  }
-
   public convertMapLocationsToGeoJson(
     mapLocations: MapLocation[]
   ): GeoJSON.FeatureCollection {
     const features: GeoJSON.Feature[] = mapLocations.map((mapLocation) => {
       const [latitude, longitude] = mapLocation.geo.split(',').map(Number);
-      this._addUrlPrefix(mapLocation, 'thumb');
-      this._addUrlPrefix(mapLocation, 'image_small');
+      UtilService.addUrlPrefix(mapLocation, 'thumb');
+      UtilService.addUrlPrefix(mapLocation, 'image_small');
 
       return {
         type: 'Feature',

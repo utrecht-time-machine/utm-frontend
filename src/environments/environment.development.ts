@@ -8,7 +8,7 @@ export const environment = {
     locationDetailsById: 'location_details?nid=',
     storyDetailsById: 'story_details?nid=',
     storiesByLocationId: 'stories_by_location?nid=',
-    organisationsByLocation: 'organisations_by_location?nid=',
+    organisations: 'organisations',
     routes: 'routes',
     stopsByRoute: 'route_stops?nid=',
     mediaByStory: 'media_by_story?nid=',

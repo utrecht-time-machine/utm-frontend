@@ -17,7 +17,7 @@ export interface LocationDetails {
   license?: string;
   caption?: string;
   head?: string;
-  organisation_ids?: Organisation[];
+  organisation_ids?: string;
   organisations?: Organisation[];
   zipcode?: string;
   teaser?: string;

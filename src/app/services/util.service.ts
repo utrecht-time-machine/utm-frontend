@@ -1,3 +1,5 @@
+import { environment } from '../../environments/environment';
+
 export class UtilService {
   static convertDistanceInKmToString(distanceInKm: number): string {
     if (distanceInKm < 1) {
@@ -30,5 +32,25 @@ export class UtilService {
 
   static deg2rad(deg: number): number {
     return deg * (Math.PI / 180);
+  }
+
+  static addUrlPrefix(
+    obj: any,
+    key: string,
+    prefix: string = environment.imageBaseUrl
+  ): void {
+    if (key in obj) {
+      obj[key] = environment.imageBaseUrl + obj[key];
+    }
+  }
+
+  static addUrlPrefixes(
+    objs: any[],
+    key: string,
+    prefix: string = environment.imageBaseUrl
+  ): void {
+    for (const obj of objs) {
+      UtilService.addUrlPrefix(obj, key);
+    }
   }
 }
