@@ -64,6 +64,11 @@ export class SelectedStopComponent {
       this.utmRoutes.selectedStop?.location_stories.length > 0
     );
   }
+
+  getStoryUrl(storyUrlAlias: string) {
+    return this.utmRoutes.selected.getValue()?.url + '?story=' + storyUrlAlias;
+  }
+
   // stopHasLocationStories(): boolean {
   //   return (
   //     this.utmRoutes.selectedStop?.location_stories_and_media_items !==

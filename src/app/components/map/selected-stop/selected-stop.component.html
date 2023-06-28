@@ -81,7 +81,7 @@
   <div class="story-hold">
     <app-story-preview
       [story]="locationStory"
-      [url]="'#'"
+      [url]="getStoryUrl(locationStory.story_url_alias)"
       class="story"
       *ngFor="let locationStory of utmRoutes.selectedStop?.location_stories"
     ></app-story-preview>
@@ -118,35 +118,4 @@
     feedbackGivenText="feedbackGiven"
     feedbackQuestionText="routeStopFeedbackQuestion"
   ></app-feedback>
-
-  <!--<div class="views-element-container" *ngIf="stopHasLocationStories()">-->
-  <!--  <div class="story-head">-->
-  <!--    <h2>{{ "storiesForLocation" | translate }}</h2>-->
-  <!--  </div>-->
-  <!--  <div class="story-hold">-->
-  <!--    <div-->
-  <!--      class="story"-->
-  <!--      *ngFor="let locationStory of utmRoutes.selectedStop?.location_stories"-->
-  <!--    >-->
-  <!--      <a-->
-  <!--        (click)="-->
-  <!--          router.navigateByUrl(getStoryUrl(locationStory.story_url_alias))-->
-  <!--        "-->
-  <!--      >-->
-  <!--        <div-->
-  <!--          class="head has-video-{{-->
-  <!--            storyHasVideoIcon(locationStory) ? '1' : '0'-->
-  <!--          }}"-->
-  <!--        >-->
-  <!--          <div>-->
-  <!--            <img [src]="locationStory.photo" [alt]="locationStory.title" />-->
-  <!--          </div>-->
-  <!--        </div>-->
-  <!--        <div class="core">-->
-  <!--          <span class="name" [innerHtml]="locationStory.title"></span>-->
-  <!--        </div>-->
-  <!--      </a>-->
-  <!--    </div>-->
-  <!--  </div>-->
-  <!--</div>-->
 </div>
