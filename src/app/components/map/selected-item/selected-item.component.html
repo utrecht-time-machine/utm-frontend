@@ -86,28 +86,13 @@
           <h2>{{ "storiesForLocation" | translate }}</h2>
         </div>
         <div class="story-hold">
-          <div class="story" *ngFor="let story of locationDetails?.stories">
-            <a
-              (click)="
-                router.navigateByUrl(
-                  locationDetails?.url + '?story=' + story.story_url_alias
-                )
-              "
-            >
-              <div
-                class="head has-video-{{
-                  storyHasVideoIcon(story) ? '1' : '0'
-                }}"
-              >
-                <div>
-                  <img loading="lazy" [src]="story?.photo" />
-                </div>
-              </div>
-              <div class="core">
-                <span class="name" [innerHtml]="story.title"></span>
-              </div>
-            </a>
-          </div>
+          <app-story-preview
+            class="story"
+            [story]="story"
+            [url]="locationDetails?.url + '?story=' + story.story_url_alias"
+            *ngFor="let story of locationDetails?.stories"
+          >
+          </app-story-preview>
         </div>
       </div>
     </div>

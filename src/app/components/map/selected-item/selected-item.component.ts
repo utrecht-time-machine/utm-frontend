@@ -3,7 +3,6 @@ import { LocationDetails } from '../../../models/location-details';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { RoutingService } from '../../../services/routing.service';
-import { Story } from '../../../models/story';
 import { StoryService } from '../../../services/story.service';
 
 @Component({
@@ -34,10 +33,6 @@ export class SelectedItemComponent {
       return false;
     }
     return this.locationDetails.organisations.length > 0;
-  }
-
-  storyHasVideoIcon(story: Story): boolean {
-    return story.has_video_icon !== 'Uit';
   }
 
   onCloseStoryClicked() {

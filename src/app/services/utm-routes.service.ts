@@ -38,7 +38,8 @@ export class UtmRoutesService {
 
     this.selectedStopIdx.subscribe(() => {
       void this._updateSelectedStopMediaItems();
-      void this._updateSelectedStopMediaItemsFromLocationStories();
+      // void this._updateSelectedStopMediaItemsFromLocationStories();
+      void this._updateSelectedStopLocationStories();
     });
   }
 
@@ -83,7 +84,7 @@ export class UtmRoutesService {
     }
   }
 
-  private async _updateSelectedStopMediaItemsFromLocationStories() {
+  private async _updateSelectedStopLocationStories() {
     if (!this.selectedStop) {
       return;
     }
@@ -92,26 +93,39 @@ export class UtmRoutesService {
     if (stopIsLocation) {
       const locationStories: Story[] =
         await this.apiService.getStoriesByLocationId(this.selectedStop.stop_id);
-
-      for (const locationStory of locationStories) {
-        this.apiService
-          .getMediaItemsByStoryId(locationStory.story_id)
-          .then((storyMediaItems: MediaItem[]) => {
-            if (!this.selectedStop) {
-              return;
-            }
-            if (!this.selectedStop.location_stories_and_media_items) {
-              this.selectedStop.location_stories_and_media_items = [];
-            }
-
-            this.selectedStop.location_stories_and_media_items.push({
-              story: locationStory,
-              mediaItems: storyMediaItems,
-            });
-          });
-      }
+      this.selectedStop.location_stories = locationStories;
     }
   }
+  //
+  // private async _updateSelectedStopMediaItemsFromLocationStories() {
+  //   if (!this.selectedStop) {
+  //     return;
+  //   }
+  //
+  //   const stopIsLocation = this.selectedStop.stop_type === 'Locatie';
+  //   if (stopIsLocation) {
+  //     const locationStories: Story[] =
+  //       await this.apiService.getStoriesByLocationId(this.selectedStop.stop_id);
+  //
+  //     for (const locationStory of locationStories) {
+  //       this.apiService
+  //         .getMediaItemsByStoryId(locationStory.story_id)
+  //         .then((storyMediaItems: MediaItem[]) => {
+  //           if (!this.selectedStop) {
+  //             return;
+  //           }
+  //           if (!this.selectedStop.location_stories_and_media_items) {
+  //             this.selectedStop.location_stories_and_media_items = [];
+  //           }
+  //
+  //           this.selectedStop.location_stories_and_media_items.push({
+  //             story: locationStory,
+  //             mediaItems: storyMediaItems,
+  //           });
+  //         });
+  //     }
+  //   }
+  // }
 
   public get selectedStop(): UtmRouteStop | undefined {
     const selectedRoute: UtmRoute | undefined = this.selected.getValue();
@@ -134,13 +148,13 @@ export class UtmRoutesService {
     );
   }
 
-  public selectedStopHasLocationStories(): boolean {
-    return (
-      this.selectedStop !== undefined &&
-      this.selectedStop.location_stories_and_media_items !== undefined &&
-      this.selectedStop.location_stories_and_media_items.length > 0
-    );
-  }
+  // public selectedStopHasLocationStories(): boolean {
+  //   return (
+  //     this.selectedStop !== undefined &&
+  //     this.selectedStop.location_stories_and_media_items !== undefined &&
+  //     this.selectedStop.location_stories_and_media_items.length > 0
+  //   );
+  // }
 
   public async load() {
     this.all = await this.apiService.getUtmRoutes();

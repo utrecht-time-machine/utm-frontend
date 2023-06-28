@@ -10,6 +10,7 @@ import { StoryModule } from './story/story.module';
 import { LicenseModule } from '../license/license.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { EditButtonModule } from '../edit-button/edit-button.module';
+import { StoryPreviewModule } from './story-preview/story-preview.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { EditButtonModule } from '../edit-button/edit-button.module';
     LicenseModule,
     TranslateModule,
     EditButtonModule,
+    StoryPreviewModule,
   ],
 })
 export class MapModule {}

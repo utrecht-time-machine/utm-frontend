@@ -1,0 +1,10 @@
+<a (click)="router.navigateByUrl(url)" *ngIf="story && url">
+  <div class="head has-video-{{ storyHasVideoIcon() ? '1' : '0' }}">
+    <div>
+      <img loading="lazy" [src]="story?.photo" />
+    </div>
+  </div>
+  <div class="core">
+    <span class="name" [innerHtml]="story?.title"></span>
+  </div>
+</a>
