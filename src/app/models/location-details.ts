@@ -10,7 +10,7 @@ export interface LocationDetails {
   city?: string;
   thumb?: string;
   geo: string;
-  coords: { lat: number; long: number };
+  coords: { lat: number; lng: number };
   source_link?: string;
   source_name?: string;
   image?: string;

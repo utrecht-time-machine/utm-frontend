@@ -69,7 +69,7 @@ export class ApiService {
       console.error(err);
       return [];
     });
-    this._addImageUrlPrefixes(utmRoutes, 'photo');
+    this._addUrlPrefixes(utmRoutes, 'photo');
     this.utmTranslate.translateObjectsByKeys(
       utmRoutes,
       environment.translateKeys.routes
@@ -88,7 +88,7 @@ export class ApiService {
       return undefined;
     }
     const story: Story = storyDetails[0];
-    this._addImageUrlPrefix(story, 'photo');
+    this._addUrlPrefix(story, 'photo');
     this.utmTranslate.translateObjectByKeys(
       story,
       environment.translateKeys.storyDetails
@@ -117,7 +117,7 @@ export class ApiService {
       const isImageItem = mediaItem.image_small;
       if (isImageItem) {
         mediaItem.type = MediaItemType.Image;
-        this._addImageUrlPrefix(mediaItem, 'image_small');
+        this._addUrlPrefix(mediaItem, 'image_small');
       }
 
       const isAudioItem = environment.mediaItemAudioExtensions.some(
@@ -130,7 +130,7 @@ export class ApiService {
         mediaItem.media_file = environment.audioBaseUrl + mediaItem.media_file;
       } else if (isVideoItem) {
         mediaItem.type = MediaItemType.Video;
-        this._addImageUrlPrefix(mediaItem, 'media_file');
+        this._addUrlPrefix(mediaItem, 'media_file');
       }
 
       if (mediaItem.embed_url) {
@@ -155,7 +155,7 @@ export class ApiService {
       // );
       // if (isImageItem) {
       //   mediaItem.type = MediaItemType.Image;
-      //   mediaItem = this._addImageUrlPrefix(mediaItem, 'media_file');
+      //   mediaItem = this._addUrlPrefix(mediaItem, 'media_file');
       // }
     });
 
@@ -180,8 +180,8 @@ export class ApiService {
 
     const locationDetails: LocationDetails = locationsDetails[0];
 
-    this._addImageUrlPrefix(locationDetails, 'image');
-    this._addImageUrlPrefix(locationDetails, 'thumb');
+    this._addUrlPrefix(locationDetails, 'image');
+    this._addUrlPrefix(locationDetails, 'thumb');
 
     this.utmTranslate.translateObjectByKeys(
       locationDetails,
@@ -191,7 +191,7 @@ export class ApiService {
     const splitGeoCoords: string[] = locationDetails.geo.split(', ');
     locationDetails.coords = {
       lat: parseFloat(splitGeoCoords[0]),
-      long: parseFloat(splitGeoCoords[1]),
+      lng: parseFloat(splitGeoCoords[1]),
     };
 
     // TODO: Enrich location/organisation details with story data asynchronously?
@@ -219,39 +219,54 @@ export class ApiService {
     );
 
     utmRouteStops.forEach((stop) => {
-      if (!stop.geo) {
+      if (!stop?.location?.geo) {
         return;
       }
-      const [lat, long] = stop.geo.split(',');
-      stop.coords = {
+      const [lat, long] = stop.location.geo.split(',');
+      stop.location.coords = {
         lat: parseFloat(lat.trim()),
         lng: parseFloat(long.trim()),
       };
-      if (stop.audio) {
-        stop.audio = environment.audioBaseUrl + stop.audio;
-      }
 
-      this._addImageUrlPrefix(stop, 'stop_image');
-      this._addImageUrlPrefix(stop, 'stop_thumb');
+      this._addUrlPrefix(stop.location, 'image');
+      this._addUrlPrefix(stop.location, 'thumb');
+
       this.utmTranslate.translateObjectByKeys(
-        stop,
-        environment.translateKeys.stop
+        stop.location,
+        environment.translateKeys.locationDetails
       );
+
+      if (stop?.stories) {
+        this._addUrlPrefixes(stop.stories, 'audio', environment.audioBaseUrl);
+
+        this.utmTranslate.translateObjectsByKeys(
+          stop.stories,
+          environment.translateKeys.storyDetails
+        );
+      }
     });
 
     console.log('STOPS', utmRouteStops);
     return utmRouteStops;
   }
 
-  private _addImageUrlPrefix(obj: any, imageKey: string): void {
-    if (imageKey in obj) {
-      obj[imageKey] = environment.imageBaseUrl + obj[imageKey];
+  private _addUrlPrefix(
+    obj: any,
+    key: string,
+    prefix: string = environment.imageBaseUrl
+  ): void {
+    if (key in obj) {
+      obj[key] = environment.imageBaseUrl + obj[key];
     }
   }
 
-  private _addImageUrlPrefixes(objs: any[], imageKey: string): void {
+  private _addUrlPrefixes(
+    objs: any[],
+    key: string,
+    prefix: string = environment.imageBaseUrl
+  ): void {
     for (const obj of objs) {
-      this._addImageUrlPrefix(obj, imageKey);
+      this._addUrlPrefix(obj, key);
     }
   }
 
@@ -263,7 +278,7 @@ export class ApiService {
           locationId
       )
     );
-    this._addImageUrlPrefixes(stories, 'photo');
+    this._addUrlPrefixes(stories, 'photo');
 
     stories.map(
       (story) =>
@@ -287,7 +302,7 @@ export class ApiService {
           locationId
       )
     );
-    this._addImageUrlPrefixes(organisations, 'logo');
+    this._addUrlPrefixes(organisations, 'logo');
     this.utmTranslate.translateObjectsByKeys(
       organisations,
       environment.translateKeys.organisation
@@ -300,8 +315,8 @@ export class ApiService {
   ): GeoJSON.FeatureCollection {
     const features: GeoJSON.Feature[] = mapLocations.map((mapLocation) => {
       const [latitude, longitude] = mapLocation.geo.split(',').map(Number);
-      this._addImageUrlPrefix(mapLocation, 'thumb');
-      this._addImageUrlPrefix(mapLocation, 'image_small');
+      this._addUrlPrefix(mapLocation, 'thumb');
+      this._addUrlPrefix(mapLocation, 'image_small');
 
       return {
         type: 'Feature',

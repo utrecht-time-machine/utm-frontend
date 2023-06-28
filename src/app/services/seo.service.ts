@@ -59,7 +59,7 @@ export class SeoService {
         } else if (storyQueryParam) {
           this.generateStoryMeta(
             this.storyService.shownStory.getValue(),
-            this.storyService.shownStoryMediaItems.getValue()
+            this.storyService.shownStory.getValue()?.mediaItems
           );
         } else {
           this.generateLocationMeta(
@@ -73,7 +73,7 @@ export class SeoService {
       case SelectedView.Story:
         this.generateStoryMeta(
           this.storyService.shownStory.getValue(),
-          this.storyService.shownStoryMediaItems.getValue()
+          this.storyService.shownStory.getValue()?.mediaItems
         );
         break;
       case SelectedView.Routes:
@@ -119,8 +119,11 @@ export class SeoService {
     );
   }
 
-  private generateStoryMeta(story: Story | undefined, mediaItems: MediaItem[]) {
-    if (!story) {
+  private generateStoryMeta(
+    story: Story | undefined,
+    mediaItems: MediaItem[] | undefined
+  ) {
+    if (!story || !mediaItems) {
       // console.warn('No story, regenerating home');
       // this.generateHomeMeta();
       return;

@@ -10,7 +10,7 @@ export const environment = {
     storiesByLocationId: 'stories_by_location?nid=',
     organisationsByLocation: 'organisations_by_location?nid=',
     routes: 'routes',
-    stopsByRoute: 'stops_by_route?nid=',
+    stopsByRoute: 'route_stops?nid=',
     mediaByStory: 'media_by_story?nid=',
     staticPage: 'page?title=',
   },

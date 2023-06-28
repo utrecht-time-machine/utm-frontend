@@ -120,7 +120,7 @@ export class MapService {
         return;
       }
 
-      const stopCoords = selectedStop.coords;
+      const stopCoords = selectedStop?.location?.coords;
       if (stopCoords) {
         this.map.flyTo({
           center: [stopCoords.lng, stopCoords.lat],
@@ -131,8 +131,8 @@ export class MapService {
         this._showMapStopPopup(
           stopCoords,
           selectedStop.title,
-          selectedStop.address,
-          selectedStop.stop_thumb,
+          selectedStop.location?.address as string,
+          selectedStop.location?.thumb as string,
           stopIdx
         );
       }
@@ -315,20 +315,23 @@ export class MapService {
     const stopsFeatureCollection = {
       type: 'FeatureCollection',
       features: routeStops.map((stop, idx) => {
-        if (!stop || !stop.coords) {
+        if (!stop || !stop?.location?.coords) {
           return {};
         }
         return {
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [stop.coords.lng, stop.coords.lat],
+            coordinates: [
+              stop?.location?.coords.lng,
+              stop?.location?.coords.lat,
+            ],
           },
           properties: {
             label: idx + 1,
             stop_title: stop.title,
-            stop_address: stop.address,
-            stop_thumb: stop.stop_thumb,
+            stop_address: stop.location?.address,
+            stop_thumb: stop.location?.thumb,
             idx: idx,
           },
         };
@@ -428,8 +431,12 @@ export class MapService {
 
     const stopsCoordinates: LngLat[] | undefined = this.utmRoutes.selected
       .getValue()
-      ?.stops?.map((stop) => {
-        return new LngLat(stop.coords.lng, stop.coords.lat);
+      ?.stops?.filter((stop) => {
+        return stop && stop.location;
+      })
+      .map((stop) => {
+        // @ts-ignore
+        return new LngLat(stop.location.coords.lng, stop.location.coords.lat);
       });
 
     if (stopsCoordinates) {
@@ -473,6 +480,7 @@ export class MapService {
       this.map.removeSource('route_path');
     }
   }
+
   addLocationsOnMap(hideLocations = false) {
     if (!this.map) {
       console.warn('Map not yet initialized... Not adding locations to map.');
@@ -640,8 +648,7 @@ export class MapService {
             this.selectedLocation.getValue()?.nid ===
             item.location.nid.toString();
           const locationIsSelectedAsStop =
-            this.utmRoutes.selectedStop?.stop_id ===
-            item.location.nid.toString();
+            this.utmRoutes.selectedStop?.id === item.location.nid.toString();
           return (
             !isNaN(item.distanceFromCenterInKm) &&
             !locationIsSelected &&
@@ -679,7 +686,7 @@ export class MapService {
       );
 
       this.map.flyTo({
-        center: [locationDetails.coords.long, locationDetails.coords.lat],
+        center: [locationDetails.coords.lng, locationDetails.coords.lat],
         essential: true,
         zoom: 18,
       });
@@ -761,7 +768,7 @@ export class MapService {
           city: feature.properties.city,
           coords: {
             lat: feature.geometry.coordinates[1],
-            long: feature.geometry.coordinates[0],
+            lng: feature.geometry.coordinates[0],
           },
           thumb: feature.properties.thumb,
           title: feature.properties.title,
@@ -861,7 +868,7 @@ export class MapService {
       offset: [0, 0],
     })
       .setHTML(this._getLocationPopupHtml(location))
-      .setLngLat([location.coords.long, location.coords.lat])
+      .setLngLat([location.coords.lng, location.coords.lat])
       .addTo(this.map as mapboxgl.Map);
 
     this.utmTranslate
@@ -912,8 +919,8 @@ export class MapService {
   ): Promise<any> {
     const coordsStr: string = routeStops
       .map((stop) => {
-        if (stop.coords) {
-          return `${stop.coords.lng},${stop.coords.lat}`;
+        if (stop?.location?.coords) {
+          return `${stop?.location?.coords.lng},${stop?.location?.coords.lat}`;
         }
         return undefined;
       })

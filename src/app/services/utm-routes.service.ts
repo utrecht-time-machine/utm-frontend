@@ -4,10 +4,8 @@ import { UtmRoute } from '../models/utm-route';
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
 import { UtmRouteStop } from '../models/utm-route-stop';
-import { MediaItem, MediaItemType } from '../models/media-item';
 import { SpinnerService } from './spinner.service';
 import { PlatformService } from './platform.service';
-import { Story } from '../models/story';
 
 @Injectable({
   providedIn: 'root',
@@ -23,9 +21,6 @@ export class UtmRoutesService {
     number | undefined
   >(undefined);
 
-  shownMediaItems: BehaviorSubject<MediaItem[] | undefined> =
-    new BehaviorSubject<MediaItem[] | undefined>(undefined);
-
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -34,83 +29,70 @@ export class UtmRoutesService {
   ) {
     void this.load();
 
-    this._resetPreviousStopIndexOnRouteChange();
+    this._resetStopIndexOnRouteChange();
+    this._loadStopsDataFromServerOnRouteChange();
+    this._loadStopDataFromServerOnStopChange();
+  }
 
-    this.selectedStopIdx.subscribe(() => {
-      void this._updateSelectedStopMediaItems();
-      void this._updateSelectedStopMediaItemsFromLocationStories();
+  private _loadStopsDataFromServerOnRouteChange() {
+    this.selected.subscribe(async (selectedRoute) => {
+      if (!selectedRoute) {
+        return;
+      }
+
+      const routeStops: UtmRouteStop[] | undefined =
+        await this.apiService.getUtmRouteStopsById(selectedRoute.nid);
+
+      if (!routeStops) {
+        return;
+      }
+
+      selectedRoute.stops = routeStops;
     });
   }
 
-  private _resetPreviousStopIndexOnRouteChange() {
+  private _loadStopDataFromServerOnStopChange() {
+    this.selectedStopIdx.subscribe(() => {
+      const selectedStopDataIsAlreadyLoaded = this.selectedStop?.location;
+      if (!this.selectedStop || selectedStopDataIsAlreadyLoaded) {
+        return;
+      }
+
+      const stop = this.selectedStop;
+
+      this.spinner.loadingRouteStopLocation = true;
+      this.apiService
+        .getLocationDetailsById(stop.location_id)
+        .then((locationDetails) => {
+          stop.location = locationDetails;
+          this.spinner.loadingRouteStopLocation = false;
+        });
+
+      if (!stop.story_ids) {
+        return;
+      }
+
+      // TODO: Wait until all story details requests have finished to show/hide spinner
+      for (const storyId of stop.story_ids.split(',')) {
+        this.apiService.getStoryDetailsById(storyId).then(async (story) => {
+          if (!stop.stories) {
+            stop.stories = [];
+          }
+
+          if (story) {
+            story.mediaItems = await this.apiService.getMediaItemsByStoryId(
+              story.story_id
+            );
+            stop.stories.push(story);
+          }
+        });
+      }
+    });
+  }
+  private _resetStopIndexOnRouteChange() {
     this.selected.subscribe(() => {
       this.selectedStopIdx.next(undefined);
     });
-  }
-
-  private async _updateSelectedStopMediaItems() {
-    if (!this.selectedStop) {
-      return;
-    }
-
-    const stopIsLocation = this.selectedStop.stop_type === 'Locatie';
-    if (stopIsLocation) {
-      let stopText = this.selectedStop.location_teaser as string;
-
-      if (this.selectedStop.location_text) {
-        stopText += '<br/><br/>' + this.selectedStop.location_text;
-      }
-      const locationStopMediaItems: MediaItem[] = [
-        {
-          caption: '',
-          embed_url: '',
-          image_small: this.selectedStop.stop_image as string,
-          license: this.selectedStop.stop_image_license,
-          media_file: '',
-          media_id: '',
-          source_link: this.selectedStop.stop_image_source_link,
-          source_name: this.selectedStop.stop_image_source_name,
-          text: stopText,
-          type: MediaItemType.Image,
-          title: '',
-        },
-      ];
-      this.selectedStop.media_items = locationStopMediaItems;
-    } else {
-      const retrievedMediaItems: MediaItem[] =
-        await this.apiService.getMediaItemsByStoryId(this.selectedStop.stop_id);
-      this.selectedStop.media_items = retrievedMediaItems;
-    }
-  }
-
-  private async _updateSelectedStopMediaItemsFromLocationStories() {
-    if (!this.selectedStop) {
-      return;
-    }
-
-    const stopIsLocation = this.selectedStop.stop_type === 'Locatie';
-    if (stopIsLocation) {
-      const locationStories: Story[] =
-        await this.apiService.getStoriesByLocationId(this.selectedStop.stop_id);
-
-      for (const locationStory of locationStories) {
-        this.apiService
-          .getMediaItemsByStoryId(locationStory.story_id)
-          .then((storyMediaItems: MediaItem[]) => {
-            if (!this.selectedStop) {
-              return;
-            }
-            if (!this.selectedStop.location_stories_and_media_items) {
-              this.selectedStop.location_stories_and_media_items = [];
-            }
-
-            this.selectedStop.location_stories_and_media_items.push({
-              story: locationStory,
-              mediaItems: storyMediaItems,
-            });
-          });
-      }
-    }
   }
 
   public get selectedStop(): UtmRouteStop | undefined {
@@ -125,21 +107,6 @@ export class UtmRoutesService {
     }
 
     return selectedRoute.stops[selectedStopIdx];
-  }
-
-  public selectedStopHasMediaItems(): boolean {
-    return (
-      this.selectedStop !== undefined &&
-      this.selectedStop?.media_items?.length > 0
-    );
-  }
-
-  public selectedStopHasLocationStories(): boolean {
-    return (
-      this.selectedStop !== undefined &&
-      this.selectedStop.location_stories_and_media_items !== undefined &&
-      this.selectedStop.location_stories_and_media_items.length > 0
-    );
   }
 
   public async load() {
@@ -161,12 +128,6 @@ export class UtmRoutesService {
       console.warn('Could not find route with ID', id, this.all);
       this.spinner.loadingRoute = false;
       return;
-    }
-
-    const routeStops: UtmRouteStop[] | undefined =
-      await this.apiService.getUtmRouteStopsById(id);
-    if (routeStops) {
-      routeToSelect.stops = routeStops;
     }
 
     this.selected.next(routeToSelect);

@@ -14,7 +14,7 @@
   <div class="media-container">
     <div
       class="views-element-container"
-      *ngFor="let mediaItem of story.shownStoryMediaItems.getValue()"
+      *ngFor="let mediaItem of story.shownStory.getValue()?.mediaItems"
     >
       <app-media-item [mediaItem]="mediaItem"></app-media-item>
     </div>

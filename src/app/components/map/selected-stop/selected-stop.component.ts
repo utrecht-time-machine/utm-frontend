@@ -18,9 +18,9 @@ export class SelectedStopComponent {
     public audio: AudioService,
     public router: Router
   ) {
-    utmRoutes.selectedStopIdx.subscribe(() => {
-      this.audio.load(utmRoutes.selectedStop?.audio);
-    });
+    // utmRoutes.selectedStopIdx.subscribe(() => {
+    //   this.audio.load(utmRoutes.selectedStop?.audio);
+    // });
   }
 
   ngOnInit() {}
@@ -57,20 +57,4 @@ export class SelectedStopComponent {
   onAudioBarStopScrubbing() {
     this.scrubbingAudio = false;
   }
-
-  stopHasLocationStories(): boolean {
-    return (
-      this.utmRoutes.selectedStop?.location_stories_and_media_items !==
-        undefined &&
-      this.utmRoutes.selectedStop?.location_stories_and_media_items.length > 0
-    );
-  }
-
-  // storyHasVideoIcon(story: Story) {
-  //   return story.has_video_icon !== 'Uit';
-  // }
-  //
-  // getStoryUrl(storyUrlAlias: string): string {
-  //   return this.utmRoutes.selected.getValue()?.url + '?story=' + storyUrlAlias;
-  // }
 }

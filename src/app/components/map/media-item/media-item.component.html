@@ -59,16 +59,17 @@
             <span *ngIf="mediaItem?.source_name"
               >{{ "source" | translate }}:
 
-              <span *ngIf="mediaItem?.source_link">
+              <!--  TODO: Refactor into component -->
+              <ng-container *ngIf="mediaItem?.source_link">
                 <a
                   [href]="mediaItem.source_link"
                   target="_blank"
                   [innerHtml]="mediaItem.source_name"
                 ></a>
-              </span>
-              <span *ngIf="!mediaItem?.source_link">
+              </ng-container>
+              <ng-container *ngIf="!mediaItem?.source_link">
                 {{ mediaItem.source_name }}
-              </span>
+              </ng-container>
             </span>
 
             <app-license [licenseLabel]="mediaItem.license"></app-license>

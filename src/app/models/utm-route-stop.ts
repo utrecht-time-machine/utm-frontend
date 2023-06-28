@@ -1,29 +1,13 @@
-import { MediaItem } from './media-item';
 import { Story } from './story';
+import { LocationDetails } from './location-details';
 
 export interface UtmRouteStop {
-  stop_id: string;
-  stop_type: string;
+  id: string;
   title: string;
-  address: string;
+  location_id: string;
+  story_ids: string;
   route_id: string;
-  geo: string;
-  coords: { lat: number; lng: number };
-  audio: string;
-  stop_image: string;
-  stop_thumb: string;
 
-  stop_image_license: string;
-  stop_image_source_name: string;
-  stop_image_source_link: string;
-
-  location_text: string;
-  location_teaser: string;
-
-  location_stories_and_media_items?: {
-    story: Story;
-    mediaItems: MediaItem[];
-  }[];
-
-  media_items: MediaItem[];
+  location?: LocationDetails;
+  stories?: Story[];
 }

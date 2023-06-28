@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
 export class SpinnerService {
   loadingLocation = false;
   loadingRoute = false;
+  loadingRouteStopLocation = false;
+  loadingRouteStopStories = false;
   loadingLocations = false;
   loadingAbout = false;
   loadingHome = false;
@@ -14,6 +16,8 @@ export class SpinnerService {
     return (
       this.loadingLocation ||
       this.loadingRoute ||
+      this.loadingRouteStopLocation ||
+      this.loadingRouteStopStories ||
       this.loadingLocations ||
       this.loadingAbout ||
       this.loadingHome

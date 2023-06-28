@@ -12,9 +12,7 @@ export class StoryService {
   shownStory: BehaviorSubject<Story | undefined> = new BehaviorSubject<
     Story | undefined
   >(undefined);
-  shownStoryMediaItems: BehaviorSubject<MediaItem[]> = new BehaviorSubject<
-    MediaItem[]
-  >([]);
+
   showingStoryView: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
@@ -52,7 +50,6 @@ export class StoryService {
   }
 
   private _resetShownStory() {
-    this.shownStoryMediaItems.next([]);
     this.shownStory.next(undefined);
   }
 
@@ -69,9 +66,13 @@ export class StoryService {
 
     this.api
       .getMediaItemsByStoryId(storyNid)
-      .then((mediaItems: MediaItem[]) =>
-        this.shownStoryMediaItems.next(mediaItems)
-      );
+      .then((mediaItems: MediaItem[]) => {
+        const shownStory = this.shownStory.getValue();
+        if (shownStory) {
+          shownStory.mediaItems = mediaItems;
+          this.shownStory.next(shownStory);
+        }
+      });
   }
 
   showView() {
