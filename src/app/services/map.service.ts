@@ -106,12 +106,13 @@ export class MapService {
     });
 
     this.utmRoutes.selectedStopIdx.subscribe((stopIdx) => {
-      if (!this.map || stopIdx === undefined) {
-        return;
-      }
-
       if (!this.utmRoutes.selectedStop) {
         this.fitMapToRouteBounds();
+        this.shownStopPopup?.remove();
+      }
+
+      if (!this.map || stopIdx === undefined) {
+        return;
       }
 
       const selectedStop: UtmRouteStop | undefined =
