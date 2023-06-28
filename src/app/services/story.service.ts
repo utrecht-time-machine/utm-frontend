@@ -58,21 +58,16 @@ export class StoryService {
       '/story/' + storyAlias
     );
 
-    this.api
-      .getStoryDetailsById(storyNid)
-      .then((storyDetails: Story | undefined) =>
-        this.shownStory.next(storyDetails)
-      );
+    const storyDetails: Story | undefined = await this.api.getStoryDetailsById(
+      storyNid
+    );
+    if (storyDetails) {
+      const mediaItems: MediaItem[] | undefined =
+        await this.api.getMediaItemsByStoryId(storyNid);
+      storyDetails.mediaItems = mediaItems;
 
-    this.api
-      .getMediaItemsByStoryId(storyNid)
-      .then((mediaItems: MediaItem[]) => {
-        const shownStory = this.shownStory.getValue();
-        if (shownStory) {
-          shownStory.mediaItems = mediaItems;
-          this.shownStory.next(shownStory);
-        }
-      });
+      this.shownStory.next(storyDetails);
+    }
   }
 
   showView() {
