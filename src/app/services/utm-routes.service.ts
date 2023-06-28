@@ -93,23 +93,40 @@ export class UtmRoutesService {
       const locationStories: Story[] =
         await this.apiService.getStoriesByLocationId(this.selectedStop.stop_id);
 
+      const loadingPromises: Promise<void>[] = [];
+
+      const locationStoriesAndMediaItems: {
+        story: Story;
+        mediaItems: MediaItem[];
+      }[] = [];
       for (const locationStory of locationStories) {
-        this.apiService
+        const loadingPromise: Promise<void> = this.apiService
           .getMediaItemsByStoryId(locationStory.story_id)
           .then((storyMediaItems: MediaItem[]) => {
             if (!this.selectedStop) {
               return;
             }
-            if (!this.selectedStop.location_stories_and_media_items) {
-              this.selectedStop.location_stories_and_media_items = [];
-            }
 
-            this.selectedStop.location_stories_and_media_items.push({
+            locationStoriesAndMediaItems.push({
               story: locationStory,
               mediaItems: storyMediaItems,
             });
           });
+        loadingPromises.push(loadingPromise);
       }
+
+      await Promise.all(loadingPromises);
+
+      // Sort on location story ID order
+      const locationStoryIds = locationStories.map((s) => s.story_id);
+      locationStoriesAndMediaItems.sort((a, b) => {
+        const indexA = locationStoryIds.indexOf(a.story.story_id);
+        const indexB = locationStoryIds.indexOf(b.story.story_id);
+        return indexA - indexB;
+      });
+
+      this.selectedStop.location_stories_and_media_items =
+        locationStoriesAndMediaItems;
     }
   }
 
