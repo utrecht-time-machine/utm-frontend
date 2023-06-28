@@ -99,7 +99,7 @@ export class MapService {
       });
     });
 
-    this.utmRoutes.selected.subscribe(() => {
+    this.utmRoutes.selectedRouteLocationsLoaded.subscribe(() => {
       setTimeout(() => {
         void this.addRouteMarkersOnMap();
       });

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { UtmRoute } from '../models/utm-route';
 import { ApiService } from './api.service';
@@ -17,6 +17,8 @@ export class UtmRoutesService {
     UtmRoute | undefined
   >(undefined);
 
+  selectedRouteLocationsLoaded: EventEmitter<any> = new EventEmitter<any>();
+
   selectedStopIdx: BehaviorSubject<number | undefined> = new BehaviorSubject<
     number | undefined
   >(undefined);
@@ -31,7 +33,7 @@ export class UtmRoutesService {
 
     this._resetStopIndexOnRouteChange();
     this._loadStopsDataFromServerOnRouteChange();
-    this._loadStopDataFromServerOnStopChange();
+    this._loadStoriesDataFromServerOnStopChange();
   }
 
   private _loadStopsDataFromServerOnRouteChange() {
@@ -47,46 +49,64 @@ export class UtmRoutesService {
         return;
       }
 
+      this.spinner.loadingRouteStopLocation = true;
+
+      const loadingLocationDataPromises: Promise<void>[] = [];
+      for (const routeStop of routeStops) {
+        const loadingStopLocationDataPromise: Promise<void> = this.apiService
+          .getLocationDetailsById(routeStop.location_id)
+          .then((locationDetails) => {
+            routeStop.location = locationDetails;
+          });
+        loadingLocationDataPromises.push(loadingStopLocationDataPromise);
+      }
+
       selectedRoute.stops = routeStops;
+
+      await Promise.all(loadingLocationDataPromises);
+      this.spinner.loadingRouteStopLocation = false;
+
+      this.selectedRouteLocationsLoaded.emit();
     });
   }
 
-  private _loadStopDataFromServerOnStopChange() {
-    this.selectedStopIdx.subscribe(() => {
-      const selectedStopDataIsAlreadyLoaded = this.selectedStop?.location;
+  private _loadStoriesDataFromServerOnStopChange() {
+    this.selectedStopIdx.subscribe(async () => {
+      const selectedStopDataIsAlreadyLoaded = this.selectedStop?.stories;
       if (!this.selectedStop || selectedStopDataIsAlreadyLoaded) {
         return;
       }
 
       const stop = this.selectedStop;
 
-      this.spinner.loadingRouteStopLocation = true;
-      this.apiService
-        .getLocationDetailsById(stop.location_id)
-        .then((locationDetails) => {
-          stop.location = locationDetails;
-          this.spinner.loadingRouteStopLocation = false;
-        });
-
       if (!stop.story_ids) {
         return;
       }
 
-      // TODO: Wait until all story details requests have finished to show/hide spinner
-      for (const storyId of stop.story_ids.split(',')) {
-        this.apiService.getStoryDetailsById(storyId).then(async (story) => {
-          if (!stop.stories) {
-            stop.stories = [];
-          }
+      this.spinner.loadingRouteStopStories = true;
 
-          if (story) {
-            story.mediaItems = await this.apiService.getMediaItemsByStoryId(
-              story.story_id
-            );
-            stop.stories.push(story);
-          }
-        });
+      const loadingStoryDetailsPromises: Promise<void>[] = [];
+      for (const storyId of stop.story_ids.split(',')) {
+        const loadingStoryDetailsPromise: Promise<void> = this.apiService
+          .getStoryDetailsById(storyId)
+          .then(async (story) => {
+            if (!stop.stories) {
+              stop.stories = [];
+            }
+
+            if (story) {
+              story.mediaItems = await this.apiService.getMediaItemsByStoryId(
+                story.story_id
+              );
+              stop.stories.push(story);
+            }
+          });
+
+        loadingStoryDetailsPromises.push(loadingStoryDetailsPromise);
       }
+
+      await Promise.all(loadingStoryDetailsPromises);
+      this.spinner.loadingRouteStopStories = false;
     });
   }
   private _resetStopIndexOnRouteChange() {
