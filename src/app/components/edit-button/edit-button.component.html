@@ -1,4 +1,4 @@
-<div class="dev-edit-btn-container" *ngIf="environment.dev && nid">
+<div class="dev-edit-btn-container" *ngIf="shouldBeShown() && nid">
   <a
     class="dev-edit-btn"
     [href]="
