@@ -11,6 +11,12 @@
       [innerHtml]="story.shownStory.getValue()?.location_title"
     ></a>
   </p>
+
+  <app-audio-player
+    [audioUrl]="story.shownStory.getValue()?.audio"
+    *ngIf="story.shownStory.getValue()?.audio"
+  />
+
   <div class="media-container">
     <div
       class="views-element-container"

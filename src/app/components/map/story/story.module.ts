@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FeedbackModule } from '../../feedback/feedback.module';
 import { EditButtonModule } from '../../edit-button/edit-button.module';
 import { UnescapeModule } from '../../../pipes/unescape.module';
+import { AudioPlayerModule } from '../../audio-player/audio-player.module';
 
 @NgModule({
   declarations: [StoryComponent],
@@ -17,6 +18,7 @@ import { UnescapeModule } from '../../../pipes/unescape.module';
     FeedbackModule,
     EditButtonModule,
     UnescapeModule,
+    AudioPlayerModule,
   ],
 })
 export class StoryModule {}

@@ -91,6 +91,11 @@ export class ApiService {
     }
     const story: Story = storyDetails[0];
     UtilService.addUrlPrefix(story, 'photo');
+
+    if (story.audio) {
+      UtilService.addUrlPrefix(story, 'audio', environment.audioBaseUrl);
+    }
+
     this.utmTranslate.translateObjectByKeys(
       story,
       environment.translateKeys.storyDetails
