@@ -9,6 +9,8 @@ export interface UtmRouteStop {
   story_ids: string;
   route_id: string;
 
+  show_location_info: boolean;
+
   location?: LocationDetails;
   stories?: Story[];
 }

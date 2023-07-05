@@ -7,6 +7,7 @@ import { UtmRouteStop } from '../models/utm-route-stop';
 import { SpinnerService } from './spinner.service';
 import { PlatformService } from './platform.service';
 import { UtmTranslateService } from './utm-translate.service';
+import { Story } from '../models/story';
 
 @Injectable({
   providedIn: 'root',
@@ -59,6 +60,16 @@ export class UtmRoutesService {
           .getLocationDetailsById(routeStop.location_id)
           .then((locationDetails) => {
             routeStop.location = locationDetails;
+
+            if (routeStop.show_location_info && locationDetails !== undefined) {
+              const locationAsStory: Story =
+                this.apiService.convertLocationDetailsToStory(locationDetails);
+
+              if (routeStop.stories === undefined) {
+                routeStop.stories = [];
+              }
+              routeStop.stories.push(locationAsStory);
+            }
           });
         loadingLocationDataPromises.push(loadingStopLocationDataPromise);
       }
@@ -74,7 +85,16 @@ export class UtmRoutesService {
 
   private _loadStoriesDataFromServerOnStopChange() {
     this.selectedStopIdx.subscribe(async () => {
-      const selectedStopDataIsAlreadyLoaded = this.selectedStop?.stories;
+      let selectedStopDataIsAlreadyLoaded: boolean =
+        this.selectedStop?.stories !== undefined;
+      if (
+        this.selectedStop?.show_location_info &&
+        this.selectedStop?.stories &&
+        this.selectedStop.stories.length <= 1
+      ) {
+        selectedStopDataIsAlreadyLoaded = false;
+      }
+
       if (!this.selectedStop || selectedStopDataIsAlreadyLoaded) {
         return;
       }
@@ -92,7 +112,7 @@ export class UtmRoutesService {
         const loadingStoryDetailsPromise: Promise<void> = this.apiService
           .getStoryDetailsById(storyId)
           .then(async (story) => {
-            if (!stop.stories) {
+            if (stop.stories === undefined) {
               stop.stories = [];
             }
 

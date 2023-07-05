@@ -234,6 +234,8 @@ export class ApiService {
       if (stop.audio) {
         UtilService.addUrlPrefix(stop, 'audio', environment.audioBaseUrl);
       }
+
+      stop.show_location_info = (stop.show_location_info as any) === '1';
     });
 
     console.log('STOPS', utmRouteStops);
@@ -297,5 +299,43 @@ export class ApiService {
 
     // console.log(requestBody, url);
     return await lastValueFrom(this.http.post(url, requestBody, httpOptions));
+  }
+
+  public convertLocationDetailsToStory(
+    locationDetails: LocationDetails
+  ): Story {
+    const locationMediaItem: MediaItem = {
+      caption: locationDetails.caption as string,
+      embed_url: '',
+      has_audio: false,
+      image_small: locationDetails.image as string,
+      license: locationDetails.license as string,
+      media_file: '',
+      media_id: '',
+      organisation_ids: '',
+      organisations: locationDetails.organisations,
+      source_link: '',
+      source_name: '',
+      text: `<div>${locationDetails.teaser as string}</div><div>${
+        locationDetails.text as string
+      }</div>`,
+      title: locationDetails.title as string,
+      type: MediaItemType.Image,
+    };
+
+    return {
+      audio: '',
+      has_video_icon: '',
+      location_id: locationDetails.nid,
+      location_title: locationDetails.title as string,
+      location_url: locationDetails.url as string,
+      nid: '',
+      photo: locationDetails.image as string,
+      story_id: '',
+      story_link: '',
+      story_url_alias: '',
+      title: locationDetails.title as string,
+      mediaItems: [locationMediaItem],
+    };
   }
 }
