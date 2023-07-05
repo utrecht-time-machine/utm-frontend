@@ -1,53 +1,3 @@
-<!-- TODO: Bring back audio player in separate component, and use for story and location components-->
-<!--<div-->
-<!--  class="audio-container"-->
-<!--  *ngIf="utmRoutes.selectedStop && utmRoutes.selectedStop.audio"-->
-<!--&gt;-->
-<!--  <div-->
-<!--    class="audioplayer"-->
-<!--    [ngClass]="{ 'audioplayer-playing': audio.isPlaying }"-->
-<!--  >-->
-<!--    <div-->
-<!--      class="audioplayer-playpause"-->
-<!--      title=""-->
-<!--      (click)="audio.togglePlayPause()"-->
-<!--    >-->
-<!--      <a href="javascript:void(0);"></a>-->
-<!--    </div>-->
-<!--    <div class="audioplayer-time audioplayer-time-current">-->
-<!--      {{ audio.formattedPlayTime }}-->
-<!--    </div>-->
-<!--    <div-->
-<!--      class="audioplayer-bar"-->
-<!--      (touchstart)="onAudioBarStartScrubbing()"-->
-<!--      (touchmove)="onAudioBarScrubbed($event)"-->
-<!--      (touchend)="onAudioBarStopScrubbing()"-->
-<!--      (mousedown)="onAudioBarStartScrubbing()"-->
-<!--      (mousemove)="onAudioBarScrubbed($event)"-->
-<!--      (mouseup)="onAudioBarStopScrubbing()"-->
-<!--      (click)="onAudioBarClicked($event)"-->
-<!--      (mouseleave)="onAudioBarStopScrubbing()"-->
-<!--    >-->
-<!--      &lt;!&ndash;      <div class="audioplayer-bar-loaded" [ngStyle]="{ width: '0%' }"></div>&ndash;&gt;-->
-<!--      <div-->
-<!--        class="audioplayer-bar-played"-->
-<!--        [ngStyle]="{ width: audio.percentageComplete + '%' }"-->
-<!--      ></div>-->
-<!--    </div>-->
-<!--    <div class="audioplayer-time audioplayer-time-duration">-->
-<!--      {{ audio.formattedDuration }}-->
-<!--    </div>-->
-<!--    &lt;!&ndash;    <div class="audioplayer-volume">&ndash;&gt;-->
-<!--    &lt;!&ndash;      <div class="audioplayer-volume-button" title="">&ndash;&gt;-->
-<!--    &lt;!&ndash;        <a href="javascript:void(0);"></a>&ndash;&gt;-->
-<!--    &lt;!&ndash;      </div>&ndash;&gt;-->
-<!--    &lt;!&ndash;      <div class="audioplayer-volume-adjust">&ndash;&gt;-->
-<!--    &lt;!&ndash;        <div><div style="width: 100%"></div></div>&ndash;&gt;-->
-<!--    &lt;!&ndash;      </div>&ndash;&gt;-->
-<!--    &lt;!&ndash;    </div>&ndash;&gt;-->
-<!--  </div>-->
-<!--</div>-->
-
 <app-edit-button [nid]="utmRoutes.selectedStop?.id"></app-edit-button>
 
 <h2 [innerHtml]="utmRoutes.selectedStop?.title"></h2>
@@ -59,13 +9,15 @@
         <h2>{{ story.title }}</h2>
       </div>
 
+      <app-audio-player [audioUrl]="story.audio" *ngIf="story.audio" />
+
       <div
         class="views-element-container"
         *ngFor="let mediaItem of story?.mediaItems; let i = index"
       >
         <app-media-item
           [mediaItem]="mediaItem"
-          [showTitle]="i !== 0 || mediaItem.title !== story.title"
+          [showTitle]="!(i === 0 && mediaItem.title === story.title)"
           [addTopMargin]="false"
         ></app-media-item>
       </div>

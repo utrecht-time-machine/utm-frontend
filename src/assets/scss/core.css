@@ -4661,21 +4661,21 @@ form.user-login-form input[type=submit]:hover, form.user-pass input[type=submit]
 }
 
 .audioplayer {
-  /*display: -webkit-flex;*/
-  /*display: flex;*/
-  /*-webkit-flex-direction: row;*/
-  /*flex-direction: row;*/
-  /*-webkit-align-items: center;*/
-  /*align-items: center;*/
-  /*-webkit-box-sizing: border-box;*/
-  /*box-sizing: border-box;*/
-  /*width: 100%;*/
-  /*max-width: 900px;*/
-  /*margin: 1em auto;*/
-  /*padding: 24px;*/
-  /*background: #fff;*/
-  /*border: 2px solid #333;*/
-  /*border-radius: 8px;*/
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 900px;
+  margin: 1em auto;
+  padding: 24px;
+  background: #fff;
+  border: 2px solid #333;
+  border-radius: 8px;
 }
 
 .audioplayer audio {

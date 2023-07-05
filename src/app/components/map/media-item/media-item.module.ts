@@ -5,6 +5,7 @@ import { SafeModule } from '../../../pipes/safe.module';
 import { LicenseModule } from '../../license/license.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { OrganisationsModule } from '../../organisations/organisations.module';
+import { AudioPlayerModule } from '../../audio-player/audio-player.module';
 
 @NgModule({
   declarations: [MediaItemComponent],
@@ -14,6 +15,7 @@ import { OrganisationsModule } from '../../organisations/organisations.module';
     LicenseModule,
     TranslateModule,
     OrganisationsModule,
+    AudioPlayerModule,
   ],
   exports: [MediaItemComponent],
 })

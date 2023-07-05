@@ -4,6 +4,7 @@ export interface MediaItem {
   title: string;
   media_id: string;
   media_file: string;
+  has_audio: boolean;
   source_link: string;
   source_name: string;
   image_small: string;
@@ -20,7 +21,6 @@ export interface MediaItem {
 export enum MediaItemType {
   Undefined,
   Image,
-  Audio,
   Video,
   Embed,
 }

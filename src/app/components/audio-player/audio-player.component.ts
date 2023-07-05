@@ -1,18 +1,61 @@
-import { Injectable } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Howl } from 'howler';
 
-@Injectable({
-  providedIn: 'root',
+@Component({
+  selector: 'app-audio-player',
+  templateUrl: './audio-player.component.html',
+  styleUrls: ['./audio-player.component.scss'],
 })
-export class AudioService {
+export class AudioPlayerComponent {
+  scrubbingAudio = false;
+  percentageComplete = 0;
   audio: Howl | undefined;
 
-  percentageComplete = 0;
+  @Input() audioUrl: string | undefined;
+
+  @ViewChild('audioElement', { static: false }) audioElement!: ElementRef;
 
   constructor() {
     setInterval(() => {
       this.percentageComplete = this._getPercentageComplete();
     }, 50);
+  }
+
+  ngOnInit() {
+    this.load(this.audioUrl);
+  }
+
+  onAudioBarScrubbed(event: any) {
+    if (!event.target || !this.scrubbingAudio) {
+      return;
+    }
+
+    this.setAudioTimeByClickLocation(event);
+  }
+
+  onAudioBarClicked(event: any) {
+    if (!event.target) {
+      return;
+    }
+
+    this.setAudioTimeByClickLocation(event);
+  }
+
+  setAudioTimeByClickLocation(event: any) {
+    const audioBarElem = event.target;
+    const boundingRect = audioBarElem.getBoundingClientRect();
+    const clickX = event.clientX - boundingRect.left;
+    const percentage = (clickX / boundingRect.width) * 100;
+
+    this.setTimeByPercentage(percentage);
+  }
+
+  onAudioBarStartScrubbing() {
+    this.scrubbingAudio = true;
+  }
+
+  onAudioBarStopScrubbing() {
+    this.scrubbingAudio = false;
   }
 
   load(audioUrl: string | undefined) {

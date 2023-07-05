@@ -11,6 +11,11 @@
         <h4 [innerHtml]="mediaItem.title"></h4>
       </div>
 
+      <app-audio-player
+        *ngIf="mediaItem.has_audio"
+        [audioUrl]="mediaItem.media_file"
+      ></app-audio-player>
+
       <div class="image-embed" *ngIf="mediaItem.type === MediaItemType.Image">
         <img
           loading="lazy"
@@ -39,16 +44,6 @@
           >
             <source [src]="mediaItem.media_file" />
           </video>
-        </div>
-      </div>
-
-      <!--          TODO: Style audio player-->
-      <div class="audio-embed" *ngIf="mediaItem.type === MediaItemType.Audio">
-        <div class="audioplayer">
-          <audio controls>
-            <source [src]="mediaItem.media_file | safe" type="audio/mpeg" />
-            Your browser does not support the audio element.
-          </audio>
         </div>
       </div>
 

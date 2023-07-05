@@ -6,6 +6,9 @@ import { Router } from '@angular/router';
 import { UtmRouteStop } from '../models/utm-route-stop';
 import { SpinnerService } from './spinner.service';
 import { PlatformService } from './platform.service';
+import { UtilService } from './util.service';
+import { environment } from '../../environments/environment';
+import { UtmTranslateService } from './utm-translate.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +30,8 @@ export class UtmRoutesService {
     private apiService: ApiService,
     private router: Router,
     private spinner: SpinnerService,
-    private platform: PlatformService
+    private platform: PlatformService,
+    private utmTranslate: UtmTranslateService
   ) {
     void this.load();
 
@@ -98,6 +102,20 @@ export class UtmRoutesService {
               story.mediaItems = await this.apiService.getMediaItemsByStoryId(
                 story.story_id
               );
+
+              if (story.audio) {
+                UtilService.addUrlPrefix(
+                  story,
+                  'audio',
+                  environment.audioBaseUrl
+                );
+              }
+
+              this.utmTranslate.translateObjectByKeys(
+                story,
+                environment.translateKeys.storyDetails
+              );
+
               stop.stories.push(story);
             }
           });

@@ -6,6 +6,7 @@ import { MediaItemModule } from '../media-item/media-item.module';
 import { EditButtonModule } from '../../edit-button/edit-button.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FeedbackModule } from '../../feedback/feedback.module';
+import { AudioPlayerModule } from '../../audio-player/audio-player.module';
 
 @NgModule({
   declarations: [SelectedStopComponent],
@@ -16,6 +17,7 @@ import { FeedbackModule } from '../../feedback/feedback.module';
     EditButtonModule,
     TranslateModule,
     FeedbackModule,
+    AudioPlayerModule,
   ],
   exports: [SelectedStopComponent],
 })

@@ -132,8 +132,8 @@ export class ApiService {
       const isVideoItem = mediaItem.media_file;
 
       if (isAudioItem) {
-        mediaItem.type = MediaItemType.Audio;
         mediaItem.media_file = environment.audioBaseUrl + mediaItem.media_file;
+        mediaItem.has_audio = true;
       } else if (isVideoItem) {
         mediaItem.type = MediaItemType.Video;
         UtilService.addUrlPrefix(mediaItem, 'media_file');
@@ -242,19 +242,6 @@ export class ApiService {
         stop.location,
         environment.translateKeys.locationDetails
       );
-
-      if (stop?.stories) {
-        UtilService.addUrlPrefixes(
-          stop.stories,
-          'audio',
-          environment.audioBaseUrl
-        );
-
-        this.utmTranslate.translateObjectsByKeys(
-          stop.stories,
-          environment.translateKeys.storyDetails
-        );
-      }
     });
 
     console.log('STOPS', utmRouteStops);
