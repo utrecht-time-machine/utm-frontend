@@ -33,4 +33,8 @@ export class AboutComponent {
     );
     this.spinner.loadingAbout = false;
   }
+
+  getPhotoBgImageUrl(): string {
+    return `url('${this.content?.photo}')`;
+  }
 }

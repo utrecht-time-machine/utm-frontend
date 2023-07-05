@@ -3,4 +3,5 @@ export interface StaticPage {
   body: string;
   nid: string;
   view_node: string;
+  photo: string;
 }

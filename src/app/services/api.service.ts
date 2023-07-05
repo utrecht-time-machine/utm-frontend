@@ -47,6 +47,7 @@ export class ApiService {
     }
 
     const staticPage: StaticPage = staticPages[0];
+    UtilService.addUrlPrefix(staticPage, 'photo');
     await this.utmTranslate.translateObjectByKeys(
       staticPage,
       environment.translateKeys.staticPage
