@@ -1,4 +1,11 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Howl } from 'howler';
 
 @Component({
@@ -6,7 +13,7 @@ import { Howl } from 'howler';
   templateUrl: './audio-player.component.html',
   styleUrls: ['./audio-player.component.scss'],
 })
-export class AudioPlayerComponent {
+export class AudioPlayerComponent implements OnInit, OnDestroy {
   scrubbingAudio = false;
   percentageComplete = 0;
   audio: Howl | undefined;
@@ -23,6 +30,11 @@ export class AudioPlayerComponent {
 
   ngOnInit() {
     this.load(this.audioUrl);
+  }
+
+  ngOnDestroy() {
+    this.audio?.stop();
+    this.audio?.unload();
   }
 
   onAudioBarScrubbed(event: any) {
