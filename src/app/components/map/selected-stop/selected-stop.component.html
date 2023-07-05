@@ -1,3 +1,8 @@
+<app-audio-player
+  [audioUrl]="utmRoutes.selectedStop?.audio"
+  *ngIf="utmRoutes.selectedStop?.audio"
+/>
+
 <app-edit-button [nid]="utmRoutes.selectedStop?.id"></app-edit-button>
 
 <h2 [innerHtml]="utmRoutes.selectedStop?.title"></h2>

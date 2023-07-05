@@ -231,22 +231,9 @@ export class ApiService {
     );
 
     utmRouteStops.forEach((stop) => {
-      if (!stop?.location?.geo) {
-        return;
+      if (stop.audio) {
+        UtilService.addUrlPrefix(stop, 'audio', environment.audioBaseUrl);
       }
-      const [lat, long] = stop.location.geo.split(',');
-      stop.location.coords = {
-        lat: parseFloat(lat.trim()),
-        lng: parseFloat(long.trim()),
-      };
-
-      UtilService.addUrlPrefix(stop.location, 'image');
-      UtilService.addUrlPrefix(stop.location, 'thumb');
-
-      this.utmTranslate.translateObjectByKeys(
-        stop.location,
-        environment.translateKeys.locationDetails
-      );
     });
 
     console.log('STOPS', utmRouteStops);
