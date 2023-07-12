@@ -303,6 +303,26 @@ export class MapService {
     return boundingBox;
   }
 
+  private async _getLineStringCoordinatesFromGeoJSONUrl(
+    geoJSONUrl: string
+  ): Promise<LngLatLike[]> {
+    const geoJSON = await lastValueFrom(this.http.get<any>(geoJSONUrl));
+    let coordinates: LngLatLike[] = [];
+
+    const geoJSONFeatures = geoJSON?.features;
+    if (geoJSONFeatures) {
+      const lineStringFeature: any = geoJSONFeatures.find(
+        (feature: any) => feature.geometry.type === 'LineString'
+      );
+
+      if (lineStringFeature) {
+        coordinates = lineStringFeature.geometry.coordinates;
+      }
+    }
+
+    return coordinates;
+  }
+
   async addRouteMarkersOnMap() {
     if (!this.map) {
       return;
@@ -343,12 +363,37 @@ export class MapService {
       }),
     };
 
-    const routePath = await this._getRouteStopsPathFeature(routeStops);
+    let routeLineCoordinates: LngLatLike[] = [];
+    const routeGeoJSONUrl = this.utmRoutes.selected.getValue()?.geojson_url;
+
+    if (routeGeoJSONUrl) {
+      // TODO: Save these coordinates to the route object to prevent repeated future requests
+      routeLineCoordinates = await this._getLineStringCoordinatesFromGeoJSONUrl(
+        routeGeoJSONUrl
+      );
+    } else {
+      routeLineCoordinates = await this._getRouteStopsPathCoordinates(
+        routeStops
+      );
+    }
+
+    const stopsPathFeature: any = {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: routeLineCoordinates,
+        },
+      },
+    };
+
     if (!this.map) {
       return;
     }
 
-    this.map.addSource('route_path', routePath);
+    this.map.addSource('route_path', stopsPathFeature);
 
     this.map.addLayer({
       id: 'route_line',
@@ -920,9 +965,9 @@ export class MapService {
     this.shownStopPopup = popup;
   }
 
-  private async _getRouteStopsPathFeature(
+  private async _getRouteStopsPathCoordinates(
     routeStops: UtmRouteStop[]
-  ): Promise<any> {
+  ): Promise<LngLatLike[]> {
     const coordsStr: string = routeStops
       .map((stop) => {
         if (stop?.location?.coords) {
@@ -932,19 +977,8 @@ export class MapService {
       })
       .join(';');
 
-    const stopsPathFeature: any = {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: [],
-        },
-      },
-    };
     if (!coordsStr) {
-      return stopsPathFeature;
+      return [];
     }
 
     const directionsRequest =
@@ -952,7 +986,7 @@ export class MapService {
       '?continue_straight=true&geometries=geojson&overview=full&access_token=' +
       environment.mapboxAccessToken;
 
-    console.log(directionsRequest);
+    // console.log(directionsRequest);
     const directionsData: any = await lastValueFrom(
       this.http.get(directionsRequest)
     );
@@ -961,7 +995,6 @@ export class MapService {
     if (directionsData.routes.length > 0) {
       coordinates = directionsData.routes[0].geometry.coordinates;
     }
-    stopsPathFeature.data.geometry.coordinates = coordinates;
-    return stopsPathFeature;
+    return coordinates;
   }
 }

@@ -39,8 +39,8 @@ export class UtilService {
     key: string,
     prefix: string = environment.imageBaseUrl
   ): void {
-    if (key in obj) {
-      obj[key] = environment.imageBaseUrl + obj[key];
+    if (key in obj && obj[key]) {
+      obj[key] = prefix + obj[key];
     }
   }
 
@@ -50,7 +50,7 @@ export class UtilService {
     prefix: string = environment.imageBaseUrl
   ): void {
     for (const obj of objs) {
-      UtilService.addUrlPrefix(obj, key);
+      UtilService.addUrlPrefix(obj, key, prefix);
     }
   }
 }

@@ -72,6 +72,13 @@ export class ApiService {
       console.error(err);
       return [];
     });
+
+    UtilService.addUrlPrefixes(
+      utmRoutes,
+      'geojson_url',
+      environment.geoJsonBaseUrl
+    );
+
     UtilService.addUrlPrefixes(utmRoutes, 'photo');
     this.utmTranslate.translateObjectsByKeys(
       utmRoutes,

@@ -13,4 +13,5 @@ export interface UtmRoute {
   type: string;
   text: string;
   stops?: UtmRouteStop[];
+  geojson_url?: string;
 }

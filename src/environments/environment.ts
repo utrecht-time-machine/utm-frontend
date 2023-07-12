@@ -3,6 +3,7 @@ export const environment = {
   apiUrl: 'https://data.utrechttimemachine.nl/rest/',
   imageBaseUrl: 'https://data.utrechttimemachine.nl',
   audioBaseUrl: 'https://data.utrechttimemachine.nl',
+  geoJsonBaseUrl: 'https://data.utrechttimemachine.nl',
   apiSuffixes: {
     mapLocations: 'all_locations',
     locationDetailsById: 'location_details?nid=',
