@@ -265,6 +265,10 @@ export class MapService {
         this.addLocationsOnMap(true);
       }
 
+      setTimeout(() => {
+        this.map?.resize();
+      }, 1500);
+
       // setTimeout(() => {
       //   this.showSpinner = false;
       // });
@@ -703,6 +707,7 @@ export class MapService {
       setTimeout(() => (this.spinner.loadingLocation = false));
     });
   }
+
   async selectLocationByUrlOrId(url: string, locationId?: string) {
     // Check if router is already at specified url
     // If not, navigate to url - this triggers running this function again
