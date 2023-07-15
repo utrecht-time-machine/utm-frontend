@@ -2,13 +2,28 @@
   <div class="user-bar">
     <div class="pad"></div>
   </div>
+
   <div class="utm-footer">
     <div class="pad">
       <div class="brand">
         <div>Utrecht<br />Time Machine</div>
       </div>
-
       <app-menu-links [showLanguageToggle]="false"></app-menu-links>
+      <hr />
+
+      <div class="logo-bar">
+        <div
+          class="logo"
+          *ngFor="let organisation of organisationService.all | async"
+        >
+          <a
+            href="{{ organisation.link }}"
+            target="_blank"
+            title="{{ organisation.title }}"
+            ><img src="{{ organisation.logo }}"
+          /></a>
+        </div>
+      </div>
     </div>
   </div>
 </footer>

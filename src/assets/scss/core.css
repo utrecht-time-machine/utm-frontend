@@ -5049,3 +5049,28 @@ form.user-login-form input[type=submit]:hover, form.user-pass input[type=submit]
 .claro-autocomplete__message {
   color: var(--gin-color-primary);
 }
+
+
+
+/*------------- footer ------------*/
+
+.logo {
+  display: inline;
+  margin-right: 20px;
+}
+
+.logo img {
+  max-width: 150px;
+  max-height: 100px;
+  object-fit: contain;
+  display: inline-block;
+}
+
+.utm-footer hr {
+  border: none;
+  height: 1px;
+  background-color: black;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
