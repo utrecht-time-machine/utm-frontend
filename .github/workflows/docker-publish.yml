@@ -114,4 +114,4 @@ jobs:
             sudo docker pull ghcr.io/utrecht-time-machine/utm2023-frontend:main
             sudo docker stop utm2023-frontend
             sudo docker rm utm2023-frontend
-            sudo docker run -p 4000:4000 --name utm2023-frontend -d ghcr.io/utrecht-time-machine/utm2023-frontend:main
+            sudo docker run -p 4000:4000 --name utm2023-frontend --restart always -d ghcr.io/utrecht-time-machine/utm2023-frontend:main
