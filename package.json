@@ -7,7 +7,7 @@
     "build": "ng build --output-path dist",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build:android": "cd cordova; ng build --output-path cordova/www; cordova build android --release",
+    "build:android": "cd cordova; cordova platform rm android; cordova platform add android; ng build --output-path cordova/www; cordova build android --release",
     "build:ios": "cd cordova; ng build --output-path cordova/www; cordova build ios",
     "run:android": "cd cordova; ng build --output-path cordova/www; cordova run android",
     "run:ios": "cd cordova; ng build --output-path cordova/www; cordova run ios",
