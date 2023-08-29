@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ImageViewerService {
-  isModalShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  constructor() {}
 
-  constructor() {
-    // this.isModalShown.subscribe((isShown) => {
-    //   console.log(isShown);
-    // });
+  isModalShown(): boolean {
+    return document.body.classList.contains('viewer-open');
   }
 }

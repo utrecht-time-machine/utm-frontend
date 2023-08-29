@@ -40,14 +40,6 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
       return;
     }
 
-    this.imageElement.nativeElement.addEventListener('shown', () => {
-      this.imageViewerService.isModalShown.next(true);
-    });
-
-    this.imageElement.nativeElement.addEventListener('hidden', () => {
-      this.imageViewerService.isModalShown.next(false);
-    });
-
     this.viewer = new Viewer(this.imageElement.nativeElement, {
       inline: false,
       navbar: false,

@@ -27,9 +27,7 @@ export class StoryComponent {
 
   @HostListener('document:keyup', ['$event'])
   handleKeyUp(event: KeyboardEvent) {
-    const imageViewerModalIsShown =
-      this.imageViewerService.isModalShown.getValue();
-    if (!imageViewerModalIsShown && event.code === 'Escape') {
+    if (!this.imageViewerService.isModalShown() && event.code === 'Escape') {
       this.onLocationLinkClicked();
     }
   }
