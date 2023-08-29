@@ -3,6 +3,8 @@ import {
   Component,
   ElementRef,
   Input,
+  OnChanges,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import Viewer from 'viewerjs';
@@ -13,7 +15,7 @@ import { ImageViewerService } from '../../../../services/image-viewer.service';
   templateUrl: './image-viewer.component.html',
   styleUrls: ['./image-viewer.component.scss'],
 })
-export class ImageViewerComponent implements AfterViewInit {
+export class ImageViewerComponent implements AfterViewInit, OnChanges {
   @Input() imageSrc: string | undefined = undefined;
   @Input() imageAlt: string | undefined = '';
 
@@ -23,7 +25,21 @@ export class ImageViewerComponent implements AfterViewInit {
 
   constructor(private imageViewerService: ImageViewerService) {}
 
-  ngAfterViewInit() {
+  ngOnChanges(changes: SimpleChanges) {
+    if ('imageSrc' in changes) {
+      setTimeout(() => {
+        if (this.viewer) {
+          this.viewer.update();
+        }
+      });
+    }
+  }
+
+  private _initImageViewer() {
+    if (!this.imageElement) {
+      return;
+    }
+
     this.imageElement.nativeElement.addEventListener('shown', () => {
       this.imageViewerService.isModalShown.next(true);
     });
@@ -48,5 +64,9 @@ export class ImageViewerComponent implements AfterViewInit {
       tooltip: false,
     });
     this.viewer.zoomTo(1);
+  }
+
+  ngAfterViewInit() {
+    this._initImageViewer();
   }
 }
