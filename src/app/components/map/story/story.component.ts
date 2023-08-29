@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { StoryService } from '../../../services/story.service';
 import { Router } from '@angular/router';
+import { ImageViewerService } from '../../../services/image-viewer.service';
 
 @Component({
   selector: 'app-story',
@@ -8,7 +9,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./story.component.scss'],
 })
 export class StoryComponent {
-  constructor(public story: StoryService, public router: Router) {}
+  constructor(
+    public story: StoryService,
+    public router: Router,
+    public imageViewerService: ImageViewerService
+  ) {}
 
   ngOnInit() {}
 
@@ -22,7 +27,9 @@ export class StoryComponent {
 
   @HostListener('document:keyup', ['$event'])
   handleKeyUp(event: KeyboardEvent) {
-    if (event.code === 'Escape') {
+    const imageViewerModalIsShown =
+      this.imageViewerService.isModalShown.getValue();
+    if (!imageViewerModalIsShown && event.code === 'Escape') {
       this.onLocationLinkClicked();
     }
   }

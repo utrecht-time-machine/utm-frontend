@@ -17,11 +17,10 @@
       ></app-audio-player>
 
       <div class="image-embed" *ngIf="mediaItem.type === MediaItemType.Image">
-        <img
-          loading="lazy"
-          [src]="mediaItem.image_small"
-          [alt]="mediaItem.caption"
-        />
+        <app-image-viewer
+          [imageSrc]="mediaItem.image_small"
+          [imageAlt]="mediaItem.caption"
+        ></app-image-viewer>
       </div>
 
       <div

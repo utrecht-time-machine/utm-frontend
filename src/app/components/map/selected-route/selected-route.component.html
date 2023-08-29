@@ -27,7 +27,11 @@
       <div class="photo-hold">
         <div class="photo">
           <div>
-            <img loading="lazy" [src]="selectedRoute?.photo" alt="" />
+            <!-- TODO: Fix clicking does not trigger viewer -->
+            <app-image-viewer
+              [imageSrc]="selectedRoute?.photo"
+              [imageAlt]="selectedRoute?.title"
+            ></app-image-viewer>
           </div>
         </div>
         <div class="media-source">

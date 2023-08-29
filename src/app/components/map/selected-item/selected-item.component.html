@@ -12,7 +12,10 @@
           <div class="photo-hold">
             <div class="photo">
               <div>
-                <img loading="lazy" [src]="locationDetails?.image" />
+                <app-image-viewer
+                  [imageSrc]="locationDetails?.image"
+                  [imageAlt]="locationDetails?.title"
+                ></app-image-viewer>
               </div>
             </div>
             <div class="media-source" *ngIf="locationDetails?.source_name">

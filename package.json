@@ -41,6 +41,7 @@
     "mapbox-gl": "^2.14.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "viewerjs": "^1.11.5",
     "zone.js": "~0.12.0"
   },
   "devDependencies": {

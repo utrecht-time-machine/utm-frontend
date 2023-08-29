@@ -11,6 +11,7 @@ import { LicenseModule } from '../license/license.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { EditButtonModule } from '../edit-button/edit-button.module';
 import { OrganisationsModule } from '../organisations/organisations.module';
+import { ImageViewerModule } from './media-item/image-viewer/image-viewer.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { OrganisationsModule } from '../organisations/organisations.module';
     TranslateModule,
     EditButtonModule,
     OrganisationsModule,
+    ImageViewerModule,
   ],
 })
 export class MapModule {}
