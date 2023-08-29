@@ -6,11 +6,14 @@
 <app-edit-button [nid]="utmRoutes.selectedStop?.id"></app-edit-button>
 
 <h2 [innerHtml]="utmRoutes.selectedStop?.title"></h2>
+<div class="stop-intro-container" *ngIf="utmRoutes.selectedStop?.intro">
+  <p class="stop-intro" [innerHTML]="utmRoutes.selectedStop?.intro"></p>
+</div>
 
 <div class="media-container">
   <div *ngIf="utmRoutes.selectedStop?.stories">
     <ng-container *ngFor="let story of utmRoutes.selectedStop?.stories">
-      <div class="story-head" *ngIf="true">
+      <div class="story-head" *ngIf="story?.title">
         <h2>{{ story.title }}</h2>
       </div>
 
