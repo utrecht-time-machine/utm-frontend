@@ -1846,12 +1846,11 @@ main {
   text-align: center;
 }
 
-.route-start {
+.route-button {
   display: table;
   margin: 2rem auto;
   padding: 20px 30px 20px 56px;
   background-color: #000;
-  background-image: url(../ui/svg/route-w.svg);
   background-repeat: no-repeat;
   background-position: left 28px center;
   background-size: 18px auto;
@@ -1865,7 +1864,15 @@ main {
   transition: background-color 120ms ease;
 }
 
-.route-start:hover {
+.route-start {
+  background-image: url(../ui/svg/route-w.svg);
+}
+
+.route-next {
+  background-image: url(../ui/svg/arrow-right-w.svg);
+}
+
+.route-button:hover {
   background-color: #222;
 }
 
@@ -4149,29 +4156,6 @@ div.user-bar ul > li > a:not(.is-active):hover {
   max-width: 900px;
   margin: 0 auto;
   text-align: center;
-}
-
-.route-start {
-  display: table;
-  margin: 2rem auto;
-  padding: 20px 30px 20px 56px;
-  background-color: #000;
-  background-image: url(../ui/svg/route-w.svg);
-  background-repeat: no-repeat;
-  background-position: left 28px center;
-  background-size: 18px auto;
-  border-radius: 4px;
-  font-size: 1.1em;
-  line-height: 1.3em;
-  font-weight: 500;
-  color: #fff;
-  text-decoration: none;
-  -webkit-transition: background-color 120ms ease;
-  transition: background-color 120ms ease;
-}
-
-.route-start:hover {
-  background-color: #222;
 }
 
 .map-data-path {
