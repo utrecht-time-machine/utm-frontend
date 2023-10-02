@@ -220,7 +220,10 @@ export class UtmRoutesService {
     await this.selectById(id);
   }
 
-  public selectStopByIdx(stopIdx: number | undefined) {
+  public selectStopByIdx(
+    stopIdx: number | undefined,
+    scrollTo: number | undefined = undefined
+  ) {
     const selectedRoute: UtmRoute | undefined = this.selected.getValue();
     const selectedStops: UtmRouteStop[] | undefined = selectedRoute?.stops;
     if (!selectedStops) {
@@ -238,13 +241,44 @@ export class UtmRoutesService {
 
       const selectingHome = stopIdx === undefined;
       if (selectingHome && this.platform.isBrowser()) {
-        window.scrollTo({ top: selectingHome ? 0 : 200, behavior: 'smooth' });
+        setTimeout(() => {
+          window.scrollTo({ top: selectingHome ? 0 : 200, behavior: 'smooth' });
+        });
         return;
       }
 
-      if (this.platform.isBrowser() && window.scrollY == 0) {
+      if (
+        this.platform.isBrowser() &&
+        (window.scrollY == 0 || scrollTo !== undefined)
+      ) {
         // TODO: Fine-tune this value, where do we want to scroll to when selecting a new stop?
-        window.scrollTo({ top: 200, behavior: 'smooth' });
+        setTimeout(() => {
+          window.scrollTo({ top: scrollTo ?? 200, behavior: 'smooth' });
+        });
+      }
+    }
+  }
+
+  public hasNextStop(): boolean {
+    const stopIdx: number | undefined = this.selectedStopIdx.getValue();
+
+    if (stopIdx !== undefined) {
+      const nextStopIdx: number = stopIdx + 1;
+      const numStops = this.selected.getValue()?.stops?.length;
+      if (numStops !== undefined && nextStopIdx < numStops) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public selectNextStop(scrollTo: number | undefined = undefined) {
+    const stopIdx: number | undefined = this.selectedStopIdx.getValue();
+
+    if (stopIdx !== undefined) {
+      if (this.hasNextStop()) {
+        this.selectStopByIdx(stopIdx + 1, scrollTo);
       }
     }
   }

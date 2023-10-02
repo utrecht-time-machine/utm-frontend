@@ -29,6 +29,14 @@
           [addTopMargin]="false"
         ></app-media-item>
       </div>
+
+      <a
+        class="route-start"
+        (click)="utmRoutes.selectNextStop(0)"
+        *ngIf="utmRoutes.hasNextStop()"
+      >
+        Volgende stop
+      </a>
     </ng-container>
   </div>
 </div>
