@@ -29,16 +29,16 @@
           [addTopMargin]="false"
         ></app-media-item>
       </div>
-
-      <a
-        class="route-next route-button"
-        (click)="utmRoutes.selectNextStop(0)"
-        *ngIf="utmRoutes.hasNextStop()"
-      >
-        Volgende stop
-      </a>
     </ng-container>
   </div>
+
+  <a
+    class="route-next route-button"
+    (click)="utmRoutes.selectNextStop(0)"
+    *ngIf="utmRoutes.hasNextStop()"
+  >
+    Volgende stop
+  </a>
 </div>
 
 <app-feedback

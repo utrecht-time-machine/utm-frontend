@@ -1870,6 +1870,7 @@ main {
 
 .route-next {
   background-image: url(../ui/svg/arrow-right-w.svg);
+  margin-bottom: 4rem;
 }
 
 .route-button:hover {
