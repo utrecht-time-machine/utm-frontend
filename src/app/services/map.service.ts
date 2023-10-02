@@ -482,7 +482,12 @@ export class MapService {
     const stopsCoordinates: LngLat[] | undefined = this.utmRoutes.selected
       .getValue()
       ?.stops?.filter((stop) => {
-        return stop && stop.location;
+        return (
+          stop &&
+          stop.location &&
+          !isNaN(stop.location?.coords.lng) &&
+          !isNaN(stop.location?.coords.lat)
+        );
       })
       .map((stop) => {
         // @ts-ignore
@@ -971,10 +976,17 @@ export class MapService {
     const coordsStr: string = routeStops
       .map((stop) => {
         if (stop?.location?.coords) {
+          const hasInvalidCoords =
+            isNaN(stop?.location?.coords.lng) ||
+            isNaN(stop?.location?.coords.lat);
+          if (hasInvalidCoords) {
+            return undefined;
+          }
           return `${stop?.location?.coords.lng},${stop?.location?.coords.lat}`;
         }
         return undefined;
       })
+      .filter((coordStr) => coordStr !== undefined)
       .join(';');
 
     if (!coordsStr) {
