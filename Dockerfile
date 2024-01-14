@@ -1,5 +1,5 @@
 ## Use Node Slim image
-FROM node:16-slim
+FROM node:18-slim
 
 WORKDIR /app
 
