@@ -8,6 +8,8 @@
   >
     <a (click)="clickOnLink('/')">{{ "locations" | translate }}</a>
   </li>
+  
+  
   <li
     class="menu-item"
     [ngClass]="{
@@ -18,6 +20,14 @@
   >
     <a (click)="clickOnLink('/routes')">{{ "routes" | translate }}</a>
   </li>
+
+  <li
+    class="menu-item"
+  >
+    <a href='https://film.utrechttimemachine.nl'>{{ "films" | translate }}</a>
+  </li>
+  
+  
   <li
     class="menu-item"
     [ngClass]="{
