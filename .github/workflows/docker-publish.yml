@@ -101,7 +101,7 @@ jobs:
       - name: Deploy to VPS via SSH action
         uses: appleboy/ssh-action@v1.0.3
         env:
-          LOCAL_TOKEN: ${{ secrets.GH_TOKEN }}
+          LOCAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LOCAL_USERNAME: ${{ github.actor }}
         with:
           host: ${{ secrets.HOST }}
