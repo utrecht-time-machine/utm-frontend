@@ -108,6 +108,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           key: ${{ secrets.KEY }}
           port: 22
+          envs: LOCAL_TOKEN
           script: |
             echo $LOCAL_TOKEN | sudo docker login ghcr.io -u utm --password-stdin
             sudo docker pull ghcr.io/utrecht-time-machine/utm2023-frontend:main
