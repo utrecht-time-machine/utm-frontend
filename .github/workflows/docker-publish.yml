@@ -101,8 +101,7 @@ jobs:
       - name: Deploy to VPS via SSH action
         uses: appleboy/ssh-action@v1.0.3
         env:
-          LOCAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LOCAL_USERNAME: ${{ github.actor }}
+          LOCAL_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
@@ -110,7 +109,7 @@ jobs:
           key: ${{ secrets.KEY }}
           port: 22
           script: |
-            echo $LOCAL_TOKEN | docker login ghcr.io -u $LOCAL_USERNAME --password-stdin
+            echo $LOCAL_TOKEN | sudo docker login ghcr.io -u utm --password-stdin
             sudo docker pull ghcr.io/utrecht-time-machine/utm2023-frontend:main
             sudo docker stop utm2023-frontend
             sudo docker rm utm2023-frontend
