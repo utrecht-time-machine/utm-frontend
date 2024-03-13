@@ -55,6 +55,33 @@ export class ApiService {
     return staticPage;
   }
 
+  async getHomeBlocks(): Promise<StaticPage[] | undefined> {
+    const blocks: StaticPage[] = await lastValueFrom(
+      // TODO: change url to correct endpoint once available
+      this.http.get<StaticPage[]>(
+        environment.apiUrl + environment.apiSuffixes.staticPage
+      )
+    ).catch((err) => {
+      console.error(err);
+      return [];
+    });
+
+    if (blocks.length <= 0) {
+      return undefined;
+    }
+
+    const processedBlocks = blocks.map(async (block) => {
+      UtilService.addUrlPrefix(block, 'photo');
+      await this.utmTranslate.translateObjectByKeys(
+        block,
+        environment.translateKeys.staticPage
+      );
+      return block;
+    });
+
+    return Promise.all(processedBlocks);
+  }
+
   getMapLocations(): Observable<MapLocation[]> {
     console.log('Retrieving map locations...');
     // return this.http.get<MapLocation[]>('/assets/mock/mapLocations.json');
