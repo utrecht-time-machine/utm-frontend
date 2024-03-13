@@ -3,8 +3,12 @@ import { StaticPage } from '../../models/static-page';
 import { ApiService } from '../../services/api.service';
 import { SpinnerService } from '../../services/spinner.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ToCssUrlPipe } from '../../pipes/toCssUrl.pipe';
+import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
+  imports: [CommonModule, ToCssUrlPipe],
   selector: 'app-about',
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss'],

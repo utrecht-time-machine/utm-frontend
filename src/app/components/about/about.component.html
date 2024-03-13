@@ -2,7 +2,7 @@
   <div>
     <div
       class="section section-header"
-      [style.background-image]="getPhotoBgImageUrl()"
+      [style.background-image]="(content?.photo | toCssUrl)"
     >
       <div>
         <div>
