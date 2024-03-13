@@ -1,0 +1,39 @@
+.section-header {
+  height: max-content;
+  min-height: max-content;
+}
+
+.section-header > div > div > div {
+  padding: 60px 20px 40px 20px;
+}
+
+.section-ck {
+  padding: 40px 0;
+}
+
+.section-blocks {
+  > :nth-child(odd) {
+    grid-template-areas: "content image";
+    background-color: var(--red);
+    color: white;
+  }
+  > :nth-child(even) {
+    grid-template-areas: "image content";
+  }
+}
+
+.home-block-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.home-block-grid-image {
+  grid-area: image;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+}
+.home-block-grid-content {
+  padding: 50px;
+  grid-area: content;
+}
