@@ -2,20 +2,23 @@ import { Component } from '@angular/core';
 import { StaticPage } from '../../models/static-page';
 import { ApiService } from '../../services/api.service';
 import { SpinnerService } from '../../services/spinner.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { ToCssUrlPipe } from '../../pipes/toCssUrl.pipe';
+import { RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-home',
-  imports: [CommonModule, ToCssUrlPipe],
+  imports: [CommonModule, ToCssUrlPipe, RouterModule, TranslateModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
   introductionBlock: StaticPage | undefined;
   blocks: StaticPage[] | undefined;
+
+  buttonLink = '/locaties';
 
   constructor(
     public apiService: ApiService,

@@ -1,6 +1,6 @@
 .section-header {
   height: max-content;
-  min-height: max-content;
+  min-height: 40vh;
 }
 
 .section-header > div > div > div {
@@ -9,6 +9,44 @@
 
 .section-ck {
   padding: 40px 0;
+}
+
+@media (min-width: 1400px) {
+  .section-header h1 {
+    font-size: 5rem; // Avoid enormous title in base styles
+  }
+}
+
+div.home-banner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.home-action-button {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.4rem;
+  text-align: center;
+  background-color: black;
+  color: white;
+  padding: 20px 25px;
+  border-radius: 5px;
+  margin-top: 20px;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
+.home-action-button-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-right: 10px;
+  display: inline-block;
+  background-image: url("/assets/ui/svg/arrow-right-w.svg");
 }
 
 .section-blocks {

@@ -5,30 +5,25 @@
       [style.background-image]="introductionBlock?.photo | toCssUrl"
     >
       <div>
-        <div>
-          <div>
-            <h1 [innerHtml]="introductionBlock?.title"></h1>
-          </div>
+        <div class="home-banner-container">
+          <h1 [innerHtml]="introductionBlock?.title"></h1>
+          <a class="home-action-button" [routerLink]="buttonLink">
+            <span class="home-action-button-icon"></span
+            ><span>{{ "goToMap" | translate }}</span>
+          </a>
         </div>
       </div>
     </div>
-  </div>
-  <div>
-    <div class="section section-ck">
-      <div class="pad">
-        <div [innerHtml]="introductionBlock?.body"></div>
-      </div>
-    </div>
-  </div>
-  <div class="section section-blocks">
-    <div class="home-block-grid" *ngFor="let block of blocks">
-      <div
-        class="home-block-grid-image"
-        [style.background-image]="introductionBlock?.photo | toCssUrl"
-      ></div>
-      <div class="home-block-grid-content">
-        <h2 [innerHtml]="block?.title"></h2>
-        <div [innerHtml]="block?.body"></div>
+    <div class="section section-blocks">
+      <div class="home-block-grid" *ngFor="let block of blocks">
+        <div class="home-block-grid-content">
+          <h2 [innerHtml]="block?.title"></h2>
+          <div [innerHtml]="block?.body"></div>
+        </div>
+        <div
+          class="home-block-grid-image"
+          [style.background-image]="block?.photo | toCssUrl"
+        ></div>
       </div>
     </div>
   </div>
