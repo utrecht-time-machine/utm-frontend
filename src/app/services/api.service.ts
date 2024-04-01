@@ -21,7 +21,7 @@ const mockHomeBlocks: StaticPage[] = [
     body: '', // Not used!
     nid: '90001',
     view_node: '/block-1',
-    photo: 'http://localhost:4200/assets/temp-images/limes_kaart.jpg',
+    photo: '/assets/temp-images/limes_kaart.jpg',
   },
   {
     title: 'Herontdek de Stad Utrecht',
@@ -31,16 +31,14 @@ const mockHomeBlocks: StaticPage[] = [
       '<p>Je kan zelf kiezen welke plekken je bezoekt en bestaande routes volgen, of je eigen route door de stad samenstellen. <strong>De rijke geschiedenis van de stad Utrecht wacht op je</strong>.</p>',
     nid: '90002',
     view_node: '/block-2',
-    photo:
-      'http://localhost:4200/assets/temp-images/Utrecht Stad X62345 - 300737.jpg',
+    photo: '/assets/temp-images/Utrecht Stad X62345 - 300737.jpg',
   },
   {
     title: 'Ontdek verborgen erfgoed in de provincie',
     body: '<p>In de provincie Utrecht gaat de geschiedenis ook <strong>buiten de stad verder</strong>. Ontdek de verdedigingswerken van de Hollandse Waterlinie, trek langs de oude tankgrachten of verken de Utrechtse heuvelrug waar het verleden voelbaar is in het landschap. De Utrecht Time Machine brengt de geschiedenis tot leven, direct op je smartphone. <strong>Zo verandert elke wandeling of fietstocht in een spannende tijdsreis door de provincie</strong>. Ontdek erfgoed op jouw manier, en laat je verrassen door wat je tegenkomt!</p>',
     nid: '90003',
     view_node: '/block-3',
-    photo:
-      'http://localhost:4200/assets/temp-images/Utrecht Provincie 1_2065_0013.jpg',
+    photo: '/assets/temp-images/Utrecht Provincie 1_2065_0013.jpg',
   },
 ];
 
