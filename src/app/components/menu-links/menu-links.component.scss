@@ -1,3 +1,9 @@
+@media (max-width: 999px) {
+  .films-menu-item {
+    display: none !important;
+  }
+}
+
 .menu-mb-inner .language-toggle {
   display: block;
   padding: 4px 0;

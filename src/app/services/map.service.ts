@@ -67,7 +67,8 @@ export class MapService {
       const loadedLocationsPage =
         this.routing.getSelectedView() === SelectedView.Locations;
       if (loadedLocationsPage) {
-        const loadedHomePage = this.router.url === '/';
+        const loadedHomePage =
+          this.router.url === '/' || this.router.url === '/locaties';
         if (loadedHomePage) {
           void this.deselectLocation();
         } else {
