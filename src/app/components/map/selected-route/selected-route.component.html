@@ -1,6 +1,10 @@
 <div>
   <div class="dock-inner route-container" *ngIf="!utmRoutes.selectedStop">
     <div class="pad">
+      <div class="audio-player-container" *ngIf="selectedRoute?.audio">
+        <app-audio-player [audioUrl]="selectedRoute?.audio" />
+      </div>
+
       <app-edit-button
         [nid]="utmRoutes.selected.getValue()?.nid"
       ></app-edit-button>

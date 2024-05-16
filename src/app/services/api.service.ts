@@ -138,6 +138,7 @@ export class ApiService {
       environment.geoJsonBaseUrl
     );
 
+    UtilService.addUrlPrefixes(utmRoutes, 'audio');
     UtilService.addUrlPrefixes(utmRoutes, 'photo');
     this.utmTranslate.translateObjectsByKeys(
       utmRoutes,

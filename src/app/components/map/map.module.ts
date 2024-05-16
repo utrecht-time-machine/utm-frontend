@@ -12,6 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EditButtonModule } from '../edit-button/edit-button.module';
 import { OrganisationsModule } from '../organisations/organisations.module';
 import { ImageViewerModule } from './media-item/image-viewer/image-viewer.module';
+import { AudioPlayerModule } from '../audio-player/audio-player.module';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ImageViewerModule } from './media-item/image-viewer/image-viewer.module
     EditButtonModule,
     OrganisationsModule,
     ImageViewerModule,
+    AudioPlayerModule,
   ],
 })
 export class MapModule {}
