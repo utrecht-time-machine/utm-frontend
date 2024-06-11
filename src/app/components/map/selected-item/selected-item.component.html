@@ -53,7 +53,14 @@
         <div>
           <div class="screen-mode" data-mobile="0">
             <h1 [innerHtml]="locationDetails?.title"></h1>
-            <h3>{{ locationDetails?.address }}</h3>
+            
+            <h3 *ngIf="locationDetails?.city && locationDetails?.city !== locationDetails?.title">
+              {{ locationDetails?.address }}, {{ locationDetails?.city }}
+            </h3>
+            <h3 *ngIf="(!locationDetails?.city || locationDetails?.city === locationDetails?.title) && locationDetails?.address !== locationDetails?.title">
+              {{ locationDetails?.address }}
+            </h3>
+
           </div>
           <p [innerHtml]="locationDetails?.teaser"></p>
           <div class="fold" *ngIf="locationDetails?.text">
