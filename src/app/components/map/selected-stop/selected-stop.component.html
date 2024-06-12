@@ -13,10 +13,10 @@
 <div class="media-container">
   <div *ngIf="utmRoutes.selectedStop?.stories">
     <ng-container *ngFor="let story of utmRoutes.selectedStop?.stories">
-      <div class="story-head" *ngIf="story?.title">
+      <div class="story-head" *ngIf="story?.title" [hidden]="story.title === utmRoutes.selectedStop?.title">
         <h2>{{ story.title }}</h2>
       </div>
-
+    
       <app-audio-player [audioUrl]="story.audio" *ngIf="story.audio" />
 
       <div
