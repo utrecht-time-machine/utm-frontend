@@ -17,6 +17,8 @@ import { Viewer } from '@photo-sphere-viewer/core';
 export class ArViewerComponent implements AfterViewInit {
   @Input() imageSrc: string | undefined = undefined;
   @Input() imageCaption: string | undefined = undefined;
+  @Input() defaultYaw: number = 0;
+  @Input() defaultPitch: number = 0;
 
   @ViewChild('viewer', { static: false }) viewerElement!: ElementRef;
 
@@ -25,6 +27,8 @@ export class ArViewerComponent implements AfterViewInit {
       container: this.viewerElement.nativeElement,
       panorama: this.imageSrc,
       navbar: ['zoom', 'move', 'caption', 'fullscreen'],
+      defaultYaw: this.defaultYaw,
+      defaultPitch: this.defaultPitch,
     });
   }
 }

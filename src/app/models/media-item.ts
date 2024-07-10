@@ -15,6 +15,8 @@ export interface MediaItem {
   type: MediaItemType;
   organisation_ids: string;
   ar_360_photo: string;
+  ar_360_photo_default_yaw: number;
+  ar_360_photo_default_pitch: number;
 
   organisations?: Organisation[];
 }

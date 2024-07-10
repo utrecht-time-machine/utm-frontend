@@ -390,6 +390,8 @@ export class ApiService {
       source_link: '',
       source_name: '',
       ar_360_photo: '',
+      ar_360_photo_default_yaw: 0,
+      ar_360_photo_default_pitch: 0,
       text: `<div>${locationDetails.teaser as string}</div><div>${
         locationDetails.text as string
       }</div>`,
