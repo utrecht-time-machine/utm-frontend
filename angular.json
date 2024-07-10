@@ -39,7 +39,8 @@
             "assets": ["src/favicon.ico", "src/assets", "src/robots.txt"],
             "styles": [
               "src/styles.scss",
-              "node_modules/viewerjs/dist/viewer.min.css"
+              "node_modules/viewerjs/dist/viewer.min.css",
+              "node_modules/@photo-sphere-viewer/core/index.scss"
             ],
             "scripts": ["node_modules/viewerjs/dist/viewer.min.js"],
             "allowedCommonJsDependencies": ["mapbox-gl", "howler"]

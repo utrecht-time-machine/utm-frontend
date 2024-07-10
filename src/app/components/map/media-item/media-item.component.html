@@ -23,6 +23,13 @@
         ></app-image-viewer>
       </div>
 
+      <div class="AR-embed" *ngIf="mediaItem.type === MediaItemType.AR">
+        <app-ar-viewer
+          [imageSrc]="mediaItem.ar_360_photo"
+          [imageCaption]="mediaItem.caption"
+        ></app-ar-viewer>
+      </div>
+
       <div
         class="video-embed"
         *ngIf="

@@ -212,6 +212,11 @@ export class ApiService {
         UtilService.addUrlPrefix(mediaItem, 'media_file');
       }
 
+      if (mediaItem.ar_360_photo) {
+        mediaItem.type = MediaItemType.AR;
+        UtilService.addUrlPrefix(mediaItem, 'ar_360_photo');
+      }
+
       if (mediaItem.embed_url) {
         mediaItem.type = MediaItemType.Embed;
 
@@ -384,6 +389,7 @@ export class ApiService {
       organisations: locationDetails.organisations,
       source_link: '',
       source_name: '',
+      ar_360_photo: '',
       text: `<div>${locationDetails.teaser as string}</div><div>${
         locationDetails.text as string
       }</div>`,

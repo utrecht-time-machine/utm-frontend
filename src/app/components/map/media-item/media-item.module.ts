@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { OrganisationsModule } from '../../organisations/organisations.module';
 import { AudioPlayerModule } from '../../audio-player/audio-player.module';
 import { ImageViewerModule } from './image-viewer/image-viewer.module';
+import { ArViewerModule } from './ar-viewer/ar-viewer.module';
 
 @NgModule({
   declarations: [MediaItemComponent],
@@ -18,6 +19,7 @@ import { ImageViewerModule } from './image-viewer/image-viewer.module';
     OrganisationsModule,
     AudioPlayerModule,
     ImageViewerModule,
+    ArViewerModule,
   ],
   exports: [MediaItemComponent],
 })
