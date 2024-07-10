@@ -1,6 +1,11 @@
 <app-audio-player
   [audioUrl]="utmRoutes.selectedStop?.audio"
-  *ngIf="utmRoutes.selectedStop?.audio"
+  *ngIf="utmRoutes.selectedStop?.audio && !shouldShowEnglishAudio"
+/>
+
+<app-audio-player
+  [audioUrl]="utmRoutes.selectedStop?.audio_english"
+  *ngIf="shouldShowEnglishAudio"
 />
 
 <app-edit-button [nid]="utmRoutes.selectedStop?.id"></app-edit-button>

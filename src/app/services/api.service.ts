@@ -303,6 +303,14 @@ export class ApiService {
         UtilService.addUrlPrefix(stop, 'audio', environment.audioBaseUrl);
       }
 
+      if (stop.audio_english) {
+        UtilService.addUrlPrefix(
+          stop,
+          'audio_english',
+          environment.audioBaseUrl
+        );
+      }
+
       stop.show_location_info = (stop.show_location_info as any) === '1';
     });
 
