@@ -2,8 +2,10 @@ import {
   Component,
   ElementRef,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { Howl } from 'howler';
@@ -13,7 +15,7 @@ import { Howl } from 'howler';
   templateUrl: './audio-player.component.html',
   styleUrls: ['./audio-player.component.scss'],
 })
-export class AudioPlayerComponent implements OnInit, OnDestroy {
+export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
   scrubbingAudio = false;
   percentageComplete = 0;
   audio: Howl | undefined;
@@ -26,6 +28,12 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
     setInterval(() => {
       this.percentageComplete = this._getPercentageComplete();
     }, 50);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['audioUrl']) {
+      this.load(this.audioUrl);
+    }
   }
 
   ngOnInit() {
@@ -80,8 +88,10 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.audio = new Howl({
-      src: [audioUrl],
+    setTimeout(() => {
+      this.audio = new Howl({
+        src: [audioUrl],
+      });
     });
   }
 
