@@ -6,6 +6,7 @@ import { AboutComponent } from './components/about/about.component';
 import { qrCodeRoutes } from '../assets/routing/qr-code-routes';
 import { previousUtmRoutes } from '../assets/routing/previous-utm-routes';
 import { HomeComponent } from './components/home/home.component';
+import { ArComponent } from './components/ar/ar.component';
 
 const rootGuard = () => {
   // Determine if user saw introduction by checking local storage
@@ -36,6 +37,7 @@ export const routes: Routes = [
   { path: 'routes/:id', component: MapComponent },
   { path: 'story/:id', component: MapComponent },
   { path: 'over', component: AboutComponent },
+  { path: 'AR', component: ArComponent },
 ];
 
 @NgModule({
