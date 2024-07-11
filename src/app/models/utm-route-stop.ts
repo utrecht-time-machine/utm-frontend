@@ -4,7 +4,9 @@ import { LocationDetails } from './location-details';
 export interface UtmRouteStop {
   id: string;
   title: string;
+  title_english?: string;
   intro?: string;
+  intro_english?: string;
   audio?: string;
   audio_english?: string;
   location_id: string;

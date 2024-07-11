@@ -85,4 +85,22 @@ export class UtmTranslateService {
     }
     return await Promise.all(promises);
   }
+
+  public getAsEnglishIfApplicable(
+    obj: any,
+    key: string,
+    englishKey: string
+  ): string {
+    if (this.translateService.currentLang !== 'en') {
+      return obj?.[key];
+    }
+
+    if (englishKey in obj && obj[englishKey]) {
+      return obj[englishKey];
+    }
+    if (key in obj) {
+      return obj[key];
+    }
+    return '';
+  }
 }

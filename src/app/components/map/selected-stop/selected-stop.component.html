@@ -10,18 +10,48 @@
 
 <app-edit-button [nid]="utmRoutes.selectedStop?.id"></app-edit-button>
 
-<h2 [innerHtml]="utmRoutes.selectedStop?.title"></h2>
-<div class="stop-intro-container" *ngIf="utmRoutes.selectedStop?.intro">
-  <p class="stop-intro" [innerHTML]="utmRoutes.selectedStop?.intro"></p>
+<h2
+  [innerHtml]="
+    utmTranslate.getAsEnglishIfApplicable(
+      utmRoutes.selectedStop,
+      'title',
+      'title_english'
+    )
+  "
+></h2>
+<div
+  class="stop-intro-container"
+  *ngIf="
+    this.utmTranslate.getAsEnglishIfApplicable(
+      utmRoutes.selectedStop,
+      'intro',
+      'intro_english'
+    )
+  "
+>
+  <p
+    class="stop-intro"
+    [innerHTML]="
+      this.utmTranslate.getAsEnglishIfApplicable(
+        utmRoutes.selectedStop,
+        'intro',
+        'intro_english'
+      )
+    "
+  ></p>
 </div>
 
 <div class="media-container">
   <div *ngIf="utmRoutes.selectedStop?.stories">
     <ng-container *ngFor="let story of utmRoutes.selectedStop?.stories">
-      <div class="story-head" *ngIf="story?.title" [hidden]="story.title === utmRoutes.selectedStop?.title">
+      <div
+        class="story-head"
+        *ngIf="story?.title"
+        [hidden]="story.title === utmRoutes.selectedStop?.title"
+      >
         <h2>{{ story.title }}</h2>
       </div>
-    
+
       <app-audio-player [audioUrl]="story.audio" *ngIf="story.audio" />
 
       <div

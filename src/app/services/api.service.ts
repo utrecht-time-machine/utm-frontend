@@ -317,6 +317,11 @@ export class ApiService {
       }
 
       stop.show_location_info = (stop.show_location_info as any) === '1';
+
+      this.utmTranslate.translateObjectByKeys(
+        stop,
+        environment.translateKeys.stop
+      );
     });
 
     console.log('STOPS', utmRouteStops);

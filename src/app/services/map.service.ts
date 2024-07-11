@@ -132,7 +132,11 @@ export class MapService {
 
         this._showMapStopPopup(
           stopCoords,
-          selectedStop.title,
+          this.utmTranslate.getAsEnglishIfApplicable(
+            selectedStop,
+            'title',
+            'title_english'
+          ),
           selectedStop.location?.address as string,
           selectedStop.location?.thumb as string,
           stopIdx
@@ -355,7 +359,11 @@ export class MapService {
           },
           properties: {
             label: idx + 1,
-            stop_title: stop.title,
+            stop_title: this.utmTranslate.getAsEnglishIfApplicable(
+              stop,
+              'title',
+              'title_english'
+            ),
             stop_address: stop.location?.address,
             stop_thumb: stop.location?.thumb,
             idx: idx,
