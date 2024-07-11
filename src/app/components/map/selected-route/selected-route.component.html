@@ -9,16 +9,42 @@
         [nid]="utmRoutes.selected.getValue()?.nid"
       ></app-edit-button>
 
-      <h2>{{ selectedRoute?.title }}</h2>
+      <h2>
+        {{
+          utmTranslate.getAsEnglishIfApplicable(
+            selectedRoute,
+            "title",
+            "title_english"
+          )
+        }}
+      </h2>
       <div class="route-container-inner">
         <div
           class="route-container-teaser"
-          [innerHtml]="selectedRoute?.teaser"
+          [innerHtml]="
+            utmTranslate.getAsEnglishIfApplicable(
+              selectedRoute,
+              'teaser',
+              'teaser_english'
+            )
+          "
         ></div>
         <div
           class="route-container-text"
-          [innerHtml]="selectedRoute?.text"
-          *ngIf="selectedRoute?.text"
+          [innerHtml]="
+            utmTranslate.getAsEnglishIfApplicable(
+              selectedRoute,
+              'text',
+              'text_english'
+            )
+          "
+          *ngIf="
+            utmTranslate.getAsEnglishIfApplicable(
+              selectedRoute,
+              'text',
+              'text_english'
+            )
+          "
         ></div>
         <a
           class="route-button route-start"
@@ -34,7 +60,13 @@
             <!-- TODO: Fix clicking does not trigger viewer -->
             <app-image-viewer
               [imageSrc]="selectedRoute?.photo"
-              [imageAlt]="selectedRoute?.title"
+              [imageAlt]="
+                utmTranslate.getAsEnglishIfApplicable(
+                  selectedRoute,
+                  'title',
+                  'title_english'
+                )
+              "
             ></app-image-viewer>
           </div>
         </div>

@@ -8,15 +8,33 @@
             <div class="head">
               <div>
                 <div>
-                  <img loading="lazy" [src]="r.photo" [alt]="r.title" />
+                  <img
+                    loading="lazy"
+                    [src]="r.photo"
+                    [alt]="
+                      utmTranslate.getAsEnglishIfApplicable(
+                        r,
+                        'title',
+                        'title_english'
+                      )
+                    "
+                  />
                 </div>
               </div>
             </div>
 
             <div class="core">
               <span class="type">{{ r.type }}</span
-              ><span class="name">{{ r.title }}</span
-              ><span class="desc">{{ r.head }}</span
+              ><span class="name">{{
+                utmTranslate.getAsEnglishIfApplicable(
+                  r,
+                  "title",
+                  "title_english"
+                )
+              }}</span
+              ><span class="desc">{{
+                utmTranslate.getAsEnglishIfApplicable(r, "head", "head_english")
+              }}</span
               ><span class="dist" *ngIf="r.duration_minutes"
                 >{{ r.duration_minutes }} min</span
               >

@@ -12,6 +12,7 @@ import { UtmRoutesService } from './utm-routes.service';
 import { UtmRoute } from '../models/utm-route';
 import { UnescapePipe } from '../pipes/unescape.pipe';
 import { MediaItem } from '../models/media-item';
+import { UtmTranslateService } from './utm-translate.service';
 
 const DEFAULT_DESCRIPTION =
   'In Utrecht ligt de geschiedenis voor het oprapen. Utrecht Time Machine brengt met innovatieve technieken oude tijden tot leven en plaatst ze middenin onze wereld.';
@@ -32,7 +33,8 @@ export class SeoService {
     public storyService: StoryService,
     public utmRoutesService: UtmRoutesService,
     public route: ActivatedRoute,
-    public unescapePipe: UnescapePipe
+    public unescapePipe: UnescapePipe,
+    public utmTranslate: UtmTranslateService
   ) {
     // Listen to changes in url and the data being loaded
     // Handle delayed loading of SEO-required data by debouncing
@@ -130,13 +132,18 @@ export class SeoService {
     }
 
     // Description extraction from media item
-    let description = story.title;
+    const title = this.utmTranslate.getAsEnglishIfApplicable(
+      story,
+      'title',
+      'title_english'
+    );
+    let description = title;
     if (mediaItems && mediaItems[0] && mediaItems[0].text) {
       description = mediaItems[0].text.replace(/<[^>]+>/g, '').trim();
     }
 
     this.setMetaTags(
-      (story.title || '⏳') + ' – Utrecht Time Machine',
+      (title || '⏳') + ' – Utrecht Time Machine',
       description,
       story.photo,
       'article'
@@ -157,8 +164,13 @@ export class SeoService {
       return;
     }
 
+    const title = this.utmTranslate.getAsEnglishIfApplicable(
+      selectedRoute,
+      'title',
+      'title_english'
+    );
     this.setMetaTags(
-      (selectedRoute.title || '⏳') + ' – Utrecht Time Machine',
+      (title || '⏳') + ' – Utrecht Time Machine',
       selectedRoute.head,
       selectedRoute.photo
     );
