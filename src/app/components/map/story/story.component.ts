@@ -2,6 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { StoryService } from '../../../services/story.service';
 import { Router } from '@angular/router';
 import { ImageViewerService } from '../../../services/image-viewer.service';
+import { UtmTranslateService } from '../../../services/utm-translate.service';
 
 @Component({
   selector: 'app-story',
@@ -12,7 +13,8 @@ export class StoryComponent {
   constructor(
     public story: StoryService,
     public router: Router,
-    public imageViewerService: ImageViewerService
+    public imageViewerService: ImageViewerService,
+    public utmTranslate: UtmTranslateService
   ) {}
 
   ngOnInit() {}

@@ -3,6 +3,7 @@ import { MediaItem } from './media-item';
 export interface Story {
   nid: string;
   title: string;
+  title_english?: string;
   photo: string;
   has_video_icon: string;
   story_id: string;

@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { RoutingService } from '../../../services/routing.service';
 import { Story } from '../../../models/story';
 import { StoryService } from '../../../services/story.service';
+import { UtmTranslateService } from '../../../services/utm-translate.service';
 
 @Component({
   selector: 'app-selected-item',
@@ -19,7 +20,8 @@ export class SelectedItemComponent {
     public router: Router,
     public routing: RoutingService,
     public location: Location,
-    public storyService: StoryService
+    public storyService: StoryService,
+    public utmTranslate: UtmTranslateService
   ) {}
 
   locationHasStories(): boolean {
