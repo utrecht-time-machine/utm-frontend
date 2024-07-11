@@ -14,6 +14,9 @@ export interface MediaItem {
   embed_url: string;
   type: MediaItemType;
   organisation_ids: string;
+  ar_360_photo: string;
+  ar_360_photo_default_yaw: number;
+  ar_360_photo_default_pitch: number;
 
   organisations?: Organisation[];
 }
@@ -23,4 +26,5 @@ export enum MediaItemType {
   Image,
   Video,
   Embed,
+  AR,
 }

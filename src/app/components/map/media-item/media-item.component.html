@@ -23,6 +23,14 @@
         ></app-image-viewer>
       </div>
 
+      <div class="AR-embed" *ngIf="mediaItem.type === MediaItemType.AR">
+        <app-ar-360-viewer
+          [imageSrc]="mediaItem.ar_360_photo"
+          [defaultPitch]="mediaItem.ar_360_photo_default_pitch"
+          [defaultYaw]="mediaItem.ar_360_photo_default_yaw"
+        ></app-ar-360-viewer>
+      </div>
+
       <div
         class="video-embed"
         *ngIf="
