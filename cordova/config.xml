@@ -9,6 +9,9 @@
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
 
+
+  <preference name="android-targetSdkVersion" value="34" />
+
   <preference name="AllowInlineMediaPlayback" value="true" />
   <preference name="MediaTypesRequiringUserActionForPlayback" value="false" />
 
