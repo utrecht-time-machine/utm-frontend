@@ -12,6 +12,9 @@ export class OrganisationsComponent {
   constructor() {}
 
   hasOrganisations(): boolean {
-    return this.organisations !== undefined && this.organisations.length > 0;
+    if (!this.organisations) {
+      return false;
+    }
+    return this.organisations.length > 0;
   }
 }
