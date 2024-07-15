@@ -91,6 +91,10 @@ export class UtmTranslateService {
     key: string,
     englishKey: string
   ): string {
+    if (!obj) {
+      return '';
+    }
+
     if (this.translateService.currentLang !== 'en') {
       return obj?.[key];
     }
