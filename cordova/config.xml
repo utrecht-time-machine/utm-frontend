@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="nl.utrechttimemachine" version="1.0.6" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android">
+<widget id="nl.utrechttimemachine" version="1.0.7" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android">
   <name>Utrecht Time Machine</name>
   <description>Utrecht Time Machine</description>
   <author email="info@utrechttimemachine.nl" href="https://utrechttimemachine.nl">
