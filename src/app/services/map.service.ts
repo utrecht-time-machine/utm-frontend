@@ -597,8 +597,23 @@ export class MapService {
           if (!locations || !locations.length) {
             console.error('No locations found in database');
           }
-          console.log('LOCATIONS FROM SERVER', locations);
-          return locations;
+
+          const uniqueLocations = UtilService.getUniqueListByKey(
+            locations,
+            'nid'
+          );
+
+          uniqueLocations.forEach((location) => {
+            if (!location?.story_theme_ids) {
+              location.story_theme_ids = [];
+              return;
+            }
+            location.story_theme_ids =
+              location.story_theme_ids_plaintext.split(', ');
+          });
+
+          console.log('LOCATIONS FROM SERVER', uniqueLocations);
+          return uniqueLocations;
         })
     );
 

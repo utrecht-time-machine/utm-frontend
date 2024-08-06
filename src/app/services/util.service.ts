@@ -53,4 +53,16 @@ export class UtilService {
       UtilService.addUrlPrefix(obj, key, prefix);
     }
   }
+
+  static getUniqueListByKey(list: any[], key: string) {
+    const seen: Set<string> = new Set<string>();
+    const unique = list.filter((elem) => {
+      if (!seen.has(elem[key])) {
+        seen.add(elem[key]);
+        return true;
+      }
+      return false;
+    });
+    return unique;
+  }
 }
