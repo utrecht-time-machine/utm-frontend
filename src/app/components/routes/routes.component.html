@@ -3,7 +3,7 @@
     <h1>{{ "routes" | translate }}</h1>
     <div class="views-element-container">
       <div class="card-hold promote">
-        <div class="card" *ngFor="let r of utmRoutes.all">
+        <div class="card" *ngFor="let r of utmRoutes.shown">
           <a (click)="selectRoute(r.url, r.nid)">
             <div class="head">
               <div>

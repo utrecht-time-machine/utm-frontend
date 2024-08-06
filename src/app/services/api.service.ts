@@ -144,6 +144,14 @@ export class ApiService {
       utmRoutes,
       environment.translateKeys.routes
     );
+
+    utmRoutes.forEach((utmRoute) => {
+      if (!utmRoute.show_only_in_dev_mode_plaintext) {
+        utmRoute.show_only_in_dev_mode = false;
+      } else if (utmRoute.show_only_in_dev_mode_plaintext === '1') {
+        utmRoute.show_only_in_dev_mode = true;
+      }
+    });
     return utmRoutes;
   }
 

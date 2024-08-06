@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --output-path dist",
+    "build:dev": "ng build --output-path dist --configuration development",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build:android": "cd cordova; cordova platform rm android; cordova platform add android; ng build --output-path cordova/www; cordova build android --release",

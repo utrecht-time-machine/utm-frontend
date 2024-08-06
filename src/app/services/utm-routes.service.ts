@@ -8,6 +8,7 @@ import { SpinnerService } from './spinner.service';
 import { PlatformService } from './platform.service';
 import { UtmTranslateService } from './utm-translate.service';
 import { Story } from '../models/story';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -144,6 +145,16 @@ export class UtmRoutesService {
     this.selected.subscribe(() => {
       this.selectedStopIdx.next(undefined);
     });
+  }
+
+  public get shown(): UtmRoute[] {
+    if (!this.all) {
+      return [];
+    }
+    if (environment.dev) {
+      return this.all;
+    }
+    return this.all.filter((route: UtmRoute) => !route.show_only_in_dev_mode);
   }
 
   public get selectedStop(): UtmRouteStop | undefined {
