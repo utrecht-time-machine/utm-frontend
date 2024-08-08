@@ -18,6 +18,7 @@ export interface MediaItem {
   ar_360_photo_default_yaw: number;
   ar_360_photo_default_pitch: number;
   ar_360_photo_default_zoom: number;
+  ar_360_video: string;
 
   organisations?: Organisation[];
 }

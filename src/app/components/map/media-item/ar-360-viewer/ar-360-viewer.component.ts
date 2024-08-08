@@ -6,6 +6,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Viewer } from '@photo-sphere-viewer/core';
+import { VideoPlugin } from '@photo-sphere-viewer/video-plugin';
+import { EquirectangularVideoAdapter } from '@photo-sphere-viewer/equirectangular-video-adapter';
 
 @Component({
   selector: 'app-ar-360-viewer',
@@ -14,6 +16,7 @@ import { Viewer } from '@photo-sphere-viewer/core';
 })
 export class Ar360Viewer implements AfterViewInit {
   @Input() imageSrc: string | undefined = undefined;
+  @Input() videoSrc: string | undefined = undefined;
   @Input() defaultYaw: number = 0;
   @Input() defaultPitch: number = 0;
   @Input() defaultZoom: number = 50;
@@ -22,6 +25,14 @@ export class Ar360Viewer implements AfterViewInit {
   viewer?: Viewer;
 
   ngAfterViewInit() {
+    if (this.videoSrc) {
+      this.initVideoViewer();
+    } else if (this.imageSrc) {
+      this.initPhotoViewer();
+    }
+  }
+
+  initPhotoViewer() {
     this.viewer = new Viewer({
       container: this.viewerElement.nativeElement,
       panorama: this.imageSrc,
@@ -43,6 +54,20 @@ export class Ar360Viewer implements AfterViewInit {
       defaultYaw: this.defaultYaw,
       defaultPitch: this.defaultPitch,
       defaultZoomLvl: this.defaultZoom,
+    });
+  }
+
+  initVideoViewer() {
+    this.viewer = new Viewer({
+      container: this.viewerElement.nativeElement,
+      adapter: [EquirectangularVideoAdapter, { muted: true }],
+      panorama: {
+        source: this.videoSrc,
+      },
+      defaultYaw: this.defaultYaw,
+      defaultPitch: this.defaultPitch,
+      defaultZoomLvl: this.defaultZoom,
+      plugins: [VideoPlugin],
     });
   }
 }

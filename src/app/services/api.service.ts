@@ -225,6 +225,11 @@ export class ApiService {
         UtilService.addUrlPrefix(mediaItem, 'ar_360_photo');
       }
 
+      if (mediaItem.ar_360_video) {
+        mediaItem.type = MediaItemType.AR;
+        UtilService.addUrlPrefix(mediaItem, 'ar_360_video');
+      }
+
       if (mediaItem.embed_url) {
         mediaItem.type = MediaItemType.Embed;
 
@@ -414,6 +419,7 @@ export class ApiService {
       ar_360_photo_default_yaw: 0,
       ar_360_photo_default_pitch: 0,
       ar_360_photo_default_zoom: 50,
+      ar_360_video: '',
       text: `<div>${locationDetails.teaser as string}</div><div>${
         locationDetails.text as string
       }</div>`,

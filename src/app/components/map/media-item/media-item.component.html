@@ -26,6 +26,7 @@
       <div class="AR-embed" *ngIf="mediaItem.type === MediaItemType.AR">
         <app-ar-360-viewer
           [imageSrc]="mediaItem.ar_360_photo"
+          [videoSrc]="mediaItem.ar_360_video"
           [defaultPitch]="mediaItem.ar_360_photo_default_pitch"
           [defaultYaw]="mediaItem.ar_360_photo_default_yaw"
           [defaultZoom]="mediaItem.ar_360_photo_default_zoom"

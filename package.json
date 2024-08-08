@@ -36,6 +36,8 @@
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "@photo-sphere-viewer/core": "^5.8.2",
+    "@photo-sphere-viewer/equirectangular-video-adapter": "^5.9.0",
+    "@photo-sphere-viewer/video-plugin": "^5.9.0",
     "@turf/turf": "^6.5.0",
     "@types/howler": "^2.2.7",
     "express": "^4.15.2",
