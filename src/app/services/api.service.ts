@@ -413,6 +413,7 @@ export class ApiService {
       ar_360_photo: '',
       ar_360_photo_default_yaw: 0,
       ar_360_photo_default_pitch: 0,
+      ar_360_photo_default_zoom: 50,
       text: `<div>${locationDetails.teaser as string}</div><div>${
         locationDetails.text as string
       }</div>`,

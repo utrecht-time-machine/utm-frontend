@@ -16,6 +16,7 @@ export class Ar360Viewer implements AfterViewInit {
   @Input() imageSrc: string | undefined = undefined;
   @Input() defaultYaw: number = 0;
   @Input() defaultPitch: number = 0;
+  @Input() defaultZoom: number = 50;
 
   @ViewChild('viewer', { static: false }) viewerElement!: ElementRef;
   @ViewChild('arIcon', { static: false }) arIconElement!: ElementRef;
@@ -42,6 +43,7 @@ export class Ar360Viewer implements AfterViewInit {
       ],
       defaultYaw: this.defaultYaw,
       defaultPitch: this.defaultPitch,
+      defaultZoomLvl: this.defaultZoom,
     });
   }
 }
