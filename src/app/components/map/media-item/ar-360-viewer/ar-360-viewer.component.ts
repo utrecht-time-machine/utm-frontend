@@ -19,7 +19,6 @@ export class Ar360Viewer implements AfterViewInit {
   @Input() defaultZoom: number = 50;
 
   @ViewChild('viewer', { static: false }) viewerElement!: ElementRef;
-  @ViewChild('arIcon', { static: false }) arIconElement!: ElementRef;
   viewer?: Viewer;
 
   ngAfterViewInit() {
