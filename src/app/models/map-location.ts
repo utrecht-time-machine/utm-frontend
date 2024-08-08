@@ -8,6 +8,8 @@ export interface MapLocation {
   thumb: string;
   image_small: string;
   head: string;
-  story_theme_ids_plaintext: string;
+  story_theme_ids_str: string;
   story_theme_ids: string[];
+  hide_from_map_str: string;
+  hide_from_map: boolean;
 }

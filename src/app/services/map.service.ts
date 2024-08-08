@@ -598,22 +598,27 @@ export class MapService {
             console.error('No locations found in database');
           }
 
-          const uniqueLocations = UtilService.getUniqueListByKey(
+          const uniqueLocations: MapLocation[] = UtilService.getUniqueListByKey(
             locations,
             'nid'
           );
 
           uniqueLocations.forEach((location) => {
-            if (!location?.story_theme_ids) {
-              location.story_theme_ids = [];
-              return;
-            }
-            location.story_theme_ids =
-              location.story_theme_ids_plaintext.split(', ');
+            location.story_theme_ids = !location?.story_theme_ids_str
+              ? []
+              : location.story_theme_ids_str.split(', ');
+            location.hide_from_map = !location?.hide_from_map_str
+              ? false
+              : location.hide_from_map_str === '1';
           });
 
+          const locationsShownOnMap = uniqueLocations.filter(
+            (location) => !location.hide_from_map
+          );
+
           console.log('LOCATIONS FROM SERVER', uniqueLocations);
-          return uniqueLocations;
+          console.log('LOCATIONS SHOWN ON MAP', locationsShownOnMap);
+          return locationsShownOnMap;
         })
     );
 

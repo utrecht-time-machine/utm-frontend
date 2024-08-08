@@ -5,7 +5,7 @@ export const environment = {
   audioBaseUrl: 'https://data.utrechttimemachine.nl',
   geoJsonBaseUrl: 'https://data.utrechttimemachine.nl',
   apiSuffixes: {
-    mapLocations: 'all_locations',
+    mapLocations: 'all_locations_with_themes',
     locationDetailsById: 'location_details?nid=',
     storyDetailsById: 'story_details?nid=',
     storiesByLocationId: 'stories_by_location?nid=',
