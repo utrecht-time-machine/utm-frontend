@@ -37,8 +37,26 @@ button {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-p {
+.theme-checkbox-container {
+  display: flex;
+  align-items: center;
   margin: 1rem 0;
+  gap: 0.5rem;
+
+  & input {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  & label {
+    font-size: 0.9rem;
+    display: inline-block;
+  }
+
+  & .theme-caption {
+    font-size: 0.8rem;
+    color: #6d6d6d;
+  }
 }
 
 .theme-list-container {

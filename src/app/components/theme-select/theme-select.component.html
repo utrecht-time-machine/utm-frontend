@@ -6,7 +6,19 @@
 
   <div class="theme-list-container">
     <div *ngFor="let theme of themes.all.value">
-      <p class="theme-title">{{ theme.title }}</p>
+      <div class="theme-checkbox-container">
+        <input
+          type="checkbox"
+          [id]="theme.nid"
+          [name]="theme.nid"
+          [value]="theme.nid"
+        />
+        <label [for]="theme.nid">
+          <span>{{ theme.title }}</span>
+          <br />
+          <span class="theme-caption">{{ theme.caption }}</span>
+        </label>
+      </div>
       <div class="separator"></div>
     </div>
   </div>

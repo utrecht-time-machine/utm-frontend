@@ -74,11 +74,11 @@ form {
   padding: 0;
 }
 
-input {
+input[type='text'] {
   -webkit-appearance: none;
 }
 
-input:focus {
+input[type='text'] {
   outline: none;
 }
 
@@ -2455,14 +2455,6 @@ img.node-image-preview {
 form {
   margin: 0;
   padding: 0;
-}
-
-input {
-  -webkit-appearance: none;
-}
-
-input:focus {
-  outline: none;
 }
 
 header {
