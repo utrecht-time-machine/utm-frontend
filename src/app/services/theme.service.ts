@@ -8,6 +8,7 @@ import { ApiService } from './api.service';
 })
 export class ThemeService {
   all: BehaviorSubject<Theme[]> = new BehaviorSubject<Theme[]>([]);
+  showingSelectionScreen = false;
 
   constructor(public api: ApiService) {
     void this.updateAllFromServer();

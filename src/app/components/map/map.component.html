@@ -2,8 +2,12 @@
   <div class="map-view">
     <div id="mapbox" class="mapboxgl-map"></div>
 
-    <div class="theme-button-container">
-      <app-theme-button />
+    <div
+      class="theme-button-container"
+      *ngIf="routing.getSelectedView() === SelectedView.Locations"
+    >
+      <app-theme-button *ngIf="!themes.showingSelectionScreen" />
+      <app-theme-select *ngIf="themes.showingSelectionScreen" />
     </div>
   </div>
   <div class="map-data">

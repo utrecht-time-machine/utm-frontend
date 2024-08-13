@@ -1,0 +1,11 @@
+.theme-select-container {
+  padding: 1rem 3rem 1rem 1.5rem;
+  background: white;
+  border-radius: 4px;
+
+  & .theme-select-heading {
+    font-size: 1.3rem;
+    //font-weight: bold;
+    margin: 0.2rem 0;
+  }
+}

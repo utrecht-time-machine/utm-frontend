@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { RoutingService } from '../../services/routing.service';
 import { SelectedView } from '../../models/selected-view';
 import { UtilService } from '../../services/util.service';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-map',
@@ -18,7 +19,8 @@ export class MapComponent {
   constructor(
     public mapService: MapService,
     public router: Router,
-    public routing: RoutingService
+    public routing: RoutingService,
+    public themes: ThemeService
   ) {}
 
   ngOnInit(): void {

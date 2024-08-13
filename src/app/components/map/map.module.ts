@@ -14,6 +14,7 @@ import { OrganisationsModule } from '../organisations/organisations.module';
 import { ImageViewerModule } from './media-item/image-viewer/image-viewer.module';
 import { AudioPlayerModule } from '../audio-player/audio-player.module';
 import { ThemeButtonModule } from '../theme-button/theme-button.module';
+import { ThemeSelectModule } from '../theme-select/theme-select.module';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ThemeButtonModule } from '../theme-button/theme-button.module';
     ImageViewerModule,
     AudioPlayerModule,
     ThemeButtonModule,
+    ThemeSelectModule,
   ],
 })
 export class MapModule {}
