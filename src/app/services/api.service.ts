@@ -13,6 +13,7 @@ import { UtmTranslateService } from './utm-translate.service';
 import { StaticPage } from '../models/static-page';
 import { OrganisationService } from './organisation.service';
 import { UtilService } from './util.service';
+import { Theme } from '../models/theme';
 
 // TODO: centreer tekst beginstuk
 const mockHomeBlocks: StaticPage[] = [
@@ -153,6 +154,33 @@ export class ApiService {
       }
     });
     return utmRoutes;
+  }
+
+  async getThemes(): Promise<Theme[]> {
+    let themes: Theme[] = await lastValueFrom(
+      this.http.get<Theme[]>(
+        environment.apiUrl + environment.apiSuffixes.allThemes
+      )
+    ).catch((err) => {
+      console.error(err);
+      return [];
+    });
+    //
+    // UtilService.addUrlPrefixes(
+    //   utmRoutes,
+    //   'geojson_url',
+    //   environment.geoJsonBaseUrl
+    // );
+    //
+    // UtilService.addUrlPrefixes(utmRoutes, 'audio');
+    // UtilService.addUrlPrefixes(utmRoutes, 'photo');
+
+    void this.utmTranslate.translateObjectsByKeys(
+      themes,
+      environment.translateKeys.themes
+    );
+
+    return themes;
   }
 
   async getStoryDetailsById(storyId: string): Promise<Story | undefined> {

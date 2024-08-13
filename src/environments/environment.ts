@@ -6,6 +6,7 @@ export const environment = {
   geoJsonBaseUrl: 'https://data.utrechttimemachine.nl',
   apiSuffixes: {
     mapLocations: 'all_locations_with_themes',
+    allThemes: 'all_themes',
     locationDetailsById: 'location_details?nid=',
     storyDetailsById: 'story_details?nid=',
     storiesByLocationId: 'stories_by_location?nid=',
@@ -29,6 +30,7 @@ export const environment = {
     'https://data.utrechttimemachine.nl/search_api_autocomplete/utm_search?display=livesearch&filter=livesearch&q=',
   translateUrl: 'https://services.utrechttimemachine.nl/translate',
   translateKeys: {
+    themes: ['title', 'caption', 'head', 'teaser'],
     routes: ['head', 'teaser', 'title', 'text', 'type'],
     locationDetails: ['caption', 'teaser', 'head', 'title', 'text'],
     storyDetails: ['title', 'location_title'],
