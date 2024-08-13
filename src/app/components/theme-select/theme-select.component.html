@@ -3,6 +3,7 @@
     {{ "themes" | translate }}
     <button (click)="themes.showingSelectionScreen = false">x</button>
   </p>
-  <p>Oorlog</p>
-  <p>Oorlog</p>
+  <p *ngFor="let theme of themes.all.value">
+    {{ theme.title }}
+  </p>
 </div>

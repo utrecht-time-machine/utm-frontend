@@ -16,6 +16,7 @@ export class ThemeService {
 
   async updateAllFromServer() {
     const themes = await this.api.getThemes();
+    this.all.next(themes);
     console.log('THEMES', themes);
   }
 }
