@@ -13,6 +13,7 @@ import { EditButtonModule } from '../edit-button/edit-button.module';
 import { OrganisationsModule } from '../organisations/organisations.module';
 import { ImageViewerModule } from './media-item/image-viewer/image-viewer.module';
 import { AudioPlayerModule } from '../audio-player/audio-player.module';
+import { ThemeButtonModule } from '../theme-button/theme-button.module';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { AudioPlayerModule } from '../audio-player/audio-player.module';
     OrganisationsModule,
     ImageViewerModule,
     AudioPlayerModule,
+    ThemeButtonModule,
   ],
 })
 export class MapModule {}
