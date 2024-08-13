@@ -1,9 +1,13 @@
 <div class="theme-select-container">
   <p class="theme-select-heading">
     {{ "themes" | translate }}
-    <button (click)="themes.showingSelectionScreen = false">x</button>
   </p>
-  <p *ngFor="let theme of themes.all.value">
-    {{ theme.title }}
-  </p>
+  <button (click)="themes.showingSelectionScreen = false">x</button>
+
+  <div class="theme-list-container">
+    <div *ngFor="let theme of themes.all.value">
+      <p class="theme-title">{{ theme.title }}</p>
+      <div class="separator"></div>
+    </div>
+  </div>
 </div>
