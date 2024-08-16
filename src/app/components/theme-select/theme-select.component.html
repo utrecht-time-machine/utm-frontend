@@ -2,7 +2,12 @@
   <p class="theme-select-heading">
     {{ "themes" | translate }}
   </p>
-  <button (click)="themes.showingSelectionScreen = false">x</button>
+  <button
+    (click)="themes.showingSelectionScreen = false"
+    class="close-theme-select-button"
+  >
+    <span>x</span>
+  </button>
 
   <div class="theme-list-container">
     <div *ngFor="let theme of themes.all.value">

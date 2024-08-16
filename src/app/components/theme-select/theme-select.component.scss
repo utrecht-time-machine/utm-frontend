@@ -63,3 +63,8 @@ button {
   max-height: 10rem;
   overflow-y: scroll;
 }
+
+.close-theme-select-button span {
+  position: relative;
+  bottom: 0.1rem;
+}
