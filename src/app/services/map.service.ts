@@ -536,7 +536,7 @@ export class MapService {
       this.getBoundingBoxByCoordinates(locationCoordinates);
 
     this.map.fitBounds(locationBounds, {
-      padding: 20,
+      padding: 50,
       duration: 2000,
     });
   }
