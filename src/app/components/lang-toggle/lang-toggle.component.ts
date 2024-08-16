@@ -46,13 +46,15 @@ export class LangToggleComponent {
 
     const showLocationsOnMap =
       this.routing.getSelectedView() === SelectedView.Locations;
-    this.map.addMapLocationsFromServer(!showLocationsOnMap).then(async () => {
-      const selectedId = this.map.selectedLocation.getValue()?.nid;
-      if (selectedId) {
-        await this.map.selectLocationById(selectedId);
-      }
-      this.map.updateLocationsClosestToCenter();
-    });
+    this.map
+      .addMapLocationsFromServer(!showLocationsOnMap, false)
+      .then(async () => {
+        const selectedId = this.map.selectedLocation.getValue()?.nid;
+        if (selectedId) {
+          await this.map.selectLocationById(selectedId);
+        }
+        this.map.updateLocationsClosestToCenter();
+      });
   }
 
   ngOnInit() {

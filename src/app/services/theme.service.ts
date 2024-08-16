@@ -9,6 +9,7 @@ import { ApiService } from './api.service';
 export class ThemeService {
   all: BehaviorSubject<Theme[]> = new BehaviorSubject<Theme[]>([]);
   selectedIds: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  numTimesSelectedThemesChanged = 0;
 
   showingSelectionScreen = false;
 
@@ -17,6 +18,7 @@ export class ThemeService {
 
     this.selectedIds.subscribe((selectedIds) => {
       console.log('SELECTED THEME IDS', selectedIds);
+      this.numTimesSelectedThemesChanged++;
     });
   }
 
@@ -24,7 +26,7 @@ export class ThemeService {
     const themes = await this.api.getThemes();
     this.all.next(themes);
     const allIds = themes.map((theme) => theme.nid);
-    this.selectedIds.next(allIds);
+    // this.selectedIds.next(allIds);
     console.log('THEMES', themes);
   }
 

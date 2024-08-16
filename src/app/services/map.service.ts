@@ -4,6 +4,7 @@ import mapboxgl, {
   LngLatBounds,
   LngLatLike,
   Map,
+  MapboxGeoJSONFeature,
   Popup,
 } from 'mapbox-gl';
 import { ApiService } from './api.service';
@@ -23,6 +24,7 @@ import { HttpClient } from '@angular/common/http';
 import { UtmTranslateService } from './utm-translate.service';
 import { SpinnerService } from './spinner.service';
 import { PlatformService } from './platform.service';
+import { ThemeService } from './theme.service';
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +55,8 @@ export class MapService {
     private http: HttpClient,
     private utmTranslate: UtmTranslateService,
     private spinner: SpinnerService,
-    private platform: PlatformService
+    private platform: PlatformService,
+    private themes: ThemeService
   ) {
     this.allLocations.subscribe(() => {
       this.shownLocationPopup?.remove();
@@ -143,6 +146,8 @@ export class MapService {
         );
       }
     });
+
+    this.initRefreshOnThemeChange();
   }
 
   initMap() {
@@ -167,8 +172,8 @@ export class MapService {
       // style: 'mapbox://styles/mapbox/satellite-v9',
       style: 'mapbox://styles/mapbox/light-v11',
       center: randomCenter,
-      zoom: 16,
-      pitch: 45, //24
+      zoom: 12,
+      pitch: 12, //24
       bearing: 0,
       attributionControl: false,
       // @ts-ignore
@@ -277,6 +282,16 @@ export class MapService {
       // setTimeout(() => {
       //   this.showSpinner = false;
       // });
+    });
+  }
+
+  initRefreshOnThemeChange() {
+    this.themes.selectedIds.subscribe(() => {
+      if (this.themes.numTimesSelectedThemesChanged === 1) {
+        return;
+      }
+
+      void this.addMapLocationsFromServer(false, true);
     });
   }
 
@@ -483,6 +498,39 @@ export class MapService {
     this.fitMapToRouteBounds();
   }
 
+  fitMapToLocationBounds() {
+    if (!this.map) {
+      return;
+    }
+
+    const locationFeatures: MapboxGeoJSONFeature[] = (
+      this.map.getSource('locations') as any
+    )['_data']['features'];
+
+    const locationCoordinates: LngLat[] | undefined = locationFeatures
+      .map((locationFeature) => {
+        const coords = (locationFeature.geometry as any)?.['coordinates'];
+        const lng = coords[0];
+        const lat = coords[1];
+        if (!lng || !lat || isNaN(lng) || isNaN(lat)) {
+          return undefined;
+        }
+        return new LngLat(coords[0], coords[1]);
+      })
+      .filter((t): t is LngLat => t !== undefined);
+
+    if (locationCoordinates && locationCoordinates.length > 0) {
+      console.log('Location coordinates', locationCoordinates);
+      const locationBounds: LngLatBounds =
+        this.getBoundingBoxByCoordinates(locationCoordinates);
+
+      this.map.fitBounds(locationBounds, {
+        padding: 0,
+        duration: 2000,
+      });
+    }
+  }
+
   fitMapToRouteBounds() {
     if (!this.map || !this.utmRoutes.selected.getValue()?.stops) {
       return;
@@ -556,7 +604,7 @@ export class MapService {
         setTimeout(() => (this.spinner.loadingLocations = true));
       }
 
-      await this.addMapLocationsFromServer(hideLocations);
+      await this.addMapLocationsFromServer(hideLocations, false);
 
       this._initMapInteractivity();
 
@@ -586,7 +634,10 @@ export class MapService {
     }
   }
 
-  async addMapLocationsFromServer(hideLocations: boolean) {
+  async addMapLocationsFromServer(
+    hideLocations: boolean,
+    fitToLocationBounds: boolean
+  ) {
     this.allLocations.next(
       await lastValueFrom(this.apiService.getMapLocations())
         .catch((err) => {
@@ -607,18 +658,34 @@ export class MapService {
             location.story_theme_ids = !location?.story_theme_ids_str
               ? []
               : location.story_theme_ids_str.split(', ');
+
             location.hide_from_map = !location?.hide_from_map_str
               ? false
               : location.hide_from_map_str === '1';
           });
 
-          const locationsShownOnMap = uniqueLocations.filter(
-            (location) => !location.hide_from_map
-          );
+          const showableLocations = uniqueLocations.filter((location) => {
+            const selectedThemeIds = this.themes.selectedIds.value;
+            let locationHasSelectedTheme = true;
+            if (selectedThemeIds.length > 0) {
+              locationHasSelectedTheme = selectedThemeIds.some((themeId) =>
+                location.story_theme_ids.includes(themeId)
+              );
+            }
+            if (!location.geo) {
+              console.warn('LOCATION WITHOUT GEO COORDINATES', location.url);
+            }
+
+            return (
+              locationHasSelectedTheme &&
+              !location.hide_from_map &&
+              location.geo
+            );
+          });
 
           console.log('LOCATIONS FROM SERVER', uniqueLocations);
-          console.log('LOCATIONS SHOWN ON MAP', locationsShownOnMap);
-          return locationsShownOnMap;
+          console.log('HIDDEN LOCATIONS REMOVED', showableLocations);
+          return showableLocations;
         })
     );
 
@@ -692,6 +759,10 @@ export class MapService {
 
     if (hideLocations) {
       this.hideLocationsOnMap();
+    }
+
+    if (fitToLocationBounds) {
+      this.fitMapToLocationBounds();
     }
   }
 
