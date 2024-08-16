@@ -23,6 +23,8 @@ export class ThemeService {
   async updateAllFromServer() {
     const themes = await this.api.getThemes();
     this.all.next(themes);
+    const allIds = themes.map((theme) => theme.nid);
+    this.selectedIds.next(allIds);
     console.log('THEMES', themes);
   }
 
