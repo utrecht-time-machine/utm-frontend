@@ -44,4 +44,8 @@ export class ThemeService {
   isSelected(nid: string) {
     return this.selectedIds.value.includes(nid);
   }
+
+  clearSelection() {
+    this.selectedIds.next([]);
+  }
 }

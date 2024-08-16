@@ -54,7 +54,7 @@
                       let searchResult of search.liveSearchResults.getValue()
                     "
                     [innerHtml]="searchResult.label"
-                    (click)="map.selectLocationByUrlOrId(searchResult.url)"
+                    (click)="onSearchResultClicked($event, searchResult)"
                   ></li>
                 </ul>
               </div>

@@ -129,7 +129,7 @@ export class MapService {
       if (stopCoords) {
         this.map.flyTo({
           center: [stopCoords.lng, stopCoords.lat],
-          essential: true,
+          essential: false,
           zoom: 18,
         });
 
@@ -519,16 +519,26 @@ export class MapService {
       })
       .filter((t): t is LngLat => t !== undefined);
 
-    if (locationCoordinates && locationCoordinates.length > 0) {
-      console.log('Location coordinates', locationCoordinates);
-      const locationBounds: LngLatBounds =
-        this.getBoundingBoxByCoordinates(locationCoordinates);
-
-      this.map.fitBounds(locationBounds, {
-        padding: 0,
-        duration: 2000,
-      });
+    if (!locationCoordinates || locationCoordinates.length === 0) {
+      return;
     }
+    console.log('Location coordinates', locationCoordinates);
+    if (locationCoordinates.length === 1) {
+      this.map.flyTo({
+        center: locationCoordinates[0],
+        essential: false,
+        zoom: 18,
+      });
+      return;
+    }
+
+    const locationBounds: LngLatBounds =
+      this.getBoundingBoxByCoordinates(locationCoordinates);
+
+    this.map.fitBounds(locationBounds, {
+      padding: 20,
+      duration: 2000,
+    });
   }
 
   fitMapToRouteBounds() {
@@ -842,7 +852,7 @@ export class MapService {
 
       this.map.flyTo({
         center: [locationDetails.coords.lng, locationDetails.coords.lat],
-        essential: true,
+        essential: false,
         zoom: 18,
       });
 
