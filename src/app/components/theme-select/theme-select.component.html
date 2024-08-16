@@ -12,6 +12,8 @@
           [id]="theme.nid"
           [name]="theme.nid"
           [value]="theme.nid"
+          (change)="themes.toggle(theme.nid)"
+          [checked]="themes.isSelected(theme.nid)"
         />
         <label [for]="theme.nid">
           <span>{{ theme.title }}</span>

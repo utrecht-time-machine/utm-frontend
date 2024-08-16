@@ -8,15 +8,36 @@ import { ApiService } from './api.service';
 })
 export class ThemeService {
   all: BehaviorSubject<Theme[]> = new BehaviorSubject<Theme[]>([]);
+  selectedIds: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+
   showingSelectionScreen = false;
 
   constructor(public api: ApiService) {
     void this.updateAllFromServer();
+
+    this.selectedIds.subscribe((selectedIds) => {
+      console.log('SELECTED THEME IDS', selectedIds);
+    });
   }
 
   async updateAllFromServer() {
     const themes = await this.api.getThemes();
     this.all.next(themes);
     console.log('THEMES', themes);
+  }
+
+  toggle(nid: string) {
+    let selectedIds = this.selectedIds.value;
+
+    if (this.isSelected(nid)) {
+      selectedIds = selectedIds.filter((id) => id !== nid);
+    } else {
+      selectedIds.push(nid);
+    }
+    this.selectedIds.next(selectedIds);
+  }
+
+  isSelected(nid: string) {
+    return this.selectedIds.value.includes(nid);
   }
 }
