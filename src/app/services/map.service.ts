@@ -25,6 +25,7 @@ import { UtmTranslateService } from './utm-translate.service';
 import { SpinnerService } from './spinner.service';
 import { PlatformService } from './platform.service';
 import { ThemeService } from './theme.service';
+import { TimeService } from './time.service';
 
 @Injectable({
   providedIn: 'root',
@@ -56,7 +57,8 @@ export class MapService {
     private utmTranslate: UtmTranslateService,
     private spinner: SpinnerService,
     private platform: PlatformService,
-    private themes: ThemeService
+    private themes: ThemeService,
+    public time: TimeService
   ) {
     this.allLocations.subscribe(() => {
       this.shownLocationPopup?.remove();
@@ -148,6 +150,7 @@ export class MapService {
     });
 
     this.initRefreshOnThemeChange();
+    this.initRefreshOnTimeChange();
   }
 
   initMap() {
@@ -291,6 +294,18 @@ export class MapService {
         return;
       }
 
+      void this.addMapLocationsFromServer(false, true);
+    });
+  }
+
+  initRefreshOnTimeChange() {
+    this.time.minYear.subscribe(() => {
+      void this.addMapLocationsFromServer(false, true);
+    });
+    this.time.maxYear.subscribe(() => {
+      void this.addMapLocationsFromServer(false, true);
+    });
+    this.time.showLocationsWithoutDate.subscribe(() => {
       void this.addMapLocationsFromServer(false, true);
     });
   }
@@ -683,6 +698,12 @@ export class MapService {
                 location.story_theme_ids.includes(themeId)
               );
             }
+
+            const locationIsInDateRange = this.time.isInSelectedRange(
+              location.min_date_str,
+              location.max_date_str
+            );
+
             if (!location.geo) {
               console.warn('LOCATION WITHOUT GEO COORDINATES', location.url);
             }
@@ -690,7 +711,8 @@ export class MapService {
             return (
               locationHasSelectedTheme &&
               !location.hide_from_map &&
-              location.geo
+              location.geo &&
+              locationIsInDateRange
             );
           });
 

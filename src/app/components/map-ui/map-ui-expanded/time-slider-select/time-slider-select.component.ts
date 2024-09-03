@@ -1,5 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { TimeService } from '../../../../services/time.service';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-time-slider-select',
@@ -23,5 +24,9 @@ export class TimeSliderSelectComponent implements AfterViewInit {
 
   onMaxYearChange(maxYear: number) {
     this.time.maxYear.next(maxYear);
+  }
+
+  onToggleShowLocationsWithoutDate($event: MatCheckboxChange) {
+    this.time.showLocationsWithoutDate.next($event.checked);
   }
 }

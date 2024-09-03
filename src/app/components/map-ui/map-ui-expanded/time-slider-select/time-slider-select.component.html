@@ -6,23 +6,35 @@
 >
   <div class="slider-container">
     <mat-slider
-      min="1600"
-      max="2024"
+      [min]="time.DEFAULT_MIN_YEAR"
+      [max]="time.DEFAULT_MAX_YEAR"
       step="1"
       [discrete]="true"
       [displayWith]="formatLabel"
       (input)="onSliderInput($event)"
     >
       <input
-        [value]="time.DEFAULT_MIN_YEAR"
+        [value]="time.minYear.value"
         matSliderStartThumb
         (valueChange)="onMinYearChange($event)"
       />
       <input
-        [value]="time.DEFAULT_MAX_YEAR"
+        [value]="time.maxYear.value"
         matSliderEndThumb
         (valueChange)="onMaxYearChange($event)"
       />
     </mat-slider>
+  </div>
+
+  <div class="show-locations-without-date-container">
+    <mat-checkbox
+      [checked]="time.showLocationsWithoutDate.value"
+      (change)="onToggleShowLocationsWithoutDate($event)"
+      >Toon locaties zonder datum</mat-checkbox
+    >
+    <!--    <input type="checkbox" id="show-locations-without-date-checkbox" />-->
+    <!--    <label for="show-locations-without-date-checkbox">-->
+    <!--      <span>Toon locaties zonder datum</span>-->
+    <!--    </label>-->
   </div>
 </app-map-ui-expanded>

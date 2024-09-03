@@ -8,3 +8,20 @@
 mat-slider {
   width: 100%;
 }
+
+.show-locations-without-date-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  & input {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  & label {
+    font-size: 0.85rem;
+    display: inline-block;
+  }
+}

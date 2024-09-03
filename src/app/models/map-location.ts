@@ -12,4 +12,6 @@ export interface MapLocation {
   story_theme_ids: string[];
   hide_from_map_str: string;
   hide_from_map: boolean;
+  max_date_str: string;
+  min_date_str: string;
 }
