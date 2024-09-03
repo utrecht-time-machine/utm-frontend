@@ -1,0 +1,10 @@
+<div class="container">
+  <p class="heading">{{ title }}</p>
+  <button class="close-button" (click)="close.emit()">
+    <span>x</span>
+  </button>
+
+  <div class="inner-container">
+    <ng-content></ng-content>
+  </div>
+</div>

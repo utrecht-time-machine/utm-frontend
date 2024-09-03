@@ -13,8 +13,8 @@ import { EditButtonModule } from '../edit-button/edit-button.module';
 import { OrganisationsModule } from '../organisations/organisations.module';
 import { ImageViewerModule } from './media-item/image-viewer/image-viewer.module';
 import { AudioPlayerModule } from '../audio-player/audio-player.module';
-import { ThemeButtonModule } from '../theme-button/theme-button.module';
-import { ThemeSelectModule } from '../theme-select/theme-select.module';
+import { ThemeButtonModule } from '../map-ui/map-ui-button/theme-button/theme-button.module';
+import { ThemeSelectModule } from '../map-ui/map-ui-expanded/theme-select/theme-select.module';
 
 @NgModule({
   declarations: [

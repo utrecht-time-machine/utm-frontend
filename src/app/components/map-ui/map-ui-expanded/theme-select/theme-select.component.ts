@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ThemeService } from '../../services/theme.service';
+import { ThemeService } from '../../../../services/theme.service';
 
 @Component({
   selector: 'app-theme-select',
@@ -8,4 +8,8 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class ThemeSelectComponent {
   constructor(public themes: ThemeService) {}
+
+  onClose() {
+    alert('FDJSLK');
+  }
 }

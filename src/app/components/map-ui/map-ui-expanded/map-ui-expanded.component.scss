@@ -1,17 +1,16 @@
-.theme-select-container {
+.container {
   padding: 1rem 3rem 1rem 1.5rem;
   background: white;
   border-radius: 4px;
   //border: 1px solid #ccc;
   filter: drop-shadow(0px 2px 1px rgba(0, 0, 0, 0.1));
 
-  & .theme-select-heading {
+  & .heading {
     font-size: 1.2rem;
     //font-weight: bold;
     margin: 0.2rem 0;
   }
 }
-
 button {
   position: absolute;
   top: 1rem;
@@ -37,34 +36,12 @@ button {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.theme-checkbox-container {
-  display: flex;
-  align-items: center;
-  margin: 1rem 0;
-  gap: 0.5rem;
-
-  & input {
-    height: 1rem;
-    width: 1rem;
-  }
-
-  & label {
-    font-size: 0.9rem;
-    display: inline-block;
-  }
-
-  & .theme-head {
-    font-size: 0.8rem;
-    color: #6d6d6d;
-  }
-}
-
-.theme-list-container {
+.inner-container {
   max-height: 10rem;
   overflow-y: scroll;
 }
 
-.close-theme-select-button span {
+.button span {
   position: relative;
   bottom: 0.1rem;
 }
