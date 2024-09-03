@@ -38,7 +38,8 @@ button {
 
 .inner-container {
   max-height: 10rem;
-  overflow-y: scroll;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .button span {

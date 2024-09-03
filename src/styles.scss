@@ -6,3 +6,17 @@
 .psv-container {
   border-radius: 8px;
 }
+
+.mdc-slider .mdc-slider__value-indicator {
+  // Always show slider value indicators
+  transform: scale(1) !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

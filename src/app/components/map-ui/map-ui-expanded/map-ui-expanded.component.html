@@ -4,7 +4,11 @@
     <span>x</span>
   </button>
 
-  <div class="inner-container">
+  <div
+    class="inner-container"
+    [style.overflow-y]="overflowY"
+    [style.max-height]="maxHeight"
+  >
     <ng-content></ng-content>
   </div>
 </div>

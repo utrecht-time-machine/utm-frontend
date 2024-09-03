@@ -8,4 +8,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class MapUiExpandedComponent {
   @Input() title: string = '';
   @Output() close = new EventEmitter();
+  @Input() overflowY: string = 'scroll';
+  @Input() maxHeight: string = '10rem';
 }

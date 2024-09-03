@@ -1,6 +1,19 @@
 <app-map-ui-expanded
   title="{{ 'timePeriod' | translate }}"
   (close)="time.showingSelectionScreen = false"
+  [maxHeight]="'none'"
+  [overflowY]="'hidden'"
 >
-  <p>fjdksla</p>
+  <div class="slider-container">
+    <mat-slider
+      min="1600"
+      max="2024"
+      step="1"
+      [discrete]="true"
+      [displayWith]="formatLabel"
+    >
+      <input value="1600" matSliderStartThumb />
+      <input value="2024" matSliderEndThumb />
+    </mat-slider>
+  </div>
 </app-map-ui-expanded>

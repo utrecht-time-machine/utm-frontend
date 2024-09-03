@@ -8,4 +8,8 @@ import { TimeService } from '../../../../services/time.service';
 })
 export class TimeSliderSelectComponent {
   constructor(public time: TimeService) {}
+
+  formatLabel(value: number): string {
+    return `${value}`;
+  }
 }
