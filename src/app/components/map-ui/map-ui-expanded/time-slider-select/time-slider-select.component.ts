@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { TimeService } from '../../../../services/time.service';
 
 @Component({
@@ -6,10 +6,22 @@ import { TimeService } from '../../../../services/time.service';
   templateUrl: './time-slider-select.component.html',
   styleUrls: ['./time-slider-select.component.scss'],
 })
-export class TimeSliderSelectComponent {
+export class TimeSliderSelectComponent implements AfterViewInit {
   constructor(public time: TimeService) {}
 
   formatLabel(value: number): string {
     return `${value}`;
+  }
+
+  onSliderInput($event: any) {}
+
+  ngAfterViewInit(): void {}
+
+  onMinYearChange(minYear: number) {
+    this.time.minYear.next(minYear);
+  }
+
+  onMaxYearChange(maxYear: number) {
+    this.time.maxYear.next(maxYear);
   }
 }

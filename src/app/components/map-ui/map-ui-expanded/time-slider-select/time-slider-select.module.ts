@@ -4,6 +4,7 @@ import { TimeSliderSelectComponent } from './time-slider-select.component';
 import { MapUiExpandedModule } from '../map-ui-expanded.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSliderModule } from '@angular/material/slider';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [TimeSliderSelectComponent],
@@ -13,6 +14,7 @@ import { MatSliderModule } from '@angular/material/slider';
     MapUiExpandedModule,
     TranslateModule,
     MatSliderModule,
+    FormsModule,
   ],
 })
 export class TimeSliderSelectModule {}

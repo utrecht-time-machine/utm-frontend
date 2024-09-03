@@ -11,9 +11,18 @@
       step="1"
       [discrete]="true"
       [displayWith]="formatLabel"
+      (input)="onSliderInput($event)"
     >
-      <input value="1600" matSliderStartThumb />
-      <input value="2024" matSliderEndThumb />
+      <input
+        [value]="time.DEFAULT_MIN_YEAR"
+        matSliderStartThumb
+        (valueChange)="onMinYearChange($event)"
+      />
+      <input
+        [value]="time.DEFAULT_MAX_YEAR"
+        matSliderEndThumb
+        (valueChange)="onMaxYearChange($event)"
+      />
     </mat-slider>
   </div>
 </app-map-ui-expanded>
