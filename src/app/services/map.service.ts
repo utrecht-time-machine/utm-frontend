@@ -648,6 +648,7 @@ export class MapService {
     hideLocations: boolean,
     fitToLocationBounds: boolean
   ) {
+    // TODO: Prevent additional server requests when updating themes or time slider values
     this.allLocations.next(
       await lastValueFrom(this.apiService.getMapLocations())
         .catch((err) => {
