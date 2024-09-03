@@ -15,6 +15,8 @@ import { ImageViewerModule } from './media-item/image-viewer/image-viewer.module
 import { AudioPlayerModule } from '../audio-player/audio-player.module';
 import { ThemeButtonModule } from '../map-ui/map-ui-button/theme-button/theme-button.module';
 import { ThemeSelectModule } from '../map-ui/map-ui-expanded/theme-select/theme-select.module';
+import { TimeSliderButtonModule } from '../map-ui/map-ui-button/time-slider-button/time-slider-button.module';
+import { TimeSliderSelectModule } from '../map-ui/map-ui-expanded/time-slider-select/time-slider-select.module';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { ThemeSelectModule } from '../map-ui/map-ui-expanded/theme-select/theme-
     AudioPlayerModule,
     ThemeButtonModule,
     ThemeSelectModule,
+    TimeSliderButtonModule,
+    TimeSliderSelectModule,
   ],
 })
 export class MapModule {}

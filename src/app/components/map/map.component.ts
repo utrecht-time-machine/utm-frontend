@@ -6,6 +6,7 @@ import { RoutingService } from '../../services/routing.service';
 import { SelectedView } from '../../models/selected-view';
 import { UtilService } from '../../services/util.service';
 import { ThemeService } from '../../services/theme.service';
+import { TimeService } from '../../services/time.service';
 
 @Component({
   selector: 'app-map',
@@ -20,7 +21,8 @@ export class MapComponent {
     public mapService: MapService,
     public router: Router,
     public routing: RoutingService,
-    public themes: ThemeService
+    public themes: ThemeService,
+    public time: TimeService
   ) {}
 
   ngOnInit(): void {
