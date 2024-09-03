@@ -12,7 +12,14 @@
   transform: scale(1) !important;
 }
 
-html,
+:root {
+  --mdc-theme-primary: var(--red);
+
+  .mdc-slider__thumb .mdc-slider__thumb-knob {
+    border: 2px solid white !important;
+  }
+}
+
 body {
   height: 100%;
 }
