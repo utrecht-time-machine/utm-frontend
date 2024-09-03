@@ -699,6 +699,7 @@ export class MapService {
               );
             }
 
+            // TODO: Handle multiple incoming min and max dates
             const locationIsInDateRange = this.time.isInSelectedRange(
               location.min_date_str,
               location.max_date_str

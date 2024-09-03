@@ -8,13 +8,32 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
   styleUrls: ['./time-slider-select.component.scss'],
 })
 export class TimeSliderSelectComponent implements AfterViewInit {
+  debouncedTimeout: any;
+
   constructor(public time: TimeService) {}
 
   formatLabel(value: number): string {
     return `${value}`;
   }
 
-  onSliderInput($event: any) {}
+  onSliderInput($event: any) {
+    if (!$event.originalTarget) {
+      return;
+    }
+    const id = $event.originalTarget.id;
+    const value = $event.originalTarget.value;
+
+    clearTimeout(this.debouncedTimeout);
+    this.debouncedTimeout = setTimeout(() => {
+      if (id === 'max-year-input') {
+        this.onMaxYearChange(value);
+      } else if (id === 'min-year-input') {
+        this.onMinYearChange(value);
+      } else {
+        console.warn('Unknown slider input', id, value);
+      }
+    }, 200);
+  }
 
   ngAfterViewInit(): void {}
 
