@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MapService } from '../../services/map.service';
 import { LocationDetails } from '../../models/location-details';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { TimeService } from '../../services/time.service';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent {
+export class MapComponent implements OnInit {
   SelectedView = SelectedView;
   UtilService = UtilService;
 
@@ -26,7 +26,9 @@ export class MapComponent {
   ) {}
 
   ngOnInit(): void {
-    this.mapService.initMap();
+    setTimeout(() => {
+      this.mapService.initMap();
+    });
   }
 
   public getSelectedLocation(): LocationDetails | undefined {
