@@ -300,12 +300,23 @@ export class MapService {
 
   initRefreshOnTimeChange() {
     this.time.minYear.subscribe(() => {
+      if (this.time.numTimesMinYearUpdated === 1) {
+        return;
+      }
       void this.addMapLocationsFromServer(false, true);
     });
     this.time.maxYear.subscribe(() => {
+      if (this.time.numTimesMaxYearUpdated === 1) {
+        return;
+      }
+      console.log('Max year changed');
       void this.addMapLocationsFromServer(false, true);
     });
     this.time.showLocationsWithoutDate.subscribe(() => {
+      if (this.time.numTimesShowLocationsWithoutDateUpdated === 1) {
+        return;
+      }
+      console.log('Show locations without date checkbox changed');
       void this.addMapLocationsFromServer(false, true);
     });
   }

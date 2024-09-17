@@ -8,18 +8,33 @@ export class TimeService {
   DEFAULT_MIN_YEAR = 1000;
   DEFAULT_MAX_YEAR = new Date().getFullYear();
 
+  numTimesMinYearUpdated = 0;
   minYear: BehaviorSubject<number> = new BehaviorSubject<number>(
     this.DEFAULT_MIN_YEAR
   );
+  numTimesMaxYearUpdated = 0;
   maxYear: BehaviorSubject<number> = new BehaviorSubject<number>(
     this.DEFAULT_MAX_YEAR
   );
+  numTimesShowLocationsWithoutDateUpdated = 0;
   showLocationsWithoutDate: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(true);
 
   showingSelectionScreen = true;
 
-  constructor() {}
+  constructor() {
+    this.minYear.subscribe(() => {
+      this.numTimesMinYearUpdated++;
+    });
+
+    this.maxYear.subscribe(() => {
+      this.numTimesMaxYearUpdated++;
+    });
+
+    this.showLocationsWithoutDate.subscribe(() => {
+      this.numTimesShowLocationsWithoutDateUpdated++;
+    });
+  }
 
   isInSelectedRange(minDate: string, maxDate: string) {
     let minYear = new Date(minDate).getFullYear();
