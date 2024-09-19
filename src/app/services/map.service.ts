@@ -686,20 +686,10 @@ export class MapService {
             console.error('No locations found in database');
           }
 
-          const uniqueLocations: MapLocation[] = UtilService.getUniqueListByKey(
-            locations,
-            'nid'
-          );
-
-          uniqueLocations.forEach((location) => {
-            location.story_theme_ids = !location?.story_theme_ids_str
-              ? []
-              : location.story_theme_ids_str.split(', ');
-
-            location.hide_from_map = !location?.hide_from_map_str
-              ? false
-              : location.hide_from_map_str === '1';
-          });
+          // TODO: Make sure to parse all themes, min and max dates here
+          console.log('Locations', locations);
+          const uniqueLocations: MapLocation[] =
+            this._parseLocations(locations);
 
           const showableLocations = uniqueLocations.filter((location) => {
             const selectedThemeIds = this.themes.selectedIds.value;
@@ -710,10 +700,9 @@ export class MapService {
               );
             }
 
-            // TODO: Handle multiple incoming min and max dates
             const locationIsInDateRange = this.time.isInSelectedRange(
-              location.min_date_str,
-              location.max_date_str
+              location.min_dates,
+              location.max_dates
             );
 
             if (!location.geo) {
@@ -811,6 +800,45 @@ export class MapService {
     }
   }
 
+  private _parseLocations(locations: MapLocation[]): MapLocation[] {
+    const uniqueLocations: { [nid: string]: MapLocation } = {};
+    locations.forEach((location) => {
+      const splitStringToArray = (str?: string): string[] => {
+        return str ? str.split(', ') : [];
+      };
+      const storyThemeIds: string[] = splitStringToArray(
+        location?.story_theme_ids_str
+      );
+      const minDates: string[] = splitStringToArray(location?.min_date_str);
+      const maxDates: string[] = splitStringToArray(location?.max_date_str);
+
+      if (!uniqueLocations[location.nid]) {
+        uniqueLocations[location.nid] = location;
+      }
+
+      uniqueLocations[location.nid].hide_from_map = !location?.hide_from_map_str
+        ? false
+        : location.hide_from_map_str === '1';
+
+      uniqueLocations[location.nid].story_theme_ids = [
+        ...(uniqueLocations[location.nid].story_theme_ids ?? []),
+        ...storyThemeIds,
+      ];
+
+      uniqueLocations[location.nid].min_dates = [
+        ...(uniqueLocations[location.nid].min_dates ?? []),
+        ...minDates,
+      ];
+
+      uniqueLocations[location.nid].max_dates = [
+        ...(uniqueLocations[location.nid].max_dates ?? []),
+        ...maxDates,
+      ];
+    });
+
+    return Object.values(uniqueLocations);
+  }
+
   hideLocationsOnMap() {
     if (!this.map) {
       return;
@@ -871,6 +899,7 @@ export class MapService {
       await this.apiService.getLocationDetailsById(locationId);
     if (locationDetails) {
       this.selectedLocation.next(locationDetails);
+      // TODO: Fix issue with popup not showing when directly going to location through URL
       await this._showMapLocationPopup(locationDetails);
     }
 

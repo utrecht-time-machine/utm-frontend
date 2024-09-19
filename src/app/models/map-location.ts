@@ -13,5 +13,7 @@ export interface MapLocation {
   hide_from_map_str: string;
   hide_from_map: boolean;
   max_date_str: string;
+  max_dates: string[];
   min_date_str: string;
+  min_dates: string[];
 }

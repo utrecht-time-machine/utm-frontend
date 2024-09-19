@@ -36,19 +36,28 @@ export class TimeService {
     });
   }
 
-  isInSelectedRange(minDate: string, maxDate: string) {
-    let minYear = new Date(minDate).getFullYear();
-    let maxYear = new Date(maxDate).getFullYear();
+  isInSelectedRange(minDates: string[], maxDates: string[]) {
+    const minYears = minDates.map((minDate) => {
+      return new Date(minDate).getFullYear();
+    });
+    const maxYears = maxDates.map((maxDate) => {
+      return new Date(maxDate).getFullYear();
+    });
+    let minYear = Math.min(...minYears);
+    let maxYear = Math.max(...maxYears);
+
+    const hasMinDate = minDates && minDates.length > 0;
+    const hasMaxDate = maxDates && maxDates.length > 0;
 
     let shouldShow = false;
-    if (minDate && maxDate) {
+    if (hasMinDate && hasMaxDate) {
       if (minYear <= this.maxYear.value && maxYear >= this.minYear.value) {
         shouldShow = true;
       }
-    } else if (!minDate && !maxDate) {
+    } else if (!hasMinDate && !hasMaxDate) {
       return this.showLocationsWithoutDate.value;
     } else {
-      let year: number = minDate && !maxDate ? minYear : maxYear;
+      let year: number = hasMinDate && !hasMaxDate ? minYear : maxYear;
 
       if (this.minYear.value <= year && this.maxYear.value >= year) {
         shouldShow = true;
