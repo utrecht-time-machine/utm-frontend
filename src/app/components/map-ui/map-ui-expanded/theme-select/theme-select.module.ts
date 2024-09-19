@@ -3,10 +3,16 @@ import { CommonModule } from '@angular/common';
 import { ThemeSelectComponent } from './theme-select.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MapUiExpandedModule } from '../map-ui-expanded.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [ThemeSelectComponent],
   exports: [ThemeSelectComponent],
-  imports: [CommonModule, TranslateModule, MapUiExpandedModule],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    MapUiExpandedModule,
+    MatCheckboxModule,
+  ],
 })
 export class ThemeSelectModule {}

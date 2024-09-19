@@ -20,3 +20,35 @@
     border: 2px solid white !important;
   }
 }
+
+.mat-mdc-slider.mat-primary {
+  --mdc-slider-handle-color: var(--red);
+  --mdc-slider-focus-handle-color: var(--red);
+  --mdc-slider-hover-handle-color: var(--red);
+  --mdc-slider-active-track-color: var(--red);
+  --mdc-slider-inactive-track-color: rgba(0, 0, 0, 0.2);
+  --mdc-slider-with-tick-marks-active-container-color: #fff;
+  --mdc-slider-with-tick-marks-inactive-container-color: var(--red);
+  --mat-mdc-slider-ripple-color: var(--red);
+  --mat-mdc-slider-hover-ripple-color: rgba(254, 0, 62, 0.1);
+  --mat-mdc-slider-focus-ripple-color: rgba(254, 0, 62, 0.1);
+}
+
+.mat-mdc-checkbox.mat-accent {
+  --mdc-checkbox-selected-checkmark-color: #fff;
+  --mdc-checkbox-selected-focus-icon-color: black;
+  --mdc-checkbox-selected-hover-icon-color: black;
+  --mdc-checkbox-selected-icon-color: black;
+  --mdc-checkbox-selected-pressed-icon-color: black;
+  --mdc-checkbox-unselected-focus-icon-color: #212121;
+  --mdc-checkbox-unselected-hover-icon-color: #212121;
+  --mdc-checkbox-disabled-selected-icon-color: rgba(0, 0, 0, 0.38);
+  --mdc-checkbox-disabled-unselected-icon-color: rgba(0, 0, 0, 0.38);
+  --mdc-checkbox-unselected-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-checkbox-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+}
+
+.mdc-checkbox__ripple {
+  display: none;
+  background: black;
+}
