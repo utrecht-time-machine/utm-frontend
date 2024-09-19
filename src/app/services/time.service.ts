@@ -21,6 +21,7 @@ export class TimeService {
     new BehaviorSubject<boolean>(true);
 
   showingSelectionScreen = false;
+  icon: string = 'access_time';
 
   constructor() {
     this.minYear.subscribe(() => {

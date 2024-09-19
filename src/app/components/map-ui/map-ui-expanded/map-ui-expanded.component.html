@@ -1,5 +1,8 @@
 <div class="container">
-  <p class="heading">{{ title }}</p>
+  <p class="heading">
+    <mat-icon *ngIf="icon">{{ icon }}</mat-icon>
+    {{ title }}
+  </p>
   <button class="close-button" (click)="close.emit()">
     <span>x</span>
   </button>

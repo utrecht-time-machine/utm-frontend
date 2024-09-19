@@ -12,6 +12,7 @@ export class ThemeService {
   numTimesSelectedThemesChanged = 0;
 
   showingSelectionScreen = false;
+  icon: string = 'library_books';
 
   constructor(public api: ApiService) {
     void this.updateAllFromServer();

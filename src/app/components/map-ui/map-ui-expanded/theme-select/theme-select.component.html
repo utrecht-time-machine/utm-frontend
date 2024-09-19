@@ -1,5 +1,6 @@
 <app-map-ui-expanded
-  title="{{ 'themes' | translate }}"
+  [title]="'themes' | translate"
+  [icon]="themes.icon"
   (close)="themes.showingSelectionScreen = false"
 >
   <div *ngFor="let theme of themes.all.value">

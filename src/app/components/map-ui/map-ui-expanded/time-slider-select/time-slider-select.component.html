@@ -1,5 +1,6 @@
 <app-map-ui-expanded
-  title="{{ 'timePeriod' | translate }}"
+  [title]="'timePeriod' | translate"
+  [icon]="time.icon"
   (close)="time.showingSelectionScreen = false"
   [maxHeight]="'none'"
   [overflowY]="'hidden'"
