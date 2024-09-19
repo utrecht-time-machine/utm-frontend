@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TimeService } from '../../../../services/time.service';
+import { ThemeService } from '../../../../services/theme.service';
 
 @Component({
   selector: 'app-time-slider-button',
@@ -7,7 +8,7 @@ import { TimeService } from '../../../../services/time.service';
   styleUrls: ['./time-slider-button.component.scss'],
 })
 export class TimeSliderButtonComponent {
-  constructor(public time: TimeService) {}
+  constructor(public time: TimeService, public themes: ThemeService) {}
 
   get badgeText(): string {
     // if (this.time.showLocationsWithoutDate.value) {

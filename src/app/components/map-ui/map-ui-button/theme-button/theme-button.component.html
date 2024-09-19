@@ -1,5 +1,7 @@
 <app-map-ui-button
-  (click)="themes.showingSelectionScreen = true"
+  (click)="
+    themes.showingSelectionScreen = true; time.showingSelectionScreen = false
+  "
   [badgeText]="badgeText"
   [icon]="themes.icon"
 >

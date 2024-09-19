@@ -1,5 +1,7 @@
 .theme-button-container {
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   position: absolute;
   top: 1.5rem;
   left: 1rem;
@@ -8,6 +10,6 @@
   max-width: calc(100% - 5rem);
 }
 
-app-time-slider-button {
-  margin-left: 0.5rem;
+app-time-slider-button,
+app-time-slider-select {
 }
