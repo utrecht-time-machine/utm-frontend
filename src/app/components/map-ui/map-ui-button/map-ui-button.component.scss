@@ -1,4 +1,5 @@
 button {
+  position: relative;
   background: white;
   padding: 0.75rem;
   border: 1px solid #ccc;
@@ -10,4 +11,20 @@ button {
   &:hover {
     border-color: #888;
   }
+}
+
+.badge {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  background: var(--red);
+  border-radius: 1.25rem;
+  padding: 0 0.5rem;
+  height: 1.25rem;
+  z-index: 1;
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }

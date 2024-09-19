@@ -8,4 +8,12 @@ import { ThemeService } from '../../../../services/theme.service';
 })
 export class ThemeButtonComponent {
   constructor(public themes: ThemeService) {}
+
+  get badgeText(): string {
+    const numSelectedThemes: number = this.themes.selectedIds.value.length;
+    if (numSelectedThemes === 0) {
+      return '';
+    }
+    return numSelectedThemes.toString();
+  }
 }

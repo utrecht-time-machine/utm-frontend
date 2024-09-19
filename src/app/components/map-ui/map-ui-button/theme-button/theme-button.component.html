@@ -1,3 +1,6 @@
-<app-map-ui-button (click)="themes.showingSelectionScreen = true">
+<app-map-ui-button
+  (click)="themes.showingSelectionScreen = true"
+  [badgeText]="badgeText"
+>
   {{ "themes" | translate }}
 </app-map-ui-button>

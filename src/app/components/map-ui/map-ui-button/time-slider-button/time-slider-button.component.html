@@ -1,3 +1,6 @@
-<app-map-ui-button (click)="time.showingSelectionScreen = true">
+<app-map-ui-button
+  (click)="time.showingSelectionScreen = true"
+  [badgeText]="badgeText"
+>
   {{ "timePeriod" | translate }}
 </app-map-ui-button>

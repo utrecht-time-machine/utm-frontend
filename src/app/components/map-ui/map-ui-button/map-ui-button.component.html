@@ -1,3 +1,5 @@
 <button>
   <ng-content></ng-content>
+
+  <div class="badge" *ngIf="badgeText" [innerHTML]="badgeText"></div>
 </button>

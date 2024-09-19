@@ -20,7 +20,7 @@ export class TimeService {
   showLocationsWithoutDate: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(true);
 
-  showingSelectionScreen = true;
+  showingSelectionScreen = false;
 
   constructor() {
     this.minYear.subscribe(() => {

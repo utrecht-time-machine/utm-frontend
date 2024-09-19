@@ -8,4 +8,11 @@ import { TimeService } from '../../../../services/time.service';
 })
 export class TimeSliderButtonComponent {
   constructor(public time: TimeService) {}
+
+  get badgeText(): string {
+    // if (this.time.showLocationsWithoutDate.value) {
+    //   return '';
+    // }
+    return `${this.time.minYear.value} - ${this.time.maxYear.value}`;
+  }
 }
