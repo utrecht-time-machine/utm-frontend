@@ -1,7 +1,7 @@
 <app-map-ui-expanded
   [title]="'timePeriod' | translate"
   [icon]="time.icon"
-  (close)="time.showingSelectionScreen = false"
+  (close)="time.showingMapSelectionScreen = false"
   [maxHeight]="'none'"
   [overflowY]="'hidden'"
 >
@@ -31,7 +31,7 @@
     <mat-checkbox
       [checked]="time.showLocationsWithoutDate.value"
       (change)="onToggleShowLocationsWithoutDate($event)"
-      >Toon locaties zonder datum</mat-checkbox
+      >{{ "showLocationsWithoutDate" | translate }}</mat-checkbox
     >
     <!--    <input type="checkbox" id="show-locations-without-date-checkbox" />-->
     <!--    <label for="show-locations-without-date-checkbox">-->

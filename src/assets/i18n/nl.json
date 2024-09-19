@@ -23,5 +23,6 @@
   "organisationsHeader": "Met bijdragen van",
   "themes": "Thema's",
   "timePeriod": "Tijdsperiode",
-  "nextStop": "Volgende stop"
+  "nextStop": "Volgende stop",
+  "showLocationsWithoutDate": "Toon locaties zonder datum"
 }

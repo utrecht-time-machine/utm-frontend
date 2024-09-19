@@ -21,5 +21,6 @@
   "organisationsHeader": "With contributions from",
   "themes": "Themes",
   "timePeriod": "Time period",
-  "nextStop": "Next stop"
+  "nextStop": "Next stop",
+  "showLocationsWithoutDate": "Show locations without date"
 }

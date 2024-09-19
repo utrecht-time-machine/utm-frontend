@@ -11,7 +11,8 @@ export class ThemeService {
   selectedIds: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   numTimesSelectedThemesChanged = 0;
 
-  showingSelectionScreen = false;
+  showingMapSelectionScreen = false;
+  showingStorySelectionScreen = false;
   icon: string = 'library_books';
 
   constructor(public api: ApiService) {

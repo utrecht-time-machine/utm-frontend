@@ -6,11 +6,11 @@
       class="theme-button-container"
       *ngIf="routing.getSelectedView() === SelectedView.Locations"
     >
-      <app-time-slider-button *ngIf="!time.showingSelectionScreen" />
-      <app-time-slider-select *ngIf="time.showingSelectionScreen" />
+      <app-time-slider-button *ngIf="!time.showingMapSelectionScreen" />
+      <app-time-slider-select *ngIf="time.showingMapSelectionScreen" />
 
-      <app-theme-button *ngIf="!themes.showingSelectionScreen" />
-      <app-theme-select *ngIf="themes.showingSelectionScreen" />
+      <app-theme-button *ngIf="!themes.showingMapSelectionScreen" />
+      <app-theme-select *ngIf="themes.showingMapSelectionScreen" />
     </div>
   </div>
   <div class="map-data">

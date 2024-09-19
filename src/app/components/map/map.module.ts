@@ -17,6 +17,7 @@ import { ThemeButtonModule } from '../map-ui/map-ui-button/theme-button/theme-bu
 import { ThemeSelectModule } from '../map-ui/map-ui-expanded/theme-select/theme-select.module';
 import { TimeSliderButtonModule } from '../map-ui/map-ui-button/time-slider-button/time-slider-button.module';
 import { TimeSliderSelectModule } from '../map-ui/map-ui-expanded/time-slider-select/time-slider-select.module';
+import { MapUiButtonModule } from '../map-ui/map-ui-button/map-ui-button.module';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { TimeSliderSelectModule } from '../map-ui/map-ui-expanded/time-slider-se
     ThemeSelectModule,
     TimeSliderButtonModule,
     TimeSliderSelectModule,
+    MapUiButtonModule,
   ],
 })
 export class MapModule {}

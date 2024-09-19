@@ -1,7 +1,7 @@
 <app-map-ui-expanded
   [title]="'themes' | translate"
   [icon]="themes.icon"
-  (close)="themes.showingSelectionScreen = false"
+  (close)="themes.showingMapSelectionScreen = false"
 >
   <div *ngFor="let theme of themes.all.value">
     <div class="theme-checkbox-container">

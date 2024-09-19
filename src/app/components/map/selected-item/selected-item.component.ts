@@ -6,6 +6,8 @@ import { RoutingService } from '../../../services/routing.service';
 import { Story } from '../../../models/story';
 import { StoryService } from '../../../services/story.service';
 import { UtmTranslateService } from '../../../services/utm-translate.service';
+import { TimeService } from '../../../services/time.service';
+import { ThemeService } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-selected-item',
@@ -21,7 +23,9 @@ export class SelectedItemComponent {
     public routing: RoutingService,
     public location: Location,
     public storyService: StoryService,
-    public utmTranslate: UtmTranslateService
+    public utmTranslate: UtmTranslateService,
+    public time: TimeService,
+    public themes: ThemeService
   ) {}
 
   locationHasStories(): boolean {

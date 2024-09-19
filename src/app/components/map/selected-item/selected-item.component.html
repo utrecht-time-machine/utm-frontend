@@ -95,6 +95,15 @@
         <div class="story-head">
           <h2>{{ "storiesForLocation" | translate }}</h2>
         </div>
+
+        <div class="filters-container">
+          <app-time-slider-button *ngIf="!time.showingMapSelectionScreen" />
+          <app-time-slider-select *ngIf="time.showingMapSelectionScreen" />
+
+          <app-theme-button *ngIf="!themes.showingMapSelectionScreen" />
+          <app-theme-select *ngIf="themes.showingMapSelectionScreen" />
+        </div>
+
         <div class="story-hold">
           <div class="story" *ngFor="let story of locationDetails?.stories">
             <a

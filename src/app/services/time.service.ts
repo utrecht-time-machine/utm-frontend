@@ -20,7 +20,8 @@ export class TimeService {
   showLocationsWithoutDate: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(true);
 
-  showingSelectionScreen = false;
+  showingMapSelectionScreen = false;
+  showingStorySelectionScreen = false;
   icon: string = 'access_time';
 
   constructor() {
@@ -35,6 +36,13 @@ export class TimeService {
     this.showLocationsWithoutDate.subscribe(() => {
       this.numTimesShowLocationsWithoutDateUpdated++;
     });
+  }
+
+  selectedDefaultRange(): boolean {
+    return (
+      this.minYear.value == this.DEFAULT_MIN_YEAR &&
+      this.maxYear.value == this.DEFAULT_MAX_YEAR
+    );
   }
 
   isInSelectedRange(minDates: string[], maxDates: string[]) {

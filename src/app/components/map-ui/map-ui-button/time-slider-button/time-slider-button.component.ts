@@ -14,6 +14,10 @@ export class TimeSliderButtonComponent {
     // if (this.time.showLocationsWithoutDate.value) {
     //   return '';
     // }
+    if (this.time.selectedDefaultRange()) {
+      return '';
+    }
+
     return `${this.time.minYear.value} - ${this.time.maxYear.value}`;
   }
 }
