@@ -2,6 +2,8 @@ import { AfterViewInit, Component } from '@angular/core';
 import { TimeService } from '../../../../services/time.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FilterExpandedComponent } from '../filter-expanded.component';
+import { FilterService } from '../../../../services/filter.service';
+import { FilterType } from '../../../../models/filter-type.enum';
 
 @Component({
   selector: 'app-time-slider-select',
@@ -14,7 +16,7 @@ export class TimeSliderSelectComponent
 {
   debouncedTimeout: any;
 
-  constructor(public time: TimeService) {
+  constructor(public time: TimeService, public filters: FilterService) {
     super();
   }
   formatLabel(value: number): string {
@@ -53,4 +55,6 @@ export class TimeSliderSelectComponent
   onToggleShowLocationsWithoutDate($event: MatCheckboxChange) {
     this.time.showLocationsWithoutDate.next($event.checked);
   }
+
+  protected readonly FilterType = FilterType;
 }

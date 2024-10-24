@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { TimeService } from '../../../../services/time.service';
 import { ThemeService } from '../../../../services/theme.service';
 import { FilterButtonComponent } from '../filter-button.component';
+import { FilterService } from '../../../../services/filter.service';
+import { FilterType } from '../../../../models/filter-type.enum';
 
 @Component({
   selector: 'app-time-slider-button',
@@ -9,7 +11,11 @@ import { FilterButtonComponent } from '../filter-button.component';
   styleUrls: ['./time-slider-button.component.scss'],
 })
 export class TimeSliderButtonComponent extends FilterButtonComponent {
-  constructor(public time: TimeService, public themes: ThemeService) {
+  constructor(
+    public time: TimeService,
+    public themes: ThemeService,
+    public filters: FilterService
+  ) {
     super();
   }
 
@@ -23,4 +29,6 @@ export class TimeSliderButtonComponent extends FilterButtonComponent {
 
     return `${this.time.minYear.value} - ${this.time.maxYear.value}`;
   }
+
+  protected readonly FilterType = FilterType;
 }

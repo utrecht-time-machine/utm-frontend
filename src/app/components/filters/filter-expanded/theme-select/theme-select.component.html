@@ -1,7 +1,7 @@
 <app-filter-expanded
   [title]="'themes' | translate"
   [icon]="themes.icon"
-  (close)="themes.showingMapSelectionScreen = false"
+  (close)="filters.hide(location, FilterType.Theme)"
   [location]="location"
 >
   <div *ngFor="let theme of themes.all.value">

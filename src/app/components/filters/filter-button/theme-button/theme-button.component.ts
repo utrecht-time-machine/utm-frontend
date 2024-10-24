@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ThemeService } from '../../../../services/theme.service';
 import { TimeService } from '../../../../services/time.service';
 import { FilterButtonComponent } from '../filter-button.component';
+import { FilterService } from '../../../../services/filter.service';
+import { FilterType } from '../../../../models/filter-type.enum';
 
 @Component({
   selector: 'app-theme-button',
@@ -9,7 +11,11 @@ import { FilterButtonComponent } from '../filter-button.component';
   styleUrls: ['./theme-button.component.scss'],
 })
 export class ThemeButtonComponent extends FilterButtonComponent {
-  constructor(public themes: ThemeService, public time: TimeService) {
+  constructor(
+    public themes: ThemeService,
+    public time: TimeService,
+    public filters: FilterService
+  ) {
     super();
   }
 
@@ -20,4 +26,6 @@ export class ThemeButtonComponent extends FilterButtonComponent {
     }
     return numSelectedThemes.toString();
   }
+
+  protected readonly FilterType = FilterType;
 }

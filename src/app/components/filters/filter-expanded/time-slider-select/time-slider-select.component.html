@@ -1,7 +1,7 @@
 <app-filter-expanded
   [title]="'timePeriod' | translate"
   [icon]="time.icon"
-  (close)="time.showingMapSelectionScreen = false"
+  (close)="filters.hide(location, FilterType.Time)"
   [maxHeight]="'none'"
   [overflowY]="'hidden'"
   [location]="location"

@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 import { FilterLocation } from '../../models/filter-location.enum';
 import { TimeService } from '../../services/time.service';
 import { ThemeService } from '../../services/theme.service';
+import { FilterService } from '../../services/filter.service';
+import { FilterType } from '../../models/filter-type.enum';
 
 @Component({
   selector: 'app-filters',
@@ -11,7 +13,12 @@ import { ThemeService } from '../../services/theme.service';
 export class FiltersComponent {
   @Input() location: FilterLocation = FilterLocation.Map;
 
-  constructor(public time: TimeService, public themes: ThemeService) {}
+  constructor(
+    public time: TimeService,
+    public themes: ThemeService,
+    public filter: FilterService
+  ) {}
 
   protected readonly FilterLocation = FilterLocation;
+  protected readonly FilterType = FilterType;
 }

@@ -6,20 +6,20 @@
   ]"
 >
   <app-time-slider-button
-    *ngIf="!time.showingMapSelectionScreen"
+    *ngIf="!filter.isShowing(location, FilterType.Time)"
     [location]="location"
   />
   <app-time-slider-select
-    *ngIf="time.showingMapSelectionScreen"
+    *ngIf="filter.isShowing(location, FilterType.Time)"
     [location]="location"
   />
 
   <app-theme-button
-    *ngIf="!themes.showingMapSelectionScreen"
+    *ngIf="!filter.isShowing(location, FilterType.Theme)"
     [location]="location"
   />
   <app-theme-select
-    *ngIf="themes.showingMapSelectionScreen"
+    *ngIf="filter.isShowing(location, FilterType.Theme)"
     [location]="location"
   />
 </div>

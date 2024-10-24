@@ -20,8 +20,6 @@ export class TimeService {
   showLocationsWithoutDate: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(true);
 
-  showingMapSelectionScreen = false;
-  showingStorySelectionScreen = false;
   icon: string = 'access_time';
 
   constructor() {

@@ -1,7 +1,7 @@
 <app-filter-button
   [badgeText]="selectedTimeRange"
   [icon]="time.icon"
-  (click)="time.showingMapSelectionScreen = true"
+  (click)="filters.show(location, FilterType.Time)"
   [location]="location"
 >
   {{ "timePeriod" | translate }}

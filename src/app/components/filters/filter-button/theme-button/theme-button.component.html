@@ -1,5 +1,5 @@
 <app-filter-button
-  (click)="themes.showingMapSelectionScreen = true"
+  (click)="filters.show(location, FilterType.Theme)"
   [badgeText]="numSelectedThemes"
   [icon]="themes.icon"
   [location]="location"
