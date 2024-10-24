@@ -106,38 +106,40 @@
         </div>
 
         <div class="story-hold">
-          <div class="story" *ngFor="let story of locationDetails?.stories">
-            <ng-container *ngIf="shouldShowStory(story)"
-              ><a
-                (click)="
-                  router.navigateByUrl(
-                    locationDetails?.url + '?story=' + story.story_url_alias
-                  )
-                "
+          <div class="story" *ngFor="let story of shownStories">
+            <a
+              (click)="
+                router.navigateByUrl(
+                  locationDetails?.url + '?story=' + story.story_url_alias
+                )
+              "
+            >
+              <div
+                class="head has-video-{{
+                  storyHasVideoIcon(story) ? '1' : '0'
+                }}"
               >
-                <div
-                  class="head has-video-{{
-                    storyHasVideoIcon(story) ? '1' : '0'
-                  }}"
-                >
-                  <div>
-                    <img loading="lazy" [src]="story?.photo" />
-                  </div>
+                <div>
+                  <img loading="lazy" [src]="story?.photo" />
                 </div>
-                <div class="core">
-                  <span
-                    class="name"
-                    [innerHtml]="
-                      utmTranslate.getAsEnglishIfApplicable(
-                        story,
-                        'title',
-                        'title_english'
-                      )
-                    "
-                  ></span>
-                </div> </a
-            ></ng-container>
+              </div>
+              <div class="core">
+                <span
+                  class="name"
+                  [innerHtml]="
+                    utmTranslate.getAsEnglishIfApplicable(
+                      story,
+                      'title',
+                      'title_english'
+                    )
+                  "
+                ></span>
+              </div>
+            </a>
           </div>
+          <p *ngIf="shownStories.length === 0">
+            <em>{{ "noStoriesFoundWithTheseFilters" | translate }}</em>
+          </p>
         </div>
       </div>
     </div>

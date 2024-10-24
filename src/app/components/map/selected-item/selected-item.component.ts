@@ -53,4 +53,12 @@ export class SelectedItemComponent {
       this.time.isInSelectedRange([story.min_date_str], [story.max_date_str])
     );
   }
+
+  get shownStories(): Story[] {
+    return (
+      this.locationDetails?.stories?.filter((story) =>
+        this.shouldShowStory(story)
+      ) ?? []
+    );
+  }
 }

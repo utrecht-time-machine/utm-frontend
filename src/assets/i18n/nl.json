@@ -24,5 +24,6 @@
   "themes": "Thema's",
   "timePeriod": "Tijdsperiode",
   "nextStop": "Volgende stop",
-  "showLocationsWithoutDate": "Toon locaties zonder datum"
+  "showLocationsWithoutDate": "Toon locaties zonder datum",
+  "noStoriesFoundWithTheseFilters": "Het lijkt erop dat er geen verhalen zijn voor deze locatie met de gekozen filters. Wijzig de filters hierboven om meer opties te ontdekken."
 }
