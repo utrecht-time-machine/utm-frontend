@@ -46,4 +46,11 @@ export class SelectedItemComponent {
       void this.router.navigateByUrl(locationUrl);
     }
   }
+
+  shouldShowStory(story: Story): boolean {
+    return (
+      this.themes.shouldShow(story.theme_ids ?? []) &&
+      this.time.isInSelectedRange([story.min_date_str], [story.max_date_str])
+    );
+  }
 }

@@ -13,6 +13,11 @@ export interface Story {
 
   mediaItems?: MediaItem[];
 
+  max_date_str: string;
+  min_date_str: string;
+  theme_ids_str: string;
+  theme_ids?: string[];
+
   // TODO: Remove these (stories will not map to only one location anymore)
   location_id: string;
   location_title: string;

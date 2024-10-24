@@ -47,6 +47,14 @@ export class ThemeService {
     return this.selectedIds.value.includes(nid);
   }
 
+  shouldShow(nids: string[]): boolean {
+    const noThemesSelected = this.selectedIds.value.length === 0;
+    if (noThemesSelected) {
+      return true;
+    }
+    return nids.some((nid) => this.selectedIds.value.includes(nid));
+  }
+
   clearSelection() {
     this.selectedIds.next([]);
   }

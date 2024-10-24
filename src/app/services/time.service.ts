@@ -55,6 +55,9 @@ export class TimeService {
     let minYear = Math.min(...minYears);
     let maxYear = Math.max(...maxYears);
 
+    minDates = minDates.filter((minDate) => minDate !== '');
+    maxDates = maxDates.filter((maxDate) => maxDate !== '');
+
     const hasMinDate = minDates && minDates.length > 0;
     const hasMaxDate = maxDates && maxDates.length > 0;
 

@@ -379,10 +379,12 @@ export class ApiService {
     );
     UtilService.addUrlPrefixes(stories, 'photo');
 
-    stories.map(
-      (story) =>
-        (story.story_url_alias = story.story_link.replace('/story/', ''))
-    );
+    stories.map((story) => {
+      story.story_url_alias = story.story_link.replace('/story/', '');
+      story.theme_ids = story.theme_ids_str
+        ? story.theme_ids_str.split(', ')
+        : [];
+    });
 
     this.utmTranslate.translateObjectsByKeys(
       stories,
@@ -468,6 +470,9 @@ export class ApiService {
       story_url_alias: '',
       title: locationDetails.title as string,
       mediaItems: [locationMediaItem],
+      theme_ids_str: '',
+      min_date_str: '',
+      max_date_str: '',
     };
   }
 }

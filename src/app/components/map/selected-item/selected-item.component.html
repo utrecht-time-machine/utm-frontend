@@ -107,35 +107,36 @@
 
         <div class="story-hold">
           <div class="story" *ngFor="let story of locationDetails?.stories">
-            <a
-              (click)="
-                router.navigateByUrl(
-                  locationDetails?.url + '?story=' + story.story_url_alias
-                )
-              "
-            >
-              <div
-                class="head has-video-{{
-                  storyHasVideoIcon(story) ? '1' : '0'
-                }}"
+            <ng-container *ngIf="shouldShowStory(story)"
+              ><a
+                (click)="
+                  router.navigateByUrl(
+                    locationDetails?.url + '?story=' + story.story_url_alias
+                  )
+                "
               >
-                <div>
-                  <img loading="lazy" [src]="story?.photo" />
+                <div
+                  class="head has-video-{{
+                    storyHasVideoIcon(story) ? '1' : '0'
+                  }}"
+                >
+                  <div>
+                    <img loading="lazy" [src]="story?.photo" />
+                  </div>
                 </div>
-              </div>
-              <div class="core">
-                <span
-                  class="name"
-                  [innerHtml]="
-                    utmTranslate.getAsEnglishIfApplicable(
-                      story,
-                      'title',
-                      'title_english'
-                    )
-                  "
-                ></span>
-              </div>
-            </a>
+                <div class="core">
+                  <span
+                    class="name"
+                    [innerHtml]="
+                      utmTranslate.getAsEnglishIfApplicable(
+                        story,
+                        'title',
+                        'title_english'
+                      )
+                    "
+                  ></span>
+                </div> </a
+            ></ng-container>
           </div>
         </div>
       </div>
