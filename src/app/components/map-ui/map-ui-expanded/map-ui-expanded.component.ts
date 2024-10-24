@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FilterLocation } from '../../../models/filter-location.enum';
 
 @Component({
   selector: 'app-map-ui-expanded',
@@ -11,4 +12,5 @@ export class MapUiExpandedComponent {
   @Output() close = new EventEmitter();
   @Input() overflowY: string = 'scroll';
   @Input() maxHeight: string = '10rem';
+  @Input() location: FilterLocation = FilterLocation.Map;
 }

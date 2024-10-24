@@ -1,17 +1,23 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { TimeService } from '../../../../services/time.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MapUiExpandedComponent } from '../map-ui-expanded.component';
+import { FilterLocation } from '../../../../models/filter-location.enum';
 
 @Component({
   selector: 'app-time-slider-select',
   templateUrl: './time-slider-select.component.html',
   styleUrls: ['./time-slider-select.component.scss'],
 })
-export class TimeSliderSelectComponent implements AfterViewInit {
+export class TimeSliderSelectComponent
+  extends MapUiExpandedComponent
+  implements AfterViewInit
+{
   debouncedTimeout: any;
 
-  constructor(public time: TimeService) {}
-
+  constructor(public time: TimeService) {
+    super();
+  }
   formatLabel(value: number): string {
     return `${value}`;
   }
@@ -48,4 +54,6 @@ export class TimeSliderSelectComponent implements AfterViewInit {
   onToggleShowLocationsWithoutDate($event: MatCheckboxChange) {
     this.time.showLocationsWithoutDate.next($event.checked);
   }
+
+  protected readonly FilterLocation = FilterLocation;
 }

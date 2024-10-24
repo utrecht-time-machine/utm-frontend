@@ -7,6 +7,7 @@ import { SelectedView } from '../../models/selected-view';
 import { UtilService } from '../../services/util.service';
 import { ThemeService } from '../../services/theme.service';
 import { TimeService } from '../../services/time.service';
+import { FilterLocation } from '../../models/filter-location.enum';
 
 @Component({
   selector: 'app-map',
@@ -34,4 +35,6 @@ export class MapComponent implements OnInit {
   public getSelectedLocation(): LocationDetails | undefined {
     return this.mapService.selectedLocation.getValue();
   }
+
+  protected readonly FilterLocation = FilterLocation;
 }
