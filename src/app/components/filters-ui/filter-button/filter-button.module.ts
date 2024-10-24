@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MapUiButtonComponent } from './map-ui-button.component';
+import { FilterButtonComponent } from './filter-button.component';
 import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [MapUiButtonComponent],
-  exports: [MapUiButtonComponent],
+  declarations: [FilterButtonComponent],
+  exports: [FilterButtonComponent],
   imports: [CommonModule, MatIconModule],
 })
-export class MapUiButtonModule {}
+export class FilterButtonModule {}

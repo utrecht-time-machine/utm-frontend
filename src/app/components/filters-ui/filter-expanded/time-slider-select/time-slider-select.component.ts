@@ -1,7 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { TimeService } from '../../../../services/time.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MapUiExpandedComponent } from '../map-ui-expanded.component';
+import { FilterExpandedComponent } from '../filter-expanded.component';
 import { FilterLocation } from '../../../../models/filter-location.enum';
 
 @Component({
@@ -10,7 +10,7 @@ import { FilterLocation } from '../../../../models/filter-location.enum';
   styleUrls: ['./time-slider-select.component.scss'],
 })
 export class TimeSliderSelectComponent
-  extends MapUiExpandedComponent
+  extends FilterExpandedComponent
   implements AfterViewInit
 {
   debouncedTimeout: any;

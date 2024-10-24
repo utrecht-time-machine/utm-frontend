@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MapUiExpandedComponent } from './map-ui-expanded.component';
+import { FilterExpandedComponent } from './filter-expanded.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [MapUiExpandedComponent],
+  declarations: [FilterExpandedComponent],
   imports: [CommonModule, TranslateModule, MatIconModule],
-  exports: [MapUiExpandedComponent],
+  exports: [FilterExpandedComponent],
 })
-export class MapUiExpandedModule {}
+export class FilterExpandedModule {}

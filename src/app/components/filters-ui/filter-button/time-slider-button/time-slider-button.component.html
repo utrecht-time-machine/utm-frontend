@@ -1,7 +1,7 @@
-<app-map-ui-button
-  [badgeText]="badgeText"
+<app-filter-button
+  [badgeText]="selectedTimeRange"
   [icon]="time.icon"
   (click)="time.showingMapSelectionScreen = true"
 >
   {{ "timePeriod" | translate }}
-</app-map-ui-button>
+</app-filter-button>

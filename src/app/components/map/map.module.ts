@@ -13,11 +13,11 @@ import { EditButtonModule } from '../edit-button/edit-button.module';
 import { OrganisationsModule } from '../organisations/organisations.module';
 import { ImageViewerModule } from './media-item/image-viewer/image-viewer.module';
 import { AudioPlayerModule } from '../audio-player/audio-player.module';
-import { ThemeButtonModule } from '../map-ui/map-ui-button/theme-button/theme-button.module';
-import { ThemeSelectModule } from '../map-ui/map-ui-expanded/theme-select/theme-select.module';
-import { TimeSliderButtonModule } from '../map-ui/map-ui-button/time-slider-button/time-slider-button.module';
-import { TimeSliderSelectModule } from '../map-ui/map-ui-expanded/time-slider-select/time-slider-select.module';
-import { MapUiButtonModule } from '../map-ui/map-ui-button/map-ui-button.module';
+import { ThemeButtonModule } from '../filters-ui/filter-button/theme-button/theme-button.module';
+import { ThemeSelectModule } from '../filters-ui/filter-expanded/theme-select/theme-select.module';
+import { TimeSliderButtonModule } from '../filters-ui/filter-button/time-slider-button/time-slider-button.module';
+import { TimeSliderSelectModule } from '../filters-ui/filter-expanded/time-slider-select/time-slider-select.module';
+import { FilterButtonModule } from '../filters-ui/filter-button/filter-button.module';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,7 @@ import { MapUiButtonModule } from '../map-ui/map-ui-button/map-ui-button.module'
     ThemeSelectModule,
     TimeSliderButtonModule,
     TimeSliderSelectModule,
-    MapUiButtonModule,
+    FilterButtonModule,
   ],
 })
 export class MapModule {}
