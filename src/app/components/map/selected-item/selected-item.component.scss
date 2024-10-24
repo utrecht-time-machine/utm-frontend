@@ -5,3 +5,8 @@
   margin-bottom: 0.5rem;
   max-width: 30rem;
 }
+
+app-time-slider-button,
+app-theme-button {
+  width: fit-content;
+}
