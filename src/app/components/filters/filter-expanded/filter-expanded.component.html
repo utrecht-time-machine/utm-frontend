@@ -1,4 +1,10 @@
-<div class="container">
+<div
+  class="container"
+  [ngClass]="[
+    location === FilterLocation.Map ? 'container-map' : '',
+    location === FilterLocation.Stories ? 'container-stories' : ''
+  ]"
+>
   <p class="heading">
     <mat-icon *ngIf="icon">{{ icon }}</mat-icon>
     {{ title }}

@@ -1,0 +1,28 @@
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &.filters-container-map {
+    position: absolute;
+    top: 2rem;
+    left: 1rem;
+    z-index: 20;
+    width: 20rem;
+    max-width: calc(100% - 5rem);
+  }
+
+  &.filters-container-stories {
+    margin-bottom: 0.5rem;
+    max-width: 30rem;
+  }
+}
+
+app-time-slider-button,
+app-theme-button {
+  width: fit-content;
+}
+
+app-time-slider-button,
+app-time-slider-select {
+}

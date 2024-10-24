@@ -10,4 +10,5 @@ export class FilterButtonComponent {
   @Input() location: FilterLocation = FilterLocation.Map;
   @Input() badgeText: string = '';
   @Input() icon: string = '';
+  protected readonly FilterLocation = FilterLocation;
 }

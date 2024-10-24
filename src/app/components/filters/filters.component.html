@@ -1,0 +1,25 @@
+<div
+  class="filters-container"
+  [ngClass]="[
+    location === FilterLocation.Map ? 'filters-container-map' : '',
+    location === FilterLocation.Stories ? 'filters-container-stories' : ''
+  ]"
+>
+  <app-time-slider-button
+    *ngIf="!time.showingMapSelectionScreen"
+    [location]="location"
+  />
+  <app-time-slider-select
+    *ngIf="time.showingMapSelectionScreen"
+    [location]="location"
+  />
+
+  <app-theme-button
+    *ngIf="!themes.showingMapSelectionScreen"
+    [location]="location"
+  />
+  <app-theme-select
+    *ngIf="themes.showingMapSelectionScreen"
+    [location]="location"
+  />
+</div>

@@ -13,4 +13,5 @@ export class FilterExpandedComponent {
   @Input() overflowY: string = 'scroll';
   @Input() maxHeight: string = '10rem';
   @Input() location: FilterLocation = FilterLocation.Map;
+  protected readonly FilterLocation = FilterLocation;
 }

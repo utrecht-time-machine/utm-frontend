@@ -96,17 +96,7 @@
           <h2>{{ "storiesForLocation" | translate }}</h2>
         </div>
 
-        <div class="filters-container">
-          <!-- TODO: Apply filters to stories, separate map select components from story select components -->
-          <app-time-slider-button *ngIf="!time.showingMapSelectionScreen" />
-          <app-time-slider-select
-            *ngIf="time.showingMapSelectionScreen"
-            [location]="FilterLocation.Stories"
-          />
-
-          <app-theme-button *ngIf="!themes.showingMapSelectionScreen" />
-          <app-theme-select *ngIf="themes.showingMapSelectionScreen" />
-        </div>
+        <app-filters [location]="FilterLocation.Stories" />
 
         <div class="story-hold">
           <div class="story" *ngFor="let story of shownStories">

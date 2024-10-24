@@ -2,6 +2,7 @@
   [title]="'themes' | translate"
   [icon]="themes.icon"
   (close)="themes.showingMapSelectionScreen = false"
+  [location]="location"
 >
   <div *ngFor="let theme of themes.all.value">
     <div class="theme-checkbox-container">

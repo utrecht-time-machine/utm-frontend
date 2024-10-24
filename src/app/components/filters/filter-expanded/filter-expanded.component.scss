@@ -4,7 +4,6 @@
   border-radius: 4px;
   //border: 1px solid #ccc;
 
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
   position: relative;
   //filter: drop-shadow(0px 2px 1px rgba(0, 0, 0, 0.1));
 
@@ -12,6 +11,15 @@
     font-size: 1.2rem;
     //font-weight: bold;
     margin: 0.2rem 0;
+  }
+
+  &.container-map {
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  }
+
+  &.container-stories {
+    border: 1px solid #ccc;
+    //filter: drop-shadow(0px 2px 1px rgba(0, 0, 0, 0.1));
   }
 }
 

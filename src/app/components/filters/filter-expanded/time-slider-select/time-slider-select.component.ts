@@ -2,7 +2,6 @@ import { AfterViewInit, Component } from '@angular/core';
 import { TimeService } from '../../../../services/time.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FilterExpandedComponent } from '../filter-expanded.component';
-import { FilterLocation } from '../../../../models/filter-location.enum';
 
 @Component({
   selector: 'app-time-slider-select',
@@ -54,6 +53,4 @@ export class TimeSliderSelectComponent
   onToggleShowLocationsWithoutDate($event: MatCheckboxChange) {
     this.time.showLocationsWithoutDate.next($event.checked);
   }
-
-  protected readonly FilterLocation = FilterLocation;
 }
