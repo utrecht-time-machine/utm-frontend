@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, ViewEncapsulation } from '@angular/core';
 import { TimeService } from '../../../../services/time.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FilterExpandedComponent } from '../filter-expanded.component';
@@ -9,6 +9,7 @@ import { FilterType } from '../../../../models/filter-type.enum';
   selector: 'app-time-slider-select',
   templateUrl: './time-slider-select.component.html',
   styleUrls: ['./time-slider-select.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TimeSliderSelectComponent
   extends FilterExpandedComponent
@@ -20,6 +21,9 @@ export class TimeSliderSelectComponent
     super();
   }
   formatLabel(value: number): string {
+    if (value < 0) {
+      return `${-value} v. Chr.`;
+    }
     return `${value}`;
   }
 
