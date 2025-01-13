@@ -19,15 +19,21 @@ export class TimeSliderButtonComponent extends FilterButtonComponent {
     super();
   }
 
+  formatYear(year: number): string {
+    if (year < 0) {
+      return `${Math.abs(year)} v. Chr.`;
+    }
+    return year.toString();
+  }
+
   get selectedTimeRange(): string {
-    // if (this.time.showLocationsWithoutDate.value) {
-    //   return '';
-    // }
     if (this.time.selectedDefaultRange()) {
       return '';
     }
 
-    return `${this.time.minYear.value} - ${this.time.maxYear.value}`;
+    const minYear = this.formatYear(this.time.minYear.value);
+    const maxYear = this.formatYear(this.time.maxYear.value);
+    return `${minYear} - ${maxYear}`;
   }
 
   protected readonly FilterType = FilterType;
