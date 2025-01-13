@@ -26,6 +26,9 @@ import { SpinnerService } from './spinner.service';
 import { PlatformService } from './platform.service';
 import { ThemeService } from './theme.service';
 import { TimeService } from './time.service';
+import { FilterService } from './filter.service';
+import { FilterType } from '../models/filter-type.enum';
+import { FilterLocation } from '../models/filter-location.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -58,7 +61,8 @@ export class MapService {
     private spinner: SpinnerService,
     private platform: PlatformService,
     private themes: ThemeService,
-    public time: TimeService
+    private time: TimeService,
+    private filters: FilterService
   ) {
     this.allLocations.subscribe(() => {
       this.shownLocationPopup?.remove();
@@ -213,12 +217,14 @@ export class MapService {
     this.map.touchZoomRotate.disableRotation();
     this.map.on('click', () => {
       this.map?.scrollZoom.enable();
+      this.filters.hideAllForLocation(FilterLocation.Map);
     });
     this.map.on('movestart', () => {
       this.map?.scrollZoom.enable();
     });
     this.map.on('touchstart', () => {
       this.map?.scrollZoom.enable();
+      this.filters.hideAllForLocation(FilterLocation.Map);
     });
 
     this.map.on('style.load', () => {

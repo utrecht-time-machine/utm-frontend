@@ -19,6 +19,8 @@ export class FilterService {
     },
   };
 
+  constructor() {}
+
   isShowing(location: FilterLocation, type: FilterType) {
     return this._showing[location][type];
   }
@@ -31,5 +33,10 @@ export class FilterService {
     this._showing[location][type] = false;
   }
 
-  constructor() {}
+  hideAllForLocation(location: FilterLocation) {
+    this._showing[location] = {
+      [FilterType.Time]: false,
+      [FilterType.Theme]: false,
+    };
+  }
 }
