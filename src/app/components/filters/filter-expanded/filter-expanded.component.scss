@@ -23,7 +23,7 @@
   }
 }
 
-mat-icon {
+.heading mat-icon {
   position: relative;
   top: 0.25rem;
 }
@@ -44,6 +44,11 @@ mat-icon {
 
   &:hover {
     background: #bbb;
+  }
+  & mat-icon {
+    font-size: 1rem;
+    position: relative;
+    top: 0.25rem;
   }
 }
 
