@@ -4,6 +4,7 @@ import { ThemeSelectComponent } from './theme-select.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { FilterExpandedModule } from '../filter-expanded.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [ThemeSelectComponent],
@@ -13,6 +14,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     TranslateModule,
     FilterExpandedModule,
     MatCheckboxModule,
+    MatIconModule,
   ],
 })
 export class ThemeSelectModule {}

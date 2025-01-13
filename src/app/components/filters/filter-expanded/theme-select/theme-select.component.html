@@ -6,16 +6,31 @@
 >
   <div class="theme-select-container">
     <div class="theme-search">
-      <input 
-        type="text" 
+      <input
+        type="text"
         class="theme-search-input"
-        (input)="onSearchChange($event)" 
+        (input)="onSearchChange($event)"
         [placeholder]="'search-themes' | translate"
+      />
+      <button
+        class="clear-button"
+        (click)="themes.clearSelection()"
+        [disabled]="themes.selectedIds.value.length === 0"
+        [title]="'clear-themes' | translate"
       >
+        <mat-icon class="clear-icon">filter_alt_off</mat-icon>
+        <span
+          class="clear-text"
+          [innerText]="'clear-themes' | translate"
+        ></span>
+      </button>
     </div>
-    
+
     <div class="theme-list">
-      <div *ngFor="let theme of themes.filtered | async" class="theme-checkbox-container">
+      <div
+        *ngFor="let theme of themes.filtered | async"
+        class="theme-checkbox-container"
+      >
         <mat-checkbox
           [id]="theme.nid"
           [name]="theme.nid"
