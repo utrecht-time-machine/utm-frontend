@@ -54,9 +54,13 @@ mat-icon {
 }
 
 .inner-container {
-  max-height: 10rem;
+  max-height: 10rem !important;
   overflow-y: hidden;
   overflow-x: hidden;
+
+  @media (min-width: 768px) {
+    max-height: 15rem !important;
+  }
 }
 
 .button span {

@@ -9,7 +9,7 @@
   align-items: center;
   margin: 0rem 0;
   gap: 0.5rem;
-  padding: 4px 16px;
+  padding: 0px 16px;
 
   & input {
     height: 1rem;
@@ -72,11 +72,11 @@
 
 .theme-list {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 .theme-checkbox-container {
-  padding: 4px 16px;
+  padding: 0px 16px;
 
   ::ng-deep .mat-checkbox {
     .mat-checkbox-layout {
