@@ -14,9 +14,7 @@ export class ThemeSelectComponent extends FilterExpandedComponent {
     super();
   }
 
-  onClose() {
-    alert('FDJSLK');
-  }
+  onClose() {}
 
   protected readonly FilterType = FilterType;
 }
