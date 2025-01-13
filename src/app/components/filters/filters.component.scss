@@ -23,6 +23,12 @@
   }
 }
 
+@media (max-width: 767px) {
+  .hide-mobile {
+    display: none;
+  }
+}
+
 app-time-slider-button,
 app-theme-button {
   width: fit-content;

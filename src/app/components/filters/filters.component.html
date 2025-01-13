@@ -8,6 +8,7 @@
   <app-time-slider-button
     *ngIf="!filter.isShowing(location, FilterType.Time)"
     [location]="location"
+    [class.hide-mobile]="filter.isShowing(location, FilterType.Theme)"
   />
   <app-time-slider-select
     *ngIf="filter.isShowing(location, FilterType.Time)"
@@ -17,6 +18,7 @@
   <app-theme-button
     *ngIf="!filter.isShowing(location, FilterType.Theme)"
     [location]="location"
+    [class.hide-mobile]="filter.isShowing(location, FilterType.Time)"
   />
   <app-theme-select
     *ngIf="filter.isShowing(location, FilterType.Theme)"
