@@ -13,11 +13,12 @@
         (change)="themes.toggle(theme.nid)"
         [checked]="themes.isSelected(theme.nid)"
         [disableRipple]="true"
-        ><span>{{ theme.title }}</span>
-        <br />
-        <span class="theme-head">{{ theme.head }}</span></mat-checkbox
       >
+        <span [innerHTML]="theme.title"></span>
+        <br />
+        <span class="theme-head">{{ theme.head }}</span>
+      </mat-checkbox>
     </div>
-    <div class="separator"></div>
+    <!-- <div class="separator"></div> -->
   </div>
 </app-filter-expanded>
