@@ -14,6 +14,14 @@ export class ThemeSelectComponent extends FilterExpandedComponent {
     super();
   }
 
+  get numSelectedThemesStr(): string {
+    const numSelectedThemes: number = this.themes.selectedIds.value.length;
+    if (numSelectedThemes === 0) {
+      return '';
+    }
+    return ` (${numSelectedThemes.toString()})`;
+  }
+
   onClose() {}
 
   protected readonly FilterType = FilterType;
