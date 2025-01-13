@@ -24,5 +24,10 @@ export class ThemeSelectComponent extends FilterExpandedComponent {
 
   onClose() {}
 
+  onSearchChange(event: Event) {
+    const searchText = (event.target as HTMLInputElement).value;
+    this.themes.filterThemes(searchText);
+  }
+
   protected readonly FilterType = FilterType;
 }

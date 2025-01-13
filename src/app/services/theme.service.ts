@@ -8,6 +8,7 @@ import { ApiService } from './api.service';
 })
 export class ThemeService {
   all: BehaviorSubject<Theme[]> = new BehaviorSubject<Theme[]>([]);
+  filtered: BehaviorSubject<Theme[]> = new BehaviorSubject<Theme[]>([]);
   selectedIds: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   numTimesSelectedThemesChanged = 0;
 
@@ -26,6 +27,7 @@ export class ThemeService {
     const themes = await this.api.getThemes();
     const sortedThemes = themes.sort((a, b) => a.title.localeCompare(b.title));
     this.all.next(sortedThemes);
+    this.filtered.next(sortedThemes);
     
     const allIds = themes.map((theme) => theme.nid);
     // this.selectedIds.next(allIds);
@@ -57,5 +59,18 @@ export class ThemeService {
 
   clearSelection() {
     this.selectedIds.next([]);
+  }
+
+  filterThemes(searchText: string) {
+    if (!searchText) {
+      this.filtered.next(this.all.value);
+      return;
+    }
+    
+    const filteredThemes = this.all.value.filter(theme => 
+      theme.title.toLowerCase().includes(searchText.toLowerCase()) ||
+      theme.head?.toLowerCase().includes(searchText.toLowerCase())
+    );
+    this.filtered.next(filteredThemes);
   }
 }
