@@ -36,6 +36,10 @@ app-theme-button {
 
 app-theme-select {
   width: 100%;
+  
+  @media (min-width: 768px) {
+    width: fit-content;
+  }
 }
 
 app-time-slider-button,
