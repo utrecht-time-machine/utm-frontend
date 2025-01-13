@@ -12,7 +12,7 @@
     max-width: calc(100% - 5rem);
 
     @media (min-width: 768px) {
-      width: 50%;
+      width: 40%;
       max-width: min(calc(100% - 5rem), 40rem);
     }
   }
@@ -36,10 +36,6 @@ app-theme-button {
 
 app-theme-select {
   width: 100%;
-  
-  @media (min-width: 768px) {
-    width: fit-content;
-  }
 }
 
 app-time-slider-button,
