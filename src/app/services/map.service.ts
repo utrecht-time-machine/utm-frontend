@@ -226,6 +226,9 @@ export class MapService {
       this.map?.scrollZoom.enable();
       this.filters.hideAllForLocation(FilterLocation.Map);
     });
+    this.map.on('dragstart', () => {
+      this.filters.hideAllForLocation(FilterLocation.Map);
+    });
 
     this.map.on('style.load', () => {
       // Insert the layer beneath any symbol layer.
