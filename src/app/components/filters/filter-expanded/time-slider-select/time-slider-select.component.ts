@@ -28,11 +28,12 @@ export class TimeSliderSelectComponent
   }
 
   onSliderInput($event: any) {
-    if (!$event.originalTarget) {
+    const target = $event.target || $event.originalTarget;
+    if (!target) {
       return;
     }
-    const id = $event.originalTarget.id;
-    const value = $event.originalTarget.value;
+    const id = target.id;
+    const value = target.value;
 
     clearTimeout(this.debouncedTimeout);
     this.debouncedTimeout = setTimeout(() => {
