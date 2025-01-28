@@ -70,9 +70,29 @@
             ></app-image-viewer>
           </div>
         </div>
-        <div class="media-source">
+
+        <div class="media-source" *ngIf="selectedRoute">
           <div class="views-element-container">
-            <div></div>
+            <div>
+              <span *ngIf="selectedRoute?.caption">{{
+                selectedRoute.caption
+              }}</span>
+              <span
+                *ngIf="selectedRoute?.source_link && selectedRoute?.source_name"
+                >{{ "source" | translate }}:
+                <a [href]="selectedRoute.source_link" target="_blank">{{
+                  selectedRoute.source_name
+                }}</a></span
+              >
+              <span
+                *ngIf="
+                  !selectedRoute?.source_link && selectedRoute?.source_name
+                "
+                >{{ "source" | translate }}:
+                {{ selectedRoute.source_name }}</span
+              >
+              <app-license [licenseLabel]="selectedRoute.license"></app-license>
+            </div>
           </div>
         </div>
       </div>

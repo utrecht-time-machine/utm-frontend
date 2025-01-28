@@ -174,13 +174,13 @@ export class MapService {
     ]; //[5.122222, 52.090833];
     this.map = new mapboxgl.Map({
       container: 'mapbox',
-      // style: 'mapbox://styles/mapbox/streets-v12',
+      style: 'mapbox://styles/mapbox/streets-v12',
       // style: 'mapbox://styles/mapbox/navigation-night-v1',
       // style: 'mapbox://styles/mapbox/satellite-v9',
-      style: 'mapbox://styles/mapbox/light-v11',
+      // style: 'mapbox://styles/mapbox/light-v11',
       center: randomCenter,
-      zoom: 12,
-      pitch: 12, //24
+      zoom: 16,
+      pitch: 24,
       bearing: 0,
       attributionControl: false,
       // @ts-ignore

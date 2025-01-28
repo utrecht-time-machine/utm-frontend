@@ -23,4 +23,11 @@ export class RouteStepsComponent {
   public get routeDistanceStr(): string {
     return this.selectedRoute?.distance ? `${this.selectedRoute.distance}` : '';
   }
+
+  public get routeTypeStr(): string {
+    if (this.selectedRoute?.type == 'Fietsroute') {
+      return 'cycling';
+    }
+    return 'walking';
+  }
 }
