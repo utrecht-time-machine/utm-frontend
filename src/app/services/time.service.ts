@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class TimeService {
-  DEFAULT_MIN_YEAR = -200;
+  DEFAULT_MIN_YEAR = 0;
   DEFAULT_MAX_YEAR = new Date().getFullYear();
 
   numTimesMinYearUpdated = 0;
