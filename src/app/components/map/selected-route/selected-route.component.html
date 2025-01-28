@@ -75,13 +75,13 @@
           <div class="views-element-container">
             <div>
               <span *ngIf="selectedRoute?.caption">{{
-                selectedRoute?.caption
+                selectedRoute.caption
               }}</span>
               <span
                 *ngIf="selectedRoute?.source_link && selectedRoute?.source_name"
                 >{{ "source" | translate }}:
-                <a [href]="selectedRoute?.source_link" target="_blank">{{
-                  selectedRoute?.source_name
+                <a [href]="selectedRoute.source_link" target="_blank">{{
+                  selectedRoute.source_name
                 }}</a></span
               >
               <span
@@ -89,11 +89,9 @@
                   !selectedRoute?.source_link && selectedRoute?.source_name
                 "
                 >{{ "source" | translate }}:
-                {{ selectedRoute?.source_name }}</span
+                {{ selectedRoute.source_name }}</span
               >
-              <app-license
-                [licenseLabel]="selectedRoute?.license"
-              ></app-license>
+              <app-license [licenseLabel]="selectedRoute.license"></app-license>
             </div>
           </div>
         </div>
