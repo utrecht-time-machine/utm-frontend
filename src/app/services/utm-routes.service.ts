@@ -36,8 +36,22 @@ export class UtmRoutesService {
     void this.load();
 
     this._resetStopIndexOnRouteChange();
+    this._checkDevModeRouteOnRouteChange();
     this._loadStopsDataFromServerOnRouteChange();
     this._loadStoriesDataFromServerOnStopChange();
+  }
+
+  private _checkDevModeRouteOnRouteChange() {
+    this.selected.subscribe((selectedRoute) => {
+      if (!selectedRoute) {
+        return;
+      }
+
+      if (selectedRoute.show_only_in_dev_mode && !environment.dev) {
+        this.selected.next(undefined);
+        this.router.navigate(['/routes']);
+      }
+    });
   }
 
   private _loadStopsDataFromServerOnRouteChange() {
