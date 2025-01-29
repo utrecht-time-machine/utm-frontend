@@ -32,7 +32,7 @@ export const environment = {
     routes: ['head', 'teaser', 'title', 'text', 'type'],
     locationDetails: ['caption', 'teaser', 'head', 'title', 'text'],
     storyDetails: ['title', 'location_title'],
-    mediaItem: ['title', 'caption', 'text'],
+    mediaItem: ['title', 'caption', 'text', 'audio_transcript'],
     stop: [
       'title',
       'intro',

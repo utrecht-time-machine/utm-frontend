@@ -5,6 +5,7 @@ export interface MediaItem {
   media_id: string;
   media_file: string;
   has_audio: boolean;
+  audio_transcript?: string;
   source_link: string;
   source_name: string;
   image_small: string;
