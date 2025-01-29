@@ -21,6 +21,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
   audio: Howl | undefined;
 
   @Input() audioUrl: string | undefined;
+  @Input() transcript?: string;
 
   @ViewChild('audioElement', { static: false }) audioElement!: ElementRef;
 

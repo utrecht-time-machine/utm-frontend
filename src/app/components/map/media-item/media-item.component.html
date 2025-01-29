@@ -14,6 +14,7 @@
       <app-audio-player
         *ngIf="mediaItem.has_audio"
         [audioUrl]="mediaItem.media_file"
+        [transcript]="mediaItem.audio_transcript"
       ></app-audio-player>
 
       <div class="image-embed" *ngIf="mediaItem.type === MediaItemType.Image">

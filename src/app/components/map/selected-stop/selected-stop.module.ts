@@ -7,6 +7,7 @@ import { EditButtonModule } from '../../edit-button/edit-button.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FeedbackModule } from '../../feedback/feedback.module';
 import { AudioPlayerModule } from '../../audio-player/audio-player.module';
+import { AudioTranscriptComponent } from "../../audio-transcript/audio-transcript.component";
 
 @NgModule({
   declarations: [SelectedStopComponent],
@@ -18,7 +19,8 @@ import { AudioPlayerModule } from '../../audio-player/audio-player.module';
     TranslateModule,
     FeedbackModule,
     AudioPlayerModule,
-  ],
+    AudioTranscriptComponent
+],
   exports: [SelectedStopComponent],
 })
 export class SelectedStopModule {}

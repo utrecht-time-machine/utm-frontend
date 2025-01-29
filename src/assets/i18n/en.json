@@ -26,5 +26,8 @@
   "nextStop": "Next stop",
   "showLocationsWithoutDate": "Show locations without date",
   "showStoriesWithoutDate": "Show stories without date",
-  "noStoriesFoundWithTheseFilters": "It seems there are no stories for this location with the chosen filters. Please modify the filters above to discover more options."
+  "noStoriesFoundWithTheseFilters": "It seems there are no stories for this location with the chosen filters. Please modify the filters above to discover more options.",
+  "transcript": "Transcript",
+  "show_transcript": "Show transcript",
+  "hide_transcript": "Hide transcript"
 }
