@@ -13,6 +13,7 @@ export class ThemeService {
   numTimesSelectedThemesChanged = 0;
 
   icon: string = 'library_books';
+  searchText: string = '';
 
   constructor(public api: ApiService) {
     void this.updateAllFromServer();
@@ -61,15 +62,10 @@ export class ThemeService {
     this.selectedIds.next([]);
   }
 
-  filterThemes(searchText: string) {
-    if (!searchText) {
-      this.filtered.next(this.all.value);
-      return;
-    }
-    
-    const filteredThemes = this.all.value.filter(theme => 
-      theme.title.toLowerCase().includes(searchText.toLowerCase()) ||
-      theme.head?.toLowerCase().includes(searchText.toLowerCase())
+  filterThemes() {
+    const searchText = this.searchText.toLowerCase();
+    const filteredThemes = this.all.value.filter((theme) =>
+      theme.title.toLowerCase().includes(searchText)
     );
     this.filtered.next(filteredThemes);
   }

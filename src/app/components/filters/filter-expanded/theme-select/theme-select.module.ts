@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FilterExpandedModule } from '../filter-expanded.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ThemeSelectComponent],
@@ -15,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
     FilterExpandedModule,
     MatCheckboxModule,
     MatIconModule,
+    FormsModule,
   ],
 })
 export class ThemeSelectModule {}
