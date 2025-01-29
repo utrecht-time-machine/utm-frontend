@@ -21,5 +21,7 @@
   "appIsOffline": "Sorry, we ervaren momenteel verbindingsproblemen. Controleer uw internetverbinding en probeer het later opnieuw.",
   "source": "Bron",
   "organisationsHeader": "Met bijdragen van",
-  "transcript": "Transcriptie"
+  "transcript": "Transcriptie",
+  "show_transcript": "Toon transcriptie",
+  "hide_transcript": "Verberg transcriptie"
 }

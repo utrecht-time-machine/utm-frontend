@@ -19,5 +19,7 @@
   "appIsOffline": "Sorry, we are currently experiencing connection issues. Please check your internet connection and try again later.",
   "source": "Source",
   "organisationsHeader": "With contributions from",
-  "transcript": "Transcript"
+  "transcript": "Transcript",
+  "show_transcript": "Show transcript",
+  "hide_transcript": "Hide transcript"
 }
