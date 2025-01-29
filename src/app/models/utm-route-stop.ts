@@ -8,7 +8,9 @@ export interface UtmRouteStop {
   intro?: string;
   intro_english?: string;
   audio?: string;
+  audio_transcript?: string;
   audio_english?: string;
+  audio_transcript_english?: string;
   location_id: string;
   story_ids: string;
   route_id: string;

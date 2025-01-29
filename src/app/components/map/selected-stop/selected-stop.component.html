@@ -1,10 +1,12 @@
 <app-audio-player
   [audioUrl]="utmRoutes.selectedStop?.audio"
+  [transcript]="utmRoutes.selectedStop?.audio_transcript"
   *ngIf="utmRoutes.selectedStop?.audio && !shouldShowEnglishAudio"
 />
 
 <app-audio-player
   [audioUrl]="utmRoutes.selectedStop?.audio_english"
+  [transcript]="utmRoutes.selectedStop?.audio_transcript_english"
   *ngIf="shouldShowEnglishAudio"
 />
 

@@ -1,0 +1,10 @@
+<div *ngIf="transcript" class="audio-transcript-container">
+  <p>
+    <strong>{{ "transcript" | translate }}</strong>
+  </p>
+  <p
+    *ngFor="let line of getTranscriptLines()"
+    [innerHtml]="line"
+    class="audio-transcript-line"
+  ></p>
+</div>
