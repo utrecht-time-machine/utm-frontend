@@ -103,6 +103,10 @@
     <preference name="hostname" value="localhost" />
     <!--    NSLocationAlwaysAndWhenInUseUsageDescription-->
 
+    <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+      <string>Utrecht Time Machine toont historische informatie over je huidige locatie. Je locatie
+        wordt alleen door de app zelf gebruikt en wordt met niemand gedeeld.</string>
+    </edit-config>
     <edit-config target="NSLocationAlwaysAndWhenInUseUsageDescription" file="*-Info.plist"
       mode="merge">
       <string>Utrecht Time Machine toont historische informatie over je huidige locatie. Je locatie
