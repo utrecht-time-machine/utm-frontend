@@ -11,6 +11,7 @@
   "startRoute": "Start route",
   "name": "Name",
   "address": "Address",
+  "addresses": "Addresses",
   "storyFeedbackQuestion": "What do you think of this story?",
   "pageFeedbackQuestion": "What do you think of this page?",
   "routeFeedbackQuestion": "What do you think of this route?",
