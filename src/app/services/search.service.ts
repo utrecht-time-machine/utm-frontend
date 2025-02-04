@@ -4,6 +4,7 @@ import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
+import { AddressSearchResult } from '../models/adress-search-result';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,9 @@ import { Router } from '@angular/router';
 export class SearchService {
   liveSearchResults: BehaviorSubject<LiveSearchResult[]> = new BehaviorSubject<
     LiveSearchResult[]
+  >([]);
+  addressResults: BehaviorSubject<AddressSearchResult[]> = new BehaviorSubject<
+    AddressSearchResult[]
   >([]);
 
   showLiveSearchResults = false;
@@ -21,10 +25,12 @@ export class SearchService {
   async updateLiveSearchResults(searchInput: string) {
     if (!searchInput) {
       this.removeLiveSearchResults();
+      this.addressResults.next([]);
       return;
     }
 
     this.isLoadingLiveSearchResults = true;
+    this.searchAddresses(searchInput);
     const searchResults: LiveSearchResult[] | void = await lastValueFrom(
       this.http.get<LiveSearchResult[]>(environment.liveSearchUrl + searchInput)
     ).catch((err) => {
@@ -45,7 +51,8 @@ export class SearchService {
     setTimeout(() => {
       this.liveSearchResults.next(searchResults);
       this.isLoadingLiveSearchResults = false;
-    }, 500);
+      this.showLiveSearchResults = true;
+    }, 10);
   }
 
   navigateToFirstSearchResult() {
@@ -79,6 +86,45 @@ export class SearchService {
 
   removeLiveSearchResults() {
     this.liveSearchResults.next([]);
+    this.addressResults.next([]);
+  }
+
+  private async searchAddresses(query: string) {
+    const mapboxToken = environment.mapboxAccessToken;
+    if (!mapboxToken) {
+      console.error('Mapbox token not configured');
+      return;
+    }
+
+    const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+      query
+    )}.json`;
+    const params = {
+      access_token: mapboxToken,
+      country: 'NL', // Limit to Netherlands
+      proximity: '5.1214,52.0907', // Utrecht coordinates for better local results
+      types: 'address,place', // Only search for addresses and places
+      language: 'nl', // Dutch results
+    };
+
+    try {
+      const response = await lastValueFrom(
+        this.http.get<any>(endpoint, { params })
+      );
+
+      const results: AddressSearchResult[] = response.features.map(
+        (feature: any) => ({
+          place_name: feature.place_name,
+          center: feature.center,
+          text: feature.text,
+        })
+      );
+
+      this.addressResults.next(results);
+    } catch (error) {
+      console.error('Error searching addresses:', error);
+      this.addressResults.next([]);
+    }
   }
 
   hideLiveSearchResults() {

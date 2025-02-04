@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoutingService } from '../../services/routing.service';
 import { SelectedView } from '../../models/selected-view';
@@ -13,6 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  @ViewChild('searchContainer') searchContainer!: ElementRef;
+
   private searchInputSubject = new Subject<string>();
 
   SelectedView = SelectedView;
@@ -31,5 +33,29 @@ export class HeaderComponent {
 
   onSearchInputChange(event: any) {
     this.searchInputSubject.next(event.target.value);
+  }
+
+  onSearchBlur(event: FocusEvent) {
+    const clickedElement = event.relatedTarget as HTMLElement;
+    const clickInsideContainer =
+      clickedElement &&
+      this.searchContainer.nativeElement.contains(clickedElement);
+    if (!clickInsideContainer) {
+      this.search.hideLiveSearchResults();
+    }
+  }
+
+  onSearchFocus() {
+    if (
+      this.search.liveSearchResults.getValue().length > 0 ||
+      this.search.addressResults.getValue().length > 0
+    ) {
+      this.search.showLiveSearchResults = true;
+    }
+  }
+
+  onAddressSelect(address: any) {
+    this.map.flyTo(address.center);
+    this.search.hideLiveSearchResults();
   }
 }

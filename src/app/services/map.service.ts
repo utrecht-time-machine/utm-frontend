@@ -985,6 +985,14 @@ export class MapService {
       </a>`;
   }
 
+  flyTo(center: [number, number], zoom: number = 16) {
+    this.map?.flyTo({
+      center: center,
+      zoom: zoom,
+      essential: true
+    });
+  }
+
   private async _showMapLocationPopup(location: LocationDetails) {
     if (this.shownLocationPopup) {
       this.shownLocationPopup.remove();
