@@ -54,8 +54,17 @@ export class HeaderComponent {
     }
   }
 
-  onAddressSelect(address: any) {
-    this.map.flyTo(address.center);
+  async onAddressSelect(address: any) {
     this.search.hideLiveSearchResults();
+
+    const isAlreadyShowingMap =
+      this.routing.getSelectedView() === SelectedView.Locations ||
+      this.routing.getSelectedView() === SelectedView.SelectedRoute;
+    if (!isAlreadyShowingMap) {
+      await this.router.navigateByUrl('/locaties');
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+
+    this.map.flyTo(address.center);
   }
 }
