@@ -639,7 +639,7 @@ export class MapService {
       type: 'geojson',
       data: this.mapLocationsFeatures,
       cluster: true,
-      clusterMaxZoom: 12,
+      clusterMaxZoom: 15,
       clusterRadius: 50,
     });
 
@@ -690,6 +690,47 @@ export class MapService {
       },
     });
 
+    // Process the titles to strip HTML
+    if (this.mapLocationsFeatures) {
+      this.mapLocationsFeatures.features.forEach((feature) => {
+        if (feature.properties) {
+          // Create a temporary div to parse HTML and get text content
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = feature.properties['title'];
+          feature.properties['plainTitle'] =
+            tempDiv.textContent || tempDiv.innerText || '';
+          // Clean up the temporary div
+          tempDiv.remove();
+        }
+      });
+      // Update the source data with processed titles
+      const source = this.map?.getSource('locations') as mapboxgl.GeoJSONSource;
+      source?.setData(this.mapLocationsFeatures);
+    }
+
+    // Add text labels under the circles
+    this.map?.addLayer({
+      id: 'unclustered-point-label',
+      type: 'symbol',
+      source: 'locations',
+      filter: ['!', ['has', 'point_count']],
+      layout: {
+        'text-field': ['get', 'plainTitle'],
+        'text-anchor': 'top',
+        'text-offset': [0, 1], // Offset the text slightly below the circle
+        'text-size': 12,
+        'text-allow-overlap': false,
+        'text-ignore-placement': false,
+        'icon-allow-overlap': true,
+        'text-max-width': 8, // Wrap text after roughly 8 characters
+      },
+      paint: {
+        'text-color': '#000000',
+        'text-halo-color': '#ffffff',
+        'text-halo-width': 2,
+      },
+    });
+
     if (hideLocations) {
       this.hideLocationsOnMap();
     }
@@ -703,6 +744,7 @@ export class MapService {
     this.map.setLayoutProperty('clusters', 'visibility', 'none');
     this.map.setLayoutProperty('cluster-count', 'visibility', 'none');
     this.map.setLayoutProperty('unclustered-point', 'visibility', 'none');
+    this.map.setLayoutProperty('unclustered-point-label', 'visibility', 'none');
   }
 
   updateLocationsClosestToCenter(maxItems: number = 5): void {
