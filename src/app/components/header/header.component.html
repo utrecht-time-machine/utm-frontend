@@ -55,7 +55,12 @@
                     class="search-result-type"
                     *ngIf="(search.liveSearchResults | async)?.length"
                   >
-                    {{ "locations" | translate }}
+                    <img
+                      src="assets/ui/svg/location-dot.svg"
+                      alt="Locations icon"
+                      class="header-icon"
+                    />
+                    {{ "locationsAndStories" | translate }}
                   </li>
                   <li
                     *ngFor="
@@ -71,7 +76,12 @@
                     class="search-result-type"
                     *ngIf="(search.addressResults | async)?.length"
                   >
-                    {{ "addresses" | translate }}
+                    <img
+                      src="assets/ui/svg/map.svg"
+                      alt="Addresses icon"
+                      class="header-icon"
+                    />
+                    {{ "addressesOnMap" | translate }}
                   </li>
                   <li
                     *ngFor="let address of search.addressResults | async"
