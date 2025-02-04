@@ -8,14 +8,15 @@
     </div>
     <div
       class="audioplayer-bar"
-      (touchstart)="onAudioBarStartScrubbing()"
+      (touchstart)="onAudioBarStartScrubbing($event)"
       (touchmove)="onAudioBarScrubbed($event)"
-      (touchend)="onAudioBarStopScrubbing()"
-      (mousedown)="onAudioBarStartScrubbing()"
+      (touchend)="onAudioBarStopScrubbing($event)"
+      (touchcancel)="onAudioBarStopScrubbing($event)"
+      (mousedown)="onAudioBarStartScrubbing($event)"
       (mousemove)="onAudioBarScrubbed($event)"
-      (mouseup)="onAudioBarStopScrubbing()"
+      (mouseup)="onAudioBarStopScrubbing($event)"
+      (mouseleave)="onAudioBarStopScrubbing($event)"
       (click)="onAudioBarClicked($event)"
-      (mouseleave)="onAudioBarStopScrubbing()"
     >
       <!--      <div class="audioplayer-bar-loaded" [ngStyle]="{ width: '0%' }"></div>-->
       <div
