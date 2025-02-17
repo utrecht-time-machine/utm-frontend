@@ -600,14 +600,27 @@ export class MapService {
   }
 
   private _removeExistingMapLocations() {
-    const clustersLayer = this.map?.getLayer('clusters');
-    if (clustersLayer) {
-      this.map?.removeLayer('clusters');
+    if (!this.map) {
+      return;
     }
 
-    const clusterCountLayer = this.map?.getLayer('cluster-count');
-    if (clusterCountLayer) {
-      this.map?.removeLayer('cluster-count');
+    // Remove layers first
+    const layersToRemove = [
+      'clusters',
+      'cluster-count',
+      'unclustered-point',
+      'unclustered-point-label'
+    ];
+
+    for (const layerId of layersToRemove) {
+      if (this.map.getLayer(layerId)) {
+        this.map.removeLayer(layerId);
+      }
+    }
+
+    // Then remove the source
+    if (this.map.getSource('locations')) {
+      this.map.removeSource('locations');
     }
 
     const unclusteredPointLayer = this.map?.getLayer('unclustered-point');
