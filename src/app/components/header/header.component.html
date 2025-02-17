@@ -21,7 +21,7 @@
               id="views-exposed-form-utm-search-livesearch"
               accept-charset="UTF-8"
             >
-              <div class="input-wrapper">
+              <div class="input-wrapper" #searchContainer>
                 <input
                   placeholder="{{ 'search' | translate }}"
                   class="form-autocomplete form-text ui-autocomplete-input"
@@ -36,8 +36,9 @@
                   maxlength="128"
                   autocomplete="off"
                   (input)="onSearchInputChange($event)"
-                  (blur)="search.hideLiveSearchResults()"
-                  (focus)="search.showLiveSearchResults = true"
+                  (blur)="onSearchBlur($event)"
+                  (focus)="onSearchFocus()"
+                  (click)="onSearchFocus()"
                   (keyup.enter)="search.navigateToFirstSearchResult()"
                 />
 
@@ -49,13 +50,50 @@
                       : 'hidden'
                   }"
                 >
+                  <!-- Location Results -->
+                  <li
+                    class="search-result-type"
+                    *ngIf="(search.liveSearchResults | async)?.length"
+                  >
+                    <img
+                      src="assets/ui/svg/location-dot.svg"
+                      alt="Locations icon"
+                      class="header-icon"
+                    />
+                    {{ "locationsAndStories" | translate }}
+                  </li>
                   <li
                     *ngFor="
                       let searchResult of search.liveSearchResults.getValue()
                     "
                     [innerHtml]="searchResult.label"
-                    (click)="onSearchResultClicked($event, searchResult)"
+                    (click)="map.selectLocationByUrlOrId(searchResult.url)"
+                    class="location-result"
                   ></li>
+
+                  <!-- Address Results -->
+                  <li
+                    class="search-result-type"
+                    *ngIf="(search.addressResults | async)?.length"
+                  >
+                    <img
+                      src="assets/ui/svg/map.svg"
+                      alt="Addresses icon"
+                      class="header-icon"
+                    />
+                    {{ "addressesOnMap" | translate }}
+                  </li>
+                  <li
+                    *ngFor="let address of search.addressResults | async"
+                    (click)="onAddressSelect(address)"
+                    (mousedown)="$event.preventDefault()"
+                    class="address-result"
+                  >
+                    <div class="search-view">
+                      <div class="name">{{ address.place_name }}</div>
+                      <!-- <div class="addr">{{ address.text }}</div> -->
+                    </div>
+                  </li>
                 </ul>
               </div>
             </div>

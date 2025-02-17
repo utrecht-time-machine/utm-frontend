@@ -51,7 +51,7 @@
         *ngIf="story?.title"
         [hidden]="story.title === utmRoutes.selectedStop?.title"
       >
-        <h2>{{ story.title }}</h2>
+        <h2 [innerHTML]="story.title"></h2>
       </div>
 
       <app-audio-player [audioUrl]="story.audio" *ngIf="story.audio" />

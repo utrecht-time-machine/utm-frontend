@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="nl.utrechttimemachine" version="1.0.8"
+<widget id="nl.utrechttimemachine" version="1.0.9"
   xmlns="http://www.w3.org/ns/widgets"
   xmlns:android="http://schemas.android.com/apk/res/android">
   <name>Utrecht Time Machine</name>
@@ -13,6 +13,8 @@
 
 
   <preference name="android-targetSdkVersion" value="34" />
+
+  <preference name="StatusBarOverlaysWebView" value="false" />
 
   <preference name="AllowInlineMediaPlayback" value="true" />
   <preference name="MediaTypesRequiringUserActionForPlayback" value="false" />
@@ -103,6 +105,10 @@
     <preference name="hostname" value="localhost" />
     <!--    NSLocationAlwaysAndWhenInUseUsageDescription-->
 
+    <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+      <string>Utrecht Time Machine toont historische informatie over je huidige locatie. Je locatie
+        wordt alleen door de app zelf gebruikt en wordt met niemand gedeeld.</string>
+    </edit-config>
     <edit-config target="NSLocationAlwaysAndWhenInUseUsageDescription" file="*-Info.plist"
       mode="merge">
       <string>Utrecht Time Machine toont historische informatie over je huidige locatie. Je locatie
