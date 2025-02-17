@@ -24,7 +24,7 @@ export const environment = {
   ],
   mediaItemYouTubeEmbedUrl: 'https://youtube.com/embed/',
   mapboxAccessToken:
-    'pk.eyJ1IjoiY2Itc3R1ZGlvIiwiYSI6ImNrcDUxZW04MjBjZ3gydHF0bmUyano0bncifQ.MLaKn3TF2V4b4ICX1HJnnA',
+    'pk.eyJ1IjoidXRyZWNodHRpbWVtYWNoaW5lIiwiYSI6ImNtNzk1aWZ4ZDAxb3UycXNienh5bngwcXkifQ.WtfuJZJcWBWX11FlwKz7Hw',
   liveSearchUrl:
     'https://data.utrechttimemachine.nl/search_api_autocomplete/utm_search?display=livesearch&filter=livesearch&q=',
   translateUrl: 'https://services.utrechttimemachine.nl/translate',

@@ -162,7 +162,8 @@ export class MapService {
     ]; //[5.122222, 52.090833];
     this.map = new mapboxgl.Map({
       container: 'mapbox',
-      style: 'mapbox://styles/mapbox/streets-v12',
+      style: 'mapbox://styles/utrechttimemachine/cm7944mn7000001sh3fhy9lwh',
+      // style: 'mapbox://styles/mapbox/streets-v12',
       // style: 'mapbox://styles/mapbox/navigation-night-v1',
       // style: 'mapbox://styles/mapbox/satellite-v9',
       // style: 'mapbox://styles/mapbox/light-v11',
@@ -171,18 +172,6 @@ export class MapService {
       pitch: 24,
       bearing: 0,
       attributionControl: false,
-      // @ts-ignore
-      sources: {
-        'raster-tiles': {
-          type: 'raster',
-          tiles: [
-            'https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg',
-          ],
-          tileSize: 256,
-          attribution:
-            'Map tiles by <a target="_top" rel="noopener" href="http://stamen.com">Stamen Design</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_top" rel="noopener" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>',
-        },
-      },
     });
 
     const nav = new mapboxgl.NavigationControl({
@@ -214,53 +203,6 @@ export class MapService {
     });
 
     this.map.on('style.load', () => {
-      // Insert the layer beneath any symbol layer.
-      const layers = this.map?.getStyle().layers;
-      const labelLayerId = layers?.find(
-        (layer: any) => layer.type === 'symbol' && layer.layout['text-field']
-      )?.id;
-
-      // The 'building' layer in the Mapbox Streets
-      // vector tileset contains building height data
-      // from OpenStreetMap.
-      this.map?.addLayer(
-        {
-          id: 'add-3d-buildings',
-          source: 'composite',
-          'source-layer': 'building',
-          filter: ['==', 'extrude', 'true'],
-          type: 'fill-extrusion',
-          minzoom: 12,
-          paint: {
-            'fill-extrusion-color': '#aaa',
-
-            // Use an 'interpolate' expression to
-            // add a smooth transition effect to
-            // the buildings as the user zooms in.
-            'fill-extrusion-height': [
-              'interpolate',
-              ['linear'],
-              ['zoom'],
-              15,
-              0,
-              15.05,
-              ['get', 'height'],
-            ],
-            'fill-extrusion-base': [
-              'interpolate',
-              ['linear'],
-              ['zoom'],
-              15,
-              0,
-              15.05,
-              ['get', 'min_height'],
-            ],
-            'fill-extrusion-opacity': 0.6,
-          },
-        },
-        labelLayerId
-      );
-
       if (this.routing.getSelectedView() === SelectedView.Locations) {
         this.addLocationsOnMap(false);
       } else if (
@@ -989,7 +931,7 @@ export class MapService {
     this.map?.flyTo({
       center: center,
       zoom: zoom,
-      essential: true
+      essential: true,
     });
   }
 
