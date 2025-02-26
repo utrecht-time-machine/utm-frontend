@@ -6,12 +6,12 @@ import { FilterService } from '../../../../services/filter.service';
 import { FilterType } from '../../../../models/filter-type.enum';
 
 @Component({
-  selector: 'app-time-slider-select',
-  templateUrl: './time-slider-select.component.html',
-  styleUrls: ['./time-slider-select.component.scss'],
+  selector: 'app-time-filter',
+  templateUrl: './time-filter.component.html',
+  styleUrls: ['./time-filter.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TimeSliderSelectComponent
+export class TimeFilterComponent
   extends FilterExpandedComponent
   implements AfterViewInit
 {

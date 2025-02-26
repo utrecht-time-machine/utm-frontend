@@ -14,8 +14,8 @@ import { OrganisationsModule } from '../organisations/organisations.module';
 import { ImageViewerModule } from './media-item/image-viewer/image-viewer.module';
 import { AudioPlayerModule } from '../audio-player/audio-player.module';
 import { ThemeFilterModule } from '../filters/filter-expanded/theme-filter/theme-filter.module';
-import { TimeSliderSelectModule } from '../filters/filter-expanded/time-slider-select/time-slider-select.module';
 import { FiltersModule } from '../filters/filters.module';
+import { TimeFilterModule } from '../filters/filter-expanded/time-filter/time-filter.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,7 @@ import { FiltersModule } from '../filters/filters.module';
     ImageViewerModule,
     AudioPlayerModule,
     ThemeFilterModule,
-    TimeSliderSelectModule,
+    TimeFilterModule,
     FiltersModule,
   ],
 })

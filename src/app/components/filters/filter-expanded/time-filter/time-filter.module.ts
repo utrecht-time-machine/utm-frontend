@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TimeSliderSelectComponent } from './time-slider-select.component';
+import { TimeFilterComponent } from './time-filter.component';
 import { FilterExpandedModule } from '../filter-expanded.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSliderModule } from '@angular/material/slider';
@@ -8,8 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
-  declarations: [TimeSliderSelectComponent],
-  exports: [TimeSliderSelectComponent],
+  declarations: [TimeFilterComponent],
+  exports: [TimeFilterComponent],
   imports: [
     CommonModule,
     FilterExpandedModule,
@@ -19,4 +19,4 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCheckboxModule,
   ],
 })
-export class TimeSliderSelectModule {}
+export class TimeFilterModule {}
