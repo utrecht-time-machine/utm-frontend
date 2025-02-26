@@ -8,7 +8,6 @@ import { StoryService } from '../../../services/story.service';
 import { UtmTranslateService } from '../../../services/utm-translate.service';
 import { TimeService } from '../../../services/time.service';
 import { ThemeService } from '../../../services/theme.service';
-import { FilterLocation } from '../../../models/filter-location.enum';
 
 @Component({
   selector: 'app-selected-item',
@@ -62,6 +61,4 @@ export class SelectedItemComponent {
       ) ?? []
     );
   }
-
-  protected readonly FilterLocation = FilterLocation;
 }

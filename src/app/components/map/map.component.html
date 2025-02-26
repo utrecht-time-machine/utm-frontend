@@ -2,10 +2,7 @@
   <div class="map-view">
     <div id="mapbox" class="mapboxgl-map"></div>
 
-    <app-filters
-      [location]="FilterLocation.Map"
-      *ngIf="routing.getSelectedView() === SelectedView.Locations"
-    />
+    <app-filters />
   </div>
   <div class="map-data">
     <div class="map-data-handle"></div>

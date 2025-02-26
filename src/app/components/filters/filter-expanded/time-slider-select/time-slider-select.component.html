@@ -1,10 +1,8 @@
 <app-filter-expanded
   [title]="'timePeriod' | translate"
   [icon]="time.icon"
-  (close)="filters.hide(location, FilterType.Time)"
   [maxHeight]="'none'"
   [overflowY]="'hidden'"
-  [location]="location"
 >
   <div class="slider-container">
     <mat-slider
@@ -33,17 +31,7 @@
       [checked]="time.showLocationsWithoutDate.value"
       (change)="onToggleShowLocationsWithoutDate($event)"
     >
-      <span *ngIf="location === FilterLocation.Map">{{
-        "showLocationsWithoutDate" | translate
-      }}</span>
-
-      <span *ngIf="location === FilterLocation.Stories">{{
-        "showStoriesWithoutDate" | translate
-      }}</span>
+      <span>{{ "showLocationsWithoutDate" | translate }}</span>
     </mat-checkbox>
-    <!--    <input type="checkbox" id="show-locations-without-date-checkbox" />-->
-    <!--    <label for="show-locations-without-date-checkbox">-->
-    <!--      <span>Toon locaties zonder datum</span>-->
-    <!--    </label>-->
   </div>
 </app-filter-expanded>

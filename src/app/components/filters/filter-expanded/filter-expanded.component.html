@@ -1,17 +1,8 @@
-<div
-  class="container"
-  [ngClass]="[
-    location === FilterLocation.Map ? 'container-map' : '',
-    location === FilterLocation.Stories ? 'container-stories' : ''
-  ]"
->
+<div class="container">
   <p class="heading">
     <mat-icon *ngIf="icon">{{ icon }}</mat-icon>
     {{ title }}
   </p>
-  <button class="close-button" (click)="close.emit()">
-    <mat-icon class="close-icon">close</mat-icon>
-  </button>
 
   <div
     class="inner-container"

@@ -1,33 +1,4 @@
-<div
-  class="filters-container"
-  [ngClass]="[
-    location === FilterLocation.Map ? 'filters-container-map' : '',
-    location === FilterLocation.Stories ? 'filters-container-stories' : ''
-  ]"
->
-  <app-time-slider-button
-    *ngIf="!filter.isShowing(location, FilterType.Time)"
-    [location]="location"
-    [class.hide-mobile]="
-      filter.isShowing(location, FilterType.Theme) &&
-      location === FilterLocation.Map
-    "
-  />
-  <app-time-slider-select
-    *ngIf="filter.isShowing(location, FilterType.Time)"
-    [location]="location"
-  />
-
-  <app-theme-button
-    *ngIf="!filter.isShowing(location, FilterType.Theme)"
-    [location]="location"
-    [class.hide-mobile]="
-      filter.isShowing(location, FilterType.Time) &&
-      location === FilterLocation.Map
-    "
-  />
-  <app-theme-select
-    *ngIf="filter.isShowing(location, FilterType.Theme)"
-    [location]="location"
-  />
+<div class="filters-container">
+  <app-time-slider-select />
+  <app-theme-select />
 </div>

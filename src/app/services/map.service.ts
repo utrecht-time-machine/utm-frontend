@@ -28,7 +28,6 @@ import { ThemeService } from './theme.service';
 import { TimeService } from './time.service';
 import { FilterService } from './filter.service';
 import { FilterType } from '../models/filter-type.enum';
-import { FilterLocation } from '../models/filter-location.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -206,17 +205,17 @@ export class MapService {
     this.map.touchZoomRotate.disableRotation();
     this.map.on('click', () => {
       this.map?.scrollZoom.enable();
-      this.filters.hideAllForLocation(FilterLocation.Map);
+      this.filters.hide();
     });
     this.map.on('movestart', () => {
       this.map?.scrollZoom.enable();
     });
     this.map.on('touchstart', () => {
       this.map?.scrollZoom.enable();
-      this.filters.hideAllForLocation(FilterLocation.Map);
+      this.filters.hide();
     });
     this.map.on('dragstart', () => {
-      this.filters.hideAllForLocation(FilterLocation.Map);
+      this.filters.hide();
     });
 
     this.map.on('style.load', () => {
@@ -609,7 +608,7 @@ export class MapService {
       'clusters',
       'cluster-count',
       'unclustered-point',
-      'unclustered-point-label'
+      'unclustered-point-label',
     ];
 
     for (const layerId of layersToRemove) {
