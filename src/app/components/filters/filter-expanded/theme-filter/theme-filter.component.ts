@@ -5,11 +5,11 @@ import { FilterService } from '../../../../services/filter.service';
 import { FilterType } from '../../../../models/filter-type.enum';
 
 @Component({
-  selector: 'app-theme-select',
-  templateUrl: './theme-select.component.html',
-  styleUrls: ['./theme-select.component.scss'],
+  selector: 'app-theme-filter',
+  templateUrl: './theme-filter.component.html',
+  styleUrls: ['./theme-filter.component.scss'],
 })
-export class ThemeSelectComponent extends FilterExpandedComponent {
+export class ThemeFilterComponent extends FilterExpandedComponent {
   constructor(public themes: ThemeService, public filters: FilterService) {
     super();
   }

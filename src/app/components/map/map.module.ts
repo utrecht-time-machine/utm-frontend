@@ -13,7 +13,7 @@ import { EditButtonModule } from '../edit-button/edit-button.module';
 import { OrganisationsModule } from '../organisations/organisations.module';
 import { ImageViewerModule } from './media-item/image-viewer/image-viewer.module';
 import { AudioPlayerModule } from '../audio-player/audio-player.module';
-import { ThemeSelectModule } from '../filters/filter-expanded/theme-select/theme-select.module';
+import { ThemeFilterModule } from '../filters/filter-expanded/theme-filter/theme-filter.module';
 import { TimeSliderSelectModule } from '../filters/filter-expanded/time-slider-select/time-slider-select.module';
 import { FiltersModule } from '../filters/filters.module';
 
@@ -36,7 +36,7 @@ import { FiltersModule } from '../filters/filters.module';
     OrganisationsModule,
     ImageViewerModule,
     AudioPlayerModule,
-    ThemeSelectModule,
+    ThemeFilterModule,
     TimeSliderSelectModule,
     FiltersModule,
   ],
