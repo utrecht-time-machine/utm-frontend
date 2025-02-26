@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-filter-expanded',
-  templateUrl: './filter-expanded.component.html',
-  styleUrls: ['./filter-expanded.component.scss'],
+  selector: 'app-filter',
+  templateUrl: './filter.component.html',
+  styleUrls: ['./filter.component.scss'],
 })
-export class FilterExpandedComponent {
+export class FilterComponent {
   @Input() title: string = '';
   @Input() icon: string = '';
   @Input() overflowY: string = 'scroll';

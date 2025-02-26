@@ -13,9 +13,9 @@ import { EditButtonModule } from '../edit-button/edit-button.module';
 import { OrganisationsModule } from '../organisations/organisations.module';
 import { ImageViewerModule } from './media-item/image-viewer/image-viewer.module';
 import { AudioPlayerModule } from '../audio-player/audio-player.module';
-import { ThemeFilterModule } from '../filters/filter-expanded/theme-filter/theme-filter.module';
+import { ThemeFilterModule } from '../filters/filter/theme-filter/theme-filter.module';
 import { FiltersModule } from '../filters/filters.module';
-import { TimeFilterModule } from '../filters/filter-expanded/time-filter/time-filter.module';
+import { TimeFilterModule } from '../filters/filter/time-filter/time-filter.module';
 
 @NgModule({
   declarations: [

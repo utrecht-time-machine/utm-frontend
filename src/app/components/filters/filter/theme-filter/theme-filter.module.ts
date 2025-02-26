@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeFilterComponent } from './theme-filter.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { FilterExpandedModule } from '../filter-expanded.module';
+import { FilterModule } from '../filter.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     TranslateModule,
-    FilterExpandedModule,
+    FilterModule,
     MatCheckboxModule,
     MatIconModule,
     FormsModule,

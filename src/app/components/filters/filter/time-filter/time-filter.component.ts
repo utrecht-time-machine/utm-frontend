@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ViewEncapsulation } from '@angular/core';
 import { TimeService } from '../../../../services/time.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { FilterExpandedComponent } from '../filter-expanded.component';
+import { FilterComponent } from '../filter.component';
 import { FilterService } from '../../../../services/filter.service';
 import { FilterType } from '../../../../models/filter-type.enum';
 
@@ -12,7 +12,7 @@ import { FilterType } from '../../../../models/filter-type.enum';
   encapsulation: ViewEncapsulation.None,
 })
 export class TimeFilterComponent
-  extends FilterExpandedComponent
+  extends FilterComponent
   implements AfterViewInit
 {
   debouncedTimeout: any;

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ThemeService } from '../../../../services/theme.service';
-import { FilterExpandedComponent } from '../filter-expanded.component';
+import { FilterComponent } from '../filter.component';
 import { FilterService } from '../../../../services/filter.service';
 import { FilterType } from '../../../../models/filter-type.enum';
 
@@ -9,7 +9,7 @@ import { FilterType } from '../../../../models/filter-type.enum';
   templateUrl: './theme-filter.component.html',
   styleUrls: ['./theme-filter.component.scss'],
 })
-export class ThemeFilterComponent extends FilterExpandedComponent {
+export class ThemeFilterComponent extends FilterComponent {
   constructor(public themes: ThemeService, public filters: FilterService) {
     super();
   }
