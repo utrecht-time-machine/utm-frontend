@@ -19,6 +19,12 @@
   .mdc-slider__thumb .mdc-slider__thumb-knob {
     border: 2px solid white !important;
   }
+
+  --mdc-checkbox-state-layer-size: 30px;
+  .mat-mdc-checkbox-touch-target {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 .mat-mdc-slider.mat-primary {
