@@ -8,72 +8,51 @@ export class TimeService {
   DEFAULT_MIN_YEAR = 0;
   DEFAULT_MAX_YEAR = new Date().getFullYear();
 
-  numTimesMinYearUpdated = 0;
   minYear: BehaviorSubject<number> = new BehaviorSubject<number>(
     this.DEFAULT_MIN_YEAR
   );
-  numTimesMaxYearUpdated = 0;
   maxYear: BehaviorSubject<number> = new BehaviorSubject<number>(
     this.DEFAULT_MAX_YEAR
   );
-  numTimesShowLocationsWithoutDateUpdated = 0;
-  showLocationsWithoutDate: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(true);
 
-  icon: string = 'access_time';
+  constructor() {}
 
-  constructor() {
-    this.minYear.subscribe(() => {
-      this.numTimesMinYearUpdated++;
-    });
-
-    this.maxYear.subscribe(() => {
-      this.numTimesMaxYearUpdated++;
-    });
-
-    this.showLocationsWithoutDate.subscribe(() => {
-      this.numTimesShowLocationsWithoutDateUpdated++;
-    });
-  }
-
-  selectedDefaultRange(): boolean {
+  isMaxRange(): boolean {
     return (
-      this.minYear.value == this.DEFAULT_MIN_YEAR &&
-      this.maxYear.value == this.DEFAULT_MAX_YEAR
+      this.minYear.value <= this.DEFAULT_MIN_YEAR &&
+      this.maxYear.value >= this.DEFAULT_MAX_YEAR
     );
   }
 
   isInSelectedRange(minDates: string[], maxDates: string[]) {
-    const minYears = minDates.map((minDate) => {
-      return new Date(minDate).getFullYear();
-    });
-    const maxYears = maxDates.map((maxDate) => {
-      return new Date(maxDate).getFullYear();
-    });
-    let minYear = Math.min(...minYears);
-    let maxYear = Math.max(...maxYears);
-
-    minDates = minDates.filter((minDate) => minDate !== '');
-    maxDates = maxDates.filter((maxDate) => maxDate !== '');
-
-    const hasMinDate = minDates && minDates.length > 0;
-    const hasMaxDate = maxDates && maxDates.length > 0;
-
-    let shouldShow = false;
-    if (hasMinDate && hasMaxDate) {
-      if (minYear <= this.maxYear.value && maxYear >= this.minYear.value) {
-        shouldShow = true;
-      }
-    } else if (!hasMinDate && !hasMaxDate) {
-      return this.showLocationsWithoutDate.value;
-    } else {
-      let year: number = hasMinDate && !hasMaxDate ? minYear : maxYear;
-
-      if (this.minYear.value <= year && this.maxYear.value >= year) {
-        shouldShow = true;
-      }
+    // If no dates are provided, show only if slider is at default range
+    const hasMinDate = minDates?.length > 0 && minDates.some(date => date !== '');
+    const hasMaxDate = maxDates?.length > 0 && maxDates.some(date => date !== '');
+    
+    if (!hasMinDate && !hasMaxDate) {
+      return this.isMaxRange();
     }
 
-    return shouldShow;
+    // Get the min and max years from the dates
+    const minYears = minDates
+      .filter(date => date !== '')
+      .map(date => new Date(date).getFullYear());
+    const maxYears = maxDates
+      .filter(date => date !== '')
+      .map(date => new Date(date).getFullYear());
+
+    const locationMinYear = minYears.length > 0 ? Math.min(...minYears) : undefined;
+    const locationMaxYear = maxYears.length > 0 ? Math.max(...maxYears) : undefined;
+
+    // If we have both min and max dates
+    if (locationMinYear !== undefined && locationMaxYear !== undefined) {
+      return locationMinYear <= this.maxYear.value && locationMaxYear >= this.minYear.value;
+    }
+
+    // If we have only one date
+    const singleYear = locationMinYear ?? locationMaxYear;
+    return singleYear !== undefined && 
+           this.minYear.value <= singleYear && 
+           this.maxYear.value >= singleYear;
   }
 }

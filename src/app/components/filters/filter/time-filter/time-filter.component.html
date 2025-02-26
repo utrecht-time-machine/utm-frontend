@@ -25,13 +25,4 @@
       />
     </mat-slider>
   </div>
-
-  <div class="show-locations-without-date-container">
-    <mat-checkbox
-      [checked]="time.showLocationsWithoutDate.value"
-      (change)="onToggleShowLocationsWithoutDate($event)"
-    >
-      <span>{{ "showLocationsWithoutDate" | translate }}</span>
-    </mat-checkbox>
-  </div>
 </app-filter>

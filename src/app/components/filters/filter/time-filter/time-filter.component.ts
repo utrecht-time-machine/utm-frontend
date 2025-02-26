@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ViewEncapsulation } from '@angular/core';
 import { TimeService } from '../../../../services/time.service';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FilterComponent } from '../filter.component';
 import { FilterService } from '../../../../services/filter.service';
 import { FilterType } from '../../../../models/filter-type.enum';
@@ -57,9 +56,6 @@ export class TimeFilterComponent
     this.time.maxYear.next(maxYear);
   }
 
-  onToggleShowLocationsWithoutDate($event: MatCheckboxChange) {
-    this.time.showLocationsWithoutDate.next($event.checked);
-  }
 
   protected readonly FilterType = FilterType;
 }

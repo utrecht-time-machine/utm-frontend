@@ -249,24 +249,22 @@ export class MapService {
   }
 
   initRefreshOnTimeChange() {
+    let isFirstMinYearChange = true;
+    let isFirstMaxYearChange = true;
+
     this.time.minYear.subscribe(() => {
-      if (this.time.numTimesMinYearUpdated === 1) {
+      if (isFirstMinYearChange) {
+        isFirstMinYearChange = false;
         return;
       }
       void this.addMapLocationsFromServer(false, true);
     });
+
     this.time.maxYear.subscribe(() => {
-      if (this.time.numTimesMaxYearUpdated === 1) {
+      if (isFirstMaxYearChange) {
+        isFirstMaxYearChange = false;
         return;
       }
-      console.log('Max year changed');
-      void this.addMapLocationsFromServer(false, true);
-    });
-    this.time.showLocationsWithoutDate.subscribe(() => {
-      if (this.time.numTimesShowLocationsWithoutDateUpdated === 1) {
-        return;
-      }
-      console.log('Show locations without date checkbox changed');
       void this.addMapLocationsFromServer(false, true);
     });
   }
