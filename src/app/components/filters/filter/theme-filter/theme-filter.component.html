@@ -1,27 +1,5 @@
 <app-filter [title]="'theme' | translate" [icon]="'assets/ui/svg/theme.svg'">
   <div class="theme-select-container">
-    <div class="theme-search">
-      <!-- <input
-        type="text"
-        class="theme-search-input"
-        [(ngModel)]="themes.searchText"
-        (ngModelChange)="themes.filterThemes()"
-        [placeholder]="'search-themes' | translate"
-      /> -->
-      <button
-        class="clear-button"
-        (click)="themes.clearSelection()"
-        [disabled]="themes.selectedIds.value.length === 0"
-        [title]="'clear-themes' | translate"
-      >
-        <mat-icon class="clear-icon">filter_alt_off</mat-icon>
-        <span
-          class="clear-text"
-          [innerText]="'clear-themes' | translate"
-        ></span>
-      </button>
-    </div>
-
     <div class="theme-list">
       <div
         *ngFor="let theme of themes.filtered | async"
@@ -41,5 +19,13 @@
         </mat-checkbox>
       </div>
     </div>
+
+    <button
+      class="clear-button"
+      (click)="themes.clearSelection()"
+      [disabled]="themes.selectedIds.value.length === 0"
+    >
+      {{ "clear-themes" | translate }}
+    </button>
   </div>
 </app-filter>

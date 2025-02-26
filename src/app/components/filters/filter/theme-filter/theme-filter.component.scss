@@ -22,7 +22,7 @@
     display: flex;
     align-items: flex-start;
     cursor: pointer;
-    
+
     input[type="checkbox"] {
       margin-right: 8px;
       margin-top: 4px;
@@ -46,6 +46,37 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
+}
+
+.theme-list {
+  padding-right: 10rem;
+  padding-bottom: 1rem;
+}
+
+.clear-button {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: auto;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: opacity 0.2s;
+  z-index: 10;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.2;
+    cursor: default;
+  }
 }
 
 .theme-search {
@@ -71,12 +102,12 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 12px;
-    
+
     @media (min-width: 768px) {
       font-size: 14px;
       padding: 8px;
     }
-    
+
     &:focus {
       outline: none;
       border-color: #666;
@@ -127,7 +158,7 @@
       align-items: flex-start;
       white-space: normal;
     }
-    
+
     .mat-checkbox-inner-container {
       margin-top: 3px;
     }
