@@ -1,33 +1,5 @@
 .container {
-  padding: 1rem 3rem 1rem 1.5rem;
-  // background: rgba(255, 255, 255, 0.97);
-  //border: 1px solid #ccc;
-
-  position: relative;
-
-  & .heading {
-    font-size: 1.2rem;
-    //font-weight: bold;
-    margin: 0.2rem 0;
-  }
-}
-
-.heading mat-icon {
-  position: relative;
-  top: 0.25rem;
-}
-
-.inner-container {
   max-height: 14rem !important;
   overflow-y: hidden;
   overflow-x: hidden;
-
-  @media (min-width: 768px) {
-    max-height: 15rem !important;
-  }
-}
-
-.button span {
-  position: relative;
-  bottom: 0.1rem;
 }

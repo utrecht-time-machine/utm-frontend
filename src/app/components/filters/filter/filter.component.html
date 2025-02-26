@@ -1,14 +1,9 @@
-<div class="container">
-  <p class="heading">
-    <mat-icon *ngIf="icon">{{ icon }}</mat-icon>
-    {{ title }}
-  </p>
+<div
+  class="container"
+  [style.overflow-y]="overflowY"
+  [style.max-height]="maxHeight"
+>
+  <app-filter-header [title]="title" [icon]="icon"></app-filter-header>
 
-  <div
-    class="inner-container"
-    [style.overflow-y]="overflowY"
-    [style.max-height]="maxHeight"
-  >
-    <ng-content></ng-content>
-  </div>
+  <ng-content></ng-content>
 </div>
