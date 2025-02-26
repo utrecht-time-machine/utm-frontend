@@ -22,16 +22,31 @@
 }
 
 .mat-mdc-slider.mat-primary {
-  --mdc-slider-handle-color: var(--red);
-  --mdc-slider-focus-handle-color: var(--red);
-  --mdc-slider-hover-handle-color: var(--red);
+  --mdc-slider-handle-color: white; // var(--red);
+  --mdc-slider-focus-handle-color: white; //var(--red);
+  --mdc-slider-hover-handle-color: white; //var(--red);
   --mdc-slider-active-track-color: var(--red);
   --mdc-slider-inactive-track-color: rgba(0, 0, 0, 0.2);
   --mdc-slider-with-tick-marks-active-container-color: #fff;
-  --mdc-slider-with-tick-marks-inactive-container-color: var(--red);
-  --mat-mdc-slider-ripple-color: var(--red);
-  --mat-mdc-slider-hover-ripple-color: rgba(254, 0, 62, 0.1);
-  --mat-mdc-slider-focus-ripple-color: rgba(254, 0, 62, 0.1);
+  --mdc-slider-with-tick-marks-inactive-container-color: white; //var(--red);
+  --mat-mdc-slider-ripple-color: rgba(0, 0, 0, 0); //var(--red);
+  --mat-mdc-slider-hover-ripple-color: rgba(
+    0,
+    0,
+    0,
+    0
+  ); // rgba(254, 0, 62, 0.1);
+  --mat-mdc-slider-focus-ripple-color: rgba(
+    0,
+    0,
+    0,
+    0
+  ); // rgba(254, 0, 62, 0.1);
+  --mdc-slider-label-container-color: var(--red);
+  --mat-mdc-slider-value-indicator-opacity: 1;
+  .mdc-slider__value-indicator {
+    border-radius: 2rem;
+  }
 }
 
 .mat-mdc-checkbox.mat-accent {
