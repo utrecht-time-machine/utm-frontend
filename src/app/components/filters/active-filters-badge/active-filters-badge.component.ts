@@ -37,10 +37,12 @@ export class ActiveFiltersBadgeComponent implements OnInit {
   }
 
   badgeText(): string {
-    if (this.activeFiltersCount() === 1) {
-      return `1 filter`;
-    }
+    return this.activeFiltersCount().toString();
 
-    return `${this.activeFiltersCount()} filters`;
+    // if (this.activeFiltersCount() === 1) {
+    //   return `1 filter`;
+    // }
+
+    // return `${this.activeFiltersCount()} filters`;
   }
 }
