@@ -3769,7 +3769,13 @@ div.utm-footer ul > li > a.is-active {
 }
 
 .map .map-data .map-data-near {
-  padding: 80px 0;
+  padding: 60px 0;
+}
+
+@media only screen and (min-width: 1000px) {
+  .map .map-data .map-data-near {
+    padding: 80px 0;
+  }
 }
 
 .map .map-data .map-data-near.hide {
