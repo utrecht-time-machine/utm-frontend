@@ -1,4 +1,8 @@
-<app-filter [title]="'theme' | translate" [icon]="'assets/ui/svg/theme.svg'">
+<app-filter
+  [title]="'theme' | translate"
+  [icon]="'assets/ui/svg/theme.svg'"
+  [isActive]="themes.isActive()"
+>
   <div class="theme-select-container">
     <div class="theme-list">
       <div

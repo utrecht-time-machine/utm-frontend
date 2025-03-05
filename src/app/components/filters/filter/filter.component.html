@@ -1,5 +1,9 @@
 <div class="container" [style.max-height]="maxHeight">
-  <app-filter-header [title]="title" [icon]="icon"></app-filter-header>
+  <app-filter-header
+    [title]="title"
+    [icon]="icon"
+    [isActive]="isActive"
+  ></app-filter-header>
 
   <ng-content></ng-content>
 </div>

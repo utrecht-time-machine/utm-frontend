@@ -9,4 +9,5 @@ export class FilterComponent {
   @Input() title: string = '';
   @Input() icon: string = '';
   @Input() maxHeight: string = '10rem';
+  @Input() isActive: boolean = false;
 }

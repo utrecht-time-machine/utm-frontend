@@ -11,6 +11,7 @@ import { Component, Input, type OnInit } from '@angular/core';
 export class FilterHeaderComponent implements OnInit {
   @Input() title: string = '';
   @Input() icon: string = '';
+  @Input() isActive: boolean = false;
 
   ngOnInit(): void {}
 }
