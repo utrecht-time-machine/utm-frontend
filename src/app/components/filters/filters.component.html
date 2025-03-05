@@ -1,4 +1,4 @@
-<div class="filters-container">
+<div class="filters-container" [ngStyle]="getBlurStyle$ | async">
   <app-filters-header />
 
   <app-time-filter />

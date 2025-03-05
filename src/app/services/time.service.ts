@@ -14,6 +14,7 @@ export class TimeService {
   maxYear: BehaviorSubject<number> = new BehaviorSubject<number>(
     this.DEFAULT_MAX_YEAR
   );
+  isSliding = new BehaviorSubject<boolean>(false);
 
   constructor() {}
 

@@ -1,8 +1,17 @@
-import { AfterViewInit, Component, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { TimeService } from '../../../../services/time.service';
 import { FilterComponent } from '../filter.component';
 import { FilterService } from '../../../../services/filter.service';
 import { FilterType } from '../../../../models/filter-type.enum';
+import { MatSlider } from '@angular/material/slider';
 
 @Component({
   selector: 'app-time-filter',
@@ -10,20 +19,29 @@ import { FilterType } from '../../../../models/filter-type.enum';
   styleUrls: ['./time-filter.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TimeFilterComponent
-  extends FilterComponent
-  implements AfterViewInit
-{
+export class TimeFilterComponent extends FilterComponent {
+  @ViewChild('slider') slider!: MatSlider;
   debouncedTimeout: any;
 
   constructor(public time: TimeService, public filters: FilterService) {
     super();
   }
+
   formatLabel(value: number): string {
     if (value < 0) {
       return `${-value} v. Chr.`;
     }
     return `${value}`;
+  }
+
+  onSlideStart(): void {
+    this.time.isSliding.next(true);
+  }
+
+  @HostListener('window:mouseup')
+  @HostListener('window:touchend')
+  onSlideEnd(): void {
+    this.time.isSliding.next(false);
   }
 
   onSliderInput($event: any) {
@@ -43,10 +61,8 @@ export class TimeFilterComponent
       } else {
         console.warn('Unknown slider input', id, value);
       }
-    }, 200);
+    }, 100);
   }
-
-  ngAfterViewInit(): void {}
 
   onMinYearChange(minYear: number) {
     this.time.minYear.next(minYear);
@@ -55,7 +71,6 @@ export class TimeFilterComponent
   onMaxYearChange(maxYear: number) {
     this.time.maxYear.next(maxYear);
   }
-
 
   protected readonly FilterType = FilterType;
 }

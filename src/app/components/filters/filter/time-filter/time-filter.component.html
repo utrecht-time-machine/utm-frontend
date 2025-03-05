@@ -5,12 +5,15 @@
 >
   <div class="slider-container">
     <mat-slider
+      #slider
       [min]="time.DEFAULT_MIN_YEAR"
       [max]="time.DEFAULT_MAX_YEAR"
       step="1"
       [discrete]="true"
       [displayWith]="formatLabel"
       (input)="onSliderInput($event)"
+      (mousedown)="onSlideStart()"
+      (touchstart)="onSlideStart()"
     >
       <input
         [value]="time.minYear.value"
