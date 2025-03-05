@@ -174,10 +174,10 @@ export class MapService {
     this.map = new mapboxgl.Map({
       container: 'mapbox',
       // style: 'mapbox://styles/utrechttimemachine/cm7944mn7000001sh3fhy9lwh',
-      style: 'mapbox://styles/mapbox/streets-v12',
+      // style: 'mapbox://styles/mapbox/streets-v12',
       // style: 'mapbox://styles/mapbox/navigation-night-v1',
       // style: 'mapbox://styles/mapbox/satellite-v9',
-      // style: 'mapbox://styles/mapbox/light-v11',
+      style: 'mapbox://styles/mapbox/light-v11',
       center: randomCenter,
       zoom: 16,
       pitch: 24,
