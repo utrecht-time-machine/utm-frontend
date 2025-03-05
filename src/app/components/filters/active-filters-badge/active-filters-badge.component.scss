@@ -1,0 +1,16 @@
+.badge-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.badge {
+  background: var(--red);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  display: inline-block;
+}

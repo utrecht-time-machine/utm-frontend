@@ -9,6 +9,13 @@
   transition: backdrop-filter 0.3s ease-out, background 0.3s ease-out;
 }
 
+app-active-filters-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
 @media only screen and (min-width: 1000px) {
   .filters-container {
     top: calc(6rem + 10px);

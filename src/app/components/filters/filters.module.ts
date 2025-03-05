@@ -6,9 +6,14 @@ import { TimeFilterModule } from './filter/time-filter/time-filter.module';
 import { FiltersHeaderComponent } from './filters-header/filters-header.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ClearFiltersButtonComponent } from './clear-filters-button/clear-filters-button.component';
+import { ActiveFiltersBadgeComponent } from './active-filters-badge/active-filters-badge.component';
 
 @NgModule({
-  declarations: [FiltersComponent, ClearFiltersButtonComponent],
+  declarations: [
+    FiltersComponent,
+    ClearFiltersButtonComponent,
+    ActiveFiltersBadgeComponent,
+  ],
   imports: [
     CommonModule,
     ThemeFilterModule,

@@ -3,6 +3,7 @@
   [ngStyle]="getStyles$ | async"
   (click)="onClick()"
 >
+  <app-active-filters-badge *ngIf="!(filters.isShowing | async)" />
   <app-filters-header />
 
   <app-time-filter *ngIf="filters.isShowing | async" />
