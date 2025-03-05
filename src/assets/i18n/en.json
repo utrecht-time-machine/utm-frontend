@@ -25,7 +25,7 @@
   "theme": "Theme",
   "themes": "Themes",
   "search-themes": "Search by themes",
-  "clear-themes": "Clear filters",
+  "clearFilters": "Clear all filters",
   "timePeriod": "Time period",
   "nextStop": "Next stop",
   "showLocationsWithoutDate": "Show locations without date",

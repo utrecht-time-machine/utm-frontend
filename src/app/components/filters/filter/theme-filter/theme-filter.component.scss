@@ -56,30 +56,7 @@
   padding-bottom: 1rem;
 }
 
-.clear-button {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  width: auto;
-  background: var(--red);
-  color: white;
-  border: none;
-  border-radius: 2rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: opacity 0.2s;
-  z-index: 10;
 
-  &:hover {
-    opacity: 0.9;
-  }
-
-  &:disabled {
-    opacity: 0.2;
-    cursor: default;
-  }
-}
 
 .theme-search {
   position: sticky;

@@ -29,7 +29,7 @@ export class ThemeService {
     const sortedThemes = themes.sort((a, b) => a.title.localeCompare(b.title));
     this.all.next(sortedThemes);
     this.filtered.next(sortedThemes);
-    
+
     const allIds = themes.map((theme) => theme.nid);
     // this.selectedIds.next(allIds);
     console.log('THEMES', themes);
@@ -60,6 +60,10 @@ export class ThemeService {
 
   clearSelection() {
     this.selectedIds.next([]);
+  }
+
+  isActive(): boolean {
+    return this.selectedIds.value.length > 0;
   }
 
   filterThemes() {

@@ -19,13 +19,5 @@
         </mat-checkbox>
       </div>
     </div>
-
-    <button
-      class="clear-button"
-      (click)="themes.clearSelection()"
-      [disabled]="themes.selectedIds.value.length === 0"
-    >
-      {{ "clear-themes" | translate }}
-    </button>
   </div>
 </app-filter>

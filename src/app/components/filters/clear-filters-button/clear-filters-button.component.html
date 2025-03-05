@@ -1,0 +1,7 @@
+<button
+  class="clear-button"
+  [disabled]="!hasActiveFilters()"
+  (click)="clearFilters()"
+>
+  {{ "clearFilters" | translate }}
+</button>
