@@ -29,6 +29,10 @@ export class RoutingService {
   }
 
   private determineSelectedView(): SelectedView {
+    if (this.story.showingStoryView.getValue()) {
+      return SelectedView.Story;
+    }
+
     if (this.router.url === '/' || this.router.url.startsWith('/locaties')) {
       return SelectedView.Locations;
     }
@@ -43,10 +47,6 @@ export class RoutingService {
 
     if (this.router.url.startsWith('/over')) {
       return SelectedView.About;
-    }
-
-    if (this.story.showingStoryView.getValue()) {
-      return SelectedView.Story;
     }
 
     return SelectedView.Undefined;

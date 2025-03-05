@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { TimeService } from '../../services/time.service';
 import { FilterService } from '../../services/filter.service';
 import { map, combineLatest, lastValueFrom, take } from 'rxjs';
+import { RoutingService } from 'src/app/services/routing.service';
+import { SelectedView } from 'src/app/models/selected-view';
 
 @Component({
   selector: 'app-filters',
@@ -9,7 +11,11 @@ import { map, combineLatest, lastValueFrom, take } from 'rxjs';
   styleUrls: ['./filters.component.scss'],
 })
 export class FiltersComponent {
-  constructor(public time: TimeService, public filters: FilterService) {}
+  constructor(
+    public time: TimeService,
+    public filters: FilterService,
+    public routing: RoutingService
+  ) {}
 
   async onClick() {
     const isShowing = await lastValueFrom(this.filters.isShowing.pipe(take(1)));
@@ -30,4 +36,6 @@ export class FiltersComponent {
       cursor: isShowingFilters ? 'default' : 'pointer',
     }))
   );
+
+  protected SelectedView = SelectedView;
 }
