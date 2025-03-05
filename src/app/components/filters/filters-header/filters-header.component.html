@@ -3,7 +3,11 @@
     <img src="assets/ui/svg/filter.svg" alt="" class="filter-icon" />
     <span class="header-title">Filter</span>
   </div>
-  <button class="close-button">
+  <button
+    class="close-button"
+    *ngIf="filters.isShowing | async"
+    (click)="onClose($event)"
+  >
     <img src="assets/ui/svg/close-circle.svg" alt="" />
   </button>
 </div>

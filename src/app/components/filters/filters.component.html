@@ -1,8 +1,12 @@
-<div class="filters-container" [ngStyle]="getBlurStyle$ | async">
+<div
+  class="filters-container"
+  [ngStyle]="getStyles$ | async"
+  (click)="onClick()"
+>
   <app-filters-header />
 
-  <app-time-filter />
-  <app-theme-filter />
+  <app-time-filter *ngIf="filters.isShowing | async" />
+  <app-theme-filter *ngIf="filters.isShowing | async" />
 
-  <app-clear-filters-button />
+  <app-clear-filters-button *ngIf="filters.isShowing | async" />
 </div>

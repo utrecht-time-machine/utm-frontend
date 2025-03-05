@@ -1,26 +1,24 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FilterService {
-  private _showing = false;
+  private _isShowing = new BehaviorSubject<boolean>(true);
+  isShowing = this._isShowing.asObservable();
 
   constructor() {}
 
-  isShowing(): boolean {
-    return this._showing;
-  }
-
   show(): void {
-    this._showing = true;
+    this._isShowing.next(true);
   }
 
   hide(): void {
-    this._showing = false;
+    this._isShowing.next(false);
   }
 
   toggle(): void {
-    this._showing = !this._showing;
+    this._isShowing.next(!this._isShowing.value);
   }
 }
