@@ -26,7 +26,7 @@ import {
           opacity: 0,
           overflow: 'hidden',
           visibility: 'hidden',
-          pointerEvents: 'none'
+          pointerEvents: 'none',
         })
       ),
       state(
@@ -37,7 +37,7 @@ import {
           opacity: 1,
           overflow: 'hidden',
           visibility: 'visible',
-          pointerEvents: 'auto'
+          pointerEvents: 'auto',
         })
       ),
       transition('false <=> true', [animate('400ms ease-in-out')]),
@@ -64,8 +64,10 @@ export class FiltersComponent {
     this.filters.isShowing,
   ]).pipe(
     map(([isSliding, isShowingFilters]) => ({
-      background: `rgba(255, 255, 255, ${isSliding ? 0.6 : 0.85})`,
-      'backdrop-filter': `blur(${isSliding ? 0 : 16}px)`,
+      background: `rgba(255, 255, 255, 0.85)`,
+      'backdrop-filter': `blur(16px)`,
+      // background: `rgba(255, 255, 255, ${isSliding ? 0.6 : 0.85})`,
+      // 'backdrop-filter': `blur(${isSliding ? 0 : 16}px)`,
       width: isShowingFilters ? 'calc(100% - 1.5rem)' : 'auto',
       cursor: isShowingFilters ? 'default' : 'pointer',
     }))
