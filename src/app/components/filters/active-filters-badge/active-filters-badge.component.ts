@@ -38,9 +38,9 @@ export class ActiveFiltersBadgeComponent implements OnInit {
 
   badgeText(): string {
     if (this.activeFiltersCount() === 1) {
-      return `1 filter actief`;
+      return `1 filter`;
     }
 
-    return `${this.activeFiltersCount()} filters actief`;
+    return `${this.activeFiltersCount()} filters`;
   }
 }
