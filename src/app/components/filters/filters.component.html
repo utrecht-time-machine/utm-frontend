@@ -2,7 +2,7 @@
   class="filters-container"
   [ngStyle]="getStyles$ | async"
   (click)="onClick()"
-  *ngIf="routing.getSelectedView() !== SelectedView.Story"
+  *ngIf="routing.getSelectedView() === SelectedView.Locations"
 >
   <app-active-filters-badge *ngIf="!(filters.isShowing | async)" />
 
