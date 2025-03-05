@@ -8,6 +8,5 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class FilterComponent {
   @Input() title: string = '';
   @Input() icon: string = '';
-  @Input() overflowY: string = 'scroll';
   @Input() maxHeight: string = '10rem';
 }

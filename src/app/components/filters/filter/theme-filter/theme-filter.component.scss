@@ -47,6 +47,8 @@
   flex-direction: column;
   height: 100%;
   position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .theme-list {
@@ -143,11 +145,6 @@
       cursor: default;
     }
   }
-}
-
-.theme-list {
-  flex: 1;
-  overflow-y: hidden;
 }
 
 .theme-checkbox-container {
