@@ -11,13 +11,19 @@ import { TimeService } from 'src/app/services/time.service';
     trigger('fadeSlide', [
       transition(':enter', [
         style({ opacity: 0, transform: 'translate(50%, -30%)' }),
-        animate('200ms ease-out', style({ opacity: 1, transform: 'translate(50%, -50%)' }))
+        animate(
+          '200ms 300ms ease-out',
+          style({ opacity: 1, transform: 'translate(50%, -50%)' })
+        ),
       ]),
       transition(':leave', [
-        animate('200ms ease-in', style({ opacity: 0, transform: 'translate(50%, -70%)' }))
-      ])
-    ])
-  ]
+        animate(
+          '200ms ease-in',
+          style({ opacity: 0, transform: 'translate(50%, -70%)' })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class ActiveFiltersBadgeComponent implements OnInit {
   constructor(public theme: ThemeService, public time: TimeService) {}

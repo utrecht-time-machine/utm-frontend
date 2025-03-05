@@ -5,10 +5,15 @@
   *ngIf="routing.getSelectedView() !== SelectedView.Story"
 >
   <app-active-filters-badge *ngIf="!(filters.isShowing | async)" />
+
   <app-filters-header />
 
-  <app-time-filter *ngIf="filters.isShowing | async" />
-  <app-theme-filter *ngIf="filters.isShowing | async" />
-
-  <app-clear-filters-button *ngIf="filters.isShowing | async" />
+  <div
+    class="filters-content"
+    [@expandCollapse]="(filters.isShowing | async)?.toString()"
+  >
+    <app-time-filter />
+    <app-theme-filter />
+    <app-clear-filters-button />
+  </div>
 </div>

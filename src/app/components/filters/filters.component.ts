@@ -4,11 +4,45 @@ import { FilterService } from '../../services/filter.service';
 import { map, combineLatest, lastValueFrom, take } from 'rxjs';
 import { RoutingService } from 'src/app/services/routing.service';
 import { SelectedView } from 'src/app/models/selected-view';
+import {
+  trigger,
+  transition,
+  style,
+  animate,
+  state,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-filters',
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.scss'],
+  animations: [
+    trigger('expandCollapse', [
+      state(
+        'false',
+        style({
+          width: 0,
+          height: 0,
+          opacity: 0,
+          overflow: 'hidden',
+          visibility: 'hidden',
+          pointerEvents: 'none'
+        })
+      ),
+      state(
+        'true',
+        style({
+          width: '*',
+          height: '*',
+          opacity: 1,
+          overflow: 'hidden',
+          visibility: 'visible',
+          pointerEvents: 'auto'
+        })
+      ),
+      transition('false <=> true', [animate('400ms ease-in-out')]),
+    ]),
+  ],
 })
 export class FiltersComponent {
   constructor(
