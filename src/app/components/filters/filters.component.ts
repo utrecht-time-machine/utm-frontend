@@ -27,8 +27,6 @@ export class FiltersComponent {
       background: `rgba(255, 255, 255, ${isSliding ? 0.6 : 0.85})`,
       'backdrop-filter': `blur(${isSliding ? 0 : 16}px)`,
       width: isShowingFilters ? 'calc(100% - 1.5rem)' : 'auto',
-      left: isShowingFilters ? '50%' : '0.75rem',
-      transform: isShowingFilters ? 'translateX(-50%)' : 'none',
       cursor: isShowingFilters ? 'default' : 'pointer',
     }))
   );
