@@ -1,7 +1,7 @@
 <button
   class="clear-button"
   [disabled]="!hasActiveFilters()"
-  (click)="clearFilters()"
+  (click)="clearFilters($event)"
 >
   {{ "clearFilters" | translate }}
 </button>
