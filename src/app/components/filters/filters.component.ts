@@ -28,6 +28,7 @@ export class FiltersComponent {
       'backdrop-filter': `blur(${isSliding ? 0 : 16}px)`,
       width: isShowingFilters ? 'calc(100% - 1.5rem)' : 'auto',
       cursor: isShowingFilters ? 'default' : 'pointer',
+      height: isShowingFilters ? 'calc(100% - 6rem - 1.5rem)' : 'auto',
     }))
   );
 }
