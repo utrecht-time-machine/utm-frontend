@@ -4627,6 +4627,11 @@ form.user-pass-reset input[type="submit"]:hover {
   text-decoration: underline;
 }
 
+app-audio-player {
+  max-width: 900px;
+  display: block;
+}
+
 .audioplayer {
   display: -webkit-flex;
   display: flex;
@@ -4637,8 +4642,6 @@ form.user-pass-reset input[type="submit"]:hover {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 100%;
-  max-width: 900px;
-  margin: 1em auto;
   padding: 24px;
   background: #fff;
   border: 2px solid #333;

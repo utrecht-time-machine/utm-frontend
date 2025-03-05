@@ -1,3 +1,12 @@
 .media-item-no-top-margin {
   margin-top: 0;
 }
+
+.media-item:not(.has-head) {
+  flex-direction: row !important;
+
+  .core {
+    padding: 0 !important;
+    width: 100%;
+  }
+}

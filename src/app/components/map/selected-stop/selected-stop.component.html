@@ -1,12 +1,14 @@
 <app-audio-player
   [audioUrl]="utmRoutes.selectedStop?.audio"
   [transcript]="utmRoutes.selectedStop?.audio_transcript"
+  class="route-stop-audio-player"
   *ngIf="utmRoutes.selectedStop?.audio && !shouldShowEnglishAudio"
 />
 
 <app-audio-player
   [audioUrl]="utmRoutes.selectedStop?.audio_english"
   [transcript]="utmRoutes.selectedStop?.audio_transcript"
+  class="route-stop-audio-player"
   *ngIf="shouldShowEnglishAudio"
 />
 
@@ -54,7 +56,11 @@
         <h2 [innerHTML]="story.title"></h2>
       </div>
 
-      <app-audio-player [audioUrl]="story.audio" *ngIf="story.audio" />
+      <app-audio-player
+        [audioUrl]="story.audio"
+        *ngIf="story.audio"
+        class="story-audio-player"
+      />
 
       <div
         class="views-element-container"

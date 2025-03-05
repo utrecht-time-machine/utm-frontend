@@ -85,3 +85,7 @@ p {
 .audio-transcript-line {
   opacity: 0.9;
 }
+
+.audio-transcript-outer-container {
+  margin-top: 0.5rem;
+}

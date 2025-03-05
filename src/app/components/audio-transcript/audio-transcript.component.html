@@ -1,4 +1,8 @@
-<div *ngIf="transcript" style="width: 100%">
+<div
+  *ngIf="transcript"
+  style="width: 100%"
+  class="audio-transcript-outer-container"
+>
   <button *ngIf="!isVisible" class="toggle-button" (click)="toggleTranscript()">
     <mat-icon>text_snippet</mat-icon>
     {{ "show_transcript" | translate }}
