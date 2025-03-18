@@ -98,9 +98,10 @@ h3 {
 @media screen and (max-width: 600px) {
   .feed {
     display: block;
-  }
-  .feed > div {
-    display: block;
+
+    > div:not(.comment-input-group) {
+      display: block;
+    }
   }
 }
 
