@@ -114,6 +114,12 @@ h3 {
   margin-top: 1rem;
 }
 
+.button-status-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .comment-button {
   display: inline-flex;
   align-items: center;
@@ -129,13 +135,50 @@ h3 {
   font-weight: 500;
   color: #fff;
   text-decoration: none;
-  -webkit-transition: background-color 120ms ease;
-  transition: background-color 120ms ease;
+  border: none;
+  -webkit-transition: all 120ms ease;
+  transition: all 120ms ease;
   white-space: nowrap;
 
-  &:hover {
+  &:hover:not(:disabled) {
     cursor: pointer;
     background-color: #222;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 8px;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+.status-message {
+  font-size: 0.9em;
+  font-weight: 500;
+  margin-left: 8px;
+
+  &.success {
+    color: #2b9348;
+  }
+
+  &.error {
+    color: #d00000;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 

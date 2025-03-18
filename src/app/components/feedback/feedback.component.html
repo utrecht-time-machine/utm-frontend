@@ -55,15 +55,29 @@
   <!-- Comment input -->
   <div class="comment-input-group">
     <textarea
-      [(ngModel)]="feedbackText"
+      [(ngModel)]="commentText"
       placeholder="Deel hier je gedachten of suggesties"
       rows="3"
+      [disabled]="isSubmittingComment"
     ></textarea>
-    <div
-      class="comment-button"
-      (click)="feedbackService.comment(feedbackItemId, feedbackText)"
-    >
-      Verstuur
+    <div class="button-status-group">
+      <button
+        class="comment-button"
+        (click)="submitComment()"
+        [disabled]="isSubmittingComment || !commentText.trim()"
+      >
+        <span class="spinner" *ngIf="isSubmittingComment"></span>
+        <span>Verstuur</span>
+      </button>
+      <div
+        class="status-message"
+        *ngIf="commentSubmitStatus !== 'none'"
+        [@fadeInOut]
+        [class.success]="commentSubmitStatus === 'success'"
+        [class.error]="commentSubmitStatus === 'error'"
+      >
+        {{ commentSubmitMessage }}
+      </div>
     </div>
   </div>
 </div>
