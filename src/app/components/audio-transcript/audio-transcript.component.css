@@ -89,3 +89,8 @@ p {
 .audio-transcript-outer-container {
   margin-top: 0.5rem;
 }
+
+.toggle-button,
+.close-button {
+  color: black;
+}
