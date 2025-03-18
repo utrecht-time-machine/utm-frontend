@@ -17,7 +17,7 @@
       <strong>{{ "transcript" | translate }}</strong>
     </p>
     <div class="transcript-content-wrapper">
-      <div class="transcript-content">
+      <div class="transcript-content" #transcriptContent>
         <p
           *ngFor="let line of getTranscriptLines()"
           [innerHtml]="line"
