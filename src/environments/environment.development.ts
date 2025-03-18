@@ -47,6 +47,7 @@ export const environment = {
     staticPage: ['title', 'body'],
   },
   feedbackPostUrl: 'https://services.utrechttimemachine.nl/feedback',
+  commentPostUrl: 'https://services.utrechttimemachine.nl/comment',
   backendEditUrl: 'https://data.utrechttimemachine.nl/node/',
   backendEditPostFix: '/edit',
 };

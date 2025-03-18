@@ -14,6 +14,8 @@ export class FeedbackComponent {
 
   FeedbackRating = FeedbackRating;
 
+  feedbackText: string = '';
+
   constructor(public feedbackService: FeedbackService) {}
 
   getRating(): FeedbackRating | undefined {
@@ -24,7 +26,7 @@ export class FeedbackComponent {
     return this.feedbackService.getItemRating(this.feedbackItemId);
   }
 
-  feedbackHasBeenGiven(): boolean {
+  ratingHasBeenGiven(): boolean {
     if (!this.feedbackItemId) {
       return false;
     }

@@ -103,3 +103,63 @@ h3 {
     display: block;
   }
 }
+
+.comment-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 5px;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 1rem;
+}
+
+.comment-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background-color: #000;
+  background-repeat: no-repeat;
+  background-position: left 28px center;
+  background-size: 18px auto;
+  border-radius: 4px;
+  font-size: 0.9em;
+  line-height: 1.2em;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  -webkit-transition: background-color 120ms ease;
+  transition: background-color 120ms ease;
+  white-space: nowrap;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #222;
+  }
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 80px;
+  font-size: 1em;
+  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  transition: border-color 120ms ease;
+
+  &:focus {
+    outline: none;
+    border-color: #999;
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+}

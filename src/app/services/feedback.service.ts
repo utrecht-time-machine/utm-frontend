@@ -27,6 +27,20 @@ export class FeedbackService {
     }
   }
 
+  async comment(itemId: string, comment: string) {
+    if (!itemId) {
+      console.warn('No item ID passed...');
+      return;
+    }
+
+    console.log('Sending comment', itemId, comment);
+
+    const postResult = await this.apiService.post(environment.commentPostUrl, {
+      itemId: itemId,
+      comment: comment,
+    });
+  }
+
   async rateItem(itemId: string, rating: FeedbackRating) {
     if (!itemId) {
       console.warn('No item ID passed...');

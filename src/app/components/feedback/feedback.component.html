@@ -1,17 +1,20 @@
 <div
   class="feed"
-  [ngClass]="{ done: feedbackHasBeenGiven() }"
+  [ngClass]="{ done: ratingHasBeenGiven() }"
   *ngIf="feedbackItemId"
 >
+  <!-- Title -->
   <div>
-    <h3 *ngIf="!feedbackHasBeenGiven() && feedbackQuestionText">
+    <h3 *ngIf="!ratingHasBeenGiven() && feedbackQuestionText">
       {{ feedbackQuestionText | translate }}
     </h3>
-    <h3 *ngIf="feedbackHasBeenGiven() && feedbackGivenText">
+    <h3 *ngIf="ratingHasBeenGiven() && feedbackGivenText">
       {{ feedbackGivenText | translate }}
     </h3>
   </div>
-  <div>
+
+  <!-- Rating icons -->
+  <div style="display: none">
     <!--    <a-->
     <!--      data-id="5"-->
     <!--      [ngClass]="{ on: getRating() === FeedbackRating.VeryGood }"-->
@@ -47,5 +50,20 @@
     <!--      "-->
     <!--      ><span></span-->
     <!--    ></a>-->
+  </div>
+
+  <!-- Comment input -->
+  <div class="comment-input-group">
+    <textarea
+      [(ngModel)]="feedbackText"
+      placeholder="Deel hier je gedachten of suggesties"
+      rows="3"
+    ></textarea>
+    <div
+      class="comment-button"
+      (click)="feedbackService.comment(feedbackItemId, feedbackText)"
+    >
+      Verstuur
+    </div>
   </div>
 </div>
