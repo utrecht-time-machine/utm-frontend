@@ -36,6 +36,7 @@ export const routes: Routes = [
   { path: 'routes/:id', component: MapComponent },
   { path: 'story/:id', component: MapComponent },
   { path: 'over', component: AboutComponent },
+  { path: '**', redirectTo: 'intro' },
 ];
 
 @NgModule({
