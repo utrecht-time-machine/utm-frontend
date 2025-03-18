@@ -30,7 +30,7 @@ export class FeedbackComponent {
   commentSubmitStatus: 'none' | 'success' | 'error' = 'none';
   commentSubmitMessage = '';
   private commentSubmitStatusTimeout: number | null = null;
-  private commentStatusMessageHideAfterMs: number = 1500;
+  private commentStatusMessageHideAfterMs: number = 2500;
 
   constructor(
     public feedbackService: FeedbackService,
