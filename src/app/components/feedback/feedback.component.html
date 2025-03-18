@@ -56,7 +56,7 @@
   <div class="comment-input-group">
     <textarea
       [(ngModel)]="commentText"
-      placeholder="Deel hier je gedachten of suggesties"
+      [placeholder]="'commentPlaceholder' | translate"
       rows="3"
       [disabled]="isSubmittingComment"
     ></textarea>
@@ -67,7 +67,7 @@
         [disabled]="isSubmittingComment || !commentText.trim()"
       >
         <span class="spinner" *ngIf="isSubmittingComment"></span>
-        <span>Verstuur</span>
+        <span>{{ "sendComment" | translate }}</span>
       </button>
       <div
         class="status-message"

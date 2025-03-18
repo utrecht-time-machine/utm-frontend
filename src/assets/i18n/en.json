@@ -33,5 +33,9 @@
   "noStoriesFoundWithTheseFilters": "It seems there are no stories for this location with the chosen filters. Please modify the filters above to discover more options.",
   "transcript": "Transcript",
   "show_transcript": "Show transcript",
-  "hide_transcript": "Hide transcript"
+  "hide_transcript": "Hide transcript",
+  "sendComment": "Send",
+  "commentPlaceholder": "Share your thoughts or suggestions",
+  "commentSendingSuccess": "Thank you for your feedback",
+  "commentSendingError": "There was an error sending your feedback"
 }

@@ -34,5 +34,9 @@
   "noStoriesFoundWithTheseFilters": "Het lijkt erop dat er geen verhalen zijn voor deze locatie met de gekozen filters. Wijzig de filters hierboven om meer opties te ontdekken.",
   "transcript": "Transcriptie",
   "show_transcript": "Toon transcriptie",
-  "hide_transcript": "Verberg transcriptie"
+  "hide_transcript": "Verberg transcriptie",
+  "sendComment": "Verstuur",
+  "commentPlaceholder": "Deel hier je gedachten of suggesties",
+  "commentSendingSuccess": "Bedankt voor je feedback",
+  "commentSendingError": "Er ging iets mis bij het versturen van je feedback"
 }

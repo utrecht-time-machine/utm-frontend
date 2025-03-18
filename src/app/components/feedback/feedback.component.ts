@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { TranslateService } from '@ngx-translate/core';
 import { FeedbackService } from '../../services/feedback.service';
 import { FeedbackRating } from '../../models/feedback-rating';
 
@@ -31,7 +32,10 @@ export class FeedbackComponent {
   private commentSubmitStatusTimeout: number | null = null;
   private commentStatusMessageHideAfterMs: number = 1500;
 
-  constructor(public feedbackService: FeedbackService) {}
+  constructor(
+    public feedbackService: FeedbackService,
+    private translate: TranslateService
+  ) {}
 
   getRating(): FeedbackRating | undefined {
     if (!this.feedbackItemId) {
@@ -75,10 +79,16 @@ export class FeedbackComponent {
 
     try {
       await this.feedbackService.comment(this.feedbackItemId, this.commentText);
-      this.showStatusMessage('success', 'Feedback verstuurd');
+      this.showStatusMessage(
+        'success',
+        this.translate.instant('commentSendingSuccess')
+      );
       this.commentText = '';
     } catch (error) {
-      this.showStatusMessage('error', 'Er ging iets mis');
+      this.showStatusMessage(
+        'error',
+        this.translate.instant('commentSendingError')
+      );
     }
 
     this.isSubmittingComment = false;
