@@ -313,7 +313,9 @@ export class ApiService {
       environment.translateKeys.locationDetails
     );
 
-    const splitGeoCoords: string[] = locationDetails.geo.split(', ');
+    const splitGeoCoords: string[] = locationDetails.geo
+      .split(',')
+      .map((coord) => coord.trim());
     locationDetails.coords = {
       lat: parseFloat(splitGeoCoords[0]),
       lng: parseFloat(splitGeoCoords[1]),
