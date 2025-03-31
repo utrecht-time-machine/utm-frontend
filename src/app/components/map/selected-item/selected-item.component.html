@@ -7,7 +7,8 @@
         <div>
           <div class="screen-mode" data-mobile="1">
             <h1 [innerHtml]="locationDetails?.title"></h1>
-            <h3>{{ locationDetails?.address }}</h3>
+            <!-- <h3>{{ locationDetails?.address }}</h3> -->
+            <h3 *ngIf="locationDetails?.head">{{ locationDetails?.head }}</h3>
           </div>
           <div class="photo-hold">
             <div class="photo">
@@ -54,7 +55,8 @@
           <div class="screen-mode" data-mobile="0">
             <h1 [innerHtml]="locationDetails?.title"></h1>
 
-            <h3
+            <h3 *ngIf="locationDetails?.head">{{ locationDetails?.head }}</h3>
+            <!-- <h3
               *ngIf="
                 locationDetails?.city &&
                 locationDetails?.city !== locationDetails?.title
@@ -70,7 +72,7 @@
               "
             >
               {{ locationDetails?.address }}
-            </h3>
+            </h3> -->
           </div>
           <p [innerHtml]="locationDetails?.teaser"></p>
           <div class="fold" *ngIf="locationDetails?.text">
