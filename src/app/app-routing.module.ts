@@ -2,7 +2,7 @@ import { inject, NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
 import { MapComponent } from './components/map/map.component';
 import { RoutesComponent } from './components/routes/routes.component';
-import { AboutComponent } from './components/about/about.component';
+import { StaticPageComponent } from './components/static-page/static-page.component';
 import { qrCodeRoutes } from '../assets/routing/qr-code-routes';
 import { previousUtmRoutes } from '../assets/routing/previous-utm-routes';
 import { HomeComponent } from './components/home/home.component';
@@ -28,14 +28,26 @@ export const routes: Routes = [
     component: MapComponent,
     canActivate: [rootGuard],
   },
-  { path: 'intro', component: HomeComponent },
+  {
+    path: 'intro',
+    component: HomeComponent,
+  },
   { path: 'locaties', component: MapComponent },
   { path: 'locaties/:id', component: MapComponent },
   { path: 'locaties/:id/:storyId', component: MapComponent },
   { path: 'routes', component: RoutesComponent },
   { path: 'routes/:id', component: MapComponent },
   { path: 'story/:id', component: MapComponent },
-  { path: 'over', component: AboutComponent },
+  {
+    path: 'over',
+    component: StaticPageComponent,
+    data: { pageTitle: 'Over Utrecht Time Machine' },
+  },
+  {
+    path: 'privacy',
+    component: StaticPageComponent,
+    data: { pageTitle: 'Privacybeleid' },
+  },
   { path: '**', redirectTo: 'intro' },
 ];
 

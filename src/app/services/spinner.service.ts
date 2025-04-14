@@ -9,7 +9,7 @@ export class SpinnerService {
   loadingRouteStopLocation = false;
   loadingRouteStopStories = false;
   loadingLocations = false;
-  loadingAbout = false;
+  loadingStaticPage = false;
   loadingHome = false;
 
   public get show() {
@@ -19,7 +19,7 @@ export class SpinnerService {
       this.loadingRouteStopLocation ||
       this.loadingRouteStopStories ||
       this.loadingLocations ||
-      this.loadingAbout ||
+      this.loadingStaticPage ||
       this.loadingHome
     );
   }
