@@ -14,7 +14,7 @@ export const environment = {
     routes: 'routes',
     stopsByRoute: 'route_stops?nid=',
     mediaByStory: 'media_by_story?nid=',
-    staticPage: 'page?title=',
+    staticPage: 'static_page?nid=',
   },
   aliasToNidUrl: 'https://data.utrechttimemachine.nl/alias_to_nid?alias=',
   mediaItemImageExtensions: ['.png', '.jpg'],

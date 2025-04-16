@@ -61,10 +61,10 @@ export class ApiService {
     return response.nid;
   }
 
-  async getStaticPage(title: string): Promise<StaticPage | undefined> {
+  async getStaticPage(nid: string): Promise<StaticPage | undefined> {
     const staticPages: StaticPage[] = await lastValueFrom(
       this.http.get<StaticPage[]>(
-        environment.apiUrl + environment.apiSuffixes.staticPage + title
+        environment.apiUrl + environment.apiSuffixes.staticPage + nid
       )
     ).catch((err) => {
       console.error(err);
