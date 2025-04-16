@@ -12,13 +12,31 @@ import { UtmRoute } from 'src/app/models/utm-route';
   styleUrls: ['./routes.component.scss'],
 })
 export class RoutesComponent {
+  sortedRoutes: UtmRoute[] = [];
+
   constructor(
     public router: Router,
     public utmRoutes: UtmRoutesService,
     public utmTranslate: UtmTranslateService,
     private themes: ThemeService,
     private time: TimeService
-  ) {}
+  ) {
+    this.utmRoutes.all.subscribe(() => {
+      this.sortedRoutes = this.sortRoutesByVisibility(this.utmRoutes.shown);
+    });
+
+    this.themes.selectedIds.subscribe(() => {
+      this.sortedRoutes = this.sortRoutesByVisibility(this.utmRoutes.shown);
+    });
+
+    this.time.minYear.subscribe(() => {
+      this.sortedRoutes = this.sortRoutesByVisibility(this.utmRoutes.shown);
+    });
+
+    this.time.maxYear.subscribe(() => {
+      this.sortedRoutes = this.sortRoutesByVisibility(this.utmRoutes.shown);
+    });
+  }
 
   isRouteVisible(route: UtmRoute): boolean {
     const passesThemeFilter = this.themes.shouldShow(route.theme_ids || []);
@@ -29,6 +47,18 @@ export class RoutesComponent {
     );
 
     return passesThemeFilter && passesTimeFilter;
+  }
+
+  private sortRoutesByVisibility(routes: UtmRoute[]): UtmRoute[] {
+    return [...routes].sort((a, b) => {
+      const aVisible = this.isRouteVisible(a);
+      const bVisible = this.isRouteVisible(b);
+
+      if (aVisible === bVisible) {
+        return 0;
+      }
+      return aVisible ? -1 : 1;
+    });
   }
 
   async selectRoute(url: string, nid: string) {

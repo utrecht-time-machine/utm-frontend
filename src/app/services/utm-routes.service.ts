@@ -14,7 +14,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class UtmRoutesService {
-  all: UtmRoute[] | undefined = undefined;
+  all = new BehaviorSubject<UtmRoute[]>([]);
 
   selected: BehaviorSubject<UtmRoute | undefined> = new BehaviorSubject<
     UtmRoute | undefined
@@ -173,13 +173,15 @@ export class UtmRoutesService {
   }
 
   public get shown(): UtmRoute[] {
-    if (!this.all) {
+    if (!this.all.value) {
       return [];
     }
     if (environment.dev) {
-      return this.all;
+      return this.all.value;
     }
-    return this.all.filter((route: UtmRoute) => !route.show_only_in_dev_mode);
+    return this.all.value.filter(
+      (route: UtmRoute) => !route.show_only_in_dev_mode
+    );
   }
 
   public get selectedStop(): UtmRouteStop | undefined {
@@ -197,9 +199,10 @@ export class UtmRoutesService {
   }
 
   public async load() {
-    this.all = await this.apiService.getUtmRoutes();
+    const routes = await this.apiService.getUtmRoutes();
+    this.all.next(routes);
 
-    console.log('Loaded all UTM routes:', this.all);
+    console.log('Loaded all UTM routes:', this.all.value);
   }
 
   public async selectById(id: string): Promise<void> {
@@ -208,11 +211,11 @@ export class UtmRoutesService {
       return;
     }
 
-    const routeToSelect: UtmRoute | undefined = this.all.find(
+    const routeToSelect: UtmRoute | undefined = this.all.value.find(
       (r) => r.nid === id
     );
     if (!routeToSelect) {
-      console.warn('Could not find route with ID', id, this.all);
+      console.warn('Could not find route with ID', id, this.all.value);
       this.spinner.loadingRoute = false;
       return;
     }
@@ -244,11 +247,11 @@ export class UtmRoutesService {
       }
     }
 
-    if (!this.all) {
+    if (!this.all.value.length) {
       await this.load();
     }
 
-    if (!url || !this.all) {
+    if (!url || !this.all.value) {
       this.spinner.loadingRoute = false;
       return;
     }

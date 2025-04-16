@@ -7,7 +7,7 @@
       <div class="card-hold promote">
         <div
           class="card"
-          *ngFor="let shownUtmRoute of utmRoutes.shown"
+          *ngFor="let shownUtmRoute of sortedRoutes"
           [class.filtered-out]="!isRouteVisible(shownUtmRoute)"
         >
           <a (click)="selectRoute(shownUtmRoute.url, shownUtmRoute.nid)">
