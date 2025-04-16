@@ -1,11 +1,15 @@
-<!-- <app-filters /> -->
+<app-filters />
 
 <div class="section section-routes">
   <div class="pad">
     <h1>{{ "routes" | translate }}</h1>
     <div class="views-element-container">
       <div class="card-hold promote">
-        <div class="card" *ngFor="let shownUtmRoute of utmRoutes.shown">
+        <div
+          class="card"
+          *ngFor="let shownUtmRoute of sortedRoutes"
+          [class.filtered-out]="!isRouteVisible(shownUtmRoute)"
+        >
           <a (click)="selectRoute(shownUtmRoute.url, shownUtmRoute.nid)">
             <div class="head">
               <div>
