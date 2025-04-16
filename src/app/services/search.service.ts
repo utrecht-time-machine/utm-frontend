@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { LiveSearchResult } from '../models/live-search-result';
+import {
+  LiveSearchResult,
+  LiveSearchResultType,
+} from '../models/live-search-result';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -21,6 +24,12 @@ export class SearchService {
   isLoadingLiveSearchResults = false;
 
   constructor(private http: HttpClient, private router: Router) {}
+
+  getLiveSearchResultsByType(type: LiveSearchResultType) {
+    return this.liveSearchResults
+      .getValue()
+      .filter((result) => result.type === type);
+  }
 
   async updateLiveSearchResults(searchInput: string) {
     if (!searchInput) {
@@ -46,6 +55,14 @@ export class SearchService {
       searchResult.label = this._convertSearchResultLabelHtmlFormat(
         searchResult.label
       );
+
+      if (searchResult.url.startsWith('/routes')) {
+        searchResult.type = 'route';
+      } else if (searchResult.url.startsWith('/locaties')) {
+        searchResult.type = 'location';
+      } else if (searchResult.url.startsWith('/story')) {
+        searchResult.type = 'story';
+      }
     }
 
     setTimeout(() => {

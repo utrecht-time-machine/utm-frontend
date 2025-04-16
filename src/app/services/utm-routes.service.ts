@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { UtmRoute } from '../models/utm-route';
 import { ApiService } from './api.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { UtmRouteStop } from '../models/utm-route-stop';
 import { SpinnerService } from './spinner.service';
 import { PlatformService } from './platform.service';
@@ -35,10 +35,21 @@ export class UtmRoutesService {
   ) {
     void this.load();
 
+    this._initSelectOnRouteChange();
     this._resetStopIndexOnRouteChange();
     this._checkDevModeRouteOnRouteChange();
     this._loadStopsDataFromServerOnRouteChange();
     this._loadStoriesDataFromServerOnStopChange();
+  }
+
+  private _initSelectOnRouteChange() {
+    this.router.events.subscribe((e) => {
+      if (!(e instanceof NavigationEnd)) {
+        return;
+      }
+
+      this.selectByUrlOrId(e.url);
+    });
   }
 
   private _checkDevModeRouteOnRouteChange() {

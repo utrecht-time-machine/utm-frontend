@@ -6,8 +6,13 @@ import { SearchService } from '../../services/search.service';
 import { debounceTime, Subject } from 'rxjs';
 import { MapService } from '../../services/map.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LiveSearchResult } from '../../models/live-search-result';
+import {
+  LiveSearchResult,
+  LiveSearchResultType,
+  liveSearchResultTypes,
+} from '../../models/live-search-result';
 import { ThemeService } from '../../services/theme.service';
+import { UtmRoutesService } from 'src/app/services/utm-routes.service';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +20,8 @@ import { ThemeService } from '../../services/theme.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  liveSearchResultTypes = liveSearchResultTypes;
+
   @ViewChild('searchContainer') searchContainer!: ElementRef;
 
   private searchInputSubject = new Subject<string>();
@@ -27,7 +34,8 @@ export class HeaderComponent {
     public search: SearchService,
     public map: MapService,
     public translate: TranslateService,
-    public themes: ThemeService
+    public themes: ThemeService,
+    public utmRoutes: UtmRoutesService
   ) {
     this.searchInputSubject.pipe(debounceTime(300)).subscribe((searchInput) => {
       void this.search.updateLiveSearchResults(searchInput);
@@ -69,5 +77,39 @@ export class HeaderComponent {
     }
 
     this.map.flyTo(address.center);
+  }
+
+  getSearchResultTypeConfig(type: LiveSearchResultType): {
+    icon: string;
+    titleTranslationKey: string;
+    clickHandler: (url: string) => void;
+  } {
+    if (type === 'location') {
+      return {
+        icon: 'assets/ui/svg/location-dot.svg',
+        titleTranslationKey: 'locations',
+        clickHandler: (url: string) => this.map.selectLocationByUrlOrId(url),
+      };
+    }
+    if (type === 'route') {
+      return {
+        icon: 'assets/ui/svg/route.svg',
+        titleTranslationKey: 'routes',
+        clickHandler: (url: string) => this.utmRoutes.selectByUrlOrId(url),
+      };
+    }
+    if (type === 'story') {
+      return {
+        icon: 'assets/ui/svg/story.svg',
+        titleTranslationKey: 'stories',
+        clickHandler: (url: string) => this.map.selectLocationByUrlOrId(url),
+      };
+    }
+
+    return {
+      icon: 'assets/ui/svg/close-circle.svg',
+      titleTranslationKey: 'Onbekend',
+      clickHandler: (url: string) => this.map.selectLocationByUrlOrId(url),
+    };
   }
 }
