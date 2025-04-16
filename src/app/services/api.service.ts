@@ -152,6 +152,14 @@ export class ApiService {
       } else if (utmRoute.show_only_in_dev_mode_plaintext === '1') {
         utmRoute.show_only_in_dev_mode = true;
       }
+
+      const splitStringToArray = (str?: string): string[] => {
+        return str ? str.split(', ') : [];
+      };
+
+      if (utmRoute.theme_ids_str) {
+        utmRoute.theme_ids = splitStringToArray(utmRoute.theme_ids_str);
+      }
     });
     return utmRoutes;
   }
