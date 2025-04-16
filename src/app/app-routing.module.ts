@@ -48,6 +48,11 @@ export const routes: Routes = [
     component: StaticPageComponent,
     data: { pageTitle: 'Privacybeleid' },
   },
+  {
+    path: 'provincie',
+    component: StaticPageComponent,
+    data: { pageTitle: 'Provincie Utrecht: 650 jaar' },
+  },
   { path: '**', redirectTo: 'intro' },
 ];
 
