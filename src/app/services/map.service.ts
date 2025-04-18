@@ -74,9 +74,13 @@ export class MapService {
       }
       const loadedLocationsPage =
         this.routing.getSelectedView() === SelectedView.Locations;
+      console.log('(map) Navigating to', this.router.url);
+
       if (loadedLocationsPage) {
         const loadedHomePage =
           this.router.url === '/' || this.router.url === '/locaties';
+        console.log('loaded home page', loadedHomePage);
+
         if (loadedHomePage) {
           void this.deselectLocation();
         } else {
@@ -1001,7 +1005,10 @@ export class MapService {
     setTimeout(() => (this.spinner.loadingLocation = true));
     if (!locationId) {
       const urlWithoutParams = url.split('?')[0];
-      console.log('(location) Retrieving Nid from URL alias', urlWithoutParams + '...');
+      console.log(
+        '(location) Retrieving Nid from URL alias',
+        urlWithoutParams + '...'
+      );
       locationId = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
     }
 
