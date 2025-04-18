@@ -31,7 +31,6 @@ const rootGuard = () => {
 
 const staticPageResolver = async (route: ActivatedRouteSnapshot) => {
   const apiService = inject(ApiService);
-  const router = inject(Router);
   const path = '/' + route.url.map((segment) => segment.path).join('/');
 
   try {
@@ -44,8 +43,7 @@ const staticPageResolver = async (route: ActivatedRouteSnapshot) => {
       path,
       error
     );
-    void router.navigate([DEFAULT_HOME_URL]);
-    return null;
+    return { nid: null };
   }
 };
 
