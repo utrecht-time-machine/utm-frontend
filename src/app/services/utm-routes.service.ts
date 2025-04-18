@@ -9,6 +9,8 @@ import { PlatformService } from './platform.service';
 import { UtmTranslateService } from './utm-translate.service';
 import { Story } from '../models/story';
 import { environment } from '../../environments/environment';
+import { SelectedView } from '../models/selected-view';
+import { RoutingService } from './routing.service';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +33,8 @@ export class UtmRoutesService {
     private router: Router,
     private spinner: SpinnerService,
     private platform: PlatformService,
-    private utmTranslate: UtmTranslateService
+    private utmTranslate: UtmTranslateService,
+    private routing: RoutingService
   ) {
     void this.load();
 
@@ -48,7 +51,9 @@ export class UtmRoutesService {
         return;
       }
 
-      this.selectByUrlOrId(e.url);
+      if (this.routing.getSelectedView() === SelectedView.SelectedRoute) {
+        this.selectByUrlOrId(e.url);
+      }
     });
   }
 
