@@ -82,7 +82,8 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'intro',
+    component: StaticPageComponent,
+    data: { pageData: { nid: '22887' } },
   },
 ];
 
