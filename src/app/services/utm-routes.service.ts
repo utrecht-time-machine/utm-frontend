@@ -28,6 +28,8 @@ export class UtmRoutesService {
     number | undefined
   >(undefined);
 
+  private navigatingToUrl: string | null = null;
+
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -50,6 +52,8 @@ export class UtmRoutesService {
       if (!(e instanceof NavigationEnd)) {
         return;
       }
+
+      this.navigatingToUrl = null;
 
       if (this.routing.getSelectedView() === SelectedView.SelectedRoute) {
         this.selectByUrlOrId(e.url);
@@ -233,10 +237,15 @@ export class UtmRoutesService {
   public async selectByUrlOrId(url: string, id?: string) {
     this.spinner.loadingRoute = true;
 
-    // Check if router is already at specified url
-    // If not, navigate to url - this triggers running this function again
+    // Prevent repeated navigation to the same URL
+    if (this.navigatingToUrl === url) {
+      return;
+    }
+
+    // If not there already, navigate to url - this triggers running this function again
     // through the subscription to router events
     if (this.router.url !== url) {
+      this.navigatingToUrl = url;
       await this.router.navigateByUrl(url);
       return;
     }

@@ -50,6 +50,8 @@ export class MapService {
     []
   );
 
+  private navigatingToUrl: string | null = null;
+
   constructor(
     private apiService: ApiService,
     private utmRoutes: UtmRoutesService,
@@ -72,6 +74,8 @@ export class MapService {
       if (!(e instanceof NavigationEnd)) {
         return;
       }
+      this.navigatingToUrl = null;
+
       const loadedLocationsPage =
         this.routing.getSelectedView() === SelectedView.Locations;
       console.log('(map) Navigating to', this.router.url);
@@ -987,10 +991,15 @@ export class MapService {
   }
 
   async selectLocationByUrlOrId(url: string, locationId?: string) {
-    // Check if router is already at specified url
-    // If not, navigate to url - this triggers running this function again
+    // Prevent repeated navigation to the same URL
+    if (this.navigatingToUrl === url) {
+      return;
+    }
+
+    // If not there already, navigate to url - this triggers running this function again
     // through the subscription to router events
     if (this.router.url !== url) {
+      this.navigatingToUrl = url;
       await this.router.navigateByUrl(url);
       return;
     }
