@@ -35,9 +35,15 @@ const staticPageResolver = async (route: ActivatedRouteSnapshot) => {
   const path = '/' + route.url.map((segment) => segment.path).join('/');
 
   try {
+    console.log('Retrieving static page Nid from URL alias', path + '...');
     const nid = await apiService.getNidFromUrlAlias(path);
     return { nid };
   } catch (error) {
+    console.error(
+      'Error retrieving static page Nid from URL alias',
+      path,
+      error
+    );
     void router.navigate([DEFAULT_HOME_URL]);
     return null;
   }
