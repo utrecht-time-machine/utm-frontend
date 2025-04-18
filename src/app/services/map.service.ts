@@ -1001,6 +1001,7 @@ export class MapService {
     setTimeout(() => (this.spinner.loadingLocation = true));
     if (!locationId) {
       const urlWithoutParams = url.split('?')[0];
+      console.log('(location) Retrieving Nid from URL alias', urlWithoutParams + '...');
       locationId = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
     }
 

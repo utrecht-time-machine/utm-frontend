@@ -54,6 +54,8 @@ export class StoryService {
   }
 
   private async _updateShownStoryDetailsFromServer(storyAlias: string) {
+    console.log('(story) Retrieving Nid from URL alias', storyAlias + '...');
+
     const storyNid: string = await this.api.getNidFromUrlAlias(
       '/story/' + storyAlias
     );

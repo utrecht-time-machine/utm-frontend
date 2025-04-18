@@ -238,6 +238,10 @@ export class UtmRoutesService {
 
     if (!id) {
       const urlWithoutParams = url.split('?')[0];
+      console.log(
+        '(route) Retrieving Nid from URL alias',
+        urlWithoutParams + '...'
+      );
       id = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
 
       const idAlreadySelected = id === this.selected.getValue()?.nid;
