@@ -26,18 +26,25 @@ export class StaticPageComponent implements OnInit {
     private router: Router
   ) {
     this.translate.onLangChange.subscribe(() => {
-      void this.loadContent();
+      const nid = this.route.snapshot.data['pageData']?.nid;
+      if (nid) {
+        void this.loadContent(nid);
+      }
     });
   }
 
   ngOnInit() {
+    console.log('StaticPageComponent ngOnInit');
     this.route.data.subscribe(async (data) => {
+      console.log('StaticPageComponent data', data);
       await this.loadContent(data['pageData']?.nid);
     });
   }
 
   async loadContent(nid?: string) {
+    console.log('StaticPageComponent loadContent', nid);
     if (!nid) {
+      console.log('StaticPageComponent no nid');
       void this.router.navigate([DEFAULT_HOME_URL]);
       return;
     }
@@ -46,11 +53,12 @@ export class StaticPageComponent implements OnInit {
 
     try {
       this.content = await this.apiService.getStaticPage(nid);
-
+      console.log('StaticPageComponent content', this.content);
       if (!this.content) {
         void this.router.navigate([DEFAULT_HOME_URL]);
       }
     } catch (error) {
+      console.error('Error loading static page', error);
       void this.router.navigate([DEFAULT_HOME_URL]);
     } finally {
       this.spinner.loadingStaticPage = false;

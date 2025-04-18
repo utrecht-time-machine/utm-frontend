@@ -29,23 +29,23 @@ const rootGuard = () => {
   }
 };
 
-const staticPageResolver = async (route: ActivatedRouteSnapshot) => {
-  const apiService = inject(ApiService);
-  const path = '/' + route.url.map((segment) => segment.path).join('/');
+// const staticPageResolver = async (route: ActivatedRouteSnapshot) => {
+//   const apiService = inject(ApiService);
+//   const path = '/' + route.url.map((segment) => segment.path).join('/');
 
-  try {
-    console.log('Retrieving static page Nid from URL alias', path + '...');
-    const nid = await apiService.getNidFromUrlAlias(path);
-    return { nid };
-  } catch (error) {
-    console.error(
-      'Error retrieving static page Nid from URL alias',
-      path,
-      error
-    );
-    return { nid: null };
-  }
-};
+//   try {
+//     console.log('Retrieving static page Nid from URL alias', path + '...');
+//     const nid = await apiService.getNidFromUrlAlias(path);
+//     return { nid };
+//   } catch (error) {
+//     console.error(
+//       'Error retrieving static page Nid from URL alias',
+//       path,
+//       error
+//     );
+//     return { nid: null };
+//   }
+// };
 
 export const routes: Routes = [
   ...qrCodeRoutes,
@@ -66,11 +66,23 @@ export const routes: Routes = [
   { path: 'routes/:id', component: MapComponent },
   { path: 'story/:id', component: MapComponent },
   {
-    path: '**',
+    path: 'over',
     component: StaticPageComponent,
-    resolve: {
-      pageData: staticPageResolver,
-    },
+    data: { pageData: { nid: '20723' } },
+  },
+  {
+    path: 'provincie',
+    component: StaticPageComponent,
+    data: { pageData: { nid: '22886' } },
+  },
+  {
+    path: 'privacy',
+    component: StaticPageComponent,
+    data: { pageData: { nid: '20725' } },
+  },
+  {
+    path: '**',
+    redirectTo: 'intro',
   },
 ];
 
