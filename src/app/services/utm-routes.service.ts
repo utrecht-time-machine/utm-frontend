@@ -207,7 +207,9 @@ export class UtmRoutesService {
     const routes = await this.apiService.getUtmRoutes();
     this.all.next(routes);
 
-    console.log('Loaded all UTM routes:', this.all.value);
+    if (this.platform.isBrowser()) {
+      console.log('Loaded all UTM routes:', this.all.value);
+    }
   }
 
   public async selectById(id: string): Promise<void> {
@@ -238,6 +240,7 @@ export class UtmRoutesService {
     if (this._justRedirected) {
       // We just redirected, so don't do it again
       this._justRedirected = false;
+      url = this.router.url;
       console.log(
         'Skipping redirect due to justRedirected flag, assuming we are in the right place:',
         this.router.url,

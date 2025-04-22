@@ -992,6 +992,7 @@ export class MapService {
     if (this._justRedirected) {
       // We just redirected, so don't do it again
       this._justRedirected = false;
+      url = this.router.url;
       console.log(
         'Skipping redirect due to justRedirected flag, assuming we are in the right place:',
         this.router.url,
