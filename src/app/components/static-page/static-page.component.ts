@@ -34,9 +34,9 @@ export class StaticPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('StaticPageComponent ngOnInit');
+    // console.log('StaticPageComponent ngOnInit');
     this.route.data.subscribe(async (data) => {
-      console.log('StaticPageComponent data', data);
+      // console.log('StaticPageComponent data', data);
       await this.loadContent(data['pageData']?.nid);
     });
   }
@@ -53,7 +53,7 @@ export class StaticPageComponent implements OnInit {
 
     try {
       this.content = await this.apiService.getStaticPage(nid);
-      console.log('StaticPageComponent content', this.content);
+      // console.log('StaticPageComponent content', this.content);
       if (!this.content) {
         void this.router.navigate([DEFAULT_HOME_URL]);
       }
