@@ -16,14 +16,23 @@ import { ApiService } from './services/api.service';
 
 export const DEFAULT_HOME_URL = '/intro';
 
+import { PlatformService } from './services/platform.service';
+
 const rootGuard = () => {
-  // Determine if user saw introduction by checking local storage
-  const hasSeenIntro = localStorage.getItem('hasSeenIntro');
+  const platformService = inject(PlatformService);
+
+  let hasSeenIntro: boolean = false;
+  if (platformService.isBrowser()) {
+    hasSeenIntro = localStorage.getItem('hasSeenIntro') === 'true';
+  }
 
   const router = inject(Router);
   if (!hasSeenIntro) {
     router.navigate(['intro']);
-    localStorage.setItem('hasSeenIntro', 'true');
+
+    if (platformService.isBrowser()) {
+      localStorage.setItem('hasSeenIntro', 'true');
+    }
   } else {
     router.navigate(['locaties']); // Default URL when intro seen
   }
