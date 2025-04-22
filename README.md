@@ -18,4 +18,4 @@ To deploy to production (https://utrechttimemachine.nl), simply push to the main
 
 To deploy to the development environment (http://dev.utrechttimemachine.nl/), run `npm run build:dev` and place all `dist/` files **except for the `robots.txt` file** in the `/var/www/dev.utrechttimemachine.nl/public_html` folder on the VPS.
 
-Note that this development environment does not use [SSR](https://angular.dev/guide/ssr), so functionality on dev might not be a perfect representation of how things will perform on production.
+Note that this development environment **does not use [SSR](https://angular.dev/guide/ssr)**, so functionality on dev might not be a perfect representation of how things will perform on production.
