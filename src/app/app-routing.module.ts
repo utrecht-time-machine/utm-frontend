@@ -74,6 +74,7 @@ export const routes: Routes = [
   { path: 'routes', component: RoutesComponent },
   { path: 'routes/:id', component: MapComponent },
   { path: 'story/:id', component: MapComponent },
+  // TODO: Remove hard-coded nids, retrieve using API service getNidFromUrlAlias instead
   {
     path: 'over',
     component: StaticPageComponent,
