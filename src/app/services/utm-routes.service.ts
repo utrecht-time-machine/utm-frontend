@@ -233,22 +233,22 @@ export class UtmRoutesService {
   public async selectByUrlOrId(url: string, id?: string) {
     this.spinner.loadingRoute = true;
 
-    console.log('(route) selectByUrlOrId', url, id);
+    console.log('Selecting route by URL or ID:', url, id);
 
     // If not there already, navigate to url - this triggers running this function again
     // through the subscription to router events
     if (this.router.url !== url) {
-      console.log('(route) router url != url', this.router.url, url);
+      console.log(
+        'URL is not yet what it should be, redirecting:',
+        this.router.url,
+        url
+      );
       await this.router.navigateByUrl(url);
       return;
     }
 
     if (!id) {
       const urlWithoutParams = url.split('?')[0];
-      console.log(
-        '(route) Retrieving Nid from URL alias',
-        urlWithoutParams + '...'
-      );
       id = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
 
       const idAlreadySelected = id === this.selected.getValue()?.nid;

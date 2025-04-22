@@ -75,12 +75,11 @@ export class MapService {
 
       const loadedLocationsPage =
         this.routing.getSelectedView() === SelectedView.Locations;
-      console.log('(map) Navigating to', this.router.url);
 
       if (loadedLocationsPage) {
         const loadedHomePage =
           this.router.url === '/' || this.router.url === '/locaties';
-        console.log('loaded home page', loadedHomePage);
+        // console.log('Loaded home page', loadedHomePage);
 
         if (loadedHomePage) {
           void this.deselectLocation();
@@ -700,7 +699,7 @@ export class MapService {
           }
 
           // TODO: Make sure to parse all themes, min and max dates here
-          console.log('Locations', locations);
+          // console.log('Locations (from server)', locations);
           const uniqueLocations: MapLocation[] =
             this._parseLocations(locations);
 
@@ -730,8 +729,8 @@ export class MapService {
             );
           });
 
-          console.log('LOCATIONS FROM SERVER', uniqueLocations);
-          console.log('HIDDEN LOCATIONS REMOVED', showableLocations);
+          // console.log('Unique locations from server', uniqueLocations);
+          console.log('Locations to show:', showableLocations);
           return showableLocations;
         })
     );
