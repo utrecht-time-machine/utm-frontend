@@ -45,7 +45,7 @@
               "node_modules/@photo-sphere-viewer/video-plugin/index.scss"
             ],
             "scripts": ["node_modules/viewerjs/dist/viewer.min.js"],
-            "allowedCommonJsDependencies": ["mapbox-gl", "howler"]
+            "allowedCommonJsDependencies": ["mapbox-gl", "howler", "viewerjs"]
           },
           "configurations": {
             "production": {
