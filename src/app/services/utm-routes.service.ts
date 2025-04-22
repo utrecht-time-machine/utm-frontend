@@ -230,19 +230,29 @@ export class UtmRoutesService {
     this.spinner.loadingRoute = false;
   }
 
+  private _justRedirected = false;
+
   public async selectByUrlOrId(url: string, id?: string) {
     this.spinner.loadingRoute = true;
 
-    console.log('Selecting route by URL or ID:', url, id);
-
-    // If not there already, navigate to url - this triggers running this function again
-    // through the subscription to router events
-    if (this.router.url !== url) {
+    if (this._justRedirected) {
+      // We just redirected, so don't do it again
+      this._justRedirected = false;
+      console.log(
+        'Skipping redirect due to justRedirected flag, assuming we are in the right place:',
+        this.router.url,
+        url
+      );
+    } else if (this.router.url !== url) {
+      // If not there already, navigate to url - this triggers running this function again
+      // through the subscription to router events
       console.log(
         'URL is not yet what it should be, redirecting:',
         this.router.url,
         url
       );
+
+      this._justRedirected = true;
       await this.router.navigateByUrl(url);
       return;
     }
