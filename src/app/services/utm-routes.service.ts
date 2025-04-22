@@ -237,14 +237,20 @@ export class UtmRoutesService {
   public async selectByUrlOrId(url: string, id?: string) {
     this.spinner.loadingRoute = true;
 
+    console.log('(route) selectByUrlOrId', url, id);
+    console.log('(route) navigatingToUrl', this.navigatingToUrl);
+
     // Prevent repeated navigation to the same URL
     if (this.navigatingToUrl === url) {
+      console.log('(route) Skipping navigation to', url);
       return;
     }
 
     // If not there already, navigate to url - this triggers running this function again
     // through the subscription to router events
     if (this.router.url !== url) {
+      console.log('(route) router url != url', this.router.url, url);
+      console.log('(route) Navigating to', url);
       this.navigatingToUrl = url;
       await this.router.navigateByUrl(url);
       return;
