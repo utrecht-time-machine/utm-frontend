@@ -3,6 +3,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { TranslateService } from '@ngx-translate/core';
 import { FeedbackService } from '../../services/feedback.service';
 import { FeedbackRating } from '../../models/feedback-rating';
+import { PlatformService } from 'src/app/services/platform.service';
 
 @Component({
   selector: 'app-feedback',
@@ -34,7 +35,8 @@ export class FeedbackComponent {
 
   constructor(
     public feedbackService: FeedbackService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private platform: PlatformService
   ) {}
 
   getRating(): FeedbackRating | undefined {
@@ -58,6 +60,10 @@ export class FeedbackComponent {
   private showStatusMessage(status: 'success' | 'error', message: string) {
     this.commentSubmitStatus = status;
     this.commentSubmitMessage = message;
+
+    if (!this.platform.isBrowser()) {
+      return;
+    }
 
     if (this.commentSubmitStatusTimeout !== null) {
       window.clearTimeout(this.commentSubmitStatusTimeout);
