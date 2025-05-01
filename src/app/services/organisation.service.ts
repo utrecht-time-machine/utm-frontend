@@ -23,7 +23,15 @@ export class OrganisationService {
 
   private async _loadAll() {
     const allOrganisations: Organisation[] = await this.getOrganisations();
-    this.all.next(allOrganisations);
+    const stripArticle = (title: string) =>
+      title
+        .trim()
+        .replace(/^(de |het )/i, '')
+        .trim();
+    const sortedOrganisations = allOrganisations.sort((a, b) => {
+      return stripArticle(a.title).localeCompare(stripArticle(b.title));
+    });
+    this.all.next(sortedOrganisations);
   }
 
   public getByIds(organisationIds: string[]): Organisation[] | undefined {
