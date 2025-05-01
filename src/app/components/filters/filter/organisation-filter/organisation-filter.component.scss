@@ -7,17 +7,17 @@
 
 .organisation-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
   gap: 1rem;
   padding: 1rem 0.5rem 0.5rem 0.5rem;
 }
 
 .organisation-logo-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   cursor: pointer;
-  /* No border, radius, or padding here */
   background: none;
 }
 
@@ -35,8 +35,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 90px;
+  height: 90px;
   border-radius: 8px;
   border: 1px solid #e0e0e0;
   background: #f8f8f8;
@@ -54,8 +54,8 @@
 }
 
 .organisation-logo {
-  width: 40px;
-  height: 40px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   margin: 0;
   background: none;
@@ -65,11 +65,14 @@
 }
 
 .organisation-title {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-align: center;
   margin-top: 0.3rem;
-  color: #222;
+  color: #666;
+  font-weight: 400;
+  line-height: 1.1;
   word-break: break-word;
-  line-height: 1.2;
-  font-weight: 500;
+  white-space: normal;
+  max-width: 100%;
+  overflow: hidden;
 }
