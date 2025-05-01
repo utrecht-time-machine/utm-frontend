@@ -855,11 +855,6 @@ export class MapService {
       const splitStringToArray = (str?: string): string[] => {
         return str ? str.split(', ') : [];
       };
-      const storyThemeIds: string[] = splitStringToArray(
-        location?.story_theme_ids_str
-      );
-      const minDates: string[] = splitStringToArray(location?.min_date_str);
-      const maxDates: string[] = splitStringToArray(location?.max_date_str);
 
       if (!uniqueLocations[location.nid]) {
         uniqueLocations[location.nid] = location;
@@ -869,20 +864,29 @@ export class MapService {
         ? false
         : location.hide_from_map_str === '1';
 
+      const storyThemeIds: string[] = splitStringToArray(
+        location?.story_theme_ids_str
+      );
       uniqueLocations[location.nid].story_theme_ids = [
         ...(uniqueLocations[location.nid].story_theme_ids ?? []),
         ...storyThemeIds,
       ];
 
+      const minDates: string[] = splitStringToArray(location?.min_date_str);
+      const maxDates: string[] = splitStringToArray(location?.max_date_str);
       uniqueLocations[location.nid].min_dates = [
         ...(uniqueLocations[location.nid].min_dates ?? []),
         ...minDates,
       ];
-
       uniqueLocations[location.nid].max_dates = [
         ...(uniqueLocations[location.nid].max_dates ?? []),
         ...maxDates,
       ];
+
+      const organisationIds: string[] = splitStringToArray(
+        location?.organisation_ids_str
+      );
+      uniqueLocations[location.nid].organisation_ids = organisationIds;
     });
 
     return Object.values(uniqueLocations);

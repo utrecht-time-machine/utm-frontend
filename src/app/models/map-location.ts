@@ -16,4 +16,6 @@ export interface MapLocation {
   max_dates: string[];
   min_date_str: string;
   min_dates: string[];
+  organisation_ids_str: string;
+  organisation_ids: string[];
 }
