@@ -2,6 +2,7 @@ import { Component, type OnInit } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ThemeService } from 'src/app/services/theme.service';
 import { TimeService } from 'src/app/services/time.service';
+import { OrganisationFilterService } from 'src/app/services/organisation-filter.service';
 
 @Component({
   selector: 'app-active-filters-badge',
@@ -26,14 +27,20 @@ import { TimeService } from 'src/app/services/time.service';
   ],
 })
 export class ActiveFiltersBadgeComponent implements OnInit {
-  constructor(public theme: ThemeService, public time: TimeService) {}
+  constructor(
+    public theme: ThemeService,
+    public time: TimeService,
+    public organisationFilter: OrganisationFilterService
+  ) {}
 
   ngOnInit(): void {}
 
   activeFiltersCount(): number {
-    return [this.time.isActive(), this.theme.isActive()].filter(
-      (active) => active
-    ).length;
+    return [
+      this.time.isActive(),
+      this.theme.isActive(),
+      this.organisationFilter.isActive(),
+    ].filter((active) => active).length;
   }
 
   badgeText(): string {
