@@ -1,9 +1,16 @@
 <div class="container" [style.max-height]="maxHeight">
-  <app-filter-header
-    [title]="title"
-    [icon]="icon"
-    [isActive]="isActive"
-  ></app-filter-header>
+  <div class="filter-header-row" (click)="toggleCollapse()">
+    <app-filter-header
+      [title]="title"
+      [icon]="icon"
+      [isActive]="isActive"
+    ></app-filter-header>
+    <span class="collapse-caret" [class.collapsed]="collapsed">
+      <img src="assets/ui/svg/angle-down.svg" alt="Toggle" />
+    </span>
+  </div>
 
-  <ng-content></ng-content>
+  <div class="filter-content" *ngIf="!collapsed" [@collapse]="!collapsed ? 'open' : 'closed'">
+    <ng-content></ng-content>
+  </div>
 </div>
