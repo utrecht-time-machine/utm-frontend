@@ -1,65 +1,75 @@
-.separator {
-  width: 100%;
-  height: 1px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.organisation-checkbox-container {
-  display: flex;
-  align-items: center;
-  margin: 0rem 0;
-  gap: 0.5rem;
-  padding: 0px 16px;
-
-  & input {
-    height: 1rem;
-    width: 1rem;
-  }
-
-  & label {
-    font-size: 0.9rem;
-    display: inline-block;
-    display: flex;
-    align-items: flex-start;
-    cursor: pointer;
-
-    input[type="checkbox"] {
-      margin-right: 8px;
-      margin-top: 4px;
-    }
-  }
-
-  ::ng-deep .mat-checkbox {
-    display: flex;
-    align-items: center;
-  }
-}
-
-.organisation-select-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  position: relative;
+.organisation-scroll-area {
+  max-height: 8rem;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-right: 0.5rem; // optional for scrollbar spacing
 }
 
-.organisation-list {
-  padding-right: 10rem;
-  padding-bottom: 1rem;
+.organisation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+  gap: 1rem;
+  padding: 1rem 0.5rem 0.5rem 0.5rem;
 }
 
-.organisation-checkbox-container {
-  padding: 0px 1.095rem;
+.organisation-logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  /* No border, radius, or padding here */
+  background: none;
+}
 
-  ::ng-deep .mat-checkbox {
-    .mat-checkbox-layout {
-      align-items: flex-start;
-      white-space: normal;
-    }
+.organisation-logo-container:hover .organisation-logo {
+  border-color: color-mix(in srgb, var(--red) 30%, transparent);
+  border-width: 2px;
+}
 
-    .mat-checkbox-inner-container {
-      margin-top: 3px;
-    }
-  }
+.organisation-logo-container.selected .organisation-logo {
+  border-color: var(--red);
+  border-width: 2px;
+}
+
+.organisation-logo-border {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background: #f8f8f8;
+  transition: border-color 0.15s, border-width 0.15s;
+}
+
+.organisation-logo-container:hover .organisation-logo-border {
+  border-color: color-mix(in srgb, black 15%, transparent);
+  border-width: 2px;
+}
+
+.organisation-logo-container.selected .organisation-logo-border {
+  border-color: color-mix(in srgb, black 80%, transparent);
+  border-width: 2px;
+}
+
+.organisation-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin: 0;
+  background: none;
+  border-radius: 6px;
+  border: none;
+  display: block;
+}
+
+.organisation-title {
+  font-size: 0.85rem;
+  text-align: center;
+  margin-top: 0.3rem;
+  color: #222;
+  word-break: break-word;
+  line-height: 1.2;
+  font-weight: 500;
 }

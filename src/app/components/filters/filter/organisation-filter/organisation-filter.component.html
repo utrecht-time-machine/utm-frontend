@@ -3,22 +3,22 @@
   [icon]="'assets/ui/svg/organisation.svg'"
   [isActive]="organisationFilter.isActive()"
 >
-  <div class="organisation-select-container">
-    <div class="organisation-list">
+  <div class="organisation-scroll-area">
+    <div class="organisation-grid">
       <div
         *ngFor="let organisation of organisations.all | async"
-        class="organisation-checkbox-container"
+        class="organisation-logo-container"
+        [class.selected]="organisationFilter.isSelected(organisation.id)"
+        (click)="organisationFilter.toggle(organisation.id)"
+        [title]="organisation.title"
       >
-        <mat-checkbox
-          [id]="organisation.id"
-          [name]="organisation.id"
-          [value]="organisation.id"
-          (change)="organisationFilter.toggle(organisation.id)"
-          [checked]="organisationFilter.isSelected(organisation.id)"
-          [disableRipple]="true"
-        >
-          <span [innerHTML]="organisation.title"></span>
-        </mat-checkbox>
+        <div class="organisation-logo-border">
+          <img
+            [src]="organisation.logo"
+            [alt]="organisation.title"
+            class="organisation-logo"
+          />
+        </div>
       </div>
     </div>
   </div>
