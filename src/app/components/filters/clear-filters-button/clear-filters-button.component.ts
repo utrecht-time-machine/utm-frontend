@@ -1,6 +1,8 @@
 import { Component, type OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { FilterService } from 'src/app/services/filter.service';
+import { OrganisationFilterService } from 'src/app/services/organisation-filter.service';
+import { OrganisationService } from 'src/app/services/organisation.service';
 import { ThemeService } from 'src/app/services/theme.service';
 import { TimeService } from 'src/app/services/time.service';
 
@@ -13,19 +15,25 @@ export class ClearFiltersButtonComponent implements OnInit {
   constructor(
     public time: TimeService,
     public themes: ThemeService,
-    public filters: FilterService
+    public filters: FilterService,
+    public organisationFilter: OrganisationFilterService
   ) {}
 
   ngOnInit(): void {}
 
   hasActiveFilters(): boolean {
-    return this.time.isActive() || this.themes.isActive();
+    return (
+      this.time.isActive() ||
+      this.themes.isActive() ||
+      this.organisationFilter.isActive()
+    );
   }
 
   clearFilters($event: MouseEvent) {
     $event.stopPropagation();
     this.time.setToDefaultRange();
     this.themes.clearSelection();
+    this.organisationFilter.clearSelection();
 
     setTimeout(() => {
       this.filters.hide();
