@@ -37,5 +37,6 @@
   "sendComment": "Send",
   "commentPlaceholder": "Share your thoughts or suggestions",
   "commentSendingSuccess": "Thank you for your feedback",
-  "commentSendingError": "There was an error sending your feedback"
+  "commentSendingError": "There was an error sending your feedback",
+  "organisations": "Partners"
 }

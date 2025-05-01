@@ -1,0 +1,25 @@
+<app-filter
+  [title]="'organisations' | translate"
+  [icon]="'assets/ui/svg/organisation.svg'"
+  [isActive]="organisationFilter.isActive()"
+>
+  <div class="organisation-select-container">
+    <div class="organisation-list">
+      <div
+        *ngFor="let organisation of organisations.all | async"
+        class="organisation-checkbox-container"
+      >
+        <mat-checkbox
+          [id]="organisation.id"
+          [name]="organisation.id"
+          [value]="organisation.id"
+          (change)="organisationFilter.toggle(organisation.id)"
+          [checked]="organisationFilter.isSelected(organisation.id)"
+          [disableRipple]="true"
+        >
+          <span [innerHTML]="organisation.title"></span>
+        </mat-checkbox>
+      </div>
+    </div>
+  </div>
+</app-filter>

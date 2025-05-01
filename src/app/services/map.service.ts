@@ -28,6 +28,7 @@ import { ThemeService } from './theme.service';
 import { TimeService } from './time.service';
 import { FilterService } from './filter.service';
 import { FilterType } from '../models/filter-type.enum';
+import { OrganisationFilterService } from './organisation-filter.service';
 
 @Injectable({
   providedIn: 'root',
@@ -61,7 +62,8 @@ export class MapService {
     private platform: PlatformService,
     private themes: ThemeService,
     private time: TimeService,
-    private filters: FilterService
+    private filters: FilterService,
+    private organisationFilter: OrganisationFilterService
   ) {
     this.allLocations.subscribe(() => {
       this.shownLocationPopup?.remove();
@@ -158,6 +160,7 @@ export class MapService {
 
     this.initRefreshOnThemeChange();
     this.initRefreshOnTimeChange();
+    this.initRefreshOnOrganisationChange();
   }
 
   add3DBuildingsLayer() {
@@ -295,6 +298,15 @@ export class MapService {
         return;
       }
 
+      void this.addMapLocationsFromServer(false, true);
+    });
+  }
+
+  initRefreshOnOrganisationChange() {
+    this.organisationFilter.selectedIds.subscribe(() => {
+      if (this.organisationFilter.numTimesSelectedOrganisationsChanged === 1) {
+        return;
+      }
       void this.addMapLocationsFromServer(false, true);
     });
   }
@@ -717,6 +729,14 @@ export class MapService {
               location.max_dates
             );
 
+            let locationHasSelectedOrganisation = true;
+            if (this.organisationFilter.selectedIds.value.length > 0) {
+              locationHasSelectedOrganisation =
+                this.organisationFilter.selectedIds.value.some((orgId) =>
+                  location.organisation_ids.includes(orgId)
+                );
+            }
+
             if (!location.geo) {
               console.warn('LOCATION WITHOUT GEO COORDINATES', location.url);
             }
@@ -725,7 +745,8 @@ export class MapService {
               locationHasSelectedTheme &&
               !location.hide_from_map &&
               location.geo &&
-              locationIsInDateRange
+              locationIsInDateRange &&
+              locationHasSelectedOrganisation
             );
           });
 
