@@ -19,20 +19,22 @@ export class ThemeService {
     void this.updateAllFromServer();
 
     this.selectedIds.subscribe((selectedIds) => {
-      console.log('SELECTED THEME IDS', selectedIds);
+      console.log('Selected theme IDs:', selectedIds);
       this.numTimesSelectedThemesChanged++;
     });
   }
 
   async updateAllFromServer() {
+    console.log('Updating all themes from server...');
     const themes = await this.api.getThemes();
     const sortedThemes = themes.sort((a, b) => a.title.localeCompare(b.title));
+    console.log('All themes (from server):', sortedThemes);
+
     this.all.next(sortedThemes);
     this.filtered.next(sortedThemes);
 
-    const allIds = themes.map((theme) => theme.nid);
+    // const allIds = themes.map((theme) => theme.nid);
     // this.selectedIds.next(allIds);
-    console.log('THEMES', themes);
   }
 
   toggle(nid: string) {

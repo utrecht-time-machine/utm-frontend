@@ -25,12 +25,5 @@ export class SelectedRouteComponent {
     return this.utmRoutes.selected.getValue();
   }
 
-  ngOnInit() {
-    const navigatedToUtmRoutePage =
-      this.routing.getSelectedView() == SelectedView.SelectedRoute;
-
-    if (navigatedToUtmRoutePage) {
-      void this.utmRoutes.selectByUrlOrId(this.router.url);
-    }
-  }
+  ngOnInit() {}
 }

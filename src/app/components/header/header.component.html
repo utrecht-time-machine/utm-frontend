@@ -50,26 +50,36 @@
                       : 'hidden'
                   }"
                 >
-                  <!-- Location Results -->
-                  <li
-                    class="search-result-type"
-                    *ngIf="(search.liveSearchResults | async)?.length"
-                  >
-                    <img
-                      src="assets/ui/svg/location-dot.svg"
-                      alt="Locations icon"
-                      class="header-icon"
-                    />
-                    {{ "locationsAndStories" | translate }}
-                  </li>
-                  <li
-                    *ngFor="
-                      let searchResult of search.liveSearchResults.getValue()
-                    "
-                    [innerHtml]="searchResult.label"
-                    (click)="map.selectLocationByUrlOrId(searchResult.url)"
-                    class="location-result"
-                  ></li>
+                  <!-- Location, route and story results -->
+                  <ng-container *ngFor="let type of liveSearchResultTypes">
+                    <li
+                      class="search-result-type"
+                      *ngIf="search.getLiveSearchResultsByType(type)?.length"
+                    >
+                      <img
+                        [src]="getSearchResultTypeConfig(type).icon"
+                        alt="{{ type }} icon"
+                        class="header-icon"
+                      />
+                      {{
+                        getSearchResultTypeConfig(type).titleTranslationKey
+                          | translate
+                      }}
+                    </li>
+                    <li
+                      *ngFor="
+                        let searchResult of search.getLiveSearchResultsByType(
+                          type
+                        )
+                      "
+                      [innerHtml]="searchResult.label"
+                      (click)="
+                        getSearchResultTypeConfig(type).clickHandler(
+                          searchResult.url
+                        )
+                      "
+                    ></li>
+                  </ng-container>
 
                   <!-- Address Results -->
                   <li

@@ -45,15 +45,15 @@
               "node_modules/@photo-sphere-viewer/video-plugin/index.scss"
             ],
             "scripts": ["node_modules/viewerjs/dist/viewer.min.js"],
-            "allowedCommonJsDependencies": ["mapbox-gl", "howler"]
+            "allowedCommonJsDependencies": ["mapbox-gl", "howler", "viewerjs"]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1500kb",
-                  "maximumError": "3mb"
+                  "maximumWarning": "3mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",

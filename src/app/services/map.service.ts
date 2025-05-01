@@ -72,11 +72,15 @@ export class MapService {
       if (!(e instanceof NavigationEnd)) {
         return;
       }
+
       const loadedLocationsPage =
         this.routing.getSelectedView() === SelectedView.Locations;
+
       if (loadedLocationsPage) {
         const loadedHomePage =
           this.router.url === '/' || this.router.url === '/locaties';
+        // console.log('Loaded home page', loadedHomePage);
+
         if (loadedHomePage) {
           void this.deselectLocation();
         } else {
@@ -695,7 +699,7 @@ export class MapService {
           }
 
           // TODO: Make sure to parse all themes, min and max dates here
-          console.log('Locations', locations);
+          // console.log('Locations (from server)', locations);
           const uniqueLocations: MapLocation[] =
             this._parseLocations(locations);
 
@@ -725,8 +729,8 @@ export class MapService {
             );
           });
 
-          console.log('LOCATIONS FROM SERVER', uniqueLocations);
-          console.log('HIDDEN LOCATIONS REMOVED', showableLocations);
+          // console.log('Unique locations from server', uniqueLocations);
+          console.log('Locations to show:', showableLocations);
           return showableLocations;
         })
     );
@@ -986,11 +990,22 @@ export class MapService {
     });
   }
 
+  private _justRedirected = false;
+
   async selectLocationByUrlOrId(url: string, locationId?: string) {
-    // Check if router is already at specified url
-    // If not, navigate to url - this triggers running this function again
-    // through the subscription to router events
-    if (this.router.url !== url) {
+    if (this._justRedirected) {
+      // We just redirected, so don't do it again
+      this._justRedirected = false;
+      url = this.router.url;
+      console.log(
+        'Skipping redirect due to justRedirected flag, assuming we are in the right place:',
+        this.router.url,
+        url
+      );
+    } else if (this.router.url !== url) {
+      // If not there already, navigate to url - this triggers running this function again
+      // through the subscription to router events
+      this._justRedirected = true;
       await this.router.navigateByUrl(url);
       return;
     }
@@ -1005,6 +1020,10 @@ export class MapService {
     setTimeout(() => (this.spinner.loadingLocation = true));
     if (!locationId) {
       const urlWithoutParams = url.split('?')[0];
+      console.log(
+        '(location) Retrieving Nid from URL alias',
+        urlWithoutParams + '...'
+      );
       locationId = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
     }
 

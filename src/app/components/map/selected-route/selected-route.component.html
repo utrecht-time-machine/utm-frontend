@@ -2,7 +2,10 @@
   <div class="dock-inner route-container" *ngIf="!utmRoutes.selectedStop">
     <div class="pad">
       <div class="audio-player-container" *ngIf="selectedRoute?.audio">
-        <app-audio-player [audioUrl]="selectedRoute?.audio" class="route-audio-player"/>
+        <app-audio-player
+          [audioUrl]="selectedRoute?.audio"
+          class="route-audio-player"
+        />
       </div>
 
       <app-edit-button
@@ -80,17 +83,22 @@
               <span
                 *ngIf="selectedRoute?.source_link && selectedRoute?.source_name"
                 >{{ "source" | translate }}:
-                <a [href]="selectedRoute.source_link" target="_blank">{{
-                  selectedRoute.source_name
-                }}</a></span
-              >
+                <a
+                  [href]="selectedRoute.source_link"
+                  target="_blank"
+                  [innerHtml]="selectedRoute.source_name"
+                ></a
+              ></span>
               <span
                 *ngIf="
                   !selectedRoute?.source_link && selectedRoute?.source_name
                 "
                 >{{ "source" | translate }}:
-                {{ selectedRoute.source_name }}</span
-              >
+                <span
+                  [innerHtml]="selectedRoute.source_name"
+                  style="display: inline; margin-top: 0"
+                ></span
+              ></span>
               <app-license [licenseLabel]="selectedRoute.license"></app-license>
             </div>
           </div>

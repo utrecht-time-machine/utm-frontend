@@ -7,7 +7,8 @@
         <div>
           <div class="screen-mode" data-mobile="1">
             <h1 [innerHtml]="locationDetails?.title"></h1>
-            <h3>{{ locationDetails?.address }}</h3>
+            <!-- <h3>{{ locationDetails?.address }}</h3> -->
+            <h3 *ngIf="locationDetails?.head">{{ locationDetails?.head }}</h3>
           </div>
           <div class="photo-hold">
             <div class="photo">
@@ -18,30 +19,36 @@
                 ></app-image-viewer>
               </div>
             </div>
-            <div class="media-source" *ngIf="locationDetails?.source_name">
+            <div class="media-source">
               <div class="views-element-container">
                 <div>
-                  <span *ngIf="locationDetails?.caption">{{
-                    locationDetails?.caption
-                  }}</span>
+                  <span
+                    *ngIf="locationDetails?.caption"
+                    [innerHtml]="locationDetails?.caption"
+                  ></span>
                   <span
                     *ngIf="
                       locationDetails?.source_link &&
                       locationDetails?.source_name
                     "
                     >{{ "source" | translate }}:
-                    <a [href]="locationDetails?.source_link" target="_blank">{{
-                      locationDetails?.source_name
-                    }}</a></span
-                  >
+                    <a
+                      [href]="locationDetails?.source_link"
+                      target="_blank"
+                      [innerHtml]="locationDetails?.source_name"
+                    ></a
+                  ></span>
                   <span
                     *ngIf="
                       !locationDetails?.source_link &&
                       locationDetails?.source_name
                     "
                     >{{ "source" | translate }}:
-                    {{ locationDetails?.source_name }}</span
-                  >
+                    <span
+                      [innerHtml]="locationDetails?.source_name"
+                      style="display: inline; margin-top: 0"
+                    ></span
+                  ></span>
                   <app-license
                     [licenseLabel]="locationDetails?.license"
                   ></app-license>
@@ -54,7 +61,8 @@
           <div class="screen-mode" data-mobile="0">
             <h1 [innerHtml]="locationDetails?.title"></h1>
 
-            <h3
+            <h3 *ngIf="locationDetails?.head">{{ locationDetails?.head }}</h3>
+            <!-- <h3
               *ngIf="
                 locationDetails?.city &&
                 locationDetails?.city !== locationDetails?.title
@@ -70,7 +78,7 @@
               "
             >
               {{ locationDetails?.address }}
-            </h3>
+            </h3> -->
           </div>
           <p [innerHtml]="locationDetails?.teaser"></p>
           <div class="fold" *ngIf="locationDetails?.text">

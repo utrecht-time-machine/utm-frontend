@@ -61,10 +61,10 @@ export class ApiService {
     return response.nid;
   }
 
-  async getStaticPage(title: string): Promise<StaticPage | undefined> {
+  async getStaticPage(nid: string): Promise<StaticPage | undefined> {
     const staticPages: StaticPage[] = await lastValueFrom(
       this.http.get<StaticPage[]>(
-        environment.apiUrl + environment.apiSuffixes.staticPage + title
+        environment.apiUrl + environment.apiSuffixes.staticPage + nid
       )
     ).catch((err) => {
       console.error(err);
@@ -151,6 +151,14 @@ export class ApiService {
         utmRoute.show_only_in_dev_mode = false;
       } else if (utmRoute.show_only_in_dev_mode_plaintext === '1') {
         utmRoute.show_only_in_dev_mode = true;
+      }
+
+      const splitStringToArray = (str?: string): string[] => {
+        return str ? str.split(', ') : [];
+      };
+
+      if (utmRoute.theme_ids_str) {
+        utmRoute.theme_ids = splitStringToArray(utmRoute.theme_ids_str);
       }
     });
     return utmRoutes;
@@ -313,7 +321,9 @@ export class ApiService {
       environment.translateKeys.locationDetails
     );
 
-    const splitGeoCoords: string[] = locationDetails.geo.split(', ');
+    const splitGeoCoords: string[] = locationDetails.geo
+      .split(',')
+      .map((coord) => coord.trim());
     locationDetails.coords = {
       lat: parseFloat(splitGeoCoords[0]),
       lng: parseFloat(splitGeoCoords[1]),

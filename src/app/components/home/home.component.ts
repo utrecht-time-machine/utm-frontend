@@ -35,12 +35,12 @@ export class HomeComponent {
   }
 
   async loadContent() {
-    this.spinner.loadingAbout = true;
+    this.spinner.loadingHome = true;
     const blocks = await this.apiService.getHomeBlocks();
     if (blocks) {
       this.introductionBlock = blocks[0];
       this.blocks = blocks.slice(1);
-      this.spinner.loadingAbout = false;
+      this.spinner.loadingHome = false;
     } else {
       console.error('Failed to load home blocks');
     }

@@ -2,19 +2,21 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { UtmRoute } from '../models/utm-route';
 import { ApiService } from './api.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { UtmRouteStop } from '../models/utm-route-stop';
 import { SpinnerService } from './spinner.service';
 import { PlatformService } from './platform.service';
 import { UtmTranslateService } from './utm-translate.service';
 import { Story } from '../models/story';
 import { environment } from '../../environments/environment';
+import { SelectedView } from '../models/selected-view';
+import { RoutingService } from './routing.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtmRoutesService {
-  all: UtmRoute[] | undefined = undefined;
+  all = new BehaviorSubject<UtmRoute[]>([]);
 
   selected: BehaviorSubject<UtmRoute | undefined> = new BehaviorSubject<
     UtmRoute | undefined
@@ -31,14 +33,28 @@ export class UtmRoutesService {
     private router: Router,
     private spinner: SpinnerService,
     private platform: PlatformService,
-    private utmTranslate: UtmTranslateService
+    private utmTranslate: UtmTranslateService,
+    private routing: RoutingService
   ) {
     void this.load();
 
+    this._initSelectOnRouteChange();
     this._resetStopIndexOnRouteChange();
     this._checkDevModeRouteOnRouteChange();
     this._loadStopsDataFromServerOnRouteChange();
     this._loadStoriesDataFromServerOnStopChange();
+  }
+
+  private _initSelectOnRouteChange() {
+    this.router.events.subscribe((e) => {
+      if (!(e instanceof NavigationEnd)) {
+        return;
+      }
+
+      if (this.routing.getSelectedView() === SelectedView.SelectedRoute) {
+        this.selectByUrlOrId(e.url);
+      }
+    });
   }
 
   private _checkDevModeRouteOnRouteChange() {
@@ -162,13 +178,15 @@ export class UtmRoutesService {
   }
 
   public get shown(): UtmRoute[] {
-    if (!this.all) {
+    if (!this.all.value) {
       return [];
     }
     if (environment.dev) {
-      return this.all;
+      return this.all.value;
     }
-    return this.all.filter((route: UtmRoute) => !route.show_only_in_dev_mode);
+    return this.all.value.filter(
+      (route: UtmRoute) => !route.show_only_in_dev_mode
+    );
   }
 
   public get selectedStop(): UtmRouteStop | undefined {
@@ -186,9 +204,12 @@ export class UtmRoutesService {
   }
 
   public async load() {
-    this.all = await this.apiService.getUtmRoutes();
+    const routes = await this.apiService.getUtmRoutes();
+    this.all.next(routes);
 
-    console.log('Loaded all UTM routes:', this.all);
+    if (this.platform.isBrowser()) {
+      console.log('Loaded all UTM routes:', this.all.value);
+    }
   }
 
   public async selectById(id: string): Promise<void> {
@@ -197,11 +218,11 @@ export class UtmRoutesService {
       return;
     }
 
-    const routeToSelect: UtmRoute | undefined = this.all.find(
+    const routeToSelect: UtmRoute | undefined = this.all.value.find(
       (r) => r.nid === id
     );
     if (!routeToSelect) {
-      console.warn('Could not find route with ID', id, this.all);
+      console.warn('Could not find route with ID', id, this.all.value);
       this.spinner.loadingRoute = false;
       return;
     }
@@ -211,13 +232,30 @@ export class UtmRoutesService {
     this.spinner.loadingRoute = false;
   }
 
+  private _justRedirected = false;
+
   public async selectByUrlOrId(url: string, id?: string) {
     this.spinner.loadingRoute = true;
 
-    // Check if router is already at specified url
-    // If not, navigate to url - this triggers running this function again
-    // through the subscription to router events
-    if (this.router.url !== url) {
+    if (this._justRedirected) {
+      // We just redirected, so don't do it again
+      this._justRedirected = false;
+      url = this.router.url;
+      console.log(
+        'Skipping redirect due to justRedirected flag, assuming we are in the right place:',
+        this.router.url,
+        url
+      );
+    } else if (this.router.url !== url) {
+      // If not there already, navigate to url - this triggers running this function again
+      // through the subscription to router events
+      console.log(
+        'URL is not yet what it should be, redirecting:',
+        this.router.url,
+        url
+      );
+
+      this._justRedirected = true;
       await this.router.navigateByUrl(url);
       return;
     }
@@ -233,11 +271,11 @@ export class UtmRoutesService {
       }
     }
 
-    if (!this.all) {
+    if (!this.all.value.length) {
       await this.load();
     }
 
-    if (!url || !this.all) {
+    if (!url || !this.all.value) {
       this.spinner.loadingRoute = false;
       return;
     }

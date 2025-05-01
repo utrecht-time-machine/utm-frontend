@@ -1,19 +1,25 @@
+<app-filters />
+
 <div class="section section-routes">
   <div class="pad">
     <h1>{{ "routes" | translate }}</h1>
     <div class="views-element-container">
       <div class="card-hold promote">
-        <div class="card" *ngFor="let r of utmRoutes.shown">
-          <a (click)="selectRoute(r.url, r.nid)">
+        <div
+          class="card"
+          *ngFor="let shownUtmRoute of sortedRoutes"
+          [class.filtered-out]="!isRouteVisible(shownUtmRoute)"
+        >
+          <a (click)="selectRoute(shownUtmRoute.url, shownUtmRoute.nid)">
             <div class="head">
               <div>
                 <div>
                   <img
                     loading="lazy"
-                    [src]="r.photo"
+                    [src]="shownUtmRoute.photo"
                     [alt]="
                       utmTranslate.getAsEnglishIfApplicable(
-                        r,
+                        shownUtmRoute,
                         'title',
                         'title_english'
                       )
@@ -24,19 +30,23 @@
             </div>
 
             <div class="core">
-              <span class="type">{{ r.type }}</span
+              <span class="type">{{ shownUtmRoute.type }}</span
               ><span class="name">{{
                 utmTranslate.getAsEnglishIfApplicable(
-                  r,
+                  shownUtmRoute,
                   "title",
                   "title_english"
                 )
               }}</span
               ><span class="desc">{{
-                utmTranslate.getAsEnglishIfApplicable(r, "head", "head_english")
+                utmTranslate.getAsEnglishIfApplicable(
+                  shownUtmRoute,
+                  "head",
+                  "head_english"
+                )
               }}</span
-              ><span class="dist" *ngIf="r.duration_minutes"
-                >{{ r.duration_minutes }} min</span
+              ><span class="dist" *ngIf="shownUtmRoute.duration_minutes"
+                >{{ shownUtmRoute.duration_minutes }} min</span
               >
             </div>
           </a>

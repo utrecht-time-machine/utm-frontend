@@ -73,7 +73,10 @@
                 ></a>
               </ng-container>
               <ng-container *ngIf="!mediaItem?.source_link">
-                {{ mediaItem.source_name }}
+                <span
+                  [innerHtml]="mediaItem.source_name"
+                  style="display: inline; margin-top: 0"
+                ></span>
               </ng-container>
             </span>
 

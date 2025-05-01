@@ -7,7 +7,7 @@ import { TimeService } from 'src/app/services/time.service';
 @Component({
   selector: 'app-clear-filters-button',
   templateUrl: './clear-filters-button.component.html',
-  styleUrls: ['./clear-filters-button.component.css'],
+  styleUrls: ['./clear-filters-button.component.scss'],
 })
 export class ClearFiltersButtonComponent implements OnInit {
   constructor(
