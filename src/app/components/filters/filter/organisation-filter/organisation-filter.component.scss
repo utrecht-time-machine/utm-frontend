@@ -7,9 +7,29 @@
 
 .organisation-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
   gap: 1rem;
   padding: 1rem 0.5rem 0.5rem 0.5rem;
+}
+
+@media screen and (max-width: 600px) {
+  .organisation-grid {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)) !important;
+  }
+
+  .organisation-logo-border {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .organisation-logo {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .organisation-title {
+    font-size: 0.7rem !important;
+  }
 }
 
 .organisation-logo-container {
@@ -35,8 +55,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 90px;
-  height: 90px;
+  width: 75px;
+  height: 75px;
   border-radius: 8px;
   border: 1px solid #e0e0e0;
   background: #f8f8f8;
@@ -54,8 +74,8 @@
 }
 
 .organisation-logo {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
   margin: 0;
   background: none;
