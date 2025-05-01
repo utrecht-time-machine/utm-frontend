@@ -4,23 +4,25 @@
   [isActive]="themes.isActive()"
 >
   <div class="theme-select-container">
-    <div class="theme-list">
-      <div
-        *ngFor="let theme of themes.filtered | async"
-        class="theme-checkbox-container"
-      >
-        <mat-checkbox
-          [id]="theme.nid"
-          [name]="theme.nid"
-          [value]="theme.nid"
-          (change)="themes.toggle(theme.nid)"
-          [checked]="themes.isSelected(theme.nid)"
-          [disableRipple]="true"
+    <div class="theme-scroll-area">
+      <div class="theme-list">
+        <div
+          *ngFor="let theme of themes.filtered | async"
+          class="theme-checkbox-container"
         >
-          <span [innerHTML]="theme.title"></span>
-          <br />
-          <span class="theme-head">{{ theme.head }}</span>
-        </mat-checkbox>
+          <mat-checkbox
+            [id]="theme.nid"
+            [name]="theme.nid"
+            [value]="theme.nid"
+            (change)="themes.toggle(theme.nid)"
+            [checked]="themes.isSelected(theme.nid)"
+            [disableRipple]="true"
+          >
+            <span [innerHTML]="theme.title"></span>
+            <br />
+            <span class="theme-head">{{ theme.head }}</span>
+          </mat-checkbox>
+        </div>
       </div>
     </div>
   </div>

@@ -47,16 +47,19 @@
   flex-direction: column;
   height: 100%;
   position: relative;
+}
+
+.theme-scroll-area {
+  max-height: 10rem;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-right: 0.5rem;
 }
 
 .theme-list {
   padding-right: 10rem;
   padding-bottom: 1rem;
 }
-
-
 
 .theme-search {
   position: sticky;
