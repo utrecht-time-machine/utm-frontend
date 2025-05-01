@@ -5,6 +5,7 @@ import { UtmTranslateService } from '../../services/utm-translate.service';
 import { ThemeService } from 'src/app/services/theme.service';
 import { TimeService } from 'src/app/services/time.service';
 import { UtmRoute } from 'src/app/models/utm-route';
+import { OrganisationFilterService } from 'src/app/services/organisation-filter.service';
 
 @Component({
   selector: 'app-routes',
@@ -19,13 +20,18 @@ export class RoutesComponent {
     public utmRoutes: UtmRoutesService,
     public utmTranslate: UtmTranslateService,
     private themes: ThemeService,
-    private time: TimeService
+    private time: TimeService,
+    private organisations: OrganisationFilterService
   ) {
     this.utmRoutes.all.subscribe(() => {
       this.sortedRoutes = this.sortRoutesByVisibility(this.utmRoutes.shown);
     });
 
     this.themes.selectedIds.subscribe(() => {
+      this.sortedRoutes = this.sortRoutesByVisibility(this.utmRoutes.shown);
+    });
+
+    this.organisations.selectedIds.subscribe(() => {
       this.sortedRoutes = this.sortRoutesByVisibility(this.utmRoutes.shown);
     });
 
@@ -45,6 +51,8 @@ export class RoutesComponent {
       [route.min_date_str || ''],
       [route.max_date_str || '']
     );
+
+    // TODO: Add organisations filter here as well
 
     return passesThemeFilter && passesTimeFilter;
   }
