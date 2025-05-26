@@ -62,7 +62,15 @@
               <div class="head">
                 <div>
                   <div>
-                    <img [src]="locationWithDistance.location.image_small" />
+                    <img
+                      [src]="
+                        imageService.getImageUrl(
+                          locationWithDistance.location.image_small,
+                          locationWithDistance.location.image_source_name,
+                          locationWithDistance.location.image_license
+                        )
+                      "
+                    />
                   </div>
                 </div>
               </div>

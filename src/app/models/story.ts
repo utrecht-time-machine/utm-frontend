@@ -5,6 +5,9 @@ export interface Story {
   title: string;
   title_english?: string;
   photo: string;
+  source_link?: string;
+  source_name?: string;
+  license?: string;
   has_video_icon: string;
   story_id: string;
   story_link: string;

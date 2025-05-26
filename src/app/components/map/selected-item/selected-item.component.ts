@@ -8,6 +8,7 @@ import { StoryService } from '../../../services/story.service';
 import { UtmTranslateService } from '../../../services/utm-translate.service';
 import { TimeService } from '../../../services/time.service';
 import { ThemeService } from '../../../services/theme.service';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
   selector: 'app-selected-item',
@@ -25,7 +26,8 @@ export class SelectedItemComponent {
     public storyService: StoryService,
     public utmTranslate: UtmTranslateService,
     public time: TimeService,
-    public themes: ThemeService
+    public themes: ThemeService,
+    public imageService: ImageService
   ) {}
 
   locationHasStories(): boolean {

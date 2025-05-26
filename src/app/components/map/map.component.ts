@@ -7,6 +7,7 @@ import { SelectedView } from '../../models/selected-view';
 import { UtilService } from '../../services/util.service';
 import { ThemeService } from '../../services/theme.service';
 import { TimeService } from '../../services/time.service';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
   selector: 'app-map',
@@ -22,7 +23,8 @@ export class MapComponent implements OnInit {
     public router: Router,
     public routing: RoutingService,
     public themes: ThemeService,
-    public time: TimeService
+    public time: TimeService,
+    public imageService: ImageService
   ) {}
 
   ngOnInit(): void {

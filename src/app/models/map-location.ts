@@ -7,6 +7,8 @@ export interface MapLocation {
   geo: string;
   thumb: string;
   image_small: string;
+  image_source_name: string;
+  image_license: string;
   head: string;
   story_theme_ids_str: string;
   story_theme_ids: string[];

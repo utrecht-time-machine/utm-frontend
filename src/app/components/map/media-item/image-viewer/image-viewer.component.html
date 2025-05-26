@@ -1,1 +1,5 @@
-<img [src]="imageSrc" [alt]="imageAlt" #imageElement />
+<img
+  [src]="imageService.getImageUrl(imageUrl ?? '', imageSource, imageLicense)"
+  [alt]="imageAlt"
+  #imageElement
+/>

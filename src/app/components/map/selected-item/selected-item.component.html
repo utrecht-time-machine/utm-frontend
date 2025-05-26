@@ -14,7 +14,9 @@
             <div class="photo">
               <div>
                 <app-image-viewer
-                  [imageSrc]="locationDetails?.image"
+                  [imageUrl]="locationDetails?.image"
+                  [imageSource]="locationDetails?.source_name"
+                  [imageLicense]="locationDetails?.license"
                   [imageAlt]="locationDetails?.title"
                 ></app-image-viewer>
               </div>
@@ -119,7 +121,16 @@
                 }}"
               >
                 <div>
-                  <img loading="lazy" [src]="story?.photo" />
+                  <img
+                    loading="lazy"
+                    [src]="
+                      imageService.getImageUrl(
+                        story?.photo ?? '',
+                        story?.source_name,
+                        story?.license
+                      )
+                    "
+                  />
                 </div>
               </div>
               <div class="core">

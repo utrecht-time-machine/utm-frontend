@@ -62,7 +62,9 @@
           <div>
             <!-- TODO: Fix clicking does not trigger viewer -->
             <app-image-viewer
-              [imageSrc]="selectedRoute?.photo"
+              [imageUrl]="selectedRoute?.photo"
+              [imageSource]="selectedRoute?.source_name"
+              [imageLicense]="selectedRoute?.license"
               [imageAlt]="
                 utmTranslate.getAsEnglishIfApplicable(
                   selectedRoute,

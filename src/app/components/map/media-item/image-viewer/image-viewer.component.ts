@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import Viewer from 'viewerjs';
 import { ImageViewerService } from '../../../../services/image-viewer.service';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
   selector: 'app-image-viewer',
@@ -16,14 +17,19 @@ import { ImageViewerService } from '../../../../services/image-viewer.service';
   styleUrls: ['./image-viewer.component.scss'],
 })
 export class ImageViewerComponent implements AfterViewInit, OnChanges {
-  @Input() imageSrc: string | undefined = undefined;
+  @Input() imageUrl: string | undefined = undefined;
+  @Input() imageSource: string | undefined = undefined;
+  @Input() imageLicense: string | undefined = undefined;
   @Input() imageAlt: string | undefined = '';
 
   @ViewChild('imageElement', { static: false }) imageElement!: ElementRef;
 
   private viewer: Viewer | undefined;
 
-  constructor(private imageViewerService: ImageViewerService) {}
+  constructor(
+    public imageService: ImageService,
+    private imageViewerService: ImageViewerService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if ('imageSrc' in changes) {

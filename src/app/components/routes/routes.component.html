@@ -16,7 +16,13 @@
                 <div>
                   <img
                     loading="lazy"
-                    [src]="shownUtmRoute.photo"
+                    [src]="
+                      imageService.getImageUrl(
+                        shownUtmRoute.photo,
+                        shownUtmRoute.source_name,
+                        shownUtmRoute.license
+                      )
+                    "
                     [alt]="
                       utmTranslate.getAsEnglishIfApplicable(
                         shownUtmRoute,

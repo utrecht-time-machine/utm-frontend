@@ -6,6 +6,7 @@ import { ThemeService } from 'src/app/services/theme.service';
 import { TimeService } from 'src/app/services/time.service';
 import { UtmRoute } from 'src/app/models/utm-route';
 import { OrganisationFilterService } from 'src/app/services/organisation-filter.service';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
   selector: 'app-routes',
@@ -19,6 +20,7 @@ export class RoutesComponent {
     public router: Router,
     public utmRoutes: UtmRoutesService,
     public utmTranslate: UtmTranslateService,
+    public imageService: ImageService,
     private themes: ThemeService,
     private time: TimeService,
     private organisations: OrganisationFilterService
