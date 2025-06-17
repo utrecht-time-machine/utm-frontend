@@ -16,6 +16,7 @@
   "addressesOnMap": "Addresses on map",
   "storyFeedbackQuestion": "What do you think of this story?",
   "pageFeedbackQuestion": "What do you think of this page?",
+  "locationFeedbackQuestion": "What do you think of this location?",
   "routeFeedbackQuestion": "What do you think of this route?",
   "routeStopFeedbackQuestion": "What do you think of this location?",
   "feedbackGiven": "Thank you for your feedback!",

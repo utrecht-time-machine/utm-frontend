@@ -152,6 +152,14 @@
           </p>
         </div>
       </div>
+
+      <div class="feedback-container">
+        <app-feedback
+          [feedbackItemId]="locationDetails?.nid"
+          feedbackGivenText="feedbackGiven"
+          feedbackQuestionText="locationFeedbackQuestion"
+        ></app-feedback>
+      </div>
     </div>
   </div>
   <div class="dock-story">
