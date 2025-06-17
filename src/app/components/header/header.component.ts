@@ -13,6 +13,7 @@ import {
 } from '../../models/live-search-result';
 import { ThemeService } from '../../services/theme.service';
 import { UtmRoutesService } from 'src/app/services/utm-routes.service';
+import { AddressSearchResult } from 'src/app/models/adress-search-result';
 
 @Component({
   selector: 'app-header',
@@ -65,7 +66,7 @@ export class HeaderComponent {
     }
   }
 
-  async onAddressSelect(address: any) {
+  async onAddressSelect(address: AddressSearchResult) {
     this.search.hideLiveSearchResults();
 
     const isAlreadyShowingMap =
@@ -76,7 +77,7 @@ export class HeaderComponent {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
-    this.map.flyTo(address.center);
+    this.map.flyTo(address.center, 16, address.place_name);
   }
 
   getSearchResultTypeConfig(type: LiveSearchResultType): {

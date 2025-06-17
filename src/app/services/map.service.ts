@@ -34,6 +34,8 @@ import { OrganisationFilterService } from './organisation-filter.service';
   providedIn: 'root',
 })
 export class MapService {
+  private destinationMarker: mapboxgl.Marker | undefined;
+
   map: mapboxgl.Map | undefined = undefined;
   allLocations: BehaviorSubject<MapLocation[]> = new BehaviorSubject<
     MapLocation[]
@@ -1189,12 +1191,37 @@ export class MapService {
       </a>`;
   }
 
-  flyTo(center: [number, number], zoom: number = 16) {
+  flyTo(center: [number, number], zoom: number = 16, markerLabel?: string) {
     this.map?.flyTo({
       center: center,
       zoom: zoom,
       essential: true,
     });
+
+    if (this.destinationMarker) {
+      this.destinationMarker.remove();
+    }
+
+    if (this.map) {
+      this.destinationMarker = new mapboxgl.Marker({
+        color: '#fe003e',
+      })
+        .setLngLat(center)
+        .addTo(this.map);
+
+      if (markerLabel) {
+        const popup = new mapboxgl.Popup({ offset: 25 })
+          .setHTML(
+            `<div class="marker-popup" style="padding: 15px;">${markerLabel}</div>`
+          )
+          .setMaxWidth('300px');
+
+        this.destinationMarker.setPopup(popup);
+        popup.addTo(this.map);
+      }
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   private async _showMapLocationPopup(location: LocationDetails) {
