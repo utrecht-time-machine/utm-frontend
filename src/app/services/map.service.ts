@@ -1203,14 +1203,23 @@ export class MapService {
     }
 
     if (this.map) {
+      const markerElement = document.createElement('div');
+      markerElement.className = 'circle-marker';
+      markerElement.style.width = '20px';
+      markerElement.style.height = '20px';
+      markerElement.style.borderRadius = '50%';
+      markerElement.style.backgroundColor = 'rgba(254,0,62,0.65)';
+      markerElement.style.border = '2px solid rgba(255,255,255,1)';
+      markerElement.style.boxSizing = 'border-box';
+
       this.destinationMarker = new mapboxgl.Marker({
-        color: '#fe003e',
+        element: markerElement,
       })
         .setLngLat(center)
         .addTo(this.map);
 
       if (markerLabel) {
-        const popup = new mapboxgl.Popup({ offset: 25 })
+        const popup = new mapboxgl.Popup({ offset: 15 })
           .setHTML(
             `<div class="marker-popup" style="padding: 15px;">${markerLabel}</div>`
           )
