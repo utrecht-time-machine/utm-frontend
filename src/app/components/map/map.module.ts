@@ -16,6 +16,7 @@ import { AudioPlayerModule } from '../audio-player/audio-player.module';
 import { ThemeFilterModule } from '../filters/filter/theme-filter/theme-filter.module';
 import { FiltersModule } from '../filters/filters.module';
 import { TimeFilterModule } from '../filters/filter/time-filter/time-filter.module';
+import { FeedbackModule } from "../feedback/feedback.module";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { TimeFilterModule } from '../filters/filter/time-filter/time-filter.modu
     ThemeFilterModule,
     TimeFilterModule,
     FiltersModule,
-  ],
+    FeedbackModule
+],
 })
 export class MapModule {}
