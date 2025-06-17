@@ -1048,6 +1048,13 @@ export class MapService {
       locationId = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
     }
 
+    if (locationId === urlWithoutParams) {
+      console.warn('Could not retrieve Nid from URL alias', urlWithoutParams);
+      this.router.navigateByUrl('/404');
+      this.spinner.loadingLocation = false;
+      return;
+    }
+
     await this.selectLocationById(locationId);
   }
 
