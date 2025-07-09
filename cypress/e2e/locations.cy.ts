@@ -5,7 +5,7 @@ describe('Location page', () => {
     cy.visit('/locaties');
   });
 
-  it('should display a div with class card', () => {
+  it('should display a card for a location nearby', () => {
     cy.visit('/locaties');
     cy.get('div.card').should('exist');
   });
