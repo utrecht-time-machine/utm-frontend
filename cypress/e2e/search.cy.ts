@@ -14,4 +14,8 @@ describe('Search', () => {
       .contains('ACU')
       .should('exist');
   });
+
+  // TODO: Add test where search results are clicked and correct page is loaded
+
+  // TODO: Check if the different types of search results load correctly (locations, stories, routes, coordinates on map, ...)
 });
