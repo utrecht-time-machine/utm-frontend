@@ -22,7 +22,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci # TODO: Does not need to checkout project and install of the front-end dependencies just to run Cypress on the live server
+        run: npm install -g cypress
 
       - name: Run E2E tests against production
         run: npm run cypress:run:live-prod
