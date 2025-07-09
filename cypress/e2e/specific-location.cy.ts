@@ -17,6 +17,23 @@ describe('Specific location page', () => {
     cy.get('div.story').should('exist');
   });
 
+  it('should navigate to story page when clicking on a story card', () => {
+    cy.visit('/locaties/domtoren');
+
+    cy.location().then((initialLoc) => {
+      cy.get('div.story').first().click();
+
+      cy.location().then((currentLoc) => {
+        expect(
+          currentLoc.pathname !== initialLoc.pathname ||
+            currentLoc.search !== initialLoc.search
+        ).to.be.true;
+      });
+
+      cy.get('app-story').should('exist');
+    });
+  });
+
   it('should switch language to English and display translated content', () => {
     cy.visit('/locaties/domtoren');
 
