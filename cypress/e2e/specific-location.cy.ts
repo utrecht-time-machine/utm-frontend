@@ -27,6 +27,21 @@ describe('Specific location page', () => {
     );
   });
 
+  it('should load images in the image viewer correctly', () => {
+    cy.visit('/locaties/domtoren');
+
+    cy.get('app-image-viewer').should('be.visible');
+
+    cy.get('app-image-viewer img')
+      .should('be.visible')
+      .and(($img) => {
+        $img.each((i, el) => {
+          const img = el as HTMLImageElement;
+          expect(img.naturalWidth).to.be.greaterThan(0);
+        });
+      });
+  });
+
   it('should successfully fetch location details data from the API', () => {
     cy.intercept(
       'GET',
