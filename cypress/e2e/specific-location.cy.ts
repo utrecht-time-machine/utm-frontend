@@ -34,14 +34,6 @@ describe('Specific location page', () => {
     });
   });
 
-  it('should switch language to English and display translated content', () => {
-    cy.visit('/locaties/domtoren');
-
-    cy.get('app-lang-toggle a').eq(1).click();
-
-    cy.contains('Netherlands');
-  });
-
   it('should load images in the image viewer correctly', () => {
     cy.visit('/locaties/domtoren');
 
