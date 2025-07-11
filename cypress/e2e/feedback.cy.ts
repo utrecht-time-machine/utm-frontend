@@ -6,7 +6,7 @@ describe('Feedback', () => {
       req.headers['isTestMessage'] = 'true';
       expect(req.body).to.deep.equal({
         itemId: '1069',
-        comment: 'Automated test',
+        comment: 'Automated test for story',
       });
       req.continue();
     }).as('submitFeedback');
