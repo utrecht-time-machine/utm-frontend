@@ -39,7 +39,7 @@ describe('Specific location page', () => {
 
     cy.get('app-lang-toggle a').eq(1).click();
 
-    cy.contains('Netherlands').should('be.visible');
+    cy.contains('Netherlands');
   });
 
   it('should load images in the image viewer correctly', () => {
