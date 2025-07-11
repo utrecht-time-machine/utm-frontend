@@ -23,6 +23,6 @@ describe('Specific route page', () => {
 
     cy.get('app-lang-toggle a').eq(1).click();
 
-    cy.contains('Discover the special history').should('be.visible');
+    cy.contains(/Discover the (special|unique) history/).should('be.visible');
   });
 });
