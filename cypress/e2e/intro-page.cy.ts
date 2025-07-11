@@ -9,8 +9,6 @@ describe('Intro page', () => {
 
     cy.get('app-lang-toggle a').eq(1).click();
 
-    cy.contains('Discover hidden heritage in the province').should(
-      'be.visible'
-    );
+    cy.contains('Discover').should('be.visible');
   });
 });

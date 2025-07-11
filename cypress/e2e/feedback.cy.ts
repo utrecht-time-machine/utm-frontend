@@ -3,7 +3,6 @@ import { environment } from '../support/environment-utils';
 describe('Feedback', () => {
   it('should submit feedback for story', () => {
     cy.intercept('POST', environment.commentPostUrl, (req) => {
-      req.headers['isTestMessage'] = 'true';
       expect(req.body).to.deep.equal({
         itemId: '1069',
         comment: 'Automated test for story',
@@ -19,7 +18,6 @@ describe('Feedback', () => {
 
   it('should submit feedback for location', () => {
     cy.intercept('POST', environment.commentPostUrl, (req) => {
-      req.headers['isTestMessage'] = 'true';
       expect(req.body).to.deep.equal({
         itemId: '598',
         comment: 'Automated test for location',
