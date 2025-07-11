@@ -6,6 +6,7 @@ describe('Feedback', () => {
       expect(req.body).to.deep.equal({
         itemId: '1069',
         comment: 'Automated test',
+        isTestMessage: true,
       });
       req.continue();
     }).as('submitFeedback');
@@ -21,6 +22,7 @@ describe('Feedback', () => {
       expect(req.body).to.deep.equal({
         itemId: '598',
         comment: 'Automated test for location',
+        isTestMessage: true,
       });
       req.continue();
     }).as('submitFeedback');
