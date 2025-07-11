@@ -39,7 +39,7 @@ describe('Specific location page', () => {
 
     cy.get('app-lang-toggle a').eq(1).click();
 
-    cy.contains('Every 50 years').should('be.visible');
+    cy.contains('Netherlands').should('be.visible');
   });
 
   it('should load images in the image viewer correctly', () => {
