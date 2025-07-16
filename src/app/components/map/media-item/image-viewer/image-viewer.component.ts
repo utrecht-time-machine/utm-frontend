@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import Viewer from 'viewerjs';
 import { ImageViewerService } from '../../../../services/image-viewer.service';
+import { PlatformService } from 'src/app/services/platform.service';
 
 @Component({
   selector: 'app-image-viewer',
@@ -23,7 +24,10 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
 
   private viewer: Viewer | undefined;
 
-  constructor(private imageViewerService: ImageViewerService) {}
+  constructor(
+    private imageViewerService: ImageViewerService,
+    private platform: PlatformService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if ('imageSrc' in changes) {
@@ -40,6 +44,9 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
       return;
     }
 
+    if (!this.platform.isBrowser()) {
+      return;
+    }
     this.viewer = new Viewer(this.imageElement.nativeElement, {
       inline: false,
       navbar: false,
