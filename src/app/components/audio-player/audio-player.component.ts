@@ -9,6 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Howl } from 'howler';
+import { PlatformService } from 'src/app/services/platform.service';
 
 @Component({
   selector: 'app-audio-player',
@@ -25,10 +26,12 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
 
   @ViewChild('audioElement', { static: false }) audioElement!: ElementRef;
 
-  constructor() {
-    setInterval(() => {
-      this.percentageComplete = this._getPercentageComplete();
-    }, 50);
+  constructor(public platform: PlatformService) {
+    if (this.platform.isBrowser()) {
+      setInterval(() => {
+        this.percentageComplete = this._getPercentageComplete();
+      }, 50);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -50,7 +53,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
     if (!event.target || !this.scrubbingAudio) {
       return;
     }
-    
+
     event.preventDefault();
     this.setAudioTimeByClickLocation(event);
   }
@@ -59,7 +62,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
     if (!event.target) {
       return;
     }
-    
+
     event.preventDefault();
     // Only handle click events if we're not scrubbing
     if (!this.scrubbingAudio) {
@@ -71,18 +74,21 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
     try {
       const audioBarElem = event.target.closest('.audioplayer-bar');
       if (!audioBarElem) return;
-      
+
       const boundingRect = audioBarElem.getBoundingClientRect();
-      
+
       // Handle both touch and mouse events
       const clientX = event.touches ? event.touches[0].clientX : event.clientX;
       if (typeof clientX !== 'number') return;
-      
+
       // Ensure the click is within the bounds of the audio bar
       if (clientX < boundingRect.left || clientX > boundingRect.right) return;
-      
+
       const clickX = clientX - boundingRect.left;
-      const percentage = Math.max(0, Math.min(100, (clickX / boundingRect.width) * 100));
+      const percentage = Math.max(
+        0,
+        Math.min(100, (clickX / boundingRect.width) * 100)
+      );
 
       this.setTimeByPercentage(percentage);
     } catch (error) {
@@ -94,7 +100,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
     event.preventDefault();
     event.stopPropagation();
     this.scrubbingAudio = true;
-    
+
     // If it's a touch event, immediately set the position
     if (event.touches) {
       this.setAudioTimeByClickLocation(event);

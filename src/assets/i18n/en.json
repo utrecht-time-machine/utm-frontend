@@ -36,7 +36,7 @@
   "show_transcript": "Show transcript",
   "hide_transcript": "Hide transcript",
   "sendComment": "Send",
-  "commentPlaceholder": "Share your thoughts or suggestions",
+  "commentPlaceholder": "Share your thoughts or suggestions. Would you like us to reply? Don't forget to share your email address.",
   "commentSendingSuccess": "Thank you for your feedback",
   "commentSendingError": "There was an error sending your feedback",
   "organisations": "With contributions from"
