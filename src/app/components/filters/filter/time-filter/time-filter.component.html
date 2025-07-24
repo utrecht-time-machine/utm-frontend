@@ -28,4 +28,19 @@
       />
     </mat-slider>
   </div>
+
+  <div class="value-indicators">
+    <input
+      type="text"
+      [value]="time.minYear.value"
+      (input)="onManualMinYearInput($event)"
+      class="min-year-input"
+    />
+    <input
+      type="text"
+      [value]="time.maxYear.value"
+      (input)="onManualMaxYearInput($event)"
+      class="max-year-input"
+    />
+  </div>
 </app-filter>

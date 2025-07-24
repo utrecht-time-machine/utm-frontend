@@ -72,5 +72,39 @@ export class TimeFilterComponent extends FilterComponent {
     this.time.maxYear.next(maxYear);
   }
 
+  onManualMinYearInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = parseInt(input.value, 10);
+
+    if (!isNaN(value)) {
+      const clampedValue = Math.max(
+        this.time.DEFAULT_MIN_YEAR,
+        Math.min(value, this.time.maxYear.value - 1)
+      );
+      this.onMinYearChange(clampedValue);
+
+      if (clampedValue !== value) {
+        input.value = clampedValue.toString();
+      }
+    }
+  }
+
+  onManualMaxYearInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = parseInt(input.value, 10);
+
+    if (!isNaN(value)) {
+      const clampedValue = Math.min(
+        this.time.DEFAULT_MAX_YEAR,
+        Math.max(value, this.time.minYear.value + 1)
+      );
+      this.onMaxYearChange(clampedValue);
+
+      if (clampedValue !== value) {
+        input.value = clampedValue.toString();
+      }
+    }
+  }
+
   protected readonly FilterType = FilterType;
 }

@@ -29,3 +29,31 @@ mat-slider {
     display: inline-block;
   }
 }
+
+.value-indicators {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1.5rem 1rem;
+
+  input {
+    width: 4rem;
+    padding: 0.25rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.9rem;
+
+    &:focus {
+      outline: none;
+      border-color: #666;
+    }
+  }
+
+  .min-year-input {
+    margin-right: auto;
+  }
+
+  .max-year-input {
+    margin-left: auto;
+  }
+}
