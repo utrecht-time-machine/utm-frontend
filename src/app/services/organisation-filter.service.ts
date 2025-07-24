@@ -37,4 +37,14 @@ export class OrganisationFilterService {
   isActive(): boolean {
     return this.selectedIds.value.length > 0;
   }
+
+  shouldShow(organisationIds: string[]): boolean {
+    const noOrganisationsSelected = this.selectedIds.value.length === 0;
+    if (noOrganisationsSelected) {
+      return true;
+    }
+    return organisationIds.some((orgId) =>
+      this.selectedIds.value.includes(orgId)
+    );
+  }
 }

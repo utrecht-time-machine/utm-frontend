@@ -160,6 +160,12 @@ export class ApiService {
       if (utmRoute.theme_ids_str) {
         utmRoute.theme_ids = splitStringToArray(utmRoute.theme_ids_str);
       }
+
+      if (utmRoute.organisation_ids_str) {
+        utmRoute.organisation_ids = splitStringToArray(
+          utmRoute.organisation_ids_str
+        );
+      }
     });
     return utmRoutes;
   }

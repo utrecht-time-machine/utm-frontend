@@ -718,26 +718,19 @@ export class MapService {
             this._parseLocations(locations);
 
           const showableLocations = uniqueLocations.filter((location) => {
-            const selectedThemeIds = this.themes.selectedIds.value;
-            let locationHasSelectedTheme = true;
-            if (selectedThemeIds.length > 0) {
-              locationHasSelectedTheme = selectedThemeIds.some((themeId) =>
-                location.story_theme_ids.includes(themeId)
-              );
-            }
+            const locationHasSelectedTheme = this.themes.shouldShow(
+              location.story_theme_ids
+            );
 
             const locationIsInDateRange = this.time.isInSelectedRange(
               location.min_dates,
               location.max_dates
             );
 
-            let locationHasSelectedOrganisation = true;
-            if (this.organisationFilter.selectedIds.value.length > 0) {
-              locationHasSelectedOrganisation =
-                this.organisationFilter.selectedIds.value.some((orgId) =>
-                  location.organisation_ids.includes(orgId)
-                );
-            }
+            const locationHasSelectedOrganisation =
+              this.organisationFilter.shouldShow(
+                location.organisation_ids || []
+              );
 
             if (!location.geo) {
               console.warn('LOCATION WITHOUT GEO COORDINATES', location.url);

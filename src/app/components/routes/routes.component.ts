@@ -54,9 +54,11 @@ export class RoutesComponent {
       [route.max_date_str || '']
     );
 
-    // TODO: Add organisations filter here as well
+    const passesOrganisationFilter = this.organisations.shouldShow(
+      route.organisation_ids || []
+    );
 
-    return passesThemeFilter && passesTimeFilter;
+    return passesThemeFilter && passesTimeFilter && passesOrganisationFilter;
   }
 
   private sortRoutesByVisibility(routes: UtmRoute[]): UtmRoute[] {

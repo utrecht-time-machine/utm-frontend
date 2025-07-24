@@ -28,6 +28,8 @@ export interface UtmRoute {
   min_date_str?: string;
   theme_ids_str?: string;
   theme_ids: string[];
+  organisation_ids_str?: string;
+  organisation_ids: string[];
 
   show_only_in_dev_mode_plaintext?: string;
   show_only_in_dev_mode: boolean;
