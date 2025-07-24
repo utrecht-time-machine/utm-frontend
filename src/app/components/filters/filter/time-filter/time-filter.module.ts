@@ -6,6 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [TimeFilterComponent],
@@ -17,6 +19,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatSliderModule,
     FormsModule,
     MatCheckboxModule,
+    MatExpansionModule,
+    MatSlideToggleModule,
   ],
 })
 export class TimeFilterModule {}

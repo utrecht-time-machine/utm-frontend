@@ -29,7 +29,17 @@
     </mat-slider>
   </div>
 
-  <div class="value-indicators">
+  <div class="manual-input-toggle">
+    <mat-slide-toggle
+      (change)="toggleManualInputs()"
+      [checked]="showManualInputs"
+      [disableRipple]="true"
+    >
+      {{ "showManualInput" | translate }}
+    </mat-slide-toggle>
+  </div>
+
+  <div class="value-indicators" *ngIf="showManualInputs">
     <input
       type="text"
       [value]="time.minYear.value"

@@ -30,6 +30,17 @@ mat-slider {
   }
 }
 
+.manual-input-toggle {
+  display: flex;
+  justify-content: flex-start;
+  padding: 1rem 1.5rem;
+  font-size: 0.85rem;
+
+  ::ng-deep .mat-slide-toggle-label {
+    font-size: 0.85rem;
+  }
+}
+
 .value-indicators {
   display: flex;
   justify-content: space-between;

@@ -20,6 +20,7 @@ import { MatSlider } from '@angular/material/slider';
   encapsulation: ViewEncapsulation.None,
 })
 export class TimeFilterComponent extends FilterComponent {
+  showManualInputs = false;
   @ViewChild('slider') slider!: MatSlider;
   debouncedTimeout: any;
 
@@ -104,6 +105,10 @@ export class TimeFilterComponent extends FilterComponent {
         input.value = clampedValue.toString();
       }
     }
+  }
+
+  toggleManualInputs(): void {
+    this.showManualInputs = !this.showManualInputs;
   }
 
   protected readonly FilterType = FilterType;
