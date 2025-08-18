@@ -4,6 +4,7 @@
       <div class="audio-player-container" *ngIf="selectedRoute?.audio">
         <app-audio-player
           [audioUrl]="selectedRoute?.audio"
+          [transcript]="selectedRoute?.audio_transcript"
           class="route-audio-player"
         />
       </div>

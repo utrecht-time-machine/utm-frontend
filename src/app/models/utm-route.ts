@@ -19,6 +19,7 @@ export interface UtmRoute {
   stops?: UtmRouteStop[];
   geojson_url?: string;
   audio?: string;
+  audio_transcript?: string;
   license?: string;
   caption?: string;
   source_link?: string;
