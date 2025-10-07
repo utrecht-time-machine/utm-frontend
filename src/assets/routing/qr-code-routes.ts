@@ -43,7 +43,7 @@ export const qrCodeRoutes: Route[] = [
   },
   {
     path: '9',
-    redirectTo: 'locaties/oude-hortus-botanicus',
+    redirectTo: 'locaties/oude-hortus-botanicus-universiteitsmuseum-utrecht',
     pathMatch: 'full',
   },
   {
