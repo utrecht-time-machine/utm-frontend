@@ -15,8 +15,10 @@
     "cordova-android": "^14.0.1",
     "cordova-browser": "^7.0.0",
     "cordova-ios": "^6.3.0",
+    "cordova-plugin-device": "^3.0.0",
     "cordova-plugin-geolocation": "^4.1.0",
-    "cordova-plugin-itsappusesnonexemptencryption": "^0.1.0"
+    "cordova-plugin-itsappusesnonexemptencryption": "^0.1.0",
+    "cordova-plugin-local-notification": "^1.2.3"
   },
   "cordova": {
     "platforms": [
@@ -27,7 +29,10 @@
     "plugins": {
       "cordova-plugin-geolocation": {},
       "cordova-plugin-itsappusesnonexemptencryption": {},
-      "cordova-plugin-statusbar": {}
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-local-notification": {
+        "ANDROIDX_CORE_VERSION": "1.12.0"
+      }
     }
   }
 }
