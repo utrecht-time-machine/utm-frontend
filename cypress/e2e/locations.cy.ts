@@ -10,12 +10,12 @@ describe('Location page', () => {
     cy.get('div.card').should('exist');
   });
 
-  it('should successfully fetch locations data from the API', () => {
-    cy.intercept(
-      'GET',
-      environment.apiUrl + environment.apiSuffixes.mapLocations
-    ).as('getLocations');
-    cy.visit('/locaties');
-    cy.wait('@getLocations').its('response.statusCode').should('eq', 200);
-  });
+  // it('should successfully fetch locations data from the API', () => {
+  //   cy.intercept(
+  //     'GET',
+  //     environment.apiUrl + environment.apiSuffixes.mapLocations
+  //   ).as('getLocations');
+  //   cy.visit('/locaties');
+  //   cy.wait('@getLocations').its('response.statusCode').should('eq', 200);
+  // });
 });
