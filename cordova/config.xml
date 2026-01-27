@@ -48,6 +48,9 @@
       <uses-permission android:name="android.permission.INTERNET" />
       <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
       <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+      <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+      <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+      <uses-permission android:name="android.permission.WAKE_LOCK" />
     </config-file>
 
     <resource-file src="res/android/drawable/ic_launcher_background.xml"
@@ -107,17 +110,18 @@
     <!--    NSLocationAlwaysAndWhenInUseUsageDescription-->
 
     <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
-      <string>Utrecht Time Machine toont historische informatie over je huidige locatie. Je locatie
-        wordt alleen door de app zelf gebruikt en wordt met niemand gedeeld.</string>
+      <string>Utrecht Time Machine gebruikt je locatie bijvoorbeeld om je positie op de kaart te tonen. Je locatiegegevens worden met niemand gedeeld.</string>
     </edit-config>
+    <!-- <edit-config target="NSMotionUsageDescription" file="*-Info.plist" mode="merge">
+      <string>Utrecht Time Machine gebruikt je bewegingsgegevens om de nauwkeurigheid van navigatie en gebruikerservaring te verbeteren. De gegevens worden met niemand gedeeld.</string>
+    </edit-config> -->
     <edit-config target="NSLocationAlwaysAndWhenInUseUsageDescription" file="*-Info.plist"
       mode="merge">
-      <string>Utrecht Time Machine toont historische informatie over je huidige locatie. Je locatie
-        wordt alleen door de app zelf gebruikt en wordt met niemand gedeeld.</string>
+      <string>Utrecht Time Machine gebruikt je locatie bijvoorbeeld om je positie op de kaart te tonen. Je locatiegegevens worden met niemand gedeeld.</string>
+      <!-- <string>Utrecht Time Machine gebruikt je locatie bijvoorbeeld om je positie op de kaart te tonen of om pushnotificaties te sturen wanneer je bij een route-stop bent. Je locatiegegevens worden met niemand gedeeld.</string> -->
     </edit-config>
     <edit-config target="NSLocationAlwaysUsageDescription" file="*-Info.plist" mode="merge">
-      <string>Utrecht Time Machine toont historische informatie over je huidige locatie. Je locatie
-        wordt alleen door de app zelf gebruikt en wordt met niemand gedeeld.</string>
+      <string>Utrecht Time Machine gebruikt je locatie bijvoorbeeld om je positie op de kaart te tonen. Je locatiegegevens worden met niemand gedeeld.</string>
     </edit-config>
 
     <!-- <config-file platform="ios" target="*-
