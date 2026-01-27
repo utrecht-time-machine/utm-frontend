@@ -118,7 +118,7 @@
     <edit-config target="NSLocationAlwaysAndWhenInUseUsageDescription" file="*-Info.plist"
       mode="merge">
       <string>Utrecht Time Machine gebruikt je locatie bijvoorbeeld om je positie op de kaart te tonen. Je locatiegegevens worden met niemand gedeeld.</string>
-      <!-- <string>Utrecht Time Machine gebruikt je locatie bijvoorbeeld om je positie op de kaart te tonen of om pushnotificaties te sturen wanneer je bij een route-stop bent. Je locatiegegevens worden met niemand gedeeld.</string> -->
+      <!-- <string>Utrecht Time Machine gebruikt je locatie om meldingen te sturen als je een routepunt nadert.</string> -->
     </edit-config>
     <edit-config target="NSLocationAlwaysUsageDescription" file="*-Info.plist" mode="merge">
       <string>Utrecht Time Machine gebruikt je locatie bijvoorbeeld om je positie op de kaart te tonen. Je locatiegegevens worden met niemand gedeeld.</string>
