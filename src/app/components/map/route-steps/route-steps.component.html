@@ -8,6 +8,13 @@
       >{{ routeDistanceStr }} <em>{{ routeDurationStr }}</em></span
     >
   </div>
+
+  <div class="route-notifications-toggle-container">
+    <app-route-notifications-toggle
+      [variant]="'compact'"
+    ></app-route-notifications-toggle>
+  </div>
+
   <div id="nav_menu" class="nav-menu dragscroll">
     <ul>
       <li class="is-home">

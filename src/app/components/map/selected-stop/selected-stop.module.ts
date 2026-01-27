@@ -7,7 +7,8 @@ import { EditButtonModule } from '../../edit-button/edit-button.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FeedbackModule } from '../../feedback/feedback.module';
 import { AudioPlayerModule } from '../../audio-player/audio-player.module';
-import { AudioTranscriptComponent } from "../../audio-transcript/audio-transcript.component";
+import { AudioTranscriptComponent } from '../../audio-transcript/audio-transcript.component';
+import { RouteNotificationsToggleComponent } from '../route-notifications-toggle/route-notifications-toggle.component';
 
 @NgModule({
   declarations: [SelectedStopComponent],
@@ -19,8 +20,9 @@ import { AudioTranscriptComponent } from "../../audio-transcript/audio-transcrip
     TranslateModule,
     FeedbackModule,
     AudioPlayerModule,
-    AudioTranscriptComponent
-],
+    AudioTranscriptComponent,
+    RouteNotificationsToggleComponent,
+  ],
   exports: [SelectedStopComponent],
 })
 export class SelectedStopModule {}

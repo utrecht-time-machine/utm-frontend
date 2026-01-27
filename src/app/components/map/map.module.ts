@@ -16,7 +16,8 @@ import { AudioPlayerModule } from '../audio-player/audio-player.module';
 import { ThemeFilterModule } from '../filters/filter/theme-filter/theme-filter.module';
 import { FiltersModule } from '../filters/filters.module';
 import { TimeFilterModule } from '../filters/filter/time-filter/time-filter.module';
-import { FeedbackModule } from "../feedback/feedback.module";
+import { FeedbackModule } from '../feedback/feedback.module';
+import { RouteNotificationsToggleComponent } from './route-notifications-toggle/route-notifications-toggle.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { FeedbackModule } from "../feedback/feedback.module";
     ThemeFilterModule,
     TimeFilterModule,
     FiltersModule,
-    FeedbackModule
-],
+    FeedbackModule,
+    RouteNotificationsToggleComponent,
+  ],
 })
 export class MapModule {}
