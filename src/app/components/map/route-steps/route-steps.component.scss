@@ -1,5 +1,21 @@
+.route-top-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+:host ::ng-deep .route-top-row .nav-calc {
+  display: block;
+  margin: 0;
+}
+
+:host ::ng-deep .route-top-row .nav-calc span {
+  margin-right: 0;
+}
+
 .route-notifications-toggle-container {
   display: flex;
   justify-content: center;
-  margin-top: 0.5rem;
+  margin-top: 0;
 }

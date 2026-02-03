@@ -2,29 +2,17 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.2rem 0.35rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.85);
-  // border: 1px solid rgba(0, 0, 0, 0.12);
-}
+  padding: 8px 1em 8px 2.5em;
+  border-radius: 100px;
+  background: #fff;
+  border: none;
+  font-size: 1.1em;
+  font-weight: 500;
 
-.route-notification-compact__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  padding: 0;
-  margin: 0;
-  background: none;
-  background-image: none;
-  border-radius: 0;
-}
-
-.route-notification-compact__icon-img {
-  width: 16px;
-  height: 16px;
-  display: block;
+  background-image: url("/assets/ui/svg/bell.svg");
+  background-repeat: no-repeat;
+  background-position: left 1em center;
+  background-size: auto 1em;
 }
 
 .route-notification-compact__toggle {
