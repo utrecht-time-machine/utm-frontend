@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Injectable, NgZone } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { CordovaService } from './cordova.service';
 import { PushNotificationService } from './push-notification.service';
 import { UtmRoutesService } from './utm-routes.service';
@@ -29,25 +29,61 @@ export class GeofenceService {
 
   private routeNotificationsEnabled = false;
 
+  private readonly enabledSubject = new BehaviorSubject<boolean>(false);
+  public readonly enabled$ = this.enabledSubject.asObservable();
+
+  private readonly authorizationOkSubject = new BehaviorSubject<boolean>(false);
+  public readonly authorizationOk$ = this.authorizationOkSubject.asObservable();
+
   private activeRouteId: string | undefined;
 
   constructor(
     private cordova: CordovaService,
     private utmRoutes: UtmRoutesService,
-    private push: PushNotificationService
+    private push: PushNotificationService,
+    private zone: NgZone
   ) {
     console.log('[GeofenceService] constructor: created');
   }
 
-  public async setRouteNotificationsEnabled(enabled: boolean): Promise<void> {
-    if (enabled === this.routeNotificationsEnabled) {
-      return;
-    }
+  private setEnabled(value: boolean): void {
+    this.zone.run(() => this.enabledSubject.next(value));
+  }
 
-    this.routeNotificationsEnabled = enabled;
+  private setAuthorizationOk(value: boolean): void {
+    this.zone.run(() => this.authorizationOkSubject.next(value));
+  }
 
+  public async setRouteNotificationsEnabled(
+    enabled: boolean
+  ): Promise<boolean> {
     if (enabled) {
+      if (this.routeNotificationsEnabled) {
+        return this.enabledSubject.getValue();
+      }
+
       console.log('[GeofenceService] enabling route notifications geofencing');
+      const ok = await this.ensureInitialized();
+      if (!ok) {
+        console.warn(
+          '[GeofenceService] enabling route notifications failed: plugin not initialized'
+        );
+        this.setEnabled(false);
+        return false;
+      }
+
+      const authorized = await this.checkAuthorization();
+      if (!authorized) {
+        console.warn(
+          '[GeofenceService] enabling route notifications failed: permissions not authorized'
+        );
+        this.setEnabled(false);
+        await this.disableGeofencing();
+        return false;
+      }
+
+      // Only now consider the feature enabled.
+      this.routeNotificationsEnabled = true;
       this.initSubscriptions();
 
       const route = this.utmRoutes.selected.getValue();
@@ -55,12 +91,133 @@ export class GeofenceService {
         await this.handleRouteChanged(route);
       }
 
-      return;
+      this.setEnabled(true);
+
+      return true;
     }
+
+    if (!this.routeNotificationsEnabled) {
+      this.setEnabled(false);
+      return true;
+    }
+
+    this.routeNotificationsEnabled = false;
 
     console.log('[GeofenceService] disabling route notifications geofencing');
     this.teardownSubscriptions();
     await this.disableGeofencing();
+
+    this.setEnabled(false);
+
+    return true;
+  }
+
+  public async checkAuthorization(): Promise<boolean> {
+    if (!this.bgGeo) {
+      return false;
+    }
+
+    try {
+      const state: State | undefined =
+        typeof this.bgGeo.getState === 'function'
+          ? await this.bgGeo.getState()
+          : undefined;
+
+      const authorization: unknown = (state as any)?.authorization;
+
+      const providerState: unknown =
+        typeof (this.bgGeo as any).getProviderState === 'function'
+          ? await (this.bgGeo as any).getProviderState()
+          : undefined;
+
+      const authorizationObjStatus: unknown =
+        authorization && typeof authorization === 'object'
+          ? (authorization as any).status ??
+            (authorization as any).location ??
+            (authorization as any).authorization
+          : undefined;
+
+      const denied = (this.bgGeo as any).AUTHORIZATION_STATUS_DENIED;
+      const notDetermined = (this.bgGeo as any)
+        .AUTHORIZATION_STATUS_NOT_DETERMINED;
+      const always = (this.bgGeo as any).AUTHORIZATION_STATUS_ALWAYS;
+      const whenInUse = (this.bgGeo as any).AUTHORIZATION_STATUS_WHEN_IN_USE;
+
+      const lastLocationAuthorizationStatus: unknown = (state as any)
+        ?.lastLocationAuthorizationStatus;
+
+      const rawAuthValue =
+        typeof authorization === 'number' || typeof authorization === 'string'
+          ? authorization
+          : typeof authorizationObjStatus === 'number' ||
+            typeof authorizationObjStatus === 'string'
+          ? authorizationObjStatus
+          : typeof lastLocationAuthorizationStatus === 'number' ||
+            typeof lastLocationAuthorizationStatus === 'string'
+          ? lastLocationAuthorizationStatus
+          : typeof (providerState as any)?.status === 'number' ||
+            typeof (providerState as any)?.status === 'string'
+          ? (providerState as any).status
+          : authorization;
+
+      const normalizedAuthValue: unknown =
+        typeof rawAuthValue === 'string' && /^\d+$/.test(rawAuthValue)
+          ? Number(rawAuthValue)
+          : rawAuthValue;
+
+      console.log('[GeofenceService] isAuthorized authorization state', {
+        authorization,
+        authorizationObjStatus,
+        lastLocationAuthorizationStatus,
+        rawAuthValue,
+        normalizedAuthValue,
+        denied,
+        notDetermined,
+        always,
+        whenInUse,
+        providerState,
+        fullState: state,
+      });
+
+      // Fail-closed: if the authorization value cannot be interpreted, treat it as not authorized.
+      if (
+        normalizedAuthValue === undefined ||
+        normalizedAuthValue === null ||
+        typeof normalizedAuthValue === 'object'
+      ) {
+        this.setAuthorizationOk(false);
+        if (this.routeNotificationsEnabled) {
+          void this.setRouteNotificationsEnabled(false);
+        }
+        return false;
+      }
+
+      if (denied !== undefined && normalizedAuthValue === denied) {
+        this.setAuthorizationOk(false);
+        if (this.routeNotificationsEnabled) {
+          void this.setRouteNotificationsEnabled(false);
+        }
+        return false;
+      }
+
+      if (
+        notDetermined !== undefined &&
+        normalizedAuthValue === notDetermined
+      ) {
+        this.setAuthorizationOk(false);
+        if (this.routeNotificationsEnabled) {
+          void this.setRouteNotificationsEnabled(false);
+        }
+        return false;
+      }
+
+      this.setAuthorizationOk(true);
+      return true;
+    } catch (e) {
+      console.warn('[GeofenceService] isAuthorized check failed', e);
+      this.setAuthorizationOk(false);
+      return false;
+    }
   }
 
   private initSubscriptions(): void {
@@ -154,6 +311,12 @@ export class GeofenceService {
       if (typeof plugin.onProviderChange === 'function') {
         plugin.onProviderChange((event: ProviderChangeEvent) => {
           console.log('[GeofenceService] onProviderChange event', event);
+
+          if (!this.routeNotificationsEnabled) {
+            return;
+          }
+
+          void this.checkAuthorization();
         });
       } else {
         console.log(
@@ -259,12 +422,12 @@ export class GeofenceService {
         );
       }
 
-      // The SDK will request permission implicitly when calling start / startGeofences, but we
-      // request explicitly here to get better logs and a more predictable prompt sequence
+      // Request permission explicitly; abort initialization if not granted.
       if (typeof plugin.requestPermission === 'function') {
         console.log(
           '[GeofenceService] requesting location permission (post-ready)...'
         );
+
         try {
           const permissionResult: AuthorizationStatus =
             await plugin.requestPermission();
@@ -272,11 +435,27 @@ export class GeofenceService {
             '[GeofenceService] requestPermission success (post-ready)',
             permissionResult
           );
+
+          const denied = (plugin as any).AUTHORIZATION_STATUS_DENIED;
+          const notDetermined = (plugin as any)
+            .AUTHORIZATION_STATUS_NOT_DETERMINED;
+
+          if (
+            (denied !== undefined && permissionResult === denied) ||
+            (notDetermined !== undefined && permissionResult === notDetermined)
+          ) {
+            console.warn(
+              '[GeofenceService] requestPermission returned non-authorized status; aborting init',
+              { permissionResult }
+            );
+            return false;
+          }
         } catch (status) {
           console.warn(
             '[GeofenceService] requestPermission FAILURE (post-ready)',
             status
           );
+          return false;
         }
       } else {
         console.log(

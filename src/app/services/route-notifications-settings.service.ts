@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { CordovaService } from './cordova.service';
 import { GeofenceService } from './geofence.service';
 
@@ -10,35 +10,45 @@ export class RouteNotificationsSettingsService {
   private readonly enabledStorageKey = 'utm.routeNotificationsEnabled';
 
   private geofence: GeofenceService | undefined;
+  private enabledSub: Subscription | undefined;
 
-  private readonly geofencingAvailableSubject = new BehaviorSubject<boolean>(
+  private readonly deviceAllowsGeofencingSubject = new BehaviorSubject<boolean>(
     false
   );
-  public readonly geofencingAvailable$ =
-    this.geofencingAvailableSubject.asObservable();
+  public readonly deviceAllowsGeofencing$ =
+    this.deviceAllowsGeofencingSubject.asObservable();
 
-  private readonly enabledSubject = new BehaviorSubject<boolean>(
-    this.loadEnabled()
-  );
-
+  private readonly enabledSubject = new BehaviorSubject<boolean>(false);
   public readonly enabled$ = this.enabledSubject.asObservable();
 
   constructor(private injector: Injector, private cordova: CordovaService) {
-    void this.detectGeofencingAvailability();
+    void this.checkDeviceAllowsGeofencing();
 
-    if (this.enabledSubject.getValue()) {
-      this.geofence = this.injector.get(GeofenceService);
-      void this.geofence.setRouteNotificationsEnabled(true);
+    if (this.loadEnabled()) {
+      this.setEnabled(true);
     }
   }
 
-  private async detectGeofencingAvailability(): Promise<void> {
+  private ensureGeofenceWired(): void {
+    if (!this.geofence) {
+      this.geofence = this.injector.get(GeofenceService);
+    }
+
+    if (!this.enabledSub) {
+      this.enabledSub = this.geofence.enabled$.subscribe((enabled) => {
+        this.enabledSubject.next(enabled);
+        this.saveEnabled(enabled);
+      });
+    }
+  }
+
+  private async checkDeviceAllowsGeofencing(): Promise<void> {
     try {
       const ready = await this.cordova.ready(2000);
       const plugin = (window as any)?.BackgroundGeolocation;
-      this.geofencingAvailableSubject.next(Boolean(ready && plugin));
+      this.deviceAllowsGeofencingSubject.next(Boolean(ready && plugin));
     } catch {
-      this.geofencingAvailableSubject.next(false);
+      this.deviceAllowsGeofencingSubject.next(false);
     }
   }
 
@@ -46,21 +56,16 @@ export class RouteNotificationsSettingsService {
     return this.enabledSubject.getValue();
   }
 
-  public setEnabled(enabled: boolean): void {
-    this.enabledSubject.next(enabled);
-    this.saveEnabled(enabled);
-
+  public async setEnabled(enabled: boolean): Promise<boolean> {
     if (enabled) {
-      this.geofence = this.injector.get(GeofenceService);
-      void this.geofence.setRouteNotificationsEnabled(true);
-      return;
+      this.ensureGeofenceWired();
+      const ok = await this.geofence!.setRouteNotificationsEnabled(true);
+      return ok;
     }
 
-    if (!this.geofence) {
-      return;
-    }
-
-    void this.geofence.setRouteNotificationsEnabled(false);
+    this.ensureGeofenceWired();
+    await this.geofence!.setRouteNotificationsEnabled(false);
+    return false;
   }
 
   private loadEnabled(): boolean {

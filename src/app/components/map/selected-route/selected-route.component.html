@@ -52,7 +52,7 @@
         ></div>
 
         <app-route-notifications-toggle
-          *ngIf="routeNotifications.geofencingAvailable$ | async"
+          *ngIf="routeNotifications.deviceAllowsGeofencing$ | async"
         ></app-route-notifications-toggle>
 
         <a

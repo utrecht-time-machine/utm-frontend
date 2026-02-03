@@ -12,7 +12,7 @@
 
     <div
       class="route-notifications-toggle-container"
-      *ngIf="routeNotifications.geofencingAvailable$ | async"
+      *ngIf="routeNotifications.deviceAllowsGeofencing$ | async"
     >
       <app-route-notifications-toggle
         [variant]="'compact'"

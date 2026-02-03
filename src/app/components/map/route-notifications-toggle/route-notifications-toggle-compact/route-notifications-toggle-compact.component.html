@@ -3,7 +3,7 @@
     <input
       type="checkbox"
       [checked]="enabled"
-      (change)="enabled = $any($event.target).checked"
+      (change)="onToggleChange($event)"
     />
     <div class="route-notification-compact__toggle-ui"></div>
   </label>
