@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { RouteNotificationsSettingsService } from '../../../services/route-notifications-settings.service';
-import { RouteNotificationsToggleBase } from './route-notifications-toggle.base';
+import { RouteNotificationsSettingsService } from 'src/app/services/route-notifications-settings.service';
+import { RouteNotificationsToggleBase } from '../route-notifications-toggle.base';
 
 @Component({
   selector: 'app-route-notifications-toggle-expanded',
