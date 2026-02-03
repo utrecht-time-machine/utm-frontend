@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UtmRoutesService } from '../../../services/utm-routes.service';
 import { UtmRoute } from '../../../models/utm-route';
+import { RouteNotificationsSettingsService } from '../../../services/route-notifications-settings.service';
 
 @Component({
   selector: 'app-route-steps',
@@ -8,7 +9,10 @@ import { UtmRoute } from '../../../models/utm-route';
   styleUrls: ['./route-steps.component.scss'],
 })
 export class RouteStepsComponent {
-  constructor(public utmRoutes: UtmRoutesService) {}
+  constructor(
+    public utmRoutes: UtmRoutesService,
+    public routeNotifications: RouteNotificationsSettingsService
+  ) {}
 
   public get selectedRoute(): UtmRoute | undefined {
     return this.utmRoutes.selected.getValue();

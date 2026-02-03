@@ -51,7 +51,9 @@
           "
         ></div>
 
-        <app-route-notifications-toggle></app-route-notifications-toggle>
+        <app-route-notifications-toggle
+          *ngIf="routeNotifications.geofencingAvailable$ | async"
+        ></app-route-notifications-toggle>
 
         <a
           class="route-button route-start"

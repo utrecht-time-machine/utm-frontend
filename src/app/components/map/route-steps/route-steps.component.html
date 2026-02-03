@@ -10,7 +10,10 @@
       >
     </div>
 
-    <div class="route-notifications-toggle-container">
+    <div
+      class="route-notifications-toggle-container"
+      *ngIf="routeNotifications.geofencingAvailable$ | async"
+    >
       <app-route-notifications-toggle
         [variant]="'compact'"
       ></app-route-notifications-toggle>

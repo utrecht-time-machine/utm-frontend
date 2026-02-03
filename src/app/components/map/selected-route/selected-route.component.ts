@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { RoutingService } from '../../../services/routing.service';
 import { environment } from 'src/environments/environment';
 import { UtmTranslateService } from '../../../services/utm-translate.service';
+import { RouteNotificationsSettingsService } from '../../../services/route-notifications-settings.service';
 
 @Component({
   selector: 'app-selected-route',
@@ -18,7 +19,8 @@ export class SelectedRouteComponent {
     public utmRoutes: UtmRoutesService,
     private routing: RoutingService,
     private router: Router,
-    public utmTranslate: UtmTranslateService
+    public utmTranslate: UtmTranslateService,
+    public routeNotifications: RouteNotificationsSettingsService
   ) {}
 
   public get selectedRoute() {

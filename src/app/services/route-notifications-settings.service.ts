@@ -1,5 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { CordovaService } from './cordova.service';
 import { GeofenceService } from './geofence.service';
 
 @Injectable({
@@ -10,16 +11,34 @@ export class RouteNotificationsSettingsService {
 
   private geofence: GeofenceService | undefined;
 
+  private readonly geofencingAvailableSubject = new BehaviorSubject<boolean>(
+    false
+  );
+  public readonly geofencingAvailable$ =
+    this.geofencingAvailableSubject.asObservable();
+
   private readonly enabledSubject = new BehaviorSubject<boolean>(
     this.loadEnabled()
   );
 
   public readonly enabled$ = this.enabledSubject.asObservable();
 
-  constructor(private injector: Injector) {
+  constructor(private injector: Injector, private cordova: CordovaService) {
+    void this.detectGeofencingAvailability();
+
     if (this.enabledSubject.getValue()) {
       this.geofence = this.injector.get(GeofenceService);
       void this.geofence.setRouteNotificationsEnabled(true);
+    }
+  }
+
+  private async detectGeofencingAvailability(): Promise<void> {
+    try {
+      const ready = await this.cordova.ready(2000);
+      const plugin = (window as any)?.BackgroundGeolocation;
+      this.geofencingAvailableSubject.next(Boolean(ready && plugin));
+    } catch {
+      this.geofencingAvailableSubject.next(false);
     }
   }
 
