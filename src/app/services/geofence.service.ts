@@ -5,6 +5,7 @@ import { PushNotificationService } from './push-notification.service';
 import { UtmRoutesService } from './utm-routes.service';
 import { UtmRoute } from '../models/utm-route';
 import { UtmRouteStop } from '../models/utm-route-stop';
+import { environment } from '../../environments/environment';
 
 import type {
   AuthorizationStatus,
@@ -35,6 +36,11 @@ export class GeofenceService {
   private readonly authorizationOkSubject = new BehaviorSubject<boolean>(false);
   public readonly authorizationOk$ = this.authorizationOkSubject.asObservable();
 
+  private readonly activeGeofencesSubject = new BehaviorSubject<BgGeofence[]>(
+    []
+  );
+  public readonly activeGeofences$ = this.activeGeofencesSubject.asObservable();
+
   private activeRouteId: string | undefined;
 
   constructor(
@@ -54,6 +60,24 @@ export class GeofenceService {
     this.zone.run(() => this.authorizationOkSubject.next(value));
   }
 
+  private setActiveGeofences(value: BgGeofence[]): void {
+    this.zone.run(() => this.activeGeofencesSubject.next(value));
+  }
+
+  private async refreshActiveGeofences(): Promise<void> {
+    if (!this.initialized || !this.bgGeo) {
+      this.setActiveGeofences([]);
+      return;
+    }
+
+    try {
+      const fences = await this.bgGeo.getGeofences();
+      this.setActiveGeofences(fences ?? []);
+    } catch {
+      this.setActiveGeofences([]);
+    }
+  }
+
   public async setRouteNotificationsEnabled(
     enabled: boolean
   ): Promise<boolean> {
@@ -69,6 +93,7 @@ export class GeofenceService {
           '[GeofenceService] enabling route notifications failed: plugin not initialized'
         );
         this.setEnabled(false);
+        this.setActiveGeofences([]);
         return false;
       }
 
@@ -78,6 +103,7 @@ export class GeofenceService {
           '[GeofenceService] enabling route notifications failed: permissions not authorized'
         );
         this.setEnabled(false);
+        this.setActiveGeofences([]);
         await this.disableGeofencing();
         return false;
       }
@@ -108,6 +134,7 @@ export class GeofenceService {
     await this.disableGeofencing();
 
     this.setEnabled(false);
+    this.setActiveGeofences([]);
 
     return true;
   }
@@ -364,9 +391,9 @@ export class GeofenceService {
           }
 
           // Fire a local notification
-          const notificationId: number = this.hashToInt(
-            identifier ?? 'unknown'
-          );
+          const baseId: number = this.hashToInt(identifier ?? 'unknown');
+          const notificationId: number =
+            (baseId % 1000000) * 1000 + (Date.now() % 1000);
           const ok: boolean = await this.push.scheduleLocalNotification({
             id: notificationId,
             title: 'Utrecht Time Machine',
@@ -376,6 +403,7 @@ export class GeofenceService {
           console.log('[GeofenceService] scheduleLocalNotification result', {
             ok,
             identifier,
+            baseId,
             notificationId,
           });
         } else if (action === 'EXIT') {
@@ -392,6 +420,29 @@ export class GeofenceService {
         }
       });
 
+      if (typeof (plugin as any).onLocation === 'function') {
+        (plugin as any).onLocation(
+          (location: any) => {
+            console.log('[GeofenceService] onLocation', location);
+          },
+          (error: any) => {
+            console.warn('[GeofenceService] onLocation error', error);
+          }
+        );
+      }
+
+      if (typeof (plugin as any).onMotionChange === 'function') {
+        (plugin as any).onMotionChange((event: any) => {
+          console.log('[GeofenceService] onMotionChange', event);
+        });
+      }
+
+      if (typeof (plugin as any).onActivityChange === 'function') {
+        (plugin as any).onActivityChange((event: any) => {
+          console.log('[GeofenceService] onActivityChange', event);
+        });
+      }
+
       if (!this.readyInvoked) {
         this.readyInvoked = true;
 
@@ -404,6 +455,7 @@ export class GeofenceService {
           startOnBoot: true,
           enableHeadless: true,
           geofenceModeHighAccuracy: true,
+          geofenceInitialTriggerEntry: false,
           // iOS: allow background location. Android: ACCESS_BACKGROUND_LOCATION permission
           locationAuthorizationRequest: 'Always',
           backgroundPermissionRationale: {
@@ -590,6 +642,7 @@ export class GeofenceService {
         '[GeofenceService] clearAllGeofences: skipping because plugin was never initialized',
         { reason }
       );
+      this.setActiveGeofences([]);
       return;
     }
 
@@ -608,8 +661,10 @@ export class GeofenceService {
         count: after?.length,
         after,
       });
+      this.setActiveGeofences(after ?? []);
     } catch (e) {
       console.error('[GeofenceService] clearAllGeofences failed', e);
+      this.setActiveGeofences([]);
     }
   }
 
@@ -706,8 +761,10 @@ export class GeofenceService {
         count: fences?.length,
         fences,
       });
+      this.setActiveGeofences(fences ?? []);
     } catch (e) {
       console.error('[GeofenceService] addGeofences failed', e);
+      void this.refreshActiveGeofences();
     }
   }
 
@@ -722,6 +779,7 @@ export class GeofenceService {
 
   private async disableGeofencing(): Promise<void> {
     if (!this.initialized || !this.bgGeo) {
+      this.setActiveGeofences([]);
       return;
     }
 
@@ -733,6 +791,8 @@ export class GeofenceService {
         e
       );
     }
+
+    await this.refreshActiveGeofences();
 
     try {
       const bg: any = this.bgGeo;

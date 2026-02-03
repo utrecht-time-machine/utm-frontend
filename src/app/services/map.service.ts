@@ -29,6 +29,7 @@ import { TimeService } from './time.service';
 import { FilterService } from './filter.service';
 import { FilterType } from '../models/filter-type.enum';
 import { OrganisationFilterService } from './organisation-filter.service';
+import { GeofenceOverlayService } from './geofence-overlay.service';
 
 @Injectable({
   providedIn: 'root',
@@ -65,7 +66,8 @@ export class MapService {
     private themes: ThemeService,
     private time: TimeService,
     private filters: FilterService,
-    private organisationFilter: OrganisationFilterService
+    private organisationFilter: OrganisationFilterService,
+    private geofenceOverlay: GeofenceOverlayService
   ) {
     this.allLocations.subscribe(() => {
       this.shownLocationPopup?.remove();
@@ -274,6 +276,10 @@ export class MapService {
 
     this.map.on('style.load', () => {
       this.add3DBuildingsLayer();
+
+      if (this.map) {
+        this.geofenceOverlay.attach(this.map);
+      }
 
       if (this.routing.getSelectedView() === SelectedView.Locations) {
         this.addLocationsOnMap(false);
