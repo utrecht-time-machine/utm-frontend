@@ -149,11 +149,6 @@ export class GeofenceService {
       this.routeNotificationsEnabled = true;
       this.initSubscriptions();
 
-      const route = this.utmRoutes.selected.getValue();
-      if (route) {
-        await this.handleRouteChanged(route);
-      }
-
       this.setEnabled(true);
 
       return true;
