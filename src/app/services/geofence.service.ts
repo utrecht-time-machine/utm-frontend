@@ -54,6 +54,37 @@ export class GeofenceService {
     console.log('[GeofenceService] constructor: created');
   }
 
+  private async startGeofencingEngine(): Promise<void> {
+    if (!this.bgGeo) {
+      return;
+    }
+
+    try {
+      // Engage geofences-only mode (per docs) since we only need geofence events
+      if (typeof (this.bgGeo as any).startGeofences === 'function') {
+        await (this.bgGeo as any).startGeofences();
+        console.log(
+          '[GeofenceService] BackgroundGeolocation started (geofences-only mode)'
+        );
+      } else if (typeof (this.bgGeo as any).start === 'function') {
+        await (this.bgGeo as any).start();
+        console.log(
+          '[GeofenceService] BackgroundGeolocation started (tracking mode)'
+        );
+      }
+
+      if (typeof (this.bgGeo as any).getState === 'function') {
+        const postStartState = await (this.bgGeo as any).getState();
+        console.log(
+          '[GeofenceService] plugin state (post-start)',
+          postStartState
+        );
+      }
+    } catch (e) {
+      console.warn('[GeofenceService] startGeofencingEngine failed', e);
+    }
+  }
+
   private setEnabled(value: boolean): void {
     this.zone.run(() => this.enabledSubject.next(value));
   }
@@ -109,6 +140,10 @@ export class GeofenceService {
         await this.disableGeofencing();
         return false;
       }
+
+      // If the user previously disabled geofencing, the plugin may have been stopped.
+      // Start it again on every enable.
+      await this.startGeofencingEngine();
 
       // Only now consider the feature enabled.
       this.routeNotificationsEnabled = true;
