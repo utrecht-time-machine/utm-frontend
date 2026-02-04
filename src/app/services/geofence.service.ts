@@ -1,11 +1,15 @@
 import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CordovaService } from './cordova.service';
-import { PushNotificationService } from './push-notification.service';
+import {
+  GeofenceIdentifierInfo,
+  GeofenceIdentifierService,
+} from './geofence-identifier.service';
+import { GeofenceNotificationService } from './geofence-notification.service';
+import { GeofencePermissionsService } from './geofence-permissions.service';
 import { UtmRoutesService } from './utm-routes.service';
 import { UtmRoute } from '../models/utm-route';
 import { UtmRouteStop } from '../models/utm-route-stop';
-import { environment } from '../../environments/environment';
 
 import type {
   AuthorizationStatus,
@@ -35,8 +39,11 @@ export class GeofenceService {
   private readonly enabledSubject = new BehaviorSubject<boolean>(false);
   public readonly enabled$ = this.enabledSubject.asObservable();
 
-  private readonly authorizationOkSubject = new BehaviorSubject<boolean>(false);
-  public readonly authorizationOk$ = this.authorizationOkSubject.asObservable();
+  private readonly locationPermissionOkSubject = new BehaviorSubject<boolean>(
+    false
+  );
+  public readonly locationPermissionOk$ =
+    this.locationPermissionOkSubject.asObservable();
 
   private readonly activeGeofencesSubject = new BehaviorSubject<BgGeofence[]>(
     []
@@ -50,10 +57,21 @@ export class GeofenceService {
   constructor(
     private cordova: CordovaService,
     private utmRoutes: UtmRoutesService,
-    private push: PushNotificationService,
+    private geofenceIdentifier: GeofenceIdentifierService,
+    private geofenceNotifications: GeofenceNotificationService,
+    private geofencePermissions: GeofencePermissionsService,
     private zone: NgZone
   ) {
     console.log('[GeofenceService] constructor: created');
+  }
+
+  private getGeofenceMeta(
+    identifier: string | undefined
+  ): GeofenceIdentifierInfo | undefined {
+    return this.geofenceIdentifier.getInfoFromIdentifier(
+      identifier,
+      this.lastActiveGeofences
+    );
   }
 
   private async startGeofencingEngine(): Promise<void> {
@@ -91,8 +109,8 @@ export class GeofenceService {
     this.zone.run(() => this.enabledSubject.next(value));
   }
 
-  private setAuthorizationOk(value: boolean): void {
-    this.zone.run(() => this.authorizationOkSubject.next(value));
+  private setLocationPermissionOk(value: boolean): void {
+    this.zone.run(() => this.locationPermissionOkSubject.next(value));
   }
 
   private setActiveGeofences(value: BgGeofence[]): void {
@@ -133,8 +151,8 @@ export class GeofenceService {
         return false;
       }
 
-      const authorized = await this.checkAuthorization();
-      if (!authorized) {
+      const hasLocationPermission = await this.checkHasLocationPermission();
+      if (!hasLocationPermission) {
         console.warn(
           '[GeofenceService] enabling route notifications failed: permissions not authorized'
         );
@@ -174,112 +192,22 @@ export class GeofenceService {
     return true;
   }
 
-  public async checkAuthorization(): Promise<boolean> {
+  public async checkHasLocationPermission(): Promise<boolean> {
     if (!this.bgGeo) {
       return false;
     }
 
-    try {
-      const state: State | undefined =
-        typeof this.bgGeo.getState === 'function'
-          ? await this.bgGeo.getState()
-          : undefined;
+    const ok = await this.geofencePermissions.hasLocationPermission(this.bgGeo);
+    this.setLocationPermissionOk(ok);
 
-      const authorization: unknown = (state as any)?.authorization;
-
-      const providerState: unknown =
-        typeof (this.bgGeo as any).getProviderState === 'function'
-          ? await (this.bgGeo as any).getProviderState()
-          : undefined;
-
-      const authorizationObjStatus: unknown =
-        authorization && typeof authorization === 'object'
-          ? (authorization as any).status ??
-            (authorization as any).location ??
-            (authorization as any).authorization
-          : undefined;
-
-      const denied = (this.bgGeo as any).AUTHORIZATION_STATUS_DENIED;
-      const notDetermined = (this.bgGeo as any)
-        .AUTHORIZATION_STATUS_NOT_DETERMINED;
-      const always = (this.bgGeo as any).AUTHORIZATION_STATUS_ALWAYS;
-      const whenInUse = (this.bgGeo as any).AUTHORIZATION_STATUS_WHEN_IN_USE;
-
-      const lastLocationAuthorizationStatus: unknown = (state as any)
-        ?.lastLocationAuthorizationStatus;
-
-      const rawAuthValue =
-        typeof authorization === 'number' || typeof authorization === 'string'
-          ? authorization
-          : typeof authorizationObjStatus === 'number' ||
-            typeof authorizationObjStatus === 'string'
-          ? authorizationObjStatus
-          : typeof lastLocationAuthorizationStatus === 'number' ||
-            typeof lastLocationAuthorizationStatus === 'string'
-          ? lastLocationAuthorizationStatus
-          : typeof (providerState as any)?.status === 'number' ||
-            typeof (providerState as any)?.status === 'string'
-          ? (providerState as any).status
-          : authorization;
-
-      const normalizedAuthValue: unknown =
-        typeof rawAuthValue === 'string' && /^\d+$/.test(rawAuthValue)
-          ? Number(rawAuthValue)
-          : rawAuthValue;
-
-      console.log('[GeofenceService] isAuthorized authorization state', {
-        authorization,
-        authorizationObjStatus,
-        lastLocationAuthorizationStatus,
-        rawAuthValue,
-        normalizedAuthValue,
-        denied,
-        notDetermined,
-        always,
-        whenInUse,
-        providerState,
-        fullState: state,
-      });
-
-      // Fail-closed: if the authorization value cannot be interpreted, treat it as not authorized.
-      if (
-        normalizedAuthValue === undefined ||
-        normalizedAuthValue === null ||
-        typeof normalizedAuthValue === 'object'
-      ) {
-        this.setAuthorizationOk(false);
-        if (this.routeNotificationsEnabled) {
-          void this.setRouteNotificationsEnabled(false);
-        }
-        return false;
-      }
-
-      if (denied !== undefined && normalizedAuthValue === denied) {
-        this.setAuthorizationOk(false);
-        if (this.routeNotificationsEnabled) {
-          void this.setRouteNotificationsEnabled(false);
-        }
-        return false;
-      }
-
-      if (
-        notDetermined !== undefined &&
-        normalizedAuthValue === notDetermined
-      ) {
-        this.setAuthorizationOk(false);
-        if (this.routeNotificationsEnabled) {
-          void this.setRouteNotificationsEnabled(false);
-        }
-        return false;
-      }
-
-      this.setAuthorizationOk(true);
-      return true;
-    } catch (e) {
-      console.warn('[GeofenceService] isAuthorized check failed', e);
-      this.setAuthorizationOk(false);
-      return false;
+    if (!ok && this.routeNotificationsEnabled) {
+      console.warn(
+        '[GeofenceService] location permission not granted; disabling route notifications'
+      );
+      void this.setRouteNotificationsEnabled(false);
     }
+
+    return ok;
   }
 
   private initSubscriptions(): void {
@@ -391,7 +319,7 @@ export class GeofenceService {
                 return;
               }
 
-              void this.checkAuthorization();
+              void this.checkHasLocationPermission();
             });
           } else {
             console.log(
@@ -418,71 +346,26 @@ export class GeofenceService {
 
           // Listen for geofence events
           plugin.onGeofence(async (event: GeofenceEvent) => {
-            console.log('[GeofenceService] onGeofence event', event);
-
             const identifier = event?.identifier;
-            const action = event?.action;
-            const location = event?.location;
+            const action = (event as any)?.action;
 
-            if (action === 'ENTER') {
-              console.log('[GeofenceService] Geofence ENTER', {
-                identifier,
-                location,
-              });
-
-              if (!this.routeNotificationsEnabled) {
-                console.log(
-                  '[GeofenceService] Route notifications disabled; skipping local notification',
-                  { identifier }
-                );
-                return;
-              }
-
-              const meta = this.getGeofenceMeta(identifier);
-              const title = meta?.routeTitle || 'Utrecht Time Machine';
-              const stopNum =
-                meta?.stopIdx !== undefined ? meta.stopIdx + 1 : undefined;
-              const stopPart = stopNum ? `Routepunt ${stopNum}` : 'Routepunt';
-              const stopTitlePart = meta?.stopTitle
-                ? ` (${meta.stopTitle})`
-                : '';
-              const text = `Je bent bij ${stopPart}${stopTitlePart} aangekomen. Tik om meer te lezen.`;
-
-              // Fire a local notification
-              const baseId: number = this.hashToInt(identifier ?? 'unknown');
-              const notificationId: number =
-                (baseId % 1000000) * 1000 + (Date.now() % 1000);
-
-              const ok: boolean = await this.push.scheduleLocalNotification({
-                id: notificationId,
-                title,
-                text,
-                data: {
-                  routeId: meta?.routeId,
-                  stopIdx: meta?.stopIdx,
-                },
-              });
-
-              console.log(
-                '[GeofenceService] scheduleLocalNotification result',
-                {
-                  ok,
-                  identifier,
-                  baseId,
-                  notificationId,
-                }
-              );
-            } else if (action === 'EXIT') {
-              console.log('[GeofenceService] Geofence EXIT', {
-                identifier,
-                location,
-              });
-            } else {
-              console.log('[GeofenceService] Geofence action', {
+            if (action === 'ENTER' || action === 'EXIT') {
+              console.log('[GeofenceService] geofence event', {
                 action,
                 identifier,
-                location,
               });
+            }
+
+            try {
+              await this.geofenceNotifications.handleGeofenceEvent(event, {
+                routeNotificationsEnabled: this.routeNotificationsEnabled,
+                getMetaForIdentifier: (id) => this.getGeofenceMeta(id),
+              });
+            } catch (e) {
+              console.warn(
+                '[GeofenceService] geofence notification handler failed',
+                e
+              );
             }
           });
 
@@ -775,7 +658,11 @@ export class GeofenceService {
       const lat = coords?.lat;
       const lng = coords?.lng;
 
-      const identifier = `route:${route.nid}:stop:${idx}:location:${stop.location_id}`;
+      const identifier = this.geofenceIdentifier.buildRouteStopIdentifier(
+        route.nid,
+        idx,
+        stop.location_id
+      );
 
       if (typeof lat !== 'number' || typeof lng !== 'number') {
         console.warn(
@@ -842,65 +729,6 @@ export class GeofenceService {
       console.error('[GeofenceService] addGeofences failed', e);
       void this.refreshActiveGeofences();
     }
-  }
-
-  private hashToInt(s: string): number {
-    let hash = 0;
-    for (let i = 0; i < s.length; i++) {
-      hash = (hash << 5) - hash + s.charCodeAt(i);
-      hash |= 0;
-    }
-    return Math.abs(hash);
-  }
-
-  private getGeofenceMeta(identifier: string | undefined):
-    | {
-        routeId?: string;
-        routeTitle?: string;
-        stopIdx?: number;
-        stopTitle?: string;
-      }
-    | undefined {
-    if (!identifier) {
-      return undefined;
-    }
-
-    const match = this.lastActiveGeofences.find(
-      (f) => f.identifier === identifier
-    );
-    const extras: any = match?.extras;
-
-    const stopIdxFromExtras =
-      typeof extras?.stopIdx === 'number'
-        ? (extras.stopIdx as number)
-        : undefined;
-    const stopIdx =
-      stopIdxFromExtras ?? this.parseStopIdxFromIdentifier(identifier);
-
-    return {
-      routeId:
-        typeof extras?.routeId === 'string'
-          ? extras.routeId
-          : this.parseRouteIdFromIdentifier(identifier),
-      routeTitle:
-        typeof extras?.routeTitle === 'string' ? extras.routeTitle : undefined,
-      stopIdx,
-      stopTitle: typeof extras?.title === 'string' ? extras.title : undefined,
-    };
-  }
-
-  private parseRouteIdFromIdentifier(identifier: string): string | undefined {
-    const m = identifier.match(/^route:([^:]+):/);
-    return m?.[1];
-  }
-
-  private parseStopIdxFromIdentifier(identifier: string): number | undefined {
-    const m = identifier.match(/:stop:(\d+):/);
-    if (!m) {
-      return undefined;
-    }
-    const n = Number(m[1]);
-    return Number.isFinite(n) ? n : undefined;
   }
 
   private async disableGeofencing(): Promise<void> {

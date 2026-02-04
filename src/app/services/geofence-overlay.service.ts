@@ -34,7 +34,7 @@ export class GeofenceOverlayService {
     if (!this.sub) {
       this.sub = combineLatest([
         this.geofences.enabled$,
-        this.geofences.authorizationOk$,
+        this.geofences.locationPermissionOk$,
         this.geofences.activeGeofences$,
       ]).subscribe(([enabled, authOk, fences]) => {
         const visible = Boolean(enabled && authOk);
