@@ -35,9 +35,9 @@ export class RouteNotificationsSettingsService {
     }
 
     if (!this.enabledSub) {
-      this.enabledSub = this.geofence.enabled$.subscribe((enabled) => {
-        this.enabledSubject.next(enabled);
-        this.saveEnabled(enabled);
+      this.enabledSub = this.geofence.state$.subscribe((state) => {
+        this.enabledSubject.next(state.enabled);
+        this.saveEnabled(state.enabled);
       });
     }
   }

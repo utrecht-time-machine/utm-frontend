@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
-import { combineLatest, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { circle as turfCircle } from '@turf/turf';
 import type { Feature, FeatureCollection, Polygon } from 'geojson';
 import type { Geofence as BgGeofence } from 'cordova-background-geolocation-lt';
@@ -32,15 +32,11 @@ export class GeofenceOverlayService {
     this.map = map;
 
     if (!this.sub) {
-      this.sub = combineLatest([
-        this.geofences.enabled$,
-        this.geofences.locationPermissionOk$,
-        this.geofences.activeGeofences$,
-      ]).subscribe(([enabled, authOk, fences]) => {
-        const visible = Boolean(enabled && authOk);
+      this.sub = this.geofences.state$.subscribe((state) => {
+        const visible = Boolean(state.enabled && state.locationPermissionOk);
         this.visible = visible;
-        this.fences = fences;
-        this.updateOverlay(visible ? fences : []);
+        this.fences = state.activeGeofences;
+        this.updateOverlay(visible ? state.activeGeofences : []);
       });
     }
 
