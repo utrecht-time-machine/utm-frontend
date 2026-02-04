@@ -24,12 +24,12 @@ export class RouteNotificationsSettingsService {
   constructor(private injector: Injector, private cordova: CordovaService) {
     void this.checkDeviceAllowsGeofencing();
 
-    if (this.loadEnabled()) {
+    if (this.loadEnabledFromLocalStorage()) {
       this.setEnabled(true);
     }
   }
 
-  private ensureGeofenceWired(): void {
+  private ensureGeofenceIsWired(): void {
     if (!this.geofence) {
       this.geofence = this.injector.get(GeofenceService);
     }
@@ -37,7 +37,7 @@ export class RouteNotificationsSettingsService {
     if (!this.enabledSub) {
       this.enabledSub = this.geofence.state$.subscribe((state) => {
         this.enabledSubject.next(state.enabled);
-        this.saveEnabled(state.enabled);
+        this.saveEnabledToLocalStorage(state.enabled);
       });
     }
   }
@@ -58,17 +58,17 @@ export class RouteNotificationsSettingsService {
 
   public async setEnabled(enabled: boolean): Promise<boolean> {
     if (enabled) {
-      this.ensureGeofenceWired();
+      this.ensureGeofenceIsWired();
       const ok = await this.geofence!.setRouteNotificationsEnabled(true);
       return ok;
     }
 
-    this.ensureGeofenceWired();
+    this.ensureGeofenceIsWired();
     await this.geofence!.setRouteNotificationsEnabled(false);
     return false;
   }
 
-  private loadEnabled(): boolean {
+  private loadEnabledFromLocalStorage(): boolean {
     try {
       const v = (window as any)?.localStorage?.getItem(this.enabledStorageKey);
       if (v === null) return false;
@@ -78,7 +78,7 @@ export class RouteNotificationsSettingsService {
     }
   }
 
-  private saveEnabled(enabled: boolean): void {
+  private saveEnabledToLocalStorage(enabled: boolean): void {
     try {
       (window as any)?.localStorage?.setItem(
         this.enabledStorageKey,
