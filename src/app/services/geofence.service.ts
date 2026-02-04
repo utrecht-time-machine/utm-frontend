@@ -43,6 +43,8 @@ export class GeofenceService {
   );
   public readonly activeGeofences$ = this.activeGeofencesSubject.asObservable();
 
+  private lastActiveGeofences: BgGeofence[] = [];
+
   private activeRouteId: string | undefined;
 
   constructor(
@@ -94,6 +96,7 @@ export class GeofenceService {
   }
 
   private setActiveGeofences(value: BgGeofence[]): void {
+    this.lastActiveGeofences = value;
     this.zone.run(() => this.activeGeofencesSubject.next(value));
   }
 
@@ -435,14 +438,25 @@ export class GeofenceService {
                 return;
               }
 
+              const meta = this.getGeofenceMeta(identifier);
+              const title = meta?.routeTitle || 'Utrecht Time Machine';
+              const stopNum =
+                meta?.stopIdx !== undefined ? meta.stopIdx + 1 : undefined;
+              const stopPart = stopNum ? `Routepunt ${stopNum}` : 'Routepunt';
+              const stopTitlePart = meta?.stopTitle
+                ? ` (${meta.stopTitle})`
+                : '';
+              const text = `Je bent bij ${stopPart}${stopTitlePart} aangekomen. Tik om meer te lezen.`;
+
               // Fire a local notification
               const baseId: number = this.hashToInt(identifier ?? 'unknown');
               const notificationId: number =
                 (baseId % 1000000) * 1000 + (Date.now() % 1000);
+
               const ok: boolean = await this.push.scheduleLocalNotification({
                 id: notificationId,
-                title: 'Utrecht Time Machine',
-                text: 'Je bent bij een routepunt in de buurt.',
+                title,
+                text,
               });
 
               console.log(
@@ -785,6 +799,7 @@ export class GeofenceService {
         notifyOnDwell: false,
         extras: {
           routeId: route.nid,
+          routeTitle: route.title,
           stopIdx: idx,
           locationId: stop.location_id,
           title: stop.title,
@@ -832,6 +847,46 @@ export class GeofenceService {
       hash |= 0;
     }
     return Math.abs(hash);
+  }
+
+  private getGeofenceMeta(identifier: string | undefined):
+    | {
+        routeTitle?: string;
+        stopIdx?: number;
+        stopTitle?: string;
+      }
+    | undefined {
+    if (!identifier) {
+      return undefined;
+    }
+
+    const match = this.lastActiveGeofences.find(
+      (f) => f.identifier === identifier
+    );
+    const extras: any = match?.extras;
+
+    const stopIdxFromExtras =
+      typeof extras?.stopIdx === 'number'
+        ? (extras.stopIdx as number)
+        : undefined;
+    const stopIdx =
+      stopIdxFromExtras ?? this.parseStopIdxFromIdentifier(identifier);
+
+    return {
+      routeTitle:
+        typeof extras?.routeTitle === 'string' ? extras.routeTitle : undefined,
+      stopIdx,
+      stopTitle: typeof extras?.title === 'string' ? extras.title : undefined,
+    };
+  }
+
+  private parseStopIdxFromIdentifier(identifier: string): number | undefined {
+    const m = identifier.match(/:stop:(\d+):/);
+    if (!m) {
+      return undefined;
+    }
+    const n = Number(m[1]);
+    return Number.isFinite(n) ? n : undefined;
   }
 
   private async disableGeofencing(): Promise<void> {
