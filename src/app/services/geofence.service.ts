@@ -510,7 +510,7 @@ export class GeofenceService {
             backgroundPermissionRationale: {
               title: 'Locatie in de achtergrond',
               message:
-                'Utrecht Time Machine gebruikt je locatie om meldingen te sturen als je een routepunt nadert.',
+                "Utrecht Time Machine gebruikt je locatie om meldingen te sturen als je een routepunt nadert. Om dit te laten werken, moet je 'Altijd' locatie‑toegang inschakelen in de instellingen.",
               positiveAction: 'Ok',
               negativeAction: 'Niet nu',
             },
