@@ -495,10 +495,9 @@ export class GeofenceService {
         if (!this.readyInvoked) {
           this.readyInvoked = true;
 
-          // TODO: Set log level to LOG_LEVEL_ERROR in production builds
           const config: Config = {
             debug: false,
-            logLevel: plugin.LOG_LEVEL_VERBOSE,
+            logLevel: plugin.LOG_LEVEL_ERROR,
             desiredAccuracy: plugin.DESIRED_ACCURACY_HIGH,
             distanceFilter: 25,
             stopOnTerminate: false,
