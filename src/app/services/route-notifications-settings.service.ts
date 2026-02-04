@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CordovaService } from './cordova.service';
-import { GeofenceService } from './geofence.service';
+import { GeofenceService } from './geofence/geofence.service';
 
 @Injectable({
   providedIn: 'root',

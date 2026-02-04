@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import type { GeofenceEvent } from 'cordova-background-geolocation-lt';
 
 import { GeofenceIdentifierService } from './geofence-identifier.service';
-import { PushNotificationService } from './push-notification.service';
+import { PushNotificationService } from '../push-notification.service';
 
 @Injectable({
   providedIn: 'root',

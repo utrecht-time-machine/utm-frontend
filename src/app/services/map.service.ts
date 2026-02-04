@@ -29,7 +29,7 @@ import { TimeService } from './time.service';
 import { FilterService } from './filter.service';
 import { FilterType } from '../models/filter-type.enum';
 import { OrganisationFilterService } from './organisation-filter.service';
-import { GeofenceOverlayService } from './geofence-overlay.service';
+import { GeofenceOverlayService } from './geofence/geofence-overlay.service';
 
 @Injectable({
   providedIn: 'root',

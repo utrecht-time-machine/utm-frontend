@@ -1,15 +1,15 @@
 import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { CordovaService } from './cordova.service';
+import { CordovaService } from '../cordova.service';
 import {
   GeofenceIdentifierInfo,
   GeofenceIdentifierService,
 } from './geofence-identifier.service';
 import { GeofenceNotificationService } from './geofence-notification.service';
 import { GeofencePermissionsService } from './geofence-permissions.service';
-import { UtmRoutesService } from './utm-routes.service';
-import { UtmRoute } from '../models/utm-route';
-import { UtmRouteStop } from '../models/utm-route-stop';
+import { UtmRoutesService } from '../utm-routes.service';
+import { UtmRoute } from '../../models/utm-route';
+import { UtmRouteStop } from '../../models/utm-route-stop';
 
 import type {
   AuthorizationStatus,
