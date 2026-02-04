@@ -81,25 +81,16 @@ export class GeofenceService {
 
     try {
       // Engage geofences-only mode (per docs) since we only need geofence events
-      if (typeof (this.bgGeo as any).startGeofences === 'function') {
-        await (this.bgGeo as any).startGeofences();
-        console.log(
-          '[GeofenceService] BackgroundGeolocation started (geofences-only mode)'
-        );
-      } else if (typeof (this.bgGeo as any).start === 'function') {
-        await (this.bgGeo as any).start();
-        console.log(
-          '[GeofenceService] BackgroundGeolocation started (tracking mode)'
-        );
-      }
+      await this.bgGeo.startGeofences();
+      console.log(
+        '[GeofenceService] BackgroundGeolocation started (geofences-only mode)'
+      );
 
-      if (typeof (this.bgGeo as any).getState === 'function') {
-        const postStartState = await (this.bgGeo as any).getState();
-        console.log(
-          '[GeofenceService] plugin state (post-start)',
-          postStartState
-        );
-      }
+      const postStartState = await this.bgGeo.getState();
+      console.log(
+        '[GeofenceService] plugin state (post-start)',
+        postStartState
+      );
     } catch (e) {
       console.warn('[GeofenceService] startGeofencingEngine failed', e);
     }
@@ -311,43 +302,29 @@ export class GeofenceService {
         if (!this.listenersRegistered) {
           this.listenersRegistered = true;
 
-          if (typeof plugin.onProviderChange === 'function') {
-            plugin.onProviderChange((event: ProviderChangeEvent) => {
-              console.log('[GeofenceService] onProviderChange event', event);
+          plugin.onProviderChange((event: ProviderChangeEvent) => {
+            console.log('[GeofenceService] onProviderChange event', event);
 
-              if (!this.routeNotificationsEnabled) {
-                return;
-              }
+            if (!this.routeNotificationsEnabled) {
+              return;
+            }
 
-              void this.checkHasLocationPermission();
-            });
-          } else {
-            console.log(
-              '[GeofenceService] plugin.onProviderChange not available; skipping'
-            );
-          }
+            void this.checkHasLocationPermission();
+          });
 
-          if (typeof plugin.getProviderState === 'function') {
-            const providerState = await plugin.getProviderState();
-            console.log(
-              '[GeofenceService] provider state (pre-ready)',
-              providerState
-            );
-          } else {
-            console.log(
-              '[GeofenceService] plugin.getProviderState not available; skipping'
-            );
-          }
+          const providerState = await plugin.getProviderState();
+          console.log(
+            '[GeofenceService] provider state (pre-ready)',
+            providerState
+          );
 
-          if (typeof plugin.getState === 'function') {
-            const preState = await plugin.getState();
-            console.log('[GeofenceService] plugin state (pre-ready)', preState);
-          }
+          const preState = await plugin.getState();
+          console.log('[GeofenceService] plugin state (pre-ready)', preState);
 
           // Listen for geofence events
           plugin.onGeofence(async (event: GeofenceEvent) => {
             const identifier = event?.identifier;
-            const action = (event as any)?.action;
+            const action = event?.action;
 
             if (action === 'ENTER' || action === 'EXIT') {
               console.log('[GeofenceService] geofence event', {
@@ -370,28 +347,22 @@ export class GeofenceService {
             }
           });
 
-          if (typeof (plugin as any).onLocation === 'function') {
-            (plugin as any).onLocation(
-              (location: any) => {
-                console.log('[GeofenceService] onLocation', location);
-              },
-              (error: any) => {
-                console.warn('[GeofenceService] onLocation error', error);
-              }
-            );
-          }
+          plugin.onLocation(
+            (location) => {
+              console.log('[GeofenceService] onLocation', location);
+            },
+            (error) => {
+              console.warn('[GeofenceService] onLocation error', error);
+            }
+          );
 
-          if (typeof (plugin as any).onMotionChange === 'function') {
-            (plugin as any).onMotionChange((event: any) => {
-              console.log('[GeofenceService] onMotionChange', event);
-            });
-          }
+          plugin.onMotionChange((event) => {
+            console.log('[GeofenceService] onMotionChange', event);
+          });
 
-          if (typeof (plugin as any).onActivityChange === 'function') {
-            (plugin as any).onActivityChange((event: any) => {
-              console.log('[GeofenceService] onActivityChange', event);
-            });
-          }
+          plugin.onActivityChange((event) => {
+            console.log('[GeofenceService] onActivityChange', event);
+          });
         }
 
         if (!this.readyInvoked) {
@@ -426,84 +397,53 @@ export class GeofenceService {
         }
 
         // Request permission explicitly; abort initialization if not granted.
-        if (typeof plugin.requestPermission === 'function') {
+        console.log(
+          '[GeofenceService] requesting location permission (post-ready)...'
+        );
+
+        try {
+          const permissionResult: AuthorizationStatus =
+            await plugin.requestPermission();
           console.log(
-            '[GeofenceService] requesting location permission (post-ready)...'
+            '[GeofenceService] requestPermission success (post-ready)',
+            permissionResult
           );
 
-          try {
-            const permissionResult: AuthorizationStatus =
-              await plugin.requestPermission();
-            console.log(
-              '[GeofenceService] requestPermission success (post-ready)',
-              permissionResult
-            );
-
-            const denied = (plugin as any).AUTHORIZATION_STATUS_DENIED;
-            const notDetermined = (plugin as any)
-              .AUTHORIZATION_STATUS_NOT_DETERMINED;
-
-            if (
-              (denied !== undefined && permissionResult === denied) ||
-              (notDetermined !== undefined &&
-                permissionResult === notDetermined)
-            ) {
-              console.warn(
-                '[GeofenceService] requestPermission returned non-authorized status; aborting init',
-                { permissionResult }
-              );
-              return false;
-            }
-          } catch (status) {
+          if (
+            permissionResult === plugin.AUTHORIZATION_STATUS_DENIED ||
+            permissionResult === plugin.AUTHORIZATION_STATUS_NOT_DETERMINED
+          ) {
             console.warn(
-              '[GeofenceService] requestPermission FAILURE (post-ready)',
-              status
+              '[GeofenceService] requestPermission returned non-authorized status; aborting init',
+              { permissionResult }
             );
             return false;
           }
-        } else {
-          console.log(
-            '[GeofenceService] plugin.requestPermission not available; relying on start/startGeofences to request authorization'
+        } catch (status) {
+          console.warn(
+            '[GeofenceService] requestPermission FAILURE (post-ready)',
+            status
           );
-        }
-
-        const state: State = await plugin.getState();
-        console.log(
-          '[GeofenceService] BackgroundGeolocation ready; initial state',
-          state
-        );
-
-        if (typeof plugin.getProviderState === 'function') {
-          const providerState = await plugin.getProviderState();
-          console.log(
-            '[GeofenceService] provider state (post-ready)',
-            providerState
-          );
+          return false;
         }
 
         // Engage geofences-only mode (per docs) since we only need geofence events
-        if (typeof plugin.startGeofences === 'function') {
-          await plugin.startGeofences();
-          console.log(
-            '[GeofenceService] BackgroundGeolocation started (geofences-only mode)'
-          );
-        } else {
-          console.warn(
-            '[GeofenceService] plugin.startGeofences not available; falling back to plugin.start()'
-          );
-          await plugin.start();
-          console.log(
-            '[GeofenceService] BackgroundGeolocation started (tracking mode)'
-          );
-        }
+        await plugin.startGeofences();
+        console.log(
+          '[GeofenceService] BackgroundGeolocation started (geofences-only mode)'
+        );
 
-        if (typeof plugin.getState === 'function') {
-          const postStartState = await plugin.getState();
-          console.log(
-            '[GeofenceService] plugin state (post-start)',
-            postStartState
-          );
-        }
+        const postStartState = await plugin.getState();
+        console.log(
+          '[GeofenceService] plugin state (post-start)',
+          postStartState
+        );
+
+        const providerState = await plugin.getProviderState();
+        console.log(
+          '[GeofenceService] provider state (post-ready)',
+          providerState
+        );
 
         this.initialized = true;
         return true;
@@ -750,12 +690,7 @@ export class GeofenceService {
     await this.refreshActiveGeofences();
 
     try {
-      const bg: any = this.bgGeo;
-      if (typeof bg.stopGeofences === 'function') {
-        await bg.stopGeofences();
-      } else if (typeof this.bgGeo.stop === 'function') {
-        await this.bgGeo.stop();
-      }
+      await this.bgGeo.stop();
     } catch (e) {
       console.warn('[GeofenceService] disableGeofencing stop failed', e);
     }
