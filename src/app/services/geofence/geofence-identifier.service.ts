@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import type { Geofence as BgGeofence } from 'cordova-background-geolocation-lt';
+import type {
+  Geofence as BgGeofence,
+  Extras,
+} from 'cordova-background-geolocation-lt';
 
 export type GeofenceIdentifierInfo = {
   routeId?: string;
@@ -53,24 +56,27 @@ export class GeofenceIdentifierService {
     }
 
     const match = activeGeofences.find((f) => f.identifier === identifier);
-    const extras: any = match?.extras;
+    const extras: Extras | undefined = match?.extras;
 
     const stopIdxFromExtras =
-      typeof extras?.stopIdx === 'number'
-        ? (extras.stopIdx as number)
+      typeof extras?.['stopIdx'] === 'number'
+        ? (extras['stopIdx'] as number)
         : undefined;
     const stopIdx =
       stopIdxFromExtras ?? this.parseStopIdxFromIdentifier(identifier);
 
     return {
       routeId:
-        typeof extras?.routeId === 'string'
-          ? extras.routeId
+        typeof extras?.['routeId'] === 'string'
+          ? extras['routeId']
           : this.parseRouteIdFromIdentifier(identifier),
       routeTitle:
-        typeof extras?.routeTitle === 'string' ? extras.routeTitle : undefined,
+        typeof extras?.['routeTitle'] === 'string'
+          ? extras['routeTitle']
+          : undefined,
       stopIdx,
-      stopTitle: typeof extras?.title === 'string' ? extras.title : undefined,
+      stopTitle:
+        typeof extras?.['title'] === 'string' ? extras['title'] : undefined,
     };
   }
 }
