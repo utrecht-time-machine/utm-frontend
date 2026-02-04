@@ -4,6 +4,7 @@ import { SeoService } from './services/seo.service';
 import { ConnectivityService } from './services/connectivity.service';
 import { MenuService } from './services/menu.service';
 import { StoryService } from './services/story.service';
+import { NotificationClickService } from './services/notification-click.service';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ export class AppComponent {
     public seoService: SeoService,
     public connectivity: ConnectivityService,
     public menu: MenuService,
-    public story: StoryService
+    public story: StoryService,
+    _notificationClick: NotificationClickService
   ) {}
 }

@@ -232,6 +232,37 @@ export class UtmRoutesService {
     this.spinner.loadingRoute = false;
   }
 
+  public async navigateToRouteStop(
+    routeId: string,
+    stopIdx: number | undefined
+  ): Promise<void> {
+    await this.router.navigate(['/routes', routeId]);
+
+    if (!this.all.value.length) {
+      await this.load();
+    }
+
+    await this.selectById(routeId);
+
+    const selectedRoute = this.selected.getValue();
+    if (!selectedRoute) {
+      return;
+    }
+
+    const stopsLoaded = !!selectedRoute.stops?.length;
+    if (!stopsLoaded) {
+      const routeLocationsLoadedPromise = new Promise<void>((resolve) => {
+        const sub = this.selectedRouteLocationsLoaded.subscribe(() => {
+          sub.unsubscribe();
+          resolve();
+        });
+      });
+      await routeLocationsLoadedPromise;
+    }
+
+    this.selectStopByIdx(stopIdx, 200);
+  }
+
   private _justRedirected = false;
 
   public async selectByUrlOrId(url: string, id?: string) {

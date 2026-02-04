@@ -457,6 +457,10 @@ export class GeofenceService {
                 id: notificationId,
                 title,
                 text,
+                data: {
+                  routeId: meta?.routeId,
+                  stopIdx: meta?.stopIdx,
+                },
               });
 
               console.log(
@@ -851,6 +855,7 @@ export class GeofenceService {
 
   private getGeofenceMeta(identifier: string | undefined):
     | {
+        routeId?: string;
         routeTitle?: string;
         stopIdx?: number;
         stopTitle?: string;
@@ -873,11 +878,20 @@ export class GeofenceService {
       stopIdxFromExtras ?? this.parseStopIdxFromIdentifier(identifier);
 
     return {
+      routeId:
+        typeof extras?.routeId === 'string'
+          ? extras.routeId
+          : this.parseRouteIdFromIdentifier(identifier),
       routeTitle:
         typeof extras?.routeTitle === 'string' ? extras.routeTitle : undefined,
       stopIdx,
       stopTitle: typeof extras?.title === 'string' ? extras.title : undefined,
     };
+  }
+
+  private parseRouteIdFromIdentifier(identifier: string): string | undefined {
+    const m = identifier.match(/^route:([^:]+):/);
+    return m?.[1];
   }
 
   private parseStopIdxFromIdentifier(identifier: string): number | undefined {
