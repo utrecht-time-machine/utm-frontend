@@ -61,9 +61,7 @@ export class GeofenceService {
     private geofenceNotifications: GeofenceNotificationService,
     private geofencePermissions: GeofencePermissionsService,
     private zone: NgZone
-  ) {
-    console.log('[GeofenceService] constructor: created');
-  }
+  ) {}
 
   private getGeofenceInfoFromIdentifier(
     identifier: string | undefined
@@ -80,17 +78,7 @@ export class GeofenceService {
     }
 
     try {
-      // Engage geofences-only mode (per docs) since we only need geofence events
       await this.bgGeo.startGeofences();
-      console.log(
-        '[GeofenceService] BackgroundGeolocation started (geofences-only mode)'
-      );
-
-      const postStartState = await this.bgGeo.getState();
-      console.log(
-        '[GeofenceService] plugin state (post-start)',
-        postStartState
-      );
     } catch (e) {
       console.warn('[GeofenceService] startGeofencingEngine failed', e);
     }
@@ -211,12 +199,6 @@ export class GeofenceService {
         return;
       }
 
-      console.log('[GeofenceService] utmRoutes.selected changed', {
-        routeId: route?.nid,
-        title: (route as any)?.title,
-        hasStops: Boolean(route?.stops?.length),
-      });
-
       void this.handleRouteChanged(route);
     });
 
@@ -226,16 +208,7 @@ export class GeofenceService {
           return;
         }
 
-        const route = this.utmRoutes.selected.getValue();
-        console.log(
-          '[GeofenceService] selectedRouteLocationsLoaded event received',
-          {
-            routeId: route?.nid,
-            stops: route?.stops?.length,
-          }
-        );
-
-        void this.handleStopsPossiblyLoaded(route);
+        void this.handleStopsPossiblyLoaded(this.utmRoutes.selected.getValue());
       }
     );
   }
@@ -250,7 +223,6 @@ export class GeofenceService {
 
   private async getPlugin(timeoutMs = 5000): Promise<BgGeo | undefined> {
     const ready = await this.cordova.ready(timeoutMs);
-    console.log('[GeofenceService] getPlugin cordova.ready', { ready });
     if (!ready) return undefined;
 
     const w = window as any;
@@ -268,20 +240,14 @@ export class GeofenceService {
 
   private async ensureInitialized(): Promise<boolean> {
     if (this.initialized) {
-      console.log('[GeofenceService] ensureInitialized: already initialized');
       return true;
     }
 
     if (this.initializingPromise) {
-      console.log(
-        '[GeofenceService] ensureInitialized: awaiting in-flight initialization'
-      );
       return this.initializingPromise;
     }
 
     this.initializingPromise = (async (): Promise<boolean> => {
-      console.log('[GeofenceService] ensureInitialized: initializing...');
-
       const plugin = await this.getPlugin();
       if (!plugin) {
         console.warn(
@@ -303,23 +269,12 @@ export class GeofenceService {
           this.listenersRegistered = true;
 
           plugin.onProviderChange((event: ProviderChangeEvent) => {
-            console.log('[GeofenceService] onProviderChange event', event);
-
             if (!this.routeNotificationsEnabled) {
               return;
             }
 
             void this.checkHasLocationPermission();
           });
-
-          const providerState = await plugin.getProviderState();
-          console.log(
-            '[GeofenceService] provider state (pre-ready)',
-            providerState
-          );
-
-          const preState = await plugin.getState();
-          console.log('[GeofenceService] plugin state (pre-ready)', preState);
 
           // Listen for geofence events
           plugin.onGeofence(async (event: GeofenceEvent) => {
@@ -348,21 +303,13 @@ export class GeofenceService {
           });
 
           plugin.onLocation(
-            (location) => {
-              console.log('[GeofenceService] onLocation', location);
+            () => {
+              // Intentionally ignored
             },
             (error) => {
               console.warn('[GeofenceService] onLocation error', error);
             }
           );
-
-          plugin.onMotionChange((event) => {
-            console.log('[GeofenceService] onMotionChange', event);
-          });
-
-          plugin.onActivityChange((event) => {
-            console.log('[GeofenceService] onActivityChange', event);
-          });
         }
 
         if (!this.readyInvoked) {
@@ -397,17 +344,9 @@ export class GeofenceService {
         }
 
         // Request permission explicitly; abort initialization if not granted.
-        console.log(
-          '[GeofenceService] requesting location permission (post-ready)...'
-        );
-
         try {
           const permissionResult: AuthorizationStatus =
             await plugin.requestPermission();
-          console.log(
-            '[GeofenceService] requestPermission success (post-ready)',
-            permissionResult
-          );
 
           if (
             permissionResult === plugin.AUTHORIZATION_STATUS_DENIED ||
@@ -429,21 +368,6 @@ export class GeofenceService {
 
         // Engage geofences-only mode (per docs) since we only need geofence events
         await plugin.startGeofences();
-        console.log(
-          '[GeofenceService] BackgroundGeolocation started (geofences-only mode)'
-        );
-
-        const postStartState = await plugin.getState();
-        console.log(
-          '[GeofenceService] plugin state (post-start)',
-          postStartState
-        );
-
-        const providerState = await plugin.getProviderState();
-        console.log(
-          '[GeofenceService] provider state (post-ready)',
-          providerState
-        );
 
         this.initialized = true;
         return true;
@@ -466,11 +390,8 @@ export class GeofenceService {
     }
 
     if (!route) {
-      console.log(
-        '[GeofenceService] handleRouteChanged: route undefined; clearing fences'
-      );
       this.activeRouteId = undefined;
-      await this.clearAllGeofences('route_cleared');
+      await this.clearAllGeofences();
       return;
     }
 
@@ -478,21 +399,9 @@ export class GeofenceService {
 
     // If stops already loaded, create fences immediately
     if (route.stops?.length) {
-      console.log(
-        '[GeofenceService] handleRouteChanged: route has stops already; setting fences now',
-        {
-          routeId: route.nid,
-          stops: route.stops.length,
-        }
-      );
       await this.setGeofencesForRoute(route, 'route_changed_stops_present');
       return;
     }
-
-    console.log(
-      '[GeofenceService] handleRouteChanged: stops not loaded yet; waiting for selectedRouteLocationsLoaded',
-      { routeId: route.nid }
-    );
   }
 
   private async handleStopsPossiblyLoaded(
@@ -503,21 +412,11 @@ export class GeofenceService {
     }
 
     if (!route) {
-      console.log(
-        '[GeofenceService] handleStopsPossiblyLoaded: no selected route'
-      );
       return;
     }
 
     // Ensure the event matches the currently active route
     if (this.activeRouteId && route.nid !== this.activeRouteId) {
-      console.log(
-        '[GeofenceService] handleStopsPossiblyLoaded: ignoring; route mismatch',
-        {
-          activeRouteId: this.activeRouteId,
-          eventRouteId: route.nid,
-        }
-      );
       return;
     }
 
@@ -529,56 +428,27 @@ export class GeofenceService {
       return;
     }
 
-    await this.setGeofencesForRoute(route, 'stops_loaded_event');
+    await this.setGeofencesForRoute(route);
   }
 
-  private async clearAllGeofences(reason: string): Promise<void> {
-    console.log('[GeofenceService] clearAllGeofences', { reason });
-
+  private async clearAllGeofences(): Promise<void> {
     // Do not initialize the plugin just to clear fences
     if (!this.initialized || !this.bgGeo) {
-      console.log(
-        '[GeofenceService] clearAllGeofences: skipping because plugin was never initialized',
-        { reason }
-      );
       this.setActiveGeofences([]);
       return;
     }
 
     try {
-      const fences = await this.bgGeo.getGeofences();
-      console.log('[GeofenceService] existing geofences before clear', {
-        count: fences?.length,
-        fences,
-      });
-
       await this.bgGeo.removeGeofences();
-      console.log('[GeofenceService] removed all geofences');
-
-      const after = await this.bgGeo.getGeofences();
-      console.log('[GeofenceService] existing geofences after clear', {
-        count: after?.length,
-        after,
-      });
-      this.setActiveGeofences(after ?? []);
+      this.setActiveGeofences([]);
     } catch (e) {
       console.error('[GeofenceService] clearAllGeofences failed', e);
       this.setActiveGeofences([]);
     }
   }
 
-  private async setGeofencesForRoute(route: UtmRoute, reason: string) {
-    console.log('[GeofenceService] setGeofencesForRoute called', {
-      reason,
-      routeId: route.nid,
-      stops: route.stops?.length,
-    });
-
+  private async setGeofencesForRoute(route: UtmRoute) {
     if (!this.routeNotificationsEnabled) {
-      console.log(
-        '[GeofenceService] setGeofencesForRoute: route notifications disabled; skipping',
-        { routeId: route.nid }
-      );
       return;
     }
 
@@ -588,7 +458,7 @@ export class GeofenceService {
       return;
     }
 
-    await this.clearAllGeofences('before_setting_route_' + route.nid);
+    await this.clearAllGeofences();
 
     const stops = route.stops ?? [];
 
@@ -638,7 +508,6 @@ export class GeofenceService {
         },
       };
 
-      console.log('[GeofenceService] prepared geofence', geofence);
       geofences.push(geofence);
     }
 
@@ -651,21 +520,8 @@ export class GeofenceService {
     }
 
     try {
-      console.log('[GeofenceService] adding geofences', {
-        count: geofences.length,
-      });
-
       await this.bgGeo.addGeofences(geofences);
-      console.log('[GeofenceService] addGeofences success', {
-        count: geofences.length,
-      });
-
-      const fences = await this.bgGeo.getGeofences();
-      console.log('[GeofenceService] getGeofences after add', {
-        count: fences?.length,
-        fences,
-      });
-      this.setActiveGeofences(fences ?? []);
+      void this.refreshActiveGeofences();
     } catch (e) {
       console.error('[GeofenceService] addGeofences failed', e);
       void this.refreshActiveGeofences();
