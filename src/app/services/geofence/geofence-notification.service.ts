@@ -18,7 +18,7 @@ export class GeofenceNotificationService {
     event: GeofenceEvent,
     opts: {
       routeNotificationsEnabled: boolean;
-      getMetaForIdentifier: (identifier: string | undefined) =>
+      getInfoFromIdentifier: (identifier: string | undefined) =>
         | {
             routeId?: string;
             routeTitle?: string;
@@ -39,7 +39,7 @@ export class GeofenceNotificationService {
       return;
     }
 
-    const meta = opts.getMetaForIdentifier(identifier);
+    const meta = opts.getInfoFromIdentifier(identifier);
 
     const title = meta?.routeTitle || 'Utrecht Time Machine';
     const stopNum = meta?.stopIdx !== undefined ? meta.stopIdx + 1 : undefined;

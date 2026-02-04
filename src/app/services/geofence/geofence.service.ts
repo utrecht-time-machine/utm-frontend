@@ -65,7 +65,7 @@ export class GeofenceService {
     console.log('[GeofenceService] constructor: created');
   }
 
-  private getGeofenceMeta(
+  private getGeofenceInfoFromIdentifier(
     identifier: string | undefined
   ): GeofenceIdentifierInfo | undefined {
     return this.geofenceIdentifier.getInfoFromIdentifier(
@@ -359,7 +359,8 @@ export class GeofenceService {
             try {
               await this.geofenceNotifications.handleGeofenceEvent(event, {
                 routeNotificationsEnabled: this.routeNotificationsEnabled,
-                getMetaForIdentifier: (id) => this.getGeofenceMeta(id),
+                getInfoFromIdentifier: (id) =>
+                  this.getGeofenceInfoFromIdentifier(id),
               });
             } catch (e) {
               console.warn(
