@@ -12,6 +12,13 @@
   color: rgba(0, 0, 0, 0.6);
 }
 
+.route-notification-permissions-debug__text {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: rgba(0, 0, 0, 0.75);
+  margin-bottom: 0.6rem;
+}
+
 .route-notification-permissions-debug__list {
   list-style: none;
   padding: 0;
@@ -40,4 +47,23 @@
 .route-notification-permissions-debug__value.not-ok {
   color: #c0392b;
   font-weight: 600;
+}
+
+.route-notification-permissions-debug__action {
+  margin-top: 0.6rem;
+  border: 0;
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 0.8rem;
+  font-weight: 600;
+  width: 100%;
+}
+
+.route-notification-permissions-debug__hint {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: rgba(0, 0, 0, 0.6);
 }

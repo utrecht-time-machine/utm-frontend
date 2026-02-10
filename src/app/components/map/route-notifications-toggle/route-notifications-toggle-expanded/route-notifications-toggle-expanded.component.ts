@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouteNotificationsSettingsService } from 'src/app/services/route-notifications-settings.service';
 import { RouteNotificationsToggleBase } from '../route-notifications-toggle.base';
-import { RouteNotificationsPermissionsDebugComponent } from './route-notifications-permissions-debug/route-notifications-permissions-debug.component';
+import { RouteNotificationsPermissionsComponent } from './route-notifications-permissions/route-notifications-permissions.component';
 
 @Component({
   selector: 'app-route-notifications-toggle-expanded',
-  imports: [RouteNotificationsPermissionsDebugComponent],
+  imports: [RouteNotificationsPermissionsComponent],
   templateUrl: './route-notifications-toggle-expanded.component.html',
   styleUrls: ['./route-notifications-toggle-expanded.component.scss'],
 })

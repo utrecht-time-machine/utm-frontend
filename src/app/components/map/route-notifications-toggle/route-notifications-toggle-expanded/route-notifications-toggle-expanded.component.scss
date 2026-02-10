@@ -39,6 +39,12 @@
   align-items: flex-start;
   justify-content: space-between;
   flex-direction: column;
+}
+
+.route-notification-card__text-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: 1rem;
 }
 

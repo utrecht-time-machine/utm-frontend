@@ -11,33 +11,33 @@ import type {
 import { CordovaService } from 'src/app/services/cordova.service';
 import { GeofenceService } from 'src/app/services/geofence/geofence.service';
 import { PushNotificationPermissionsService } from 'src/app/services/push-notifications/push-notification-permissions.service';
+import { RouteNotificationsSettingsService } from 'src/app/services/route-notifications-settings.service';
 
 type BgGeo = typeof import('cordova-background-geolocation-lt').default;
 
 type PermissionStatus = {
   cordovaReady: boolean;
   backgroundGeolocationAvailable: boolean;
-  locationPermissionOk: boolean;
   notificationPermissionOk: boolean;
   geofenceEnabled: boolean;
-  providerStatus: AuthorizationStatus | undefined;
-  providerStatusLabel: string;
+  backgroundLocationOk: boolean;
+  backgroundLocationStatus: AuthorizationStatus | 'unavailable';
+  missing: string[];
 };
 
 @Component({
-  selector: 'app-route-notifications-permissions-debug',
+  selector: 'app-route-notifications-permissions',
   imports: [CommonModule],
-  templateUrl: './route-notifications-permissions-debug.component.html',
-  styleUrls: ['./route-notifications-permissions-debug.component.scss'],
+  templateUrl: './route-notifications-permissions.component.html',
+  styleUrls: ['./route-notifications-permissions.component.scss'],
 })
-export class RouteNotificationsPermissionsDebugComponent
+export class RouteNotificationsPermissionsComponent
   implements OnInit, OnDestroy
 {
   private destroy$ = new Subject<void>();
 
   private cordovaReady$ = new BehaviorSubject<boolean>(false);
   private backgroundGeolocationAvailable$ = new BehaviorSubject<boolean>(false);
-  private locationPermissionOk$ = new BehaviorSubject<boolean>(false);
   private notificationPermissionOk$ = new BehaviorSubject<boolean>(false);
   private geofenceEnabled$ = new BehaviorSubject<boolean>(false);
   private providerStatus$ = new BehaviorSubject<
@@ -47,7 +47,6 @@ export class RouteNotificationsPermissionsDebugComponent
   readonly status$ = combineLatest([
     this.cordovaReady$,
     this.backgroundGeolocationAvailable$,
-    this.locationPermissionOk$,
     this.notificationPermissionOk$,
     this.geofenceEnabled$,
     this.providerStatus$,
@@ -56,19 +55,39 @@ export class RouteNotificationsPermissionsDebugComponent
       ([
         cordovaReady,
         backgroundGeolocationAvailable,
-        locationPermissionOk,
         notificationPermissionOk,
         geofenceEnabled,
         providerStatus,
       ]): PermissionStatus => {
+        const bg = (window as any)?.BackgroundGeolocation as BgGeo | undefined;
+        const backgroundLocationOk =
+          Boolean(bg) && providerStatus === bg?.AUTHORIZATION_STATUS_ALWAYS;
+
+        const backgroundLocationStatus: AuthorizationStatus | 'unavailable' =
+          !bg || !providerStatus ? 'unavailable' : providerStatus;
+
+        const missing: string[] = [];
+        if (!cordovaReady) {
+          missing.push('App is nog niet klaar');
+        }
+        if (!backgroundGeolocationAvailable) {
+          missing.push('Geofencing niet beschikbaar op dit apparaat');
+        }
+        if (!backgroundLocationOk) {
+          missing.push('Locatie-toegang in de achtergrond');
+        }
+        if (!notificationPermissionOk) {
+          missing.push('Notificaties');
+        }
+
         return {
           cordovaReady,
           backgroundGeolocationAvailable,
-          locationPermissionOk,
           notificationPermissionOk,
           geofenceEnabled,
-          providerStatus,
-          providerStatusLabel: this.authorizationStatusToLabel(providerStatus),
+          backgroundLocationOk,
+          backgroundLocationStatus,
+          missing,
         };
       },
     ),
@@ -78,6 +97,7 @@ export class RouteNotificationsPermissionsDebugComponent
     private cordova: CordovaService,
     private geofenceService: GeofenceService,
     private pushNotificationPermissions: PushNotificationPermissionsService,
+    private routeNotifications: RouteNotificationsSettingsService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -91,7 +111,6 @@ export class RouteNotificationsPermissionsDebugComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((state) => {
         this.geofenceEnabled$.next(state.enabled);
-        this.locationPermissionOk$.next(state.locationPermissionOk);
       });
 
     interval(1500)
@@ -135,37 +154,32 @@ export class RouteNotificationsPermissionsDebugComponent
   }
 
   protected ok(v: boolean): string {
-    return v ? 'OK' : 'NOT OK';
+    return v ? 'Toestemming gegeven' : 'Geen toestemming';
   }
 
-  private authorizationStatusToLabel(
-    status: AuthorizationStatus | undefined,
+  protected backgroundLocationStatusText(
+    status: AuthorizationStatus | 'unavailable',
   ): string {
-    if (status === undefined || status === null) {
-      return 'unknown';
+    if (status === 'unavailable') {
+      return 'Niet beschikbaar';
     }
 
-    const plugin = (window as any)?.BackgroundGeolocation as BgGeo | undefined;
-    if (!plugin) {
-      return String(status);
+    const bg = (window as any)?.BackgroundGeolocation as BgGeo | undefined;
+    if (!bg) {
+      return 'Onbekend';
     }
 
-    if (status === plugin.AUTHORIZATION_STATUS_DENIED) {
-      return 'DENIED';
+    switch (status) {
+      case bg.AUTHORIZATION_STATUS_ALWAYS:
+        return 'Toestemming gegeven';
+      case bg.AUTHORIZATION_STATUS_WHEN_IN_USE:
+        return 'Alleen tijdens gebruik';
+      case bg.AUTHORIZATION_STATUS_DENIED:
+        return 'Geweigerd';
+      case bg.AUTHORIZATION_STATUS_NOT_DETERMINED:
+        return 'Nog gevraagd';
+      default:
+        return 'Onbekend';
     }
-
-    if (status === plugin.AUTHORIZATION_STATUS_NOT_DETERMINED) {
-      return 'NOT_DETERMINED';
-    }
-
-    if (status === plugin.AUTHORIZATION_STATUS_WHEN_IN_USE) {
-      return 'WHEN_IN_USE';
-    }
-
-    if (status === plugin.AUTHORIZATION_STATUS_ALWAYS) {
-      return 'ALWAYS';
-    }
-
-    return String(status);
   }
 }

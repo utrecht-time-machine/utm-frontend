@@ -11,20 +11,22 @@
   </div>
 
   <div class="route-notification-card__body">
-    <div class="route-notification-card__text">
-      Zet dit aan om een melding te ontvangen als je bij een routepunt in de
-      buurt bent.
+    <div class="route-notification-card__text-row">
+      <div class="route-notification-card__text">
+        Zet dit aan om een melding te ontvangen als je bij een routepunt in de
+        buurt bent.
+      </div>
+
+      <label class="route-notification-card__toggle">
+        <input
+          type="checkbox"
+          [checked]="enabled"
+          (change)="onToggleChange($event)"
+        />
+        <span class="route-notification-card__toggle-ui"></span>
+      </label>
     </div>
 
-    <label class="route-notification-card__toggle">
-      <input
-        type="checkbox"
-        [checked]="enabled"
-        (change)="onToggleChange($event)"
-      />
-      <span class="route-notification-card__toggle-ui"></span>
-    </label>
-
-    <app-route-notifications-permissions-debug></app-route-notifications-permissions-debug>
+    <app-route-notifications-permissions></app-route-notifications-permissions>
   </div>
 </div>
