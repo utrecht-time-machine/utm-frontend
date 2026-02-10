@@ -7,7 +7,11 @@ import { HeaderModule } from './components/header/header.module';
 import { FooterModule } from './components/footer/footer.module';
 import { MapModule } from './components/map/map.module';
 import { MenuButtonModule } from './components/menu-button/menu-button.module';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { RoutesModule } from './components/routes/routes.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -24,6 +28,7 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   declarations: [AppComponent],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
@@ -31,7 +36,6 @@ export function createTranslateLoader(http: HttpClient) {
     FooterModule,
     MapModule,
     MenuButtonModule,
-    HttpClientModule,
     RoutesModule,
     TranslateModule.forRoot({
       defaultLanguage: 'nl',
@@ -49,7 +53,6 @@ export function createTranslateLoader(http: HttpClient) {
     ConnectivityModule,
     BrowserAnimationsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class AppModule {}
