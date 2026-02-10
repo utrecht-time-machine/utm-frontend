@@ -11,10 +11,12 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RoutesModule } from './components/routes/routes.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
-import { NgxMatomoRouterModule } from '@ngx-matomo/router';
 import { ConnectivityModule } from './components/connectivity/connectivity.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  NgxMatomoTrackerModule,
+  NgxMatomoRouterModule,
+} from 'ngx-matomo-client';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
