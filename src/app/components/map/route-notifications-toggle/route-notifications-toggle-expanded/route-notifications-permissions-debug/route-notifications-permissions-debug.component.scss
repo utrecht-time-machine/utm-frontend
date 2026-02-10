@@ -1,0 +1,43 @@
+.route-notification-permissions-debug {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.route-notification-permissions-debug__title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.route-notification-permissions-debug__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.route-notification-permissions-debug__list li {
+  margin-bottom: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.route-notification-permissions-debug__label {
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.route-notification-permissions-debug__value.ok {
+  color: #1e7d3d;
+  font-weight: 600;
+}
+
+.route-notification-permissions-debug__value.not-ok {
+  color: #c0392b;
+  font-weight: 600;
+}
