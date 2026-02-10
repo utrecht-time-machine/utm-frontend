@@ -5,7 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class ToCssUrlPipe implements PipeTransform {
   constructor() {}
   transform(plainUrl: string | undefined) {
-    console.log(plainUrl);
+    // console.log(plainUrl);
     if (plainUrl) {
       return `url('${plainUrl}')`;
     } else {
