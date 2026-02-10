@@ -1,7 +1,9 @@
-<span *ngIf="!license || !license?.url"
-  ><em [innerHtml]="license.title"></em
-></span>
+@if (!license || !license?.url) {
+  <span><em [innerHtml]="license.title"></em></span>
+}
 
-<span *ngIf="license?.url" class="license"
-  ><a [href]="license.url" target="_blank"> <img [src]="license.image" /></a
-></span>
+@if (license?.url) {
+  <span class="license"
+    ><a [href]="license.url" target="_blank"> <img [src]="license.image" /></a
+  ></span>
+}

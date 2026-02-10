@@ -1,3 +1,5 @@
-<div *ngIf="connectivity.isOffline.getValue()">
-  <p>{{ "appIsOffline" | translate }}</p>
-</div>
+@if (connectivity.isOffline.getValue()) {
+  <div>
+    <p>{{ "appIsOffline" | translate }}</p>
+  </div>
+}

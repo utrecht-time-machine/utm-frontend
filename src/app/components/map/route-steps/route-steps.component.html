@@ -1,23 +1,20 @@
 <div class="map-data-path type-{{ routeTypeStr }}">
   <div class="route-top-row">
-    <div
-      id="nav_calc"
-      class="nav-calc"
-      *ngIf="routeDistanceStr || routeDurationStr"
-    >
-      <span
-        >{{ routeDistanceStr }} <em>{{ routeDurationStr }}</em></span
-      >
-    </div>
+    @if (routeDistanceStr || routeDurationStr) {
+      <div id="nav_calc" class="nav-calc">
+        <span
+          >{{ routeDistanceStr }} <em>{{ routeDurationStr }}</em></span
+        >
+      </div>
+    }
 
-    <div
-      class="route-notifications-toggle-container"
-      *ngIf="routeNotifications.deviceAllowsGeofencing$ | async"
-    >
-      <app-route-notifications-toggle
-        [variant]="'compact'"
-      ></app-route-notifications-toggle>
-    </div>
+    @if (routeNotifications.deviceAllowsGeofencing$ | async) {
+      <div class="route-notifications-toggle-container">
+        <app-route-notifications-toggle
+          [variant]="'compact'"
+        ></app-route-notifications-toggle>
+      </div>
+    }
   </div>
 
   <div id="nav_menu" class="nav-menu dragscroll">
@@ -31,21 +28,22 @@
           <div></div>
         </a>
       </li>
-      <li
-        *ngFor="
-          let routeStop of utmRoutes.selected.getValue()?.stops;
-          let stopNum = index
-        "
-      >
-        <a
-          (click)="utmRoutes.selectStopByIdx(stopNum)"
-          [ngClass]="{ on: utmRoutes.selectedStopIdx.getValue() === stopNum }"
-        >
-          <div>
-            {{ stopNum + 1 }}
-          </div>
-        </a>
-      </li>
+      @for (
+        routeStop of utmRoutes.selected.getValue()?.stops;
+        track routeStop;
+        let stopNum = $index
+      ) {
+        <li>
+          <a
+            (click)="utmRoutes.selectStopByIdx(stopNum)"
+            [ngClass]="{ on: utmRoutes.selectedStopIdx.getValue() === stopNum }"
+          >
+            <div>
+              {{ stopNum + 1 }}
+            </div>
+          </a>
+        </li>
+      }
     </ul>
   </div>
 </div>

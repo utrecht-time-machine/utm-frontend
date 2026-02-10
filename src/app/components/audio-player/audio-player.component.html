@@ -1,41 +1,44 @@
-<div class="audio-container" *ngIf="audioUrl">
-  <div class="audioplayer" [ngClass]="{ 'audioplayer-playing': isPlaying }">
-    <div class="audioplayer-playpause" title="" (click)="togglePlayPause()">
-      <a href="javascript:void(0);"></a>
-    </div>
-    <div class="audioplayer-time audioplayer-time-current">
-      {{ formattedPlayTime }}
-    </div>
-    <div
-      class="audioplayer-bar"
-      (touchstart)="onAudioBarStartScrubbing($event)"
-      (touchmove)="onAudioBarScrubbed($event)"
-      (touchend)="onAudioBarStopScrubbing($event)"
-      (touchcancel)="onAudioBarStopScrubbing($event)"
-      (mousedown)="onAudioBarStartScrubbing($event)"
-      (mousemove)="onAudioBarScrubbed($event)"
-      (mouseup)="onAudioBarStopScrubbing($event)"
-      (mouseleave)="onAudioBarStopScrubbing($event)"
-      (click)="onAudioBarClicked($event)"
-    >
-      <!--      <div class="audioplayer-bar-loaded" [ngStyle]="{ width: '0%' }"></div>-->
+@if (audioUrl) {
+  <div class="audio-container">
+    <div class="audioplayer" [ngClass]="{ 'audioplayer-playing': isPlaying }">
+      <div class="audioplayer-playpause" title="" (click)="togglePlayPause()">
+        <a href="javascript:void(0);"></a>
+      </div>
+      <div class="audioplayer-time audioplayer-time-current">
+        {{ formattedPlayTime }}
+      </div>
       <div
-        class="audioplayer-bar-played"
-        [ngStyle]="{ width: percentageComplete + '%' }"
-      ></div>
+        class="audioplayer-bar"
+        (touchstart)="onAudioBarStartScrubbing($event)"
+        (touchmove)="onAudioBarScrubbed($event)"
+        (touchend)="onAudioBarStopScrubbing($event)"
+        (touchcancel)="onAudioBarStopScrubbing($event)"
+        (mousedown)="onAudioBarStartScrubbing($event)"
+        (mousemove)="onAudioBarScrubbed($event)"
+        (mouseup)="onAudioBarStopScrubbing($event)"
+        (mouseleave)="onAudioBarStopScrubbing($event)"
+        (click)="onAudioBarClicked($event)"
+      >
+        <!--      <div class="audioplayer-bar-loaded" [ngStyle]="{ width: '0%' }"></div>-->
+        <div
+          class="audioplayer-bar-played"
+          [ngStyle]="{ width: percentageComplete + '%' }"
+        ></div>
+      </div>
+      <div class="audioplayer-time audioplayer-time-duration">
+        {{ formattedDuration }}
+      </div>
+      <!--    <div class="audioplayer-volume">-->
+      <!--      <div class="audioplayer-volume-button" title="">-->
+      <!--        <a href="javascript:void(0);"></a>-->
+      <!--      </div>-->
+      <!--      <div class="audioplayer-volume-adjust">-->
+      <!--        <div><div style="width: 100%"></div></div>-->
+      <!--      </div>-->
+      <!--    </div>-->
     </div>
-    <div class="audioplayer-time audioplayer-time-duration">
-      {{ formattedDuration }}
-    </div>
-    <!--    <div class="audioplayer-volume">-->
-    <!--      <div class="audioplayer-volume-button" title="">-->
-    <!--        <a href="javascript:void(0);"></a>-->
-    <!--      </div>-->
-    <!--      <div class="audioplayer-volume-adjust">-->
-    <!--        <div><div style="width: 100%"></div></div>-->
-    <!--      </div>-->
-    <!--    </div>-->
+    @if (transcript) {
+      <app-audio-transcript [transcript]="transcript" />
+    }
   </div>
-
-  <app-audio-transcript [transcript]="transcript" *ngIf="transcript" />
-</div>
+}

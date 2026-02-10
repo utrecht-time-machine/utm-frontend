@@ -1,10 +1,10 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, type OnInit } from '@angular/core';
 import { FilterService } from 'src/app/services/filter.service';
 
 @Component({
   selector: 'app-filters-header',
-  imports: [NgIf, AsyncPipe],
+  imports: [AsyncPipe],
   templateUrl: './filters-header.component.html',
   styleUrls: ['./filters-header.component.scss'],
 })

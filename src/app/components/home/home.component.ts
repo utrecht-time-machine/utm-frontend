@@ -3,13 +3,13 @@ import { StaticPage } from '../../models/static-page';
 import { ApiService } from '../../services/api.service';
 import { SpinnerService } from '../../services/spinner.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+
 import { ToCssUrlPipe } from '../../pipes/toCssUrl.pipe';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, ToCssUrlPipe, RouterModule, TranslateModule],
+  imports: [ToCssUrlPipe, RouterModule, TranslateModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })

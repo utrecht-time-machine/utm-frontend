@@ -1,30 +1,29 @@
-<div
-  *ngIf="transcript"
-  style="width: 100%"
-  class="audio-transcript-outer-container"
->
-  <button *ngIf="!isVisible" class="toggle-button" (click)="toggleTranscript()">
-    <mat-icon>text_snippet</mat-icon>
-    {{ "show_transcript" | translate }}
-  </button>
-
-  <div *ngIf="isVisible" class="audio-transcript-container">
-    <button class="close-button" (click)="toggleTranscript()">
-      <mat-icon>close</mat-icon>
-    </button>
-    <p class="transcript-header">
-      <mat-icon>volume_up</mat-icon>
-      <strong>{{ "transcript" | translate }}</strong>
-    </p>
-    <div class="transcript-content-wrapper">
-      <div class="transcript-content" #transcriptContent>
-        <p
-          *ngFor="let line of getTranscriptLines()"
-          [innerHtml]="line"
-          class="audio-transcript-line"
-        ></p>
+@if (transcript) {
+  <div style="width: 100%" class="audio-transcript-outer-container">
+    @if (!isVisible) {
+      <button class="toggle-button" (click)="toggleTranscript()">
+        <mat-icon>text_snippet</mat-icon>
+        {{ "show_transcript" | translate }}
+      </button>
+    }
+    @if (isVisible) {
+      <div class="audio-transcript-container">
+        <button class="close-button" (click)="toggleTranscript()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <p class="transcript-header">
+          <mat-icon>volume_up</mat-icon>
+          <strong>{{ "transcript" | translate }}</strong>
+        </p>
+        <div class="transcript-content-wrapper">
+          <div class="transcript-content" #transcriptContent>
+            @for (line of getTranscriptLines(); track line) {
+              <p [innerHtml]="line" class="audio-transcript-line"></p>
+            }
+          </div>
+          <div class="fade-overlay"></div>
+        </div>
       </div>
-      <div class="fade-overlay"></div>
-    </div>
+    }
   </div>
-</div>
+}

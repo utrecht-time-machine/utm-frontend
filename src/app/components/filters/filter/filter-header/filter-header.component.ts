@@ -1,10 +1,9 @@
-import { NgIf } from '@angular/common';
 import { Component, Input, type OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-filter-header',
-  imports: [NgIf],
+  imports: [],
   templateUrl: './filter-header.component.html',
   styleUrls: ['./filter-header.component.scss'],
   animations: [

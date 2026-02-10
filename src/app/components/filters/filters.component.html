@@ -1,23 +1,24 @@
-<div
-  class="filters-container"
-  [ngStyle]="getStyles$ | async"
-  (click)="onClick()"
-  *ngIf="
-    routing.getSelectedView() === SelectedView.Locations ||
-    routing.getSelectedView() === SelectedView.Routes
-  "
->
-  <app-active-filters-badge *ngIf="!(filters.isShowing | async)" />
-
-  <app-filters-header />
-
+@if (
+  routing.getSelectedView() === SelectedView.Locations ||
+  routing.getSelectedView() === SelectedView.Routes
+) {
   <div
-    class="filters-content"
-    [@expandCollapse]="(filters.isShowing | async)?.toString()"
+    class="filters-container"
+    [ngStyle]="getStyles$ | async"
+    (click)="onClick()"
   >
-    <app-time-filter />
-    <app-organisation-filter />
-    <app-theme-filter />
-    <app-clear-filters-button />
+    @if (!(filters.isShowing | async)) {
+      <app-active-filters-badge />
+    }
+    <app-filters-header />
+    <div
+      class="filters-content"
+      [@expandCollapse]="(filters.isShowing | async)?.toString()"
+    >
+      <app-time-filter />
+      <app-organisation-filter />
+      <app-theme-filter />
+      <app-clear-filters-button />
+    </div>
   </div>
-</div>
+}

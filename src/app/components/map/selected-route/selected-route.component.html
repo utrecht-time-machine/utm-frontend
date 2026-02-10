@@ -1,122 +1,131 @@
 <div>
-  <div class="dock-inner route-container" *ngIf="!utmRoutes.selectedStop">
-    <div class="pad">
-      <div class="audio-player-container" *ngIf="selectedRoute?.audio">
-        <app-audio-player
-          [audioUrl]="selectedRoute?.audio"
-          [transcript]="selectedRoute?.audio_transcript"
-          class="route-audio-player"
-        />
-      </div>
-
-      <app-edit-button
-        [nid]="utmRoutes.selected.getValue()?.nid"
-      ></app-edit-button>
-
-      <h2>
-        {{
-          utmTranslate.getAsEnglishIfApplicable(
-            selectedRoute,
-            "title",
-            "title_english"
-          )
-        }}
-      </h2>
-      <div class="route-container-inner">
-        <div
-          class="route-container-teaser"
-          [innerHtml]="
+  @if (!utmRoutes.selectedStop) {
+    <div class="dock-inner route-container">
+      <div class="pad">
+        @if (selectedRoute?.audio) {
+          <div class="audio-player-container">
+            <app-audio-player
+              [audioUrl]="selectedRoute?.audio"
+              [transcript]="selectedRoute?.audio_transcript"
+              class="route-audio-player"
+            />
+          </div>
+        }
+        <app-edit-button
+          [nid]="utmRoutes.selected.getValue()?.nid"
+        ></app-edit-button>
+        <h2>
+          {{
             utmTranslate.getAsEnglishIfApplicable(
               selectedRoute,
-              'teaser',
-              'teaser_english'
+              "title",
+              "title_english"
             )
-          "
-        ></div>
-        <div
-          class="route-container-text"
-          [innerHtml]="
+          }}
+        </h2>
+        <div class="route-container-inner">
+          <div
+            class="route-container-teaser"
+            [innerHtml]="
+              utmTranslate.getAsEnglishIfApplicable(
+                selectedRoute,
+                'teaser',
+                'teaser_english'
+              )
+            "
+          ></div>
+          @if (
             utmTranslate.getAsEnglishIfApplicable(
               selectedRoute,
-              'text',
-              'text_english'
+              "text",
+              "text_english"
             )
-          "
-          *ngIf="
-            utmTranslate.getAsEnglishIfApplicable(
-              selectedRoute,
-              'text',
-              'text_english'
-            )
-          "
-        ></div>
-
-        <app-route-notifications-toggle
-          *ngIf="routeNotifications.deviceAllowsGeofencing$ | async"
-        ></app-route-notifications-toggle>
-
-        <a
-          class="route-button route-start"
-          id="route_start"
-          (click)="utmRoutes.selectStopByIdx(0)"
-          >{{ "startRoute" | translate }}</a
-        >
-      </div>
-
-      <div class="photo-hold">
-        <div class="photo">
-          <div>
-            <!-- TODO: Fix clicking does not trigger viewer -->
-            <app-image-viewer
-              [imageUrl]="selectedRoute?.photo"
-              [imageSource]="selectedRoute?.source_name"
-              [imageLicense]="selectedRoute?.license"
-              [imageAlt]="
+          ) {
+            <div
+              class="route-container-text"
+              [innerHtml]="
                 utmTranslate.getAsEnglishIfApplicable(
                   selectedRoute,
-                  'title',
-                  'title_english'
+                  'text',
+                  'text_english'
                 )
               "
-            ></app-image-viewer>
-          </div>
+            ></div>
+          }
+          @if (routeNotifications.deviceAllowsGeofencing$ | async) {
+            <app-route-notifications-toggle></app-route-notifications-toggle>
+          }
+          <a
+            class="route-button route-start"
+            id="route_start"
+            (click)="utmRoutes.selectStopByIdx(0)"
+            >{{ "startRoute" | translate }}</a
+          >
         </div>
-
-        <div class="media-source" *ngIf="selectedRoute">
-          <div class="views-element-container">
+        <div class="photo-hold">
+          <div class="photo">
             <div>
-              <span *ngIf="selectedRoute?.caption">{{
-                selectedRoute.caption
-              }}</span>
-              <span
-                *ngIf="selectedRoute?.source_link && selectedRoute?.source_name"
-                >{{ "source" | translate }}:
-                <a
-                  [href]="selectedRoute.source_link"
-                  target="_blank"
-                  [innerHtml]="selectedRoute.source_name"
-                ></a
-              ></span>
-              <span
-                *ngIf="
-                  !selectedRoute?.source_link && selectedRoute?.source_name
+              <!-- TODO: Fix clicking does not trigger viewer -->
+              <app-image-viewer
+                [imageUrl]="selectedRoute?.photo"
+                [imageSource]="selectedRoute?.source_name"
+                [imageLicense]="selectedRoute?.license"
+                [imageAlt]="
+                  utmTranslate.getAsEnglishIfApplicable(
+                    selectedRoute,
+                    'title',
+                    'title_english'
+                  )
                 "
-                >{{ "source" | translate }}:
-                <span
-                  [innerHtml]="selectedRoute.source_name"
-                  style="display: inline; margin-top: 0"
-                ></span
-              ></span>
-              <app-license [licenseLabel]="selectedRoute.license"></app-license>
+              ></app-image-viewer>
             </div>
           </div>
+          @if (selectedRoute) {
+            <div class="media-source">
+              <div class="views-element-container">
+                <div>
+                  @if (selectedRoute?.caption) {
+                    <span>{{ selectedRoute.caption }}</span>
+                  }
+                  @if (
+                    selectedRoute?.source_link && selectedRoute?.source_name
+                  ) {
+                    <span
+                      >{{ "source" | translate }}:
+                      <a
+                        [href]="selectedRoute.source_link"
+                        target="_blank"
+                        [innerHtml]="selectedRoute.source_name"
+                      ></a
+                    ></span>
+                  }
+                  @if (
+                    !selectedRoute?.source_link && selectedRoute?.source_name
+                  ) {
+                    <span
+                      >{{ "source" | translate }}:
+                      <span
+                        [innerHtml]="selectedRoute.source_name"
+                        style="display: inline; margin-top: 0"
+                      ></span
+                    ></span>
+                  }
+                  <app-license
+                    [licenseLabel]="selectedRoute.license"
+                  ></app-license>
+                </div>
+              </div>
+            </div>
+          }
         </div>
       </div>
     </div>
-  </div>
-  <div class="dock-inner story-container" *ngIf="utmRoutes.selectedStop">
-    <div class="pad">
-      <app-selected-stop></app-selected-stop>
+  }
+  @if (utmRoutes.selectedStop) {
+    <div class="dock-inner story-container">
+      <div class="pad">
+        <app-selected-stop></app-selected-stop>
+      </div>
     </div>
-  </div>
+  }
 </div>

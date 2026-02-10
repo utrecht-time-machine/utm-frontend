@@ -8,7 +8,9 @@
           <div class="screen-mode" data-mobile="1">
             <h1 [innerHtml]="locationDetails?.title"></h1>
             <!-- <h3>{{ locationDetails?.address }}</h3> -->
-            <h3 *ngIf="locationDetails?.head">{{ locationDetails?.head }}</h3>
+            @if (locationDetails?.head) {
+              <h3>{{ locationDetails?.head }}</h3>
+            }
           </div>
           <div class="photo-hold">
             <div class="photo">
@@ -24,33 +26,33 @@
             <div class="media-source">
               <div class="views-element-container">
                 <div>
-                  <span
-                    *ngIf="locationDetails?.caption"
-                    [innerHtml]="locationDetails?.caption"
-                  ></span>
-                  <span
-                    *ngIf="
-                      locationDetails?.source_link &&
-                      locationDetails?.source_name
-                    "
-                    >{{ "source" | translate }}:
-                    <a
-                      [href]="locationDetails?.source_link"
-                      target="_blank"
-                      [innerHtml]="locationDetails?.source_name"
-                    ></a
-                  ></span>
-                  <span
-                    *ngIf="
-                      !locationDetails?.source_link &&
-                      locationDetails?.source_name
-                    "
-                    >{{ "source" | translate }}:
+                  @if (locationDetails?.caption) {
+                    <span [innerHtml]="locationDetails?.caption"></span>
+                  }
+                  @if (
+                    locationDetails?.source_link && locationDetails?.source_name
+                  ) {
                     <span
-                      [innerHtml]="locationDetails?.source_name"
-                      style="display: inline; margin-top: 0"
-                    ></span
-                  ></span>
+                      >{{ "source" | translate }}:
+                      <a
+                        [href]="locationDetails?.source_link"
+                        target="_blank"
+                        [innerHtml]="locationDetails?.source_name"
+                      ></a
+                    ></span>
+                  }
+                  @if (
+                    !locationDetails?.source_link &&
+                    locationDetails?.source_name
+                  ) {
+                    <span
+                      >{{ "source" | translate }}:
+                      <span
+                        [innerHtml]="locationDetails?.source_name"
+                        style="display: inline; margin-top: 0"
+                      ></span
+                    ></span>
+                  }
                   <app-license
                     [licenseLabel]="locationDetails?.license"
                   ></app-license>
@@ -63,95 +65,104 @@
           <div class="screen-mode" data-mobile="0">
             <h1 [innerHtml]="locationDetails?.title"></h1>
 
-            <h3 *ngIf="locationDetails?.head">{{ locationDetails?.head }}</h3>
+            @if (locationDetails?.head) {
+              <h3>{{ locationDetails?.head }}</h3>
+            }
             <!-- <h3
               *ngIf="
                 locationDetails?.city &&
                 locationDetails?.city !== locationDetails?.title
               "
-            >
-              {{ locationDetails?.address }}, {{ locationDetails?.city }}
-            </h3>
-            <h3
+                >
+                {{ locationDetails?.address }}, {{ locationDetails?.city }}
+              </h3>
+              <h3
               *ngIf="
                 (!locationDetails?.city ||
                   locationDetails?.city === locationDetails?.title) &&
                 locationDetails?.address !== locationDetails?.title
               "
-            >
-              {{ locationDetails?.address }}
-            </h3> -->
+                >
+                {{ locationDetails?.address }}
+              </h3> -->
           </div>
           <p [innerHtml]="locationDetails?.teaser"></p>
-          <div class="fold" *ngIf="locationDetails?.text">
-            <a
-              [ngClass]="{ on: readMoreIsShown }"
-              (click)="readMoreIsShown = !readMoreIsShown"
-              >{{ "readMore" | translate }}</a
-            >
-            <div
-              class="fold-toggle"
-              [ngClass]="{ 'fold-toggle-hidden': !readMoreIsShown }"
-              [innerHtml]="locationDetails?.text"
-            ></div>
-          </div>
+          @if (locationDetails?.text) {
+            <div class="fold">
+              <a
+                [ngClass]="{ on: readMoreIsShown }"
+                (click)="readMoreIsShown = !readMoreIsShown"
+                >{{ "readMore" | translate }}</a
+              >
+              <div
+                class="fold-toggle"
+                [ngClass]="{ 'fold-toggle-hidden': !readMoreIsShown }"
+                [innerHtml]="locationDetails?.text"
+              ></div>
+            </div>
+          }
           <app-organisations
             [organisations]="locationDetails?.organisations"
           ></app-organisations>
         </div>
       </div>
 
-      <div class="views-element-container" *ngIf="locationHasStories()">
-        <div class="story-head">
-          <h2>{{ "storiesForLocation" | translate }}</h2>
-        </div>
-
-        <div class="story-hold">
-          <div class="story" *ngFor="let story of shownStories">
-            <a
-              (click)="
-                router.navigateByUrl(
-                  locationDetails?.url + '?story=' + story.story_url_alias
-                )
-              "
-            >
-              <div
-                class="head has-video-{{
-                  storyHasVideoIcon(story) ? '1' : '0'
-                }}"
-              >
-                <div>
-                  <img
-                    loading="lazy"
-                    [src]="
-                      imageService.getImageUrl(
-                        story?.photo ?? '',
-                        story?.source_name,
-                        story?.license
-                      )
-                    "
-                  />
-                </div>
-              </div>
-              <div class="core">
-                <span
-                  class="name"
-                  [innerHtml]="
-                    utmTranslate.getAsEnglishIfApplicable(
-                      story,
-                      'title',
-                      'title_english'
+      @if (locationHasStories()) {
+        <div class="views-element-container">
+          <div class="story-head">
+            <h2>{{ "storiesForLocation" | translate }}</h2>
+          </div>
+          <div class="story-hold">
+            @for (story of shownStories; track story) {
+              <div class="story">
+                <a
+                  (click)="
+                    router.navigateByUrl(
+                      locationDetails?.url + '?story=' + story.story_url_alias
                     )
                   "
-                ></span>
+                >
+                  <div
+                    class="head has-video-{{
+                      storyHasVideoIcon(story) ? '1' : '0'
+                    }}"
+                  >
+                    <div>
+                      <img
+                        loading="lazy"
+                        [src]="
+                          imageService.getImageUrl(
+                            story?.photo ?? '',
+                            story?.source_name,
+                            story?.license
+                          )
+                        "
+                      />
+                    </div>
+                  </div>
+                  <div class="core">
+                    <span
+                      class="name"
+                      [innerHtml]="
+                        utmTranslate.getAsEnglishIfApplicable(
+                          story,
+                          'title',
+                          'title_english'
+                        )
+                      "
+                    ></span>
+                  </div>
+                </a>
               </div>
-            </a>
+            }
+            @if (shownStories.length === 0) {
+              <p>
+                <em>{{ "noStoriesFoundWithTheseFilters" | translate }}</em>
+              </p>
+            }
           </div>
-          <p *ngIf="shownStories.length === 0">
-            <em>{{ "noStoriesFoundWithTheseFilters" | translate }}</em>
-          </p>
         </div>
-      </div>
+      }
 
       <div class="feedback-container">
         <app-feedback

@@ -1,10 +1,12 @@
-<div class="dev-edit-btn-container" *ngIf="shouldBeShown() && nid">
-  <a
-    class="dev-edit-btn"
-    [href]="
-      environment.backendEditUrl + this.nid + environment.backendEditPostFix
-    "
-    target="_blank"
-    >Edit</a
-  >
-</div>
+@if (shouldBeShown() && nid) {
+  <div class="dev-edit-btn-container">
+    <a
+      class="dev-edit-btn"
+      [href]="
+        environment.backendEditUrl + this.nid + environment.backendEditPostFix
+      "
+      target="_blank"
+      >Edit</a
+    >
+  </div>
+}

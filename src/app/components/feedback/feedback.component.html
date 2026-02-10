@@ -1,83 +1,86 @@
-<div
-  class="feed"
-  [ngClass]="{ done: ratingHasBeenGiven() }"
-  *ngIf="feedbackItemId"
->
-  <!-- Title -->
-  <div>
-    <h3 *ngIf="!ratingHasBeenGiven() && feedbackQuestionText">
-      {{ feedbackQuestionText | translate }}
-    </h3>
-    <h3 *ngIf="ratingHasBeenGiven() && feedbackGivenText">
-      {{ feedbackGivenText | translate }}
-    </h3>
-  </div>
+@if (feedbackItemId) {
+  <div class="feed" [ngClass]="{ done: ratingHasBeenGiven() }">
+    <!-- Title -->
+    <div>
+      @if (!ratingHasBeenGiven() && feedbackQuestionText) {
+        <h3>
+          {{ feedbackQuestionText | translate }}
+        </h3>
+      }
+      @if (ratingHasBeenGiven() && feedbackGivenText) {
+        <h3>
+          {{ feedbackGivenText | translate }}
+        </h3>
+      }
+    </div>
+    <!-- Rating icons -->
+    <div style="display: none">
+      <!--    <a-->
+      <!--      data-id="5"-->
+      <!--      [ngClass]="{ on: getRating() === FeedbackRating.VeryGood }"-->
+      <!--      (click)="-->
+      <!--        feedbackService.rateItem(feedbackItemId, FeedbackRating.VeryGood)-->
+      <!--      "-->
+      <!--      ><span></span-->
+      <!--    ></a>-->
+      <a
+        data-id="2"
+        [ngClass]="{ on: getRating() === FeedbackRating.Poor }"
+        (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Poor)"
+        ><span></span
+      ></a>
+      <a
+        data-id="3"
+        [ngClass]="{ on: getRating() === FeedbackRating.Fair }"
+        (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Fair)"
+        ><span></span
+      ></a>
+      <a
+        data-id="4"
+        [ngClass]="{ on: getRating() === FeedbackRating.Good }"
+        (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Good)"
+        ><span></span
+      ></a>
+      <!--    <a-->
+      <!--      data-id="1"-->
+      <!--      [ngClass]="{ on: getRating() === FeedbackRating.VeryPoor }"-->
+      <!--      (click)="-->
+      <!--        feedbackService.rateItem(feedbackItemId, FeedbackRating.VeryPoor)-->
+      <!--      "-->
+      <!--      ><span></span-->
+      <!--    ></a>-->
+    </div>
 
-  <!-- Rating icons -->
-  <div style="display: none">
-    <!--    <a-->
-    <!--      data-id="5"-->
-    <!--      [ngClass]="{ on: getRating() === FeedbackRating.VeryGood }"-->
-    <!--      (click)="-->
-    <!--        feedbackService.rateItem(feedbackItemId, FeedbackRating.VeryGood)-->
-    <!--      "-->
-    <!--      ><span></span-->
-    <!--    ></a>-->
-    <a
-      data-id="2"
-      [ngClass]="{ on: getRating() === FeedbackRating.Poor }"
-      (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Poor)"
-      ><span></span
-    ></a>
-    <a
-      data-id="3"
-      [ngClass]="{ on: getRating() === FeedbackRating.Fair }"
-      (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Fair)"
-      ><span></span
-    ></a>
-    <a
-      data-id="4"
-      [ngClass]="{ on: getRating() === FeedbackRating.Good }"
-      (click)="feedbackService.rateItem(feedbackItemId, FeedbackRating.Good)"
-      ><span></span
-    ></a>
-
-    <!--    <a-->
-    <!--      data-id="1"-->
-    <!--      [ngClass]="{ on: getRating() === FeedbackRating.VeryPoor }"-->
-    <!--      (click)="-->
-    <!--        feedbackService.rateItem(feedbackItemId, FeedbackRating.VeryPoor)-->
-    <!--      "-->
-    <!--      ><span></span-->
-    <!--    ></a>-->
-  </div>
-
-  <!-- Comment input -->
-  <div class="comment-input-group">
-    <textarea
-      [(ngModel)]="commentText"
-      [placeholder]="'commentPlaceholder' | translate"
-      rows="3"
-      [disabled]="isSubmittingComment"
-    ></textarea>
-    <div class="button-status-group">
-      <button
-        class="comment-button"
-        (click)="submitComment()"
-        [disabled]="isSubmittingComment || !commentText.trim()"
-      >
-        <span class="spinner" *ngIf="isSubmittingComment"></span>
-        <span>{{ "sendComment" | translate }}</span>
-      </button>
-      <div
-        class="status-message"
-        *ngIf="commentSubmitStatus !== 'none'"
-        [@fadeInOut]
-        [class.success]="commentSubmitStatus === 'success'"
-        [class.error]="commentSubmitStatus === 'error'"
-      >
-        {{ commentSubmitMessage }}
+    <!-- Comment input -->
+    <div class="comment-input-group">
+      <textarea
+        [(ngModel)]="commentText"
+        [placeholder]="'commentPlaceholder' | translate"
+        rows="3"
+        [disabled]="isSubmittingComment"
+      ></textarea>
+      <div class="button-status-group">
+        <button
+          class="comment-button"
+          (click)="submitComment()"
+          [disabled]="isSubmittingComment || !commentText.trim()"
+        >
+          @if (isSubmittingComment) {
+            <span class="spinner"></span>
+          }
+          <span>{{ "sendComment" | translate }}</span>
+        </button>
+        @if (commentSubmitStatus !== "none") {
+          <div
+            class="status-message"
+            [@fadeInOut]
+            [class.success]="commentSubmitStatus === 'success'"
+            [class.error]="commentSubmitStatus === 'error'"
+          >
+            {{ commentSubmitMessage }}
+          </div>
+        }
       </div>
     </div>
   </div>
-</div>
+}

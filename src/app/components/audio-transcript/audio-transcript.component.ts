@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import {
   Component,
   Input,
@@ -12,7 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-audio-transcript',
-  imports: [NgIf, NgFor, TranslateModule, MatIconModule],
+  imports: [TranslateModule, MatIconModule],
   templateUrl: './audio-transcript.component.html',
   styleUrls: ['./audio-transcript.component.css'],
 })

@@ -1,3 +1,5 @@
-<div class="badge-container" *ngIf="activeFiltersCount() > 0" [@fadeSlide]>
-  <div class="badge">{{ badgeText() }}</div>
-</div>
+@if (activeFiltersCount() > 0) {
+  <div class="badge-container" [@fadeSlide]>
+    <div class="badge">{{ badgeText() }}</div>
+  </div>
+}

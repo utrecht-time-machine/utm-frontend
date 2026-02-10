@@ -1,10 +1,14 @@
-<div class="org-logo" *ngIf="hasOrganisations()">
-  <div class="org-logo-head">{{ "organisationsHeader" | translate }}</div>
-  <div class="org-logo-hold">
-    <div class="views-element-container" *ngFor="let org of organisations">
-      <a [href]="org.link" [title]="org.title" target="_blank">
-        <img [src]="org.logo" [alt]="org.title" />
-      </a>
+@if (hasOrganisations()) {
+  <div class="org-logo">
+    <div class="org-logo-head">{{ "organisationsHeader" | translate }}</div>
+    <div class="org-logo-hold">
+      @for (org of organisations; track org) {
+        <div class="views-element-container">
+          <a [href]="org.link" [title]="org.title" target="_blank">
+            <img [src]="org.logo" [alt]="org.title" />
+          </a>
+        </div>
+      }
     </div>
   </div>
-</div>
+}

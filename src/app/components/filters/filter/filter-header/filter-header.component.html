@@ -1,5 +1,9 @@
 <div class="header-left">
-  <img *ngIf="icon" [src]="icon" [alt]="title" class="filter-icon" />
+  @if (icon) {
+    <img [src]="icon" [alt]="title" class="filter-icon" />
+  }
   <span class="header-title">{{ title }}</span>
-  <div class="badge" [@fadeInOut] *ngIf="isActive">Actief</div>
+  @if (isActive) {
+    <div class="badge" [@fadeInOut]>Actief</div>
+  }
 </div>

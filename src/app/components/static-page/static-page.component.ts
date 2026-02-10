@@ -5,11 +5,11 @@ import { ApiService } from '../../services/api.service';
 import { SpinnerService } from '../../services/spinner.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ToCssUrlPipe } from '../../pipes/toCssUrl.pipe';
-import { CommonModule } from '@angular/common';
+
 import { DEFAULT_HOME_URL } from 'src/app/app-routing.module';
 
 @Component({
-  imports: [CommonModule, ToCssUrlPipe],
+  imports: [ToCssUrlPipe],
   selector: 'app-static-page',
   templateUrl: './static-page.component.html',
   styleUrls: ['./static-page.component.scss'],

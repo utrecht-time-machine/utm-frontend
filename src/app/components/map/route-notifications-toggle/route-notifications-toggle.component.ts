@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouteNotificationsToggleCompactComponent } from './route-notifications-toggle-compact/route-notifications-toggle-compact.component';
 import { RouteNotificationsToggleExpandedComponent } from './route-notifications-toggle-expanded/route-notifications-toggle-expanded.component';
@@ -6,7 +5,6 @@ import { RouteNotificationsToggleExpandedComponent } from './route-notifications
 @Component({
   selector: 'app-route-notifications-toggle',
   imports: [
-    NgIf,
     RouteNotificationsToggleExpandedComponent,
     RouteNotificationsToggleCompactComponent,
   ],

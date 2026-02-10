@@ -12,17 +12,19 @@
       <hr />
 
       <div class="logo-bar">
-        <div
-          class="logo"
-          *ngFor="let organisation of organisationService.all | async"
-        >
-          <a
-            href="{{ organisation.link }}"
-            target="_blank"
-            title="{{ organisation.title }}"
-            ><img src="{{ organisation.logo }}"
-          /></a>
-        </div>
+        @for (
+          organisation of organisationService.all | async;
+          track organisation
+        ) {
+          <div class="logo">
+            <a
+              href="{{ organisation.link }}"
+              target="_blank"
+              title="{{ organisation.title }}"
+              ><img src="{{ organisation.logo }}"
+            /></a>
+          </div>
+        }
       </div>
     </div>
   </div>

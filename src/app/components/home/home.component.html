@@ -15,16 +15,18 @@
       </div>
     </div>
     <div class="section section-blocks">
-      <div class="home-block-grid" *ngFor="let block of blocks">
-        <div class="home-block-grid-content">
-          <h2 [innerHtml]="block?.title"></h2>
-          <div [innerHtml]="block?.body"></div>
+      @for (block of blocks; track block) {
+        <div class="home-block-grid">
+          <div class="home-block-grid-content">
+            <h2 [innerHtml]="block?.title"></h2>
+            <div [innerHtml]="block?.body"></div>
+          </div>
+          <div
+            class="home-block-grid-image"
+            [style.background-image]="block?.photo | toCssUrl"
+          ></div>
         </div>
-        <div
-          class="home-block-grid-image"
-          [style.background-image]="block?.photo | toCssUrl"
-        ></div>
-      </div>
+      }
     </div>
   </div>
 </div>

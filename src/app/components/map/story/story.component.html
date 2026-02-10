@@ -12,27 +12,32 @@
       ) | unescape
     }}
   </h2>
-  <p class="story-location" *ngIf="story.shownStory.getValue()?.location_title">
-    {{ "location" | translate }}:
-    <a
-      (click)="onLocationLinkClicked()"
-      [innerHtml]="story.shownStory.getValue()?.location_title"
-    ></a>
-  </p>
+  @if (story.shownStory.getValue()?.location_title) {
+    <p class="story-location">
+      {{ "location" | translate }}:
+      <a
+        (click)="onLocationLinkClicked()"
+        [innerHtml]="story.shownStory.getValue()?.location_title"
+      ></a>
+    </p>
+  }
 
-  <app-audio-player
-    [audioUrl]="story.shownStory.getValue()?.audio"
-    *ngIf="story.shownStory.getValue()?.audio"
-    class="story-audio-player"
-  />
+  @if (story.shownStory.getValue()?.audio) {
+    <app-audio-player
+      [audioUrl]="story.shownStory.getValue()?.audio"
+      class="story-audio-player"
+    />
+  }
 
   <div class="media-container">
-    <div
-      class="views-element-container"
-      *ngFor="let mediaItem of story.shownStory.getValue()?.mediaItems"
-    >
-      <app-media-item [mediaItem]="mediaItem"></app-media-item>
-    </div>
+    @for (
+      mediaItem of story.shownStory.getValue()?.mediaItems;
+      track mediaItem
+    ) {
+      <div class="views-element-container">
+        <app-media-item [mediaItem]="mediaItem"></app-media-item>
+      </div>
+    }
   </div>
 
   <app-feedback

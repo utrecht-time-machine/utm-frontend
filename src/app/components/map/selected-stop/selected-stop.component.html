@@ -1,16 +1,18 @@
-<app-audio-player
-  [audioUrl]="utmRoutes.selectedStop?.audio"
-  [transcript]="utmRoutes.selectedStop?.audio_transcript"
-  class="route-stop-audio-player"
-  *ngIf="utmRoutes.selectedStop?.audio && !shouldShowEnglishAudio"
-/>
+@if (utmRoutes.selectedStop?.audio && !shouldShowEnglishAudio) {
+  <app-audio-player
+    [audioUrl]="utmRoutes.selectedStop?.audio"
+    [transcript]="utmRoutes.selectedStop?.audio_transcript"
+    class="route-stop-audio-player"
+  />
+}
 
-<app-audio-player
-  [audioUrl]="utmRoutes.selectedStop?.audio_english"
-  [transcript]="utmRoutes.selectedStop?.audio_transcript"
-  class="route-stop-audio-player"
-  *ngIf="shouldShowEnglishAudio"
-/>
+@if (shouldShowEnglishAudio) {
+  <app-audio-player
+    [audioUrl]="utmRoutes.selectedStop?.audio_english"
+    [transcript]="utmRoutes.selectedStop?.audio_transcript"
+    class="route-stop-audio-player"
+  />
+}
 
 <app-edit-button [nid]="utmRoutes.selectedStop?.id"></app-edit-button>
 
@@ -23,65 +25,63 @@
     )
   "
 ></h2>
-<div
-  class="stop-intro-container"
-  *ngIf="
-    this.utmTranslate.getAsEnglishIfApplicable(
-      utmRoutes.selectedStop,
-      'intro',
-      'intro_english'
-    )
-  "
->
-  <p
-    class="stop-intro"
-    [innerHTML]="
-      this.utmTranslate.getAsEnglishIfApplicable(
-        utmRoutes.selectedStop,
-        'intro',
-        'intro_english'
-      )
-    "
-  ></p>
-</div>
+@if (
+  this.utmTranslate.getAsEnglishIfApplicable(
+    utmRoutes.selectedStop,
+    "intro",
+    "intro_english"
+  )
+) {
+  <div class="stop-intro-container">
+    <p
+      class="stop-intro"
+      [innerHTML]="
+        this.utmTranslate.getAsEnglishIfApplicable(
+          utmRoutes.selectedStop,
+          'intro',
+          'intro_english'
+        )
+      "
+    ></p>
+  </div>
+}
 
 <div class="media-container">
-  <div *ngIf="utmRoutes.selectedStop?.stories">
-    <ng-container *ngFor="let story of utmRoutes.selectedStop?.stories">
-      <div
-        class="story-head"
-        *ngIf="story?.title"
-        [hidden]="story.title === utmRoutes.selectedStop?.title"
-      >
-        <h2 [innerHTML]="story.title"></h2>
-      </div>
+  @if (utmRoutes.selectedStop?.stories) {
+    <div>
+      @for (story of utmRoutes.selectedStop?.stories; track story) {
+        @if (story?.title) {
+          <div
+            class="story-head"
+            [hidden]="story.title === utmRoutes.selectedStop?.title"
+          >
+            <h2 [innerHTML]="story.title"></h2>
+          </div>
+        }
+        @if (story.audio) {
+          <app-audio-player
+            [audioUrl]="story.audio"
+            class="story-audio-player"
+          />
+        }
+        @for (mediaItem of story?.mediaItems; track mediaItem; let i = $index) {
+          <div class="views-element-container">
+            <app-media-item
+              [mediaItem]="mediaItem"
+              [showTitle]="!(i === 0 && mediaItem.title === story.title)"
+              [addTopMargin]="false"
+            ></app-media-item>
+          </div>
+        }
+      }
+    </div>
+  }
 
-      <app-audio-player
-        [audioUrl]="story.audio"
-        *ngIf="story.audio"
-        class="story-audio-player"
-      />
-
-      <div
-        class="views-element-container"
-        *ngFor="let mediaItem of story?.mediaItems; let i = index"
-      >
-        <app-media-item
-          [mediaItem]="mediaItem"
-          [showTitle]="!(i === 0 && mediaItem.title === story.title)"
-          [addTopMargin]="false"
-        ></app-media-item>
-      </div>
-    </ng-container>
-  </div>
-
-  <a
-    class="route-next route-button"
-    (click)="utmRoutes.selectNextStop(0)"
-    *ngIf="utmRoutes.hasNextStop()"
-  >
-    {{ "nextStop" | translate }}
-  </a>
+  @if (utmRoutes.hasNextStop()) {
+    <a class="route-next route-button" (click)="utmRoutes.selectNextStop(0)">
+      {{ "nextStop" | translate }}
+    </a>
+  }
 </div>
 
 <app-feedback

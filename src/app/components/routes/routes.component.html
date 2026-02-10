@@ -5,58 +5,60 @@
     <h1>{{ "routes" | translate }}</h1>
     <div class="views-element-container">
       <div class="card-hold promote">
-        <div
-          class="card"
-          *ngFor="let shownUtmRoute of sortedRoutes"
-          [class.filtered-out]="!isRouteVisible(shownUtmRoute)"
-        >
-          <a (click)="selectRoute(shownUtmRoute.url, shownUtmRoute.nid)">
-            <div class="head">
-              <div>
+        @for (shownUtmRoute of sortedRoutes; track shownUtmRoute) {
+          <div
+            class="card"
+            [class.filtered-out]="!isRouteVisible(shownUtmRoute)"
+          >
+            <a (click)="selectRoute(shownUtmRoute.url, shownUtmRoute.nid)">
+              <div class="head">
                 <div>
-                  <img
-                    loading="lazy"
-                    [src]="
-                      imageService.getImageUrl(
-                        shownUtmRoute.photo,
-                        shownUtmRoute.source_name,
-                        shownUtmRoute.license
-                      )
-                    "
-                    [alt]="
-                      utmTranslate.getAsEnglishIfApplicable(
-                        shownUtmRoute,
-                        'title',
-                        'title_english'
-                      )
-                    "
-                  />
+                  <div>
+                    <img
+                      loading="lazy"
+                      [src]="
+                        imageService.getImageUrl(
+                          shownUtmRoute.photo,
+                          shownUtmRoute.source_name,
+                          shownUtmRoute.license
+                        )
+                      "
+                      [alt]="
+                        utmTranslate.getAsEnglishIfApplicable(
+                          shownUtmRoute,
+                          'title',
+                          'title_english'
+                        )
+                      "
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div class="core">
-              <span class="type">{{ shownUtmRoute.type }}</span
-              ><span class="name">{{
-                utmTranslate.getAsEnglishIfApplicable(
-                  shownUtmRoute,
-                  "title",
-                  "title_english"
-                )
-              }}</span
-              ><span class="desc">{{
-                utmTranslate.getAsEnglishIfApplicable(
-                  shownUtmRoute,
-                  "head",
-                  "head_english"
-                )
-              }}</span
-              ><span class="dist" *ngIf="shownUtmRoute.duration_minutes"
-                >{{ shownUtmRoute.duration_minutes }} min</span
-              >
-            </div>
-          </a>
-        </div>
+              <div class="core">
+                <span class="type">{{ shownUtmRoute.type }}</span
+                ><span class="name">{{
+                  utmTranslate.getAsEnglishIfApplicable(
+                    shownUtmRoute,
+                    "title",
+                    "title_english"
+                  )
+                }}</span
+                ><span class="desc">{{
+                  utmTranslate.getAsEnglishIfApplicable(
+                    shownUtmRoute,
+                    "head",
+                    "head_english"
+                  )
+                }}</span>
+                @if (shownUtmRoute.duration_minutes) {
+                  <span class="dist"
+                    >{{ shownUtmRoute.duration_minutes }} min</span
+                  >
+                }
+              </div>
+            </a>
+          </div>
+        }
       </div>
     </div>
   </div>
