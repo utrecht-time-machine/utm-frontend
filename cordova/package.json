@@ -22,9 +22,9 @@
   },
   "cordova": {
     "platforms": [
-      "browser",
       "ios",
-      "android"
+      "android",
+      "browser"
     ],
     "plugins": {
       "cordova-plugin-geolocation": {},
