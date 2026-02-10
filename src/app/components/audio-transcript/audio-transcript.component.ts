@@ -11,11 +11,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-audio-transcript',
-  standalone: true,
-  imports: [NgIf, NgFor, TranslateModule, MatIconModule],
-  templateUrl: './audio-transcript.component.html',
-  styleUrls: ['./audio-transcript.component.css'],
+    selector: 'app-audio-transcript',
+    imports: [NgIf, NgFor, TranslateModule, MatIconModule],
+    templateUrl: './audio-transcript.component.html',
+    styleUrls: ['./audio-transcript.component.css']
 })
 export class AudioTranscriptComponent implements OnChanges {
   @Input() transcript?: string;

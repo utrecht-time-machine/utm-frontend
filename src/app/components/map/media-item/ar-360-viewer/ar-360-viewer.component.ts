@@ -10,9 +10,10 @@ import { VideoPlugin } from '@photo-sphere-viewer/video-plugin';
 import { EquirectangularVideoAdapter } from '@photo-sphere-viewer/equirectangular-video-adapter';
 
 @Component({
-  selector: 'app-ar-360-viewer',
-  templateUrl: './ar-360-viewer.component.html',
-  styleUrls: ['./ar-360-viewer.component.scss'],
+    selector: 'app-ar-360-viewer',
+    templateUrl: './ar-360-viewer.component.html',
+    styleUrls: ['./ar-360-viewer.component.scss'],
+    standalone: false
 })
 export class Ar360Viewer implements AfterViewInit {
   @Input() imageSrc: string | undefined = undefined;

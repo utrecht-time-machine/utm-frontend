@@ -13,36 +13,31 @@ import {
 } from '@angular/animations';
 
 @Component({
-  selector: 'app-filters',
-  templateUrl: './filters.component.html',
-  styleUrls: ['./filters.component.scss'],
-  animations: [
-    trigger('expandCollapse', [
-      state(
-        'false',
-        style({
-          width: 0,
-          height: 0,
-          opacity: 0,
-          overflow: 'hidden',
-          visibility: 'hidden',
-          pointerEvents: 'none',
-        })
-      ),
-      state(
-        'true',
-        style({
-          width: '*',
-          height: '*',
-          opacity: 1,
-          overflow: 'hidden',
-          visibility: 'visible',
-          pointerEvents: 'auto',
-        })
-      ),
-      transition('false <=> true', [animate('400ms ease-in-out')]),
-    ]),
-  ],
+    selector: 'app-filters',
+    templateUrl: './filters.component.html',
+    styleUrls: ['./filters.component.scss'],
+    animations: [
+        trigger('expandCollapse', [
+            state('false', style({
+                width: 0,
+                height: 0,
+                opacity: 0,
+                overflow: 'hidden',
+                visibility: 'hidden',
+                pointerEvents: 'none',
+            })),
+            state('true', style({
+                width: '*',
+                height: '*',
+                opacity: 1,
+                overflow: 'hidden',
+                visibility: 'visible',
+                pointerEvents: 'auto',
+            })),
+            transition('false <=> true', [animate('400ms ease-in-out')]),
+        ]),
+    ],
+    standalone: false
 })
 export class FiltersComponent {
   constructor(

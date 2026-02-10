@@ -3,9 +3,10 @@ import { environment } from 'src/environments/environment';
 import { PlatformService } from '../../services/platform.service';
 
 @Component({
-  selector: 'app-edit-button',
-  templateUrl: './edit-button.component.html',
-  styleUrls: ['./edit-button.component.scss'],
+    selector: 'app-edit-button',
+    templateUrl: './edit-button.component.html',
+    styleUrls: ['./edit-button.component.scss'],
+    standalone: false
 })
 export class EditButtonComponent {
   @Input() nid: string | undefined;

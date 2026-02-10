@@ -8,9 +8,10 @@ import { UtmTranslateService } from '../../../services/utm-translate.service';
 import { RouteNotificationsSettingsService } from '../../../services/route-notifications-settings.service';
 
 @Component({
-  selector: 'app-selected-route',
-  templateUrl: './selected-route.component.html',
-  styleUrls: ['./selected-route.component.scss'],
+    selector: 'app-selected-route',
+    templateUrl: './selected-route.component.html',
+    styleUrls: ['./selected-route.component.scss'],
+    standalone: false
 })
 export class SelectedRouteComponent {
   environment = environment;

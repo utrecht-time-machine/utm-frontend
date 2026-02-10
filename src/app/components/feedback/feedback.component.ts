@@ -6,18 +6,19 @@ import { FeedbackRating } from '../../models/feedback-rating';
 import { PlatformService } from 'src/app/services/platform.service';
 
 @Component({
-  selector: 'app-feedback',
-  templateUrl: './feedback.component.html',
-  styleUrls: ['./feedback.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('200ms ease-out', style({ opacity: 1 })),
-      ]),
-      transition(':leave', [animate('200ms ease-in', style({ opacity: 0 }))]),
-    ]),
-  ],
+    selector: 'app-feedback',
+    templateUrl: './feedback.component.html',
+    styleUrls: ['./feedback.component.scss'],
+    animations: [
+        trigger('fadeInOut', [
+            transition(':enter', [
+                style({ opacity: 0 }),
+                animate('200ms ease-out', style({ opacity: 1 })),
+            ]),
+            transition(':leave', [animate('200ms ease-in', style({ opacity: 0 }))]),
+        ]),
+    ],
+    standalone: false
 })
 export class FeedbackComponent {
   @Input() feedbackItemId: string | undefined;

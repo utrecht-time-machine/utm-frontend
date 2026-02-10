@@ -3,9 +3,10 @@ import { environment } from '../../../environments/environment';
 import { License } from '../../models/license';
 
 @Component({
-  selector: 'app-license',
-  templateUrl: './license.component.html',
-  styleUrls: ['./license.component.scss'],
+    selector: 'app-license',
+    templateUrl: './license.component.html',
+    styleUrls: ['./license.component.scss'],
+    standalone: false
 })
 export class LicenseComponent {
   @Input() licenseLabel: string | undefined = undefined;

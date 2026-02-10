@@ -5,10 +5,11 @@ import { SelectedView } from '../../models/selected-view';
 import { PlatformService } from '../../services/platform.service';
 
 @Component({
-  selector: 'app-menu-links',
-  templateUrl: './menu-links.component.html',
-  styleUrls: ['./menu-links.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-menu-links',
+    templateUrl: './menu-links.component.html',
+    styleUrls: ['./menu-links.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class MenuLinksComponent {
   @Input() showLanguageToggle = true;

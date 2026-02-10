@@ -5,9 +5,10 @@ import { ApiService } from '../../services/api.service';
 import { OrganisationService } from '../../services/organisation.service';
 
 @Component({
-  selector: 'app-footer',
-  templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.scss'],
+    selector: 'app-footer',
+    templateUrl: './footer.component.html',
+    styleUrls: ['./footer.component.scss'],
+    standalone: false
 })
 export class FooterComponent {
   constructor(

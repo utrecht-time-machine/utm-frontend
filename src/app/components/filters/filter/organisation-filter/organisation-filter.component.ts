@@ -6,9 +6,10 @@ import { FilterType } from '../../../../models/filter-type.enum';
 import { OrganisationService } from 'src/app/services/organisation.service';
 
 @Component({
-  selector: 'app-organisation-filter',
-  templateUrl: './organisation-filter.component.html',
-  styleUrls: ['./organisation-filter.component.scss'],
+    selector: 'app-organisation-filter',
+    templateUrl: './organisation-filter.component.html',
+    styleUrls: ['./organisation-filter.component.scss'],
+    standalone: false
 })
 export class OrganisationFilterComponent extends FilterComponent {
   constructor(

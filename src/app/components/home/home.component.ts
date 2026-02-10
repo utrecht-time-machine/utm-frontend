@@ -8,11 +8,10 @@ import { ToCssUrlPipe } from '../../pipes/toCssUrl.pipe';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  standalone: true,
-  selector: 'app-home',
-  imports: [CommonModule, ToCssUrlPipe, RouterModule, TranslateModule],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+    selector: 'app-home',
+    imports: [CommonModule, ToCssUrlPipe, RouterModule, TranslateModule],
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
   introductionBlock: StaticPage | undefined;

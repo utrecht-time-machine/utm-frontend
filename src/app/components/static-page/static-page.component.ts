@@ -9,11 +9,10 @@ import { CommonModule } from '@angular/common';
 import { DEFAULT_HOME_URL } from 'src/app/app-routing.module';
 
 @Component({
-  standalone: true,
-  imports: [CommonModule, ToCssUrlPipe],
-  selector: 'app-static-page',
-  templateUrl: './static-page.component.html',
-  styleUrls: ['./static-page.component.scss'],
+    imports: [CommonModule, ToCssUrlPipe],
+    selector: 'app-static-page',
+    templateUrl: './static-page.component.html',
+    styleUrls: ['./static-page.component.scss']
 })
 export class StaticPageComponent implements OnInit {
   content: StaticPage | undefined;

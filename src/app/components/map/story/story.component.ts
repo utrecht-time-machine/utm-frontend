@@ -5,9 +5,10 @@ import { ImageViewerService } from '../../../services/image-viewer.service';
 import { UtmTranslateService } from '../../../services/utm-translate.service';
 
 @Component({
-  selector: 'app-story',
-  templateUrl: './story.component.html',
-  styleUrls: ['./story.component.scss'],
+    selector: 'app-story',
+    templateUrl: './story.component.html',
+    styleUrls: ['./story.component.scss'],
+    standalone: false
 })
 export class StoryComponent {
   constructor(

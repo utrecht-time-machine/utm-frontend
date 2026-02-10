@@ -10,9 +10,10 @@ import { TimeService } from '../../services/time.service';
 import { ImageService } from 'src/app/services/image.service';
 
 @Component({
-  selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss'],
+    selector: 'app-map',
+    templateUrl: './map.component.html',
+    styleUrls: ['./map.component.scss'],
+    standalone: false
 })
 export class MapComponent implements OnInit {
   SelectedView = SelectedView;

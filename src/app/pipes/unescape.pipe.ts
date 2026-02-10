@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { PlatformService } from '../services/platform.service';
 
 @Pipe({
-  name: 'unescape',
+    name: 'unescape',
+    standalone: false
 })
 export class UnescapePipe implements PipeTransform {
   constructor(private platform: PlatformService) {}

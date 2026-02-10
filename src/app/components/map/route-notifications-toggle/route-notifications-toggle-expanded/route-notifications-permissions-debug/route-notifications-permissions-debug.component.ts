@@ -22,11 +22,10 @@ type PermissionStatus = {
 };
 
 @Component({
-  selector: 'app-route-notifications-permissions-debug',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './route-notifications-permissions-debug.component.html',
-  styleUrls: ['./route-notifications-permissions-debug.component.scss'],
+    selector: 'app-route-notifications-permissions-debug',
+    imports: [CommonModule],
+    templateUrl: './route-notifications-permissions-debug.component.html',
+    styleUrls: ['./route-notifications-permissions-debug.component.scss']
 })
 export class RouteNotificationsPermissionsDebugComponent
   implements OnInit, OnDestroy

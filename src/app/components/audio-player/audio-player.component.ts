@@ -12,9 +12,10 @@ import { Howl } from 'howler';
 import { PlatformService } from 'src/app/services/platform.service';
 
 @Component({
-  selector: 'app-audio-player',
-  templateUrl: './audio-player.component.html',
-  styleUrls: ['./audio-player.component.scss'],
+    selector: 'app-audio-player',
+    templateUrl: './audio-player.component.html',
+    styleUrls: ['./audio-player.component.scss'],
+    standalone: false
 })
 export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
   scrubbingAudio = false;

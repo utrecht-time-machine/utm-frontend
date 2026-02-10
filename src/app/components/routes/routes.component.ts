@@ -9,9 +9,10 @@ import { OrganisationFilterService } from 'src/app/services/organisation-filter.
 import { ImageService } from 'src/app/services/image.service';
 
 @Component({
-  selector: 'app-routes',
-  templateUrl: './routes.component.html',
-  styleUrls: ['./routes.component.scss'],
+    selector: 'app-routes',
+    templateUrl: './routes.component.html',
+    styleUrls: ['./routes.component.scss'],
+    standalone: false
 })
 export class RoutesComponent {
   sortedRoutes: UtmRoute[] = [];

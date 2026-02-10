@@ -16,9 +16,10 @@ import { UtmRoutesService } from 'src/app/services/utm-routes.service';
 import { AddressSearchResult } from 'src/app/models/adress-search-result';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: false
 })
 export class HeaderComponent {
   liveSearchResultTypes = liveSearchResultTypes;

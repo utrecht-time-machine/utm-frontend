@@ -4,9 +4,10 @@ import { UtmRoute } from '../../../models/utm-route';
 import { RouteNotificationsSettingsService } from '../../../services/route-notifications-settings.service';
 
 @Component({
-  selector: 'app-route-steps',
-  templateUrl: './route-steps.component.html',
-  styleUrls: ['./route-steps.component.scss'],
+    selector: 'app-route-steps',
+    templateUrl: './route-steps.component.html',
+    styleUrls: ['./route-steps.component.scss'],
+    standalone: false
 })
 export class RouteStepsComponent {
   constructor(

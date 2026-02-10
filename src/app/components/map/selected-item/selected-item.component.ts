@@ -11,9 +11,10 @@ import { ThemeService } from '../../../services/theme.service';
 import { ImageService } from 'src/app/services/image.service';
 
 @Component({
-  selector: 'app-selected-item',
-  templateUrl: './selected-item.component.html',
-  styleUrls: ['./selected-item.component.scss'],
+    selector: 'app-selected-item',
+    templateUrl: './selected-item.component.html',
+    styleUrls: ['./selected-item.component.scss'],
+    standalone: false
 })
 export class SelectedItemComponent {
   @Input() locationDetails: LocationDetails | undefined;

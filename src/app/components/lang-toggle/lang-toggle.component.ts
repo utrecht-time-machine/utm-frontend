@@ -9,9 +9,10 @@ import { SelectedView } from '../../models/selected-view';
 import { RoutingService } from '../../services/routing.service';
 
 @Component({
-  selector: 'app-lang-toggle',
-  templateUrl: './lang-toggle.component.html',
-  styleUrls: ['./lang-toggle.component.scss'],
+    selector: 'app-lang-toggle',
+    templateUrl: './lang-toggle.component.html',
+    styleUrls: ['./lang-toggle.component.scss'],
+    standalone: false
 })
 export class LangToggleComponent {
   readonly LOCAL_STORAGE_LANG_KEY = 'utrechtTimeMachineLanguage';
