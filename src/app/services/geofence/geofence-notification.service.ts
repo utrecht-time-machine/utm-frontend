@@ -11,7 +11,7 @@ import { PushNotificationService } from '../push-notifications/push-notification
 export class GeofenceNotificationService {
   constructor(
     private push: PushNotificationService,
-    private identifier: GeofenceIdentifierService
+    private identifier: GeofenceIdentifierService,
   ) {}
 
   async handleGeofenceEvent(
@@ -26,7 +26,7 @@ export class GeofenceNotificationService {
             stopTitle?: string;
           }
         | undefined;
-    }
+    },
   ): Promise<void> {
     const identifier = event?.identifier;
     const action = (event as any)?.action;
@@ -67,7 +67,7 @@ export class GeofenceNotificationService {
         {
           identifier,
           notificationId,
-        }
+        },
       );
     }
   }

@@ -5,17 +5,17 @@ import { TranslateService } from '@ngx-translate/core';
 import { UtmTranslateService } from '../../../services/utm-translate.service';
 
 @Component({
-    selector: 'app-selected-stop',
-    templateUrl: './selected-stop.component.html',
-    styleUrls: ['./selected-stop.component.scss'],
-    standalone: false
+  selector: 'app-selected-stop',
+  templateUrl: './selected-stop.component.html',
+  styleUrls: ['./selected-stop.component.scss'],
+  standalone: false,
 })
 export class SelectedStopComponent {
   constructor(
     public utmRoutes: UtmRoutesService,
     public router: Router,
     public translate: TranslateService,
-    public utmTranslate: UtmTranslateService
+    public utmTranslate: UtmTranslateService,
   ) {}
 
   ngOnInit() {}

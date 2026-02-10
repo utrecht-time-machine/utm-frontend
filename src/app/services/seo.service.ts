@@ -34,7 +34,7 @@ export class SeoService {
     public utmRoutesService: UtmRoutesService,
     public route: ActivatedRoute,
     public unescapePipe: UnescapePipe,
-    public utmTranslate: UtmTranslateService
+    public utmTranslate: UtmTranslateService,
   ) {
     // Listen to changes in url and the data being loaded
     // Handle delayed loading of SEO-required data by debouncing
@@ -61,11 +61,11 @@ export class SeoService {
         } else if (storyQueryParam) {
           this.generateStoryMeta(
             this.storyService.shownStory.getValue(),
-            this.storyService.shownStory.getValue()?.mediaItems
+            this.storyService.shownStory.getValue()?.mediaItems,
           );
         } else {
           this.generateLocationMeta(
-            this.mapService.selectedLocation.getValue()
+            this.mapService.selectedLocation.getValue(),
           );
         }
         break;
@@ -75,7 +75,7 @@ export class SeoService {
       case SelectedView.Story:
         this.generateStoryMeta(
           this.storyService.shownStory.getValue(),
-          this.storyService.shownStory.getValue()?.mediaItems
+          this.storyService.shownStory.getValue()?.mediaItems,
         );
         break;
       case SelectedView.Routes:
@@ -83,7 +83,7 @@ export class SeoService {
         break;
       case SelectedView.SelectedRoute:
         this.generateSelectedRouteMeta(
-          this.utmRoutesService.selected.getValue()
+          this.utmRoutesService.selected.getValue(),
         );
         break;
       case SelectedView.Undefined:
@@ -96,7 +96,7 @@ export class SeoService {
     this.setMetaTags(
       'Utrecht Time Machine',
       DEFAULT_DESCRIPTION,
-      'https://utrechttimemachine.nl/assets/img/about.jpg'
+      'https://utrechttimemachine.nl/assets/img/about.jpg',
     );
   }
 
@@ -104,7 +104,7 @@ export class SeoService {
     this.setMetaTags(
       'Over – Utrecht Time Machine',
       'UTM is een consortium van Utrechtse erfgoedinstellingen. Samen willen we open data over de Utrechtse geschiedenis verbinden en presenteren in een toegankelijke vorm.',
-      'https://utrechttimemachine.nl/assets/img/about.jpg'
+      'https://utrechttimemachine.nl/assets/img/about.jpg',
     );
   }
 
@@ -117,13 +117,13 @@ export class SeoService {
     this.setMetaTags(
       (location?.title || '⏳') + ' – Utrecht Time Machine',
       location?.teaser,
-      location?.image || ''
+      location?.image || '',
     );
   }
 
   private generateStoryMeta(
     story: Story | undefined,
-    mediaItems: MediaItem[] | undefined
+    mediaItems: MediaItem[] | undefined,
   ) {
     if (!story || !mediaItems) {
       // console.warn('No story, regenerating home');
@@ -135,7 +135,7 @@ export class SeoService {
     const title = this.utmTranslate.getAsEnglishIfApplicable(
       story,
       'title',
-      'title_english'
+      'title_english',
     );
     let description = title;
     if (mediaItems && mediaItems[0] && mediaItems[0].text) {
@@ -146,14 +146,14 @@ export class SeoService {
       (title || '⏳') + ' – Utrecht Time Machine',
       description,
       story.photo,
-      'article'
+      'article',
     );
   }
 
   private generateRoutesMeta() {
     this.setMetaTags(
       'Routes – Utrecht Time Machine',
-      'Ontdek de geschiedenis van Utrecht met deze routes. Ga op pad en ontdek de verhalen achter de stad.'
+      'Ontdek de geschiedenis van Utrecht met deze routes. Ga op pad en ontdek de verhalen achter de stad.',
     );
   }
 
@@ -167,12 +167,12 @@ export class SeoService {
     const title = this.utmTranslate.getAsEnglishIfApplicable(
       selectedRoute,
       'title',
-      'title_english'
+      'title_english',
     );
     this.setMetaTags(
       (title || '⏳') + ' – Utrecht Time Machine',
       selectedRoute.head,
-      selectedRoute.photo
+      selectedRoute.photo,
     );
   }
 
@@ -188,7 +188,7 @@ export class SeoService {
     myTitle: string,
     description?: string,
     image?: string,
-    type: string = 'website'
+    type: string = 'website',
   ) {
     this.title.setTitle(this.unescapePipe.transform(myTitle));
     this.meta.updateTag({

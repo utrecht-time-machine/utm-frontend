@@ -14,7 +14,7 @@ export class FeedbackService {
 
   constructor(
     private apiService: ApiService,
-    private platform: PlatformService
+    private platform: PlatformService,
   ) {
     const localStorageRatings: string | null = null;
 
@@ -54,7 +54,7 @@ export class FeedbackService {
     if (this.platform.isBrowser()) {
       window.localStorage.setItem(
         this.LOCAL_STORAGE_FEEDBACK_KEY,
-        JSON.stringify(this.ratingsPerItem)
+        JSON.stringify(this.ratingsPerItem),
       );
     }
 

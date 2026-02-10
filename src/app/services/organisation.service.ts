@@ -11,12 +11,12 @@ import { UtilService } from './util.service';
 })
 export class OrganisationService {
   all: BehaviorSubject<Organisation[]> = new BehaviorSubject<Organisation[]>(
-    []
+    [],
   );
 
   constructor(
     private http: HttpClient,
-    private utmTranslate: UtmTranslateService
+    private utmTranslate: UtmTranslateService,
   ) {
     void this._loadAll();
   }
@@ -37,7 +37,7 @@ export class OrganisationService {
   public getByIds(organisationIds: string[]): Organisation[] | undefined {
     const allOrganisations = this.all.getValue();
     const filteredOrganisations = allOrganisations.filter((org) =>
-      organisationIds.includes(org.id)
+      organisationIds.includes(org.id),
     );
     return filteredOrganisations.length > 0 ? filteredOrganisations : undefined;
   }
@@ -45,14 +45,14 @@ export class OrganisationService {
   public async getOrganisations(): Promise<Organisation[]> {
     const organisations: Organisation[] = await lastValueFrom(
       this.http.get<Organisation[]>(
-        environment.apiUrl + environment.apiSuffixes.organisations
-      )
+        environment.apiUrl + environment.apiSuffixes.organisations,
+      ),
     );
 
     UtilService.addUrlPrefixes(organisations, 'logo');
     this.utmTranslate.translateObjectsByKeys(
       organisations,
-      environment.translateKeys.organisation
+      environment.translateKeys.organisation,
     );
     return organisations;
   }

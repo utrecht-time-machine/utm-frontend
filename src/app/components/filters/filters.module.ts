@@ -7,7 +7,7 @@ import { FiltersHeaderComponent } from './filters-header/filters-header.componen
 import { TranslateModule } from '@ngx-translate/core';
 import { ClearFiltersButtonComponent } from './clear-filters-button/clear-filters-button.component';
 import { ActiveFiltersBadgeComponent } from './active-filters-badge/active-filters-badge.component';
-import { OrganisationFilterModule } from "./filter/organisation-filter/organisation-filter.module";
+import { OrganisationFilterModule } from './filter/organisation-filter/organisation-filter.module';
 
 @NgModule({
   declarations: [
@@ -21,8 +21,8 @@ import { OrganisationFilterModule } from "./filter/organisation-filter/organisat
     TimeFilterModule,
     FiltersHeaderComponent,
     TranslateModule,
-    OrganisationFilterModule
-],
+    OrganisationFilterModule,
+  ],
   exports: [FiltersComponent],
 })
 export class FiltersModule {}

@@ -9,10 +9,10 @@ import { CommonModule } from '@angular/common';
 import { DEFAULT_HOME_URL } from 'src/app/app-routing.module';
 
 @Component({
-    imports: [CommonModule, ToCssUrlPipe],
-    selector: 'app-static-page',
-    templateUrl: './static-page.component.html',
-    styleUrls: ['./static-page.component.scss']
+  imports: [CommonModule, ToCssUrlPipe],
+  selector: 'app-static-page',
+  templateUrl: './static-page.component.html',
+  styleUrls: ['./static-page.component.scss'],
 })
 export class StaticPageComponent implements OnInit {
   content: StaticPage | undefined;
@@ -22,7 +22,7 @@ export class StaticPageComponent implements OnInit {
     private spinner: SpinnerService,
     private translate: TranslateService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {
     this.translate.onLangChange.subscribe(() => {
       const nid = this.route.snapshot.data['pageData']?.nid;

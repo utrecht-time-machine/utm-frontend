@@ -48,7 +48,7 @@ export class PushNotificationService {
 
   async scheduleLocalNotification(
     options: LocalNotificationOptions,
-    timeoutMs = 2000
+    timeoutMs = 2000,
   ): Promise<boolean> {
     console.log('[PushNotificationService] scheduleLocalNotification called', {
       options,
@@ -59,7 +59,7 @@ export class PushNotificationService {
     console.log('[PushNotificationService] cordova.ready result', { ready });
     if (!ready) {
       console.warn(
-        '[PushNotificationService] Cordova not ready / not available; not scheduling notification'
+        '[PushNotificationService] Cordova not ready / not available; not scheduling notification',
       );
       return false;
     }
@@ -69,14 +69,14 @@ export class PushNotificationService {
     if (!localNotification?.schedule) {
       console.warn(
         '[PushNotificationService] cordova.plugins.notification.local.schedule not available',
-        { cordovaRef }
+        { cordovaRef },
       );
       return false;
     }
 
     console.log(
       '[PushNotificationService] Scheduling local notification',
-      options
+      options,
     );
     localNotification.schedule(options);
     console.log('[PushNotificationService] scheduleLocalNotification done');

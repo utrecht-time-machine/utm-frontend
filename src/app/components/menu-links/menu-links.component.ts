@@ -5,11 +5,11 @@ import { SelectedView } from '../../models/selected-view';
 import { PlatformService } from '../../services/platform.service';
 
 @Component({
-    selector: 'app-menu-links',
-    templateUrl: './menu-links.component.html',
-    styleUrls: ['./menu-links.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+  selector: 'app-menu-links',
+  templateUrl: './menu-links.component.html',
+  styleUrls: ['./menu-links.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class MenuLinksComponent {
   @Input() showLanguageToggle = true;
@@ -19,7 +19,7 @@ export class MenuLinksComponent {
   constructor(
     public router: Router,
     public routing: RoutingService,
-    private platform: PlatformService
+    private platform: PlatformService,
   ) {}
 
   clickOnLink(url: string) {

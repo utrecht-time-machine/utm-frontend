@@ -6,19 +6,19 @@ import { FeedbackRating } from '../../models/feedback-rating';
 import { PlatformService } from 'src/app/services/platform.service';
 
 @Component({
-    selector: 'app-feedback',
-    templateUrl: './feedback.component.html',
-    styleUrls: ['./feedback.component.scss'],
-    animations: [
-        trigger('fadeInOut', [
-            transition(':enter', [
-                style({ opacity: 0 }),
-                animate('200ms ease-out', style({ opacity: 1 })),
-            ]),
-            transition(':leave', [animate('200ms ease-in', style({ opacity: 0 }))]),
-        ]),
-    ],
-    standalone: false
+  selector: 'app-feedback',
+  templateUrl: './feedback.component.html',
+  styleUrls: ['./feedback.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('200ms ease-out', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('200ms ease-in', style({ opacity: 0 }))]),
+    ]),
+  ],
+  standalone: false,
 })
 export class FeedbackComponent {
   @Input() feedbackItemId: string | undefined;
@@ -37,7 +37,7 @@ export class FeedbackComponent {
   constructor(
     public feedbackService: FeedbackService,
     private translate: TranslateService,
-    private platform: PlatformService
+    private platform: PlatformService,
   ) {}
 
   getRating(): FeedbackRating | undefined {
@@ -88,13 +88,13 @@ export class FeedbackComponent {
       await this.feedbackService.comment(this.feedbackItemId, this.commentText);
       this.showStatusMessage(
         'success',
-        this.translate.instant('commentSendingSuccess')
+        this.translate.instant('commentSendingSuccess'),
       );
       this.commentText = '';
     } catch (error) {
       this.showStatusMessage(
         'error',
-        this.translate.instant('commentSendingError')
+        this.translate.instant('commentSendingError'),
       );
     }
 

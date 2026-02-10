@@ -10,10 +10,10 @@ import { TimeService } from '../../services/time.service';
 import { ImageService } from 'src/app/services/image.service';
 
 @Component({
-    selector: 'app-map',
-    templateUrl: './map.component.html',
-    styleUrls: ['./map.component.scss'],
-    standalone: false
+  selector: 'app-map',
+  templateUrl: './map.component.html',
+  styleUrls: ['./map.component.scss'],
+  standalone: false,
 })
 export class MapComponent implements OnInit {
   SelectedView = SelectedView;
@@ -25,7 +25,7 @@ export class MapComponent implements OnInit {
     public routing: RoutingService,
     public themes: ThemeService,
     public time: TimeService,
-    public imageService: ImageService
+    public imageService: ImageService,
   ) {}
 
   ngOnInit(): void {

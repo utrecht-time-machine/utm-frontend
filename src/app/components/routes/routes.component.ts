@@ -9,10 +9,10 @@ import { OrganisationFilterService } from 'src/app/services/organisation-filter.
 import { ImageService } from 'src/app/services/image.service';
 
 @Component({
-    selector: 'app-routes',
-    templateUrl: './routes.component.html',
-    styleUrls: ['./routes.component.scss'],
-    standalone: false
+  selector: 'app-routes',
+  templateUrl: './routes.component.html',
+  styleUrls: ['./routes.component.scss'],
+  standalone: false,
 })
 export class RoutesComponent {
   sortedRoutes: UtmRoute[] = [];
@@ -24,7 +24,7 @@ export class RoutesComponent {
     public imageService: ImageService,
     private themes: ThemeService,
     private time: TimeService,
-    private organisations: OrganisationFilterService
+    private organisations: OrganisationFilterService,
   ) {
     this.utmRoutes.all.subscribe(() => {
       this.sortedRoutes = this.sortRoutesByVisibility(this.utmRoutes.shown);
@@ -52,11 +52,11 @@ export class RoutesComponent {
 
     const passesTimeFilter = this.time.isInSelectedRange(
       [route.min_date_str || ''],
-      [route.max_date_str || '']
+      [route.max_date_str || ''],
     );
 
     const passesOrganisationFilter = this.organisations.shouldShow(
-      route.organisation_ids || []
+      route.organisation_ids || [],
     );
 
     return passesThemeFilter && passesTimeFilter && passesOrganisationFilter;

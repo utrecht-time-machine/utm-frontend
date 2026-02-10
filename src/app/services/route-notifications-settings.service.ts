@@ -13,7 +13,7 @@ export class RouteNotificationsSettingsService {
   private enabledSub: Subscription | undefined;
 
   private readonly deviceAllowsGeofencingSubject = new BehaviorSubject<boolean>(
-    false
+    false,
   );
   public readonly deviceAllowsGeofencing$ =
     this.deviceAllowsGeofencingSubject.asObservable();
@@ -21,7 +21,10 @@ export class RouteNotificationsSettingsService {
   private readonly enabledSubject = new BehaviorSubject<boolean>(false);
   public readonly enabled$ = this.enabledSubject.asObservable();
 
-  constructor(private injector: Injector, private cordova: CordovaService) {
+  constructor(
+    private injector: Injector,
+    private cordova: CordovaService,
+  ) {
     void this.checkDeviceAllowsGeofencing();
 
     if (this.loadEnabledFromLocalStorage()) {
@@ -82,7 +85,7 @@ export class RouteNotificationsSettingsService {
     try {
       (window as any)?.localStorage?.setItem(
         this.enabledStorageKey,
-        String(enabled)
+        String(enabled),
       );
     } catch {
       // ignore

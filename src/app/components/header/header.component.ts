@@ -16,10 +16,10 @@ import { UtmRoutesService } from 'src/app/services/utm-routes.service';
 import { AddressSearchResult } from 'src/app/models/adress-search-result';
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss'],
-    standalone: false
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
+  standalone: false,
 })
 export class HeaderComponent {
   liveSearchResultTypes = liveSearchResultTypes;
@@ -37,7 +37,7 @@ export class HeaderComponent {
     public map: MapService,
     public translate: TranslateService,
     public themes: ThemeService,
-    public utmRoutes: UtmRoutesService
+    public utmRoutes: UtmRoutesService,
   ) {
     this.searchInputSubject.pipe(debounceTime(300)).subscribe((searchInput) => {
       void this.search.updateLiveSearchResults(searchInput);

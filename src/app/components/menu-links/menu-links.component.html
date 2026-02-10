@@ -3,7 +3,7 @@
     class="menu-item"
     [ngClass]="{
       'menu-item--active-trail':
-        routing.getSelectedView() === SelectedView.Locations
+        routing.getSelectedView() === SelectedView.Locations,
     }"
   >
     <a (click)="clickOnLink('/')">{{ "locations" | translate }}</a>
@@ -14,7 +14,7 @@
     [ngClass]="{
       'menu-item--active-trail':
         routing.getSelectedView() === SelectedView.Routes ||
-        routing.getSelectedView() === SelectedView.SelectedRoute
+        routing.getSelectedView() === SelectedView.SelectedRoute,
     }"
   >
     <a (click)="clickOnLink('/routes')">{{ "routes" | translate }}</a>
@@ -28,7 +28,7 @@
     class="menu-item"
     [ngClass]="{
       'menu-item--active-trail':
-        routing.getSelectedView() === SelectedView.About
+        routing.getSelectedView() === SelectedView.About,
     }"
   >
     <a (click)="clickOnLink('/over')">{{ "about" | translate }}</a>

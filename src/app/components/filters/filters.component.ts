@@ -13,37 +13,43 @@ import {
 } from '@angular/animations';
 
 @Component({
-    selector: 'app-filters',
-    templateUrl: './filters.component.html',
-    styleUrls: ['./filters.component.scss'],
-    animations: [
-        trigger('expandCollapse', [
-            state('false', style({
-                width: 0,
-                height: 0,
-                opacity: 0,
-                overflow: 'hidden',
-                visibility: 'hidden',
-                pointerEvents: 'none',
-            })),
-            state('true', style({
-                width: '*',
-                height: '*',
-                opacity: 1,
-                overflow: 'hidden',
-                visibility: 'visible',
-                pointerEvents: 'auto',
-            })),
-            transition('false <=> true', [animate('400ms ease-in-out')]),
-        ]),
-    ],
-    standalone: false
+  selector: 'app-filters',
+  templateUrl: './filters.component.html',
+  styleUrls: ['./filters.component.scss'],
+  animations: [
+    trigger('expandCollapse', [
+      state(
+        'false',
+        style({
+          width: 0,
+          height: 0,
+          opacity: 0,
+          overflow: 'hidden',
+          visibility: 'hidden',
+          pointerEvents: 'none',
+        }),
+      ),
+      state(
+        'true',
+        style({
+          width: '*',
+          height: '*',
+          opacity: 1,
+          overflow: 'hidden',
+          visibility: 'visible',
+          pointerEvents: 'auto',
+        }),
+      ),
+      transition('false <=> true', [animate('400ms ease-in-out')]),
+    ]),
+  ],
+  standalone: false,
 })
 export class FiltersComponent {
   constructor(
     public time: TimeService,
     public filters: FilterService,
-    public routing: RoutingService
+    public routing: RoutingService,
   ) {}
 
   async onClick() {
@@ -65,7 +71,7 @@ export class FiltersComponent {
       // 'backdrop-filter': `blur(${isSliding ? 0 : 16}px)`,
       width: isShowingFilters ? 'calc(100% - 1.5rem)' : 'auto',
       cursor: isShowingFilters ? 'default' : 'pointer',
-    }))
+    })),
   );
 
   protected SelectedView = SelectedView;

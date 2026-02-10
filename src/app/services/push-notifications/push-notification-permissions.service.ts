@@ -9,7 +9,7 @@ export class PushNotificationPermissionsService {
   constructor(private cordova: CordovaService) {}
 
   private async getLocalNotification(
-    timeoutMs = 2000
+    timeoutMs = 2000,
   ): Promise<any | undefined> {
     const ready = await this.cordova.ready(timeoutMs);
     if (!ready) {
@@ -28,7 +28,7 @@ export class PushNotificationPermissionsService {
 
     if (typeof localNotification.hasPermission !== 'function') {
       console.warn(
-        '[PushNotificationPermissionsService] cordova.plugins.notification.local.hasPermission not available'
+        '[PushNotificationPermissionsService] cordova.plugins.notification.local.hasPermission not available',
       );
       return true;
     }
@@ -36,12 +36,12 @@ export class PushNotificationPermissionsService {
     return await new Promise<boolean>((resolve) => {
       try {
         localNotification.hasPermission((granted: boolean) =>
-          resolve(!!granted)
+          resolve(!!granted),
         );
       } catch (e) {
         console.warn(
           '[PushNotificationPermissionsService] hasPermission failed',
-          e
+          e,
         );
         resolve(false);
       }
@@ -56,7 +56,7 @@ export class PushNotificationPermissionsService {
 
     if (typeof localNotification.requestPermission !== 'function') {
       console.warn(
-        '[PushNotificationPermissionsService] cordova.plugins.notification.local.requestPermission not available'
+        '[PushNotificationPermissionsService] cordova.plugins.notification.local.requestPermission not available',
       );
       return true;
     }
@@ -64,12 +64,12 @@ export class PushNotificationPermissionsService {
     return await new Promise<boolean>((resolve) => {
       try {
         localNotification.requestPermission((granted: boolean) =>
-          resolve(!!granted)
+          resolve(!!granted),
         );
       } catch (e) {
         console.warn(
           '[PushNotificationPermissionsService] requestPermission failed',
-          e
+          e,
         );
         resolve(false);
       }

@@ -23,7 +23,10 @@ export class SearchService {
   showLiveSearchResults = false;
   isLoadingLiveSearchResults = false;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {}
 
   getLiveSearchResultsByType(type: LiveSearchResultType) {
     return this.liveSearchResults
@@ -41,7 +44,9 @@ export class SearchService {
     this.isLoadingLiveSearchResults = true;
     this.searchAddresses(searchInput);
     const searchResults: LiveSearchResult[] | void = await lastValueFrom(
-      this.http.get<LiveSearchResult[]>(environment.liveSearchUrl + searchInput)
+      this.http.get<LiveSearchResult[]>(
+        environment.liveSearchUrl + searchInput,
+      ),
     ).catch((err) => {
       console.error(err);
     });
@@ -53,7 +58,7 @@ export class SearchService {
 
     for (const searchResult of searchResults) {
       searchResult.label = this._convertSearchResultLabelHtmlFormat(
-        searchResult.label
+        searchResult.label,
       );
 
       if (searchResult.url.startsWith('/routes')) {
@@ -114,7 +119,7 @@ export class SearchService {
     }
 
     const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-      query
+      query,
     )}.json`;
     const params = {
       access_token: mapboxToken,
@@ -126,7 +131,7 @@ export class SearchService {
 
     try {
       const response = await lastValueFrom(
-        this.http.get<any>(endpoint, { params })
+        this.http.get<any>(endpoint, { params }),
       );
 
       const results: AddressSearchResult[] = response.features.map(
@@ -134,7 +139,7 @@ export class SearchService {
           place_name: feature.place_name,
           center: feature.center,
           text: feature.text,
-        })
+        }),
       );
 
       this.addressResults.next(results);

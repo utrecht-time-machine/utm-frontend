@@ -4,15 +4,15 @@ import { UtmRoute } from '../../../models/utm-route';
 import { RouteNotificationsSettingsService } from '../../../services/route-notifications-settings.service';
 
 @Component({
-    selector: 'app-route-steps',
-    templateUrl: './route-steps.component.html',
-    styleUrls: ['./route-steps.component.scss'],
-    standalone: false
+  selector: 'app-route-steps',
+  templateUrl: './route-steps.component.html',
+  styleUrls: ['./route-steps.component.scss'],
+  standalone: false,
 })
 export class RouteStepsComponent {
   constructor(
     public utmRoutes: UtmRoutesService,
-    public routeNotifications: RouteNotificationsSettingsService
+    public routeNotifications: RouteNotificationsSettingsService,
   ) {}
 
   public get selectedRoute(): UtmRoute | undefined {

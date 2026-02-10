@@ -13,10 +13,10 @@ import { ImageService } from 'src/app/services/image.service';
 import { PlatformService } from 'src/app/services/platform.service';
 
 @Component({
-    selector: 'app-image-viewer',
-    templateUrl: './image-viewer.component.html',
-    styleUrls: ['./image-viewer.component.scss'],
-    standalone: false
+  selector: 'app-image-viewer',
+  templateUrl: './image-viewer.component.html',
+  styleUrls: ['./image-viewer.component.scss'],
+  standalone: false,
 })
 export class ImageViewerComponent implements AfterViewInit, OnChanges {
   @Input() imageUrl: string | undefined = undefined;
@@ -31,7 +31,7 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   constructor(
     public imageService: ImageService,
     private imageViewerService: ImageViewerService,
-    private platform: PlatformService
+    private platform: PlatformService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {

@@ -15,7 +15,7 @@ if (isCordovaApp) {
     () => {
       bootstrap();
     },
-    false
+    false,
   );
 } else {
   bootstrap();

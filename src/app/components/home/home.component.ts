@@ -8,10 +8,10 @@ import { ToCssUrlPipe } from '../../pipes/toCssUrl.pipe';
 import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'app-home',
-    imports: [CommonModule, ToCssUrlPipe, RouterModule, TranslateModule],
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss']
+  selector: 'app-home',
+  imports: [CommonModule, ToCssUrlPipe, RouterModule, TranslateModule],
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
   introductionBlock: StaticPage | undefined;
@@ -22,7 +22,7 @@ export class HomeComponent {
   constructor(
     public apiService: ApiService,
     public spinner: SpinnerService,
-    public translate: TranslateService
+    public translate: TranslateService,
   ) {
     this.translate.onLangChange.subscribe(() => {
       void this.loadContent();

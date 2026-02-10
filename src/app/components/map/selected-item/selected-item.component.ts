@@ -11,10 +11,10 @@ import { ThemeService } from '../../../services/theme.service';
 import { ImageService } from 'src/app/services/image.service';
 
 @Component({
-    selector: 'app-selected-item',
-    templateUrl: './selected-item.component.html',
-    styleUrls: ['./selected-item.component.scss'],
-    standalone: false
+  selector: 'app-selected-item',
+  templateUrl: './selected-item.component.html',
+  styleUrls: ['./selected-item.component.scss'],
+  standalone: false,
 })
 export class SelectedItemComponent {
   @Input() locationDetails: LocationDetails | undefined;
@@ -28,7 +28,7 @@ export class SelectedItemComponent {
     public utmTranslate: UtmTranslateService,
     public time: TimeService,
     public themes: ThemeService,
-    public imageService: ImageService
+    public imageService: ImageService,
   ) {}
 
   locationHasStories(): boolean {
@@ -60,7 +60,7 @@ export class SelectedItemComponent {
   get shownStories(): Story[] {
     return (
       this.locationDetails?.stories?.filter((story) =>
-        this.shouldShowStory(story)
+        this.shouldShowStory(story),
       ) ?? []
     );
   }

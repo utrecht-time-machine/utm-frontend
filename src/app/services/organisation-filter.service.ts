@@ -44,7 +44,7 @@ export class OrganisationFilterService {
       return true;
     }
     return organisationIds.some((orgId) =>
-      this.selectedIds.value.includes(orgId)
+      this.selectedIds.value.includes(orgId),
     );
   }
 }

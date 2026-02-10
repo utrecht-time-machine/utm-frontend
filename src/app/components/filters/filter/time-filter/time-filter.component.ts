@@ -14,17 +14,20 @@ import { FilterType } from '../../../../models/filter-type.enum';
 import { MatSlider } from '@angular/material/slider';
 
 @Component({
-    selector: 'app-time-filter',
-    templateUrl: './time-filter.component.html',
-    styleUrls: ['./time-filter.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+  selector: 'app-time-filter',
+  templateUrl: './time-filter.component.html',
+  styleUrls: ['./time-filter.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class TimeFilterComponent extends FilterComponent {
   @ViewChild('slider') slider!: MatSlider;
   debouncedTimeout: any;
 
-  constructor(public time: TimeService, public filters: FilterService) {
+  constructor(
+    public time: TimeService,
+    public filters: FilterService,
+  ) {
     super();
   }
 

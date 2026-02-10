@@ -4,14 +4,14 @@ import { RouteNotificationsToggleCompactComponent } from './route-notifications-
 import { RouteNotificationsToggleExpandedComponent } from './route-notifications-toggle-expanded/route-notifications-toggle-expanded.component';
 
 @Component({
-    selector: 'app-route-notifications-toggle',
-    imports: [
-        NgIf,
-        RouteNotificationsToggleExpandedComponent,
-        RouteNotificationsToggleCompactComponent,
-    ],
-    templateUrl: './route-notifications-toggle.component.html',
-    styleUrls: ['./route-notifications-toggle.component.scss']
+  selector: 'app-route-notifications-toggle',
+  imports: [
+    NgIf,
+    RouteNotificationsToggleExpandedComponent,
+    RouteNotificationsToggleCompactComponent,
+  ],
+  templateUrl: './route-notifications-toggle.component.html',
+  styleUrls: ['./route-notifications-toggle.component.scss'],
 })
 export class RouteNotificationsToggleComponent {
   @Input() variant: 'expanded' | 'compact' = 'expanded';

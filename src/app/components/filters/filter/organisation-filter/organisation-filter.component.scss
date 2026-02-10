@@ -60,7 +60,9 @@
   border-radius: 8px;
   border: 1px solid #e0e0e0;
   background: #f8f8f8;
-  transition: border-color 0.15s, border-width 0.15s;
+  transition:
+    border-color 0.15s,
+    border-width 0.15s;
 }
 
 .organisation-logo-container:hover .organisation-logo-border {

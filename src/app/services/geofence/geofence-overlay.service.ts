@@ -94,7 +94,7 @@ export class GeofenceOverlayService {
             'fill-opacity': 0.18,
           },
         },
-        beforeLayerId
+        beforeLayerId,
       );
 
       map.addLayer(
@@ -108,7 +108,7 @@ export class GeofenceOverlayService {
             'line-width': 2,
           },
         },
-        beforeLayerId
+        beforeLayerId,
       );
     } else {
       existing.setData(data);
@@ -132,7 +132,7 @@ export class GeofenceOverlayService {
   }
 
   private buildGeoJson(
-    fences: BgGeofence[]
+    fences: BgGeofence[],
   ): FeatureCollection<Polygon, GeofenceOverlayProperties> {
     const features: Array<Feature<Polygon, GeofenceOverlayProperties>> = [];
 

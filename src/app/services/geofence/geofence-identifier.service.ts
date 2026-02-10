@@ -19,7 +19,7 @@ export class GeofenceIdentifierService {
   buildRouteStopIdentifier(
     routeId: string,
     stopIdx: number,
-    locationId: string | number | undefined
+    locationId: string | number | undefined,
   ): string {
     return `route:${routeId}:stop:${stopIdx}:location:${String(locationId)}`;
   }
@@ -49,7 +49,7 @@ export class GeofenceIdentifierService {
 
   getInfoFromIdentifier(
     identifier: string | undefined,
-    activeGeofences: BgGeofence[]
+    activeGeofences: BgGeofence[],
   ): GeofenceIdentifierInfo | undefined {
     if (!identifier) {
       return undefined;

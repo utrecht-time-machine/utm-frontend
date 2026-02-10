@@ -50,13 +50,13 @@ export class ApiService {
   constructor(
     private http: HttpClient,
     private utmTranslate: UtmTranslateService,
-    private organisations: OrganisationService
+    private organisations: OrganisationService,
   ) {}
 
   async getNidFromUrlAlias(url: string): Promise<string> {
     console.log('Retrieving Nid from URL alias', url + '...');
     const response: { nid: string } = await lastValueFrom(
-      this.http.get<{ nid: string }>(environment.aliasToNidUrl + url)
+      this.http.get<{ nid: string }>(environment.aliasToNidUrl + url),
     );
     return response.nid;
   }
@@ -64,8 +64,8 @@ export class ApiService {
   async getStaticPage(nid: string): Promise<StaticPage | undefined> {
     const staticPages: StaticPage[] = await lastValueFrom(
       this.http.get<StaticPage[]>(
-        environment.apiUrl + environment.apiSuffixes.staticPage + nid
-      )
+        environment.apiUrl + environment.apiSuffixes.staticPage + nid,
+      ),
     ).catch((err) => {
       console.error(err);
       return [];
@@ -79,7 +79,7 @@ export class ApiService {
     UtilService.addUrlPrefix(staticPage, 'photo');
     await this.utmTranslate.translateObjectByKeys(
       staticPage,
-      environment.translateKeys.staticPage
+      environment.translateKeys.staticPage,
     );
     return staticPage;
   }
@@ -107,7 +107,7 @@ export class ApiService {
       // UtilService.addUrlPrefix(block, 'photo');
       await this.utmTranslate.translateObjectByKeys(
         block,
-        environment.translateKeys.staticPage
+        environment.translateKeys.staticPage,
       );
       return block;
     });
@@ -119,15 +119,15 @@ export class ApiService {
     console.log('Retrieving map locations...');
     // return this.http.get<MapLocation[]>('/assets/mock/mapLocations.json');
     return this.http.get<MapLocation[]>(
-      environment.apiUrl + environment.apiSuffixes.mapLocations
+      environment.apiUrl + environment.apiSuffixes.mapLocations,
     );
   }
 
   async getUtmRoutes(): Promise<UtmRoute[]> {
     let utmRoutes: UtmRoute[] = await lastValueFrom(
       this.http.get<UtmRoute[]>(
-        environment.apiUrl + environment.apiSuffixes.routes
-      )
+        environment.apiUrl + environment.apiSuffixes.routes,
+      ),
     ).catch((err) => {
       console.error(err);
       return [];
@@ -136,14 +136,14 @@ export class ApiService {
     UtilService.addUrlPrefixes(
       utmRoutes,
       'geojson_url',
-      environment.geoJsonBaseUrl
+      environment.geoJsonBaseUrl,
     );
 
     UtilService.addUrlPrefixes(utmRoutes, 'audio');
     UtilService.addUrlPrefixes(utmRoutes, 'photo');
     this.utmTranslate.translateObjectsByKeys(
       utmRoutes,
-      environment.translateKeys.routes
+      environment.translateKeys.routes,
     );
 
     utmRoutes.forEach((utmRoute) => {
@@ -163,7 +163,7 @@ export class ApiService {
 
       if (utmRoute.organisation_ids_str) {
         utmRoute.organisation_ids = splitStringToArray(
-          utmRoute.organisation_ids_str
+          utmRoute.organisation_ids_str,
         );
       }
     });
@@ -173,8 +173,8 @@ export class ApiService {
   async getThemes(): Promise<Theme[]> {
     let themes: Theme[] = await lastValueFrom(
       this.http.get<Theme[]>(
-        environment.apiUrl + environment.apiSuffixes.allThemes
-      )
+        environment.apiUrl + environment.apiSuffixes.allThemes,
+      ),
     ).catch((err) => {
       console.error(err);
       return [];
@@ -191,7 +191,7 @@ export class ApiService {
 
     void this.utmTranslate.translateObjectsByKeys(
       themes,
-      environment.translateKeys.themes
+      environment.translateKeys.themes,
     );
 
     return themes;
@@ -200,8 +200,8 @@ export class ApiService {
   async getStoryDetailsById(storyId: string): Promise<Story | undefined> {
     let storyDetails: Story[] = await lastValueFrom(
       this.http.get<Story[]>(
-        environment.apiUrl + environment.apiSuffixes.storyDetailsById + storyId
-      )
+        environment.apiUrl + environment.apiSuffixes.storyDetailsById + storyId,
+      ),
     );
 
     if (storyDetails.length < 1) {
@@ -216,7 +216,7 @@ export class ApiService {
 
     this.utmTranslate.translateObjectByKeys(
       story,
-      environment.translateKeys.storyDetails
+      environment.translateKeys.storyDetails,
     );
     return story;
   }
@@ -228,14 +228,14 @@ export class ApiService {
 
     let mediaItems: MediaItem[] = await lastValueFrom(
       this.http.get<MediaItem[]>(
-        environment.apiUrl + environment.apiSuffixes.mediaByStory + storyId
-      )
+        environment.apiUrl + environment.apiSuffixes.mediaByStory + storyId,
+      ),
     );
 
     mediaItems.forEach((mediaItem) => {
       this.utmTranslate.translateObjectByKeys(
         mediaItem,
-        environment.translateKeys.mediaItem
+        environment.translateKeys.mediaItem,
       );
 
       const mediaItemOrgIds: string[] = mediaItem.organisation_ids.split(',');
@@ -250,7 +250,7 @@ export class ApiService {
       }
 
       const isAudioItem = environment.mediaItemAudioExtensions.some(
-        (audioExtension) => mediaItem.media_file.endsWith(audioExtension)
+        (audioExtension) => mediaItem.media_file.endsWith(audioExtension),
       );
       const isVideoItem = mediaItem.media_file;
 
@@ -280,7 +280,7 @@ export class ApiService {
           if (isYouTubeEmbed) {
             mediaItem.embed_url = mediaItem.embed_url.replace(
               youTubePrefix,
-              ''
+              '',
             );
             mediaItem.embed_url =
               environment.mediaItemYouTubeEmbedUrl + mediaItem.embed_url;
@@ -304,14 +304,14 @@ export class ApiService {
   }
 
   async getLocationDetailsById(
-    locationId: string
+    locationId: string,
   ): Promise<LocationDetails | undefined> {
     const locationsDetails: LocationDetails[] = await lastValueFrom(
       this.http.get<LocationDetails[]>(
         environment.apiUrl +
           environment.apiSuffixes.locationDetailsById +
-          locationId
-      )
+          locationId,
+      ),
     );
     if (locationsDetails.length < 1) {
       return undefined;
@@ -324,7 +324,7 @@ export class ApiService {
 
     this.utmTranslate.translateObjectByKeys(
       locationDetails,
-      environment.translateKeys.locationDetails
+      environment.translateKeys.locationDetails,
     );
 
     const splitGeoCoords: string[] = locationDetails.geo
@@ -337,7 +337,7 @@ export class ApiService {
 
     // TODO: Enrich location/organisation details with story data asynchronously?
     const locationStories: Story[] = await this.getStoriesByLocationId(
-      locationDetails.nid
+      locationDetails.nid,
     );
     locationDetails.stories = locationStories;
 
@@ -350,14 +350,14 @@ export class ApiService {
   }
 
   async getUtmRouteStopsById(
-    routeId: string
+    routeId: string,
   ): Promise<UtmRouteStop[] | undefined> {
     console.log('Retrieving route stops', routeId);
 
     const utmRouteStops: UtmRouteStop[] = await lastValueFrom(
       this.http.get<UtmRouteStop[]>(
-        environment.apiUrl + environment.apiSuffixes.stopsByRoute + routeId
-      )
+        environment.apiUrl + environment.apiSuffixes.stopsByRoute + routeId,
+      ),
     );
 
     utmRouteStops.forEach((stop) => {
@@ -369,7 +369,7 @@ export class ApiService {
         UtilService.addUrlPrefix(
           stop,
           'audio_english',
-          environment.audioBaseUrl
+          environment.audioBaseUrl,
         );
       }
 
@@ -377,7 +377,7 @@ export class ApiService {
 
       this.utmTranslate.translateObjectByKeys(
         stop,
-        environment.translateKeys.stop
+        environment.translateKeys.stop,
       );
     });
 
@@ -390,8 +390,8 @@ export class ApiService {
       this.http.get<Story[]>(
         environment.apiUrl +
           environment.apiSuffixes.storiesByLocationId +
-          locationId
-      )
+          locationId,
+      ),
     );
     UtilService.addUrlPrefixes(stories, 'photo');
 
@@ -404,13 +404,13 @@ export class ApiService {
 
     this.utmTranslate.translateObjectsByKeys(
       stories,
-      environment.translateKeys.storyDetails
+      environment.translateKeys.storyDetails,
     );
     return stories;
   }
 
   public convertMapLocationsToGeoJson(
-    mapLocations: MapLocation[]
+    mapLocations: MapLocation[],
   ): GeoJSON.FeatureCollection {
     const features: GeoJSON.Feature[] = mapLocations.map((mapLocation) => {
       const [latitude, longitude] = mapLocation.geo.split(',').map(Number);
@@ -447,7 +447,7 @@ export class ApiService {
   }
 
   public convertLocationDetailsToStory(
-    locationDetails: LocationDetails
+    locationDetails: LocationDetails,
   ): Story {
     const locationMediaItem: MediaItem = {
       caption: locationDetails.caption as string,

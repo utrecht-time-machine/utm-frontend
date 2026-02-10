@@ -6,4 +6,8 @@ export interface LiveSearchResult {
 }
 
 export type LiveSearchResultType = 'location' | 'route' | 'story';
-export const liveSearchResultTypes: LiveSearchResultType[] = ['location', 'route', 'story'];
+export const liveSearchResultTypes: LiveSearchResultType[] = [
+  'location',
+  'route',
+  'story',
+];

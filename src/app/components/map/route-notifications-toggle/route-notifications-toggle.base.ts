@@ -2,7 +2,7 @@ import { RouteNotificationsSettingsService } from '../../../services/route-notif
 
 export abstract class RouteNotificationsToggleBase {
   constructor(
-    protected routeNotifications: RouteNotificationsSettingsService
+    protected routeNotifications: RouteNotificationsSettingsService,
   ) {}
 
   public get enabled(): boolean {

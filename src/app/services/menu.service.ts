@@ -19,7 +19,10 @@ export class MenuService {
   azMenuIsShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   mbMenuIsShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private router: Router, private map: MapService) {
+  constructor(
+    private router: Router,
+    private map: MapService,
+  ) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.closeAllMenus();

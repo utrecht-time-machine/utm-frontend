@@ -5,13 +5,16 @@ import { FilterService } from '../../../../services/filter.service';
 import { FilterType } from '../../../../models/filter-type.enum';
 
 @Component({
-    selector: 'app-theme-filter',
-    templateUrl: './theme-filter.component.html',
-    styleUrls: ['./theme-filter.component.scss'],
-    standalone: false
+  selector: 'app-theme-filter',
+  templateUrl: './theme-filter.component.html',
+  styleUrls: ['./theme-filter.component.scss'],
+  standalone: false,
 })
 export class ThemeFilterComponent extends FilterComponent {
-  constructor(public themes: ThemeService, public filters: FilterService) {
+  constructor(
+    public themes: ThemeService,
+    public filters: FilterService,
+  ) {
     super();
   }
 

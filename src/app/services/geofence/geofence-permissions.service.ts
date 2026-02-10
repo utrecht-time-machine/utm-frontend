@@ -33,7 +33,7 @@ export class GeofencePermissionsService {
     } catch (e) {
       console.warn(
         '[GeofencePermissionsService] hasLocationPermission failed',
-        e
+        e,
       );
       return false;
     }

@@ -28,7 +28,7 @@ export class CordovaService {
           this.cordovaRef = (window as any)?.cordova;
           resolve(Boolean(this.cordovaRef));
         },
-        { once: true }
+        { once: true },
       );
     });
   }
@@ -49,7 +49,7 @@ export class CordovaService {
     return await Promise.race([
       this.readyPromise,
       new Promise<boolean>((resolve) =>
-        window.setTimeout(() => resolve(false), timeoutMs)
+        window.setTimeout(() => resolve(false), timeoutMs),
       ),
     ]);
   }

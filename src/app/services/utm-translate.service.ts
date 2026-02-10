@@ -11,16 +11,16 @@ export class UtmTranslateService {
   readonly SOURCE_LANG = 'nl-NL';
   readonly TARGET_LANG = 'en-US';
   shouldTranslate: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    true
+    true,
   );
 
   constructor(
     private http: HttpClient,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
   async translateString(
-    stringToTranslate: string | undefined
+    stringToTranslate: string | undefined,
   ): Promise<string> {
     if (!stringToTranslate) {
       return '';
@@ -53,8 +53,8 @@ export class UtmTranslateService {
       this.http.post<{ translation: string }>(
         environment.translateUrl,
         requestBody,
-        httpOptions
-      )
+        httpOptions,
+      ),
     );
     return response.translation.toString();
   }
@@ -77,7 +77,7 @@ export class UtmTranslateService {
 
   public async translateObjectsByKeys(
     objs: any[],
-    keys: string[]
+    keys: string[],
   ): Promise<any> {
     const promises = [];
     for (const obj of objs) {
@@ -89,7 +89,7 @@ export class UtmTranslateService {
   public getAsEnglishIfApplicable(
     obj: any,
     key: string,
-    englishKey: string
+    englishKey: string,
   ): string {
     if (!obj) {
       return '';

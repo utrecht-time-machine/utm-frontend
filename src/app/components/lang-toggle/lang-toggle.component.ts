@@ -9,10 +9,10 @@ import { SelectedView } from '../../models/selected-view';
 import { RoutingService } from '../../services/routing.service';
 
 @Component({
-    selector: 'app-lang-toggle',
-    templateUrl: './lang-toggle.component.html',
-    styleUrls: ['./lang-toggle.component.scss'],
-    standalone: false
+  selector: 'app-lang-toggle',
+  templateUrl: './lang-toggle.component.html',
+  styleUrls: ['./lang-toggle.component.scss'],
+  standalone: false,
 })
 export class LangToggleComponent {
   readonly LOCAL_STORAGE_LANG_KEY = 'utrechtTimeMachineLanguage';
@@ -24,7 +24,7 @@ export class LangToggleComponent {
     private platform: PlatformService,
     private map: MapService,
     private utmTranslate: UtmTranslateService,
-    private routing: RoutingService
+    private routing: RoutingService,
   ) {}
 
   async onLanguageSelect(language: string) {
@@ -67,7 +67,7 @@ export class LangToggleComponent {
 
     if (this.platform.isBrowser()) {
       localStorageLang = window.localStorage.getItem(
-        this.LOCAL_STORAGE_LANG_KEY
+        this.LOCAL_STORAGE_LANG_KEY,
       );
     }
 

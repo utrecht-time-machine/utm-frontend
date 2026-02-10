@@ -10,7 +10,11 @@
     </span>
   </div>
 
-  <div class="filter-content" *ngIf="!collapsed" [@collapse]="!collapsed ? 'open' : 'closed'">
+  <div
+    class="filter-content"
+    *ngIf="!collapsed"
+    [@collapse]="!collapsed ? 'open' : 'closed'"
+  >
     <ng-content></ng-content>
   </div>
 </div>

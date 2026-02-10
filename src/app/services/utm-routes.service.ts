@@ -34,7 +34,7 @@ export class UtmRoutesService {
     private spinner: SpinnerService,
     private platform: PlatformService,
     private utmTranslate: UtmTranslateService,
-    private routing: RoutingService
+    private routing: RoutingService,
   ) {
     void this.load();
 
@@ -149,7 +149,7 @@ export class UtmRoutesService {
 
             if (story) {
               story.mediaItems = await this.apiService.getMediaItemsByStoryId(
-                story.story_id
+                story.story_id,
               );
 
               stop.stories.push(story);
@@ -185,7 +185,7 @@ export class UtmRoutesService {
       return this.all.value;
     }
     return this.all.value.filter(
-      (route: UtmRoute) => !route.show_only_in_dev_mode
+      (route: UtmRoute) => !route.show_only_in_dev_mode,
     );
   }
 
@@ -219,7 +219,7 @@ export class UtmRoutesService {
     }
 
     const routeToSelect: UtmRoute | undefined = this.all.value.find(
-      (r) => r.nid === id
+      (r) => r.nid === id,
     );
     if (!routeToSelect) {
       console.warn('Could not find route with ID', id, this.all.value);
@@ -234,7 +234,7 @@ export class UtmRoutesService {
 
   public async navigateToRouteStop(
     routeId: string,
-    stopIdx: number | undefined
+    stopIdx: number | undefined,
   ): Promise<void> {
     await this.router.navigate(['/routes', routeId]);
 
@@ -275,7 +275,7 @@ export class UtmRoutesService {
       console.log(
         'Skipping redirect due to justRedirected flag, assuming we are in the right place:',
         this.router.url,
-        url
+        url,
       );
     } else if (this.router.url !== url) {
       // If not there already, navigate to url - this triggers running this function again
@@ -283,7 +283,7 @@ export class UtmRoutesService {
       console.log(
         'URL is not yet what it should be, redirecting:',
         this.router.url,
-        url
+        url,
       );
 
       this._justRedirected = true;
@@ -316,7 +316,7 @@ export class UtmRoutesService {
 
   public selectStopByIdx(
     stopIdx: number | undefined,
-    scrollTo: number | undefined = undefined
+    scrollTo: number | undefined = undefined,
   ) {
     const selectedRoute: UtmRoute | undefined = this.selected.getValue();
     const selectedStops: UtmRouteStop[] | undefined = selectedRoute?.stops;

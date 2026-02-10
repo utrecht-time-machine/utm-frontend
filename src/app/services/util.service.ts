@@ -14,7 +14,7 @@ export class UtilService {
     lat1: number,
     lon1: number,
     lat2: number,
-    lon2: number
+    lon2: number,
   ): number {
     const R = 6371; // Radius of the earth in km
     const dLat = UtilService.deg2rad(lat2 - lat1);
@@ -37,7 +37,7 @@ export class UtilService {
   static addUrlPrefix(
     obj: any,
     key: string,
-    prefix: string = environment.imageBaseUrl
+    prefix: string = environment.imageBaseUrl,
   ): void {
     if (key in obj && obj[key]) {
       obj[key] = prefix + obj[key];
@@ -47,7 +47,7 @@ export class UtilService {
   static addUrlPrefixes(
     objs: any[],
     key: string,
-    prefix: string = environment.imageBaseUrl
+    prefix: string = environment.imageBaseUrl,
   ): void {
     for (const obj of objs) {
       UtilService.addUrlPrefix(obj, key, prefix);

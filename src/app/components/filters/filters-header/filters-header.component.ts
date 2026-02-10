@@ -3,10 +3,10 @@ import { Component, type OnInit } from '@angular/core';
 import { FilterService } from 'src/app/services/filter.service';
 
 @Component({
-    selector: 'app-filters-header',
-    imports: [NgIf, AsyncPipe],
-    templateUrl: './filters-header.component.html',
-    styleUrls: ['./filters-header.component.scss']
+  selector: 'app-filters-header',
+  imports: [NgIf, AsyncPipe],
+  templateUrl: './filters-header.component.html',
+  styleUrls: ['./filters-header.component.scss'],
 })
 export class FiltersHeaderComponent implements OnInit {
   constructor(public filters: FilterService) {}

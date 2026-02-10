@@ -6,7 +6,9 @@
   border-radius: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: backdrop-filter 0.3s ease-out, background 0.3s ease-out;
+  transition:
+    backdrop-filter 0.3s ease-out,
+    background 0.3s ease-out;
 }
 
 app-active-filters-badge {

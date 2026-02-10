@@ -14,13 +14,13 @@ export class StoryService {
   >(undefined);
 
   showingStoryView: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    false
+    false,
   );
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private api: ApiService
+    private api: ApiService,
   ) {
     this.showingStoryView.subscribe(async (showingStoryView) => {
       if (!showingStoryView) {
@@ -39,7 +39,7 @@ export class StoryService {
           const storyUrl = this.router.url;
           if (storyUrl) {
             await this._updateShownStoryDetailsFromServer(
-              storyUrl.replace('/story/', '')
+              storyUrl.replace('/story/', ''),
             );
           } else {
             this._resetShownStory();
@@ -57,12 +57,11 @@ export class StoryService {
     console.log('(story) Retrieving Nid from URL alias', storyAlias + '...');
 
     const storyNid: string = await this.api.getNidFromUrlAlias(
-      '/story/' + storyAlias
+      '/story/' + storyAlias,
     );
 
-    const storyDetails: Story | undefined = await this.api.getStoryDetailsById(
-      storyNid
-    );
+    const storyDetails: Story | undefined =
+      await this.api.getStoryDetailsById(storyNid);
     if (storyDetails) {
       const mediaItems: MediaItem[] | undefined =
         await this.api.getMediaItemsByStoryId(storyNid);

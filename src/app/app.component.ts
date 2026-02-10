@@ -7,10 +7,10 @@ import { StoryService } from './services/story.service';
 import { NotificationClickService } from './services/notification-click.service';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    standalone: false
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  standalone: false,
 })
 export class AppComponent {
   constructor(
@@ -19,6 +19,6 @@ export class AppComponent {
     public connectivity: ConnectivityService,
     public menu: MenuService,
     public story: StoryService,
-    _notificationClick: NotificationClickService
+    _notificationClick: NotificationClickService,
   ) {}
 }

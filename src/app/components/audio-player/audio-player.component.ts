@@ -12,10 +12,10 @@ import { Howl } from 'howler';
 import { PlatformService } from 'src/app/services/platform.service';
 
 @Component({
-    selector: 'app-audio-player',
-    templateUrl: './audio-player.component.html',
-    styleUrls: ['./audio-player.component.scss'],
-    standalone: false
+  selector: 'app-audio-player',
+  templateUrl: './audio-player.component.html',
+  styleUrls: ['./audio-player.component.scss'],
+  standalone: false,
 })
 export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
   scrubbingAudio = false;
@@ -88,7 +88,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
       const clickX = clientX - boundingRect.left;
       const percentage = Math.max(
         0,
-        Math.min(100, (clickX / boundingRect.width) * 100)
+        Math.min(100, (clickX / boundingRect.width) * 100),
       );
 
       this.setTimeByPercentage(percentage);

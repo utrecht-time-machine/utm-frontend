@@ -9,13 +9,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class RoutingService {
   public readonly selectedView = new BehaviorSubject<SelectedView>(
-    SelectedView.Undefined
+    SelectedView.Undefined,
   );
 
   constructor(
     private route: ActivatedRoute,
     public router: Router,
-    private story: StoryService
+    private story: StoryService,
   ) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {

@@ -60,15 +60,15 @@ export class GeofenceService {
     private geofenceNotifications: GeofenceNotificationService,
     private geofencePermissions: GeofencePermissionsService,
     private pushNotificationPermissions: PushNotificationPermissionsService,
-    private zone: NgZone
+    private zone: NgZone,
   ) {}
 
   private getGeofenceInfoFromIdentifier(
-    identifier: string | undefined
+    identifier: string | undefined,
   ): GeofenceIdentifierInfo | undefined {
     return this.geofenceIdentifier.getInfoFromIdentifier(
       identifier,
-      this.stateSubject.getValue().activeGeofences
+      this.stateSubject.getValue().activeGeofences,
     );
   }
 
@@ -89,7 +89,7 @@ export class GeofenceService {
       this.stateSubject.next({
         ...this.stateSubject.getValue(),
         ...value,
-      })
+      }),
     );
   }
 
@@ -108,7 +108,7 @@ export class GeofenceService {
   }
 
   public async setRouteNotificationsEnabled(
-    enabled: boolean
+    enabled: boolean,
   ): Promise<boolean> {
     if (enabled) {
       if (this.routeNotificationsEnabled) {
@@ -119,7 +119,7 @@ export class GeofenceService {
       const ok = await this.ensureInitialized();
       if (!ok) {
         console.warn(
-          '[GeofenceService] enabling route notifications failed: plugin not initialized'
+          '[GeofenceService] enabling route notifications failed: plugin not initialized',
         );
         this.updateState({ enabled: false, activeGeofences: [] });
         return false;
@@ -128,7 +128,7 @@ export class GeofenceService {
       const hasLocationPermission = await this.checkHasLocationPermission();
       if (!hasLocationPermission) {
         console.warn(
-          '[GeofenceService] enabling route notifications failed: permissions not authorized'
+          '[GeofenceService] enabling route notifications failed: permissions not authorized',
         );
         this.updateState({ enabled: false, activeGeofences: [] });
         await this.disableGeofencing();
@@ -139,7 +139,7 @@ export class GeofenceService {
         await this.pushNotificationPermissions.ensurePermission();
       if (!hasNotificationPermission) {
         console.warn(
-          '[GeofenceService] enabling route notifications failed: notification permissions not authorized'
+          '[GeofenceService] enabling route notifications failed: notification permissions not authorized',
         );
         this.updateState({ enabled: false, activeGeofences: [] });
         await this.disableGeofencing();
@@ -185,7 +185,7 @@ export class GeofenceService {
 
     if (!ok && this.routeNotificationsEnabled) {
       console.warn(
-        '[GeofenceService] location permission not granted; disabling route notifications'
+        '[GeofenceService] location permission not granted; disabling route notifications',
       );
       void this.setRouteNotificationsEnabled(false);
     }
@@ -213,7 +213,7 @@ export class GeofenceService {
         }
 
         void this.handleStopsPossiblyLoaded(this.utmRoutes.selected.getValue());
-      }
+      },
     );
   }
 
@@ -234,7 +234,7 @@ export class GeofenceService {
 
     if (!plugin) {
       console.warn(
-        '[GeofenceService] BackgroundGeolocation plugin not found on window. Is cordova-background-geolocation-lt installed and built?'
+        '[GeofenceService] BackgroundGeolocation plugin not found on window. Is cordova-background-geolocation-lt installed and built?',
       );
       return undefined;
     }
@@ -255,7 +255,7 @@ export class GeofenceService {
       const plugin = await this.getPlugin();
       if (!plugin) {
         console.warn(
-          '[GeofenceService] ensureInitialized: no plugin available'
+          '[GeofenceService] ensureInitialized: no plugin available',
         );
         return false;
       }
@@ -295,7 +295,7 @@ export class GeofenceService {
             } catch (e) {
               console.warn(
                 '[GeofenceService] geofence notification handler failed',
-                e
+                e,
               );
             }
           });
@@ -306,7 +306,7 @@ export class GeofenceService {
             },
             (error) => {
               console.warn('[GeofenceService] onLocation error', error);
-            }
+            },
           );
 
           plugin.onGeofencesChange((event: GeofencesChangeEvent) => {
@@ -354,14 +354,14 @@ export class GeofenceService {
           ) {
             console.warn(
               '[GeofenceService] requestPermission returned non-authorized status; aborting init',
-              { permissionResult }
+              { permissionResult },
             );
             return false;
           }
         } catch (status) {
           console.warn(
             '[GeofenceService] requestPermission FAILURE (post-ready)',
-            status
+            status,
           );
           return false;
         }
@@ -405,7 +405,7 @@ export class GeofenceService {
   }
 
   private async handleStopsPossiblyLoaded(
-    route: UtmRoute | undefined
+    route: UtmRoute | undefined,
   ): Promise<void> {
     if (!this.routeNotificationsEnabled) {
       return;
@@ -423,7 +423,7 @@ export class GeofenceService {
     if (!route.stops?.length) {
       console.warn(
         '[GeofenceService] handleStopsPossiblyLoaded: event fired but route has no stops',
-        { routeId: route.nid }
+        { routeId: route.nid },
       );
       return;
     }
@@ -472,7 +472,7 @@ export class GeofenceService {
       const identifier = this.geofenceIdentifier.buildRouteStopIdentifier(
         route.nid,
         idx,
-        stop.location_id
+        stop.location_id,
       );
 
       if (typeof lat !== 'number' || typeof lng !== 'number') {
@@ -483,7 +483,7 @@ export class GeofenceService {
             idx,
             locationId: stop.location_id,
             location: stop.location,
-          }
+          },
         );
         continue;
       }
@@ -540,7 +540,7 @@ export class GeofenceService {
     } catch (e) {
       console.warn(
         '[GeofenceService] disableGeofencing removeGeofences failed',
-        e
+        e,
       );
     }
 

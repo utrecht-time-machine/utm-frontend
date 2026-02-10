@@ -26,7 +26,8 @@
                   placeholder="{{ 'search' | translate }}"
                   class="form-autocomplete form-text ui-autocomplete-input"
                   [ngClass]="{
-                    'ui-autocomplete-loading': search.isLoadingLiveSearchResults
+                    'ui-autocomplete-loading':
+                      search.isLoadingLiveSearchResults,
                   }"
                   type="text"
                   id="edit-livesearch"
@@ -47,7 +48,7 @@
                   [ngStyle]="{
                     visibility: search.showLiveSearchResults
                       ? 'visible'
-                      : 'hidden'
+                      : 'hidden',
                   }"
                 >
                   <!-- Location, route and story results -->

@@ -1,8 +1,15 @@
-<div class="route-notification-permissions-debug" *ngIf="status$ | async as status">
-  <div class="route-notification-permissions-debug__title">Permission debug</div>
+<div
+  class="route-notification-permissions-debug"
+  *ngIf="status$ | async as status"
+>
+  <div class="route-notification-permissions-debug__title">
+    Permission debug
+  </div>
   <ul class="route-notification-permissions-debug__list">
     <li>
-      <span class="route-notification-permissions-debug__label">Cordova ready</span>
+      <span class="route-notification-permissions-debug__label"
+        >Cordova ready</span
+      >
       <strong
         class="route-notification-permissions-debug__value"
         [class.ok]="status.cordovaReady"
@@ -13,7 +20,9 @@
     </li>
 
     <li>
-      <span class="route-notification-permissions-debug__label">BackgroundGeolocation available</span>
+      <span class="route-notification-permissions-debug__label"
+        >BackgroundGeolocation available</span
+      >
       <strong
         class="route-notification-permissions-debug__value"
         [class.ok]="status.backgroundGeolocationAvailable"
@@ -24,12 +33,18 @@
     </li>
 
     <li>
-      <span class="route-notification-permissions-debug__label">Provider status</span>
-      <strong class="route-notification-permissions-debug__value">{{ status.providerStatusLabel }}</strong>
+      <span class="route-notification-permissions-debug__label"
+        >Provider status</span
+      >
+      <strong class="route-notification-permissions-debug__value">{{
+        status.providerStatusLabel
+      }}</strong>
     </li>
 
     <li>
-      <span class="route-notification-permissions-debug__label">Location permission (GeofenceService)</span>
+      <span class="route-notification-permissions-debug__label"
+        >Location permission (GeofenceService)</span
+      >
       <strong
         class="route-notification-permissions-debug__value"
         [class.ok]="status.locationPermissionOk"
@@ -40,7 +55,9 @@
     </li>
 
     <li>
-      <span class="route-notification-permissions-debug__label">Notification permission</span>
+      <span class="route-notification-permissions-debug__label"
+        >Notification permission</span
+      >
       <strong
         class="route-notification-permissions-debug__value"
         [class.ok]="status.notificationPermissionOk"
@@ -51,7 +68,9 @@
     </li>
 
     <li>
-      <span class="route-notification-permissions-debug__label">Geofence enabled</span>
+      <span class="route-notification-permissions-debug__label"
+        >Geofence enabled</span
+      >
       <strong
         class="route-notification-permissions-debug__value"
         [class.ok]="status.geofenceEnabled"

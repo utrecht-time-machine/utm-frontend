@@ -1,5 +1,5 @@
 export interface AddressSearchResult {
-    place_name: string;
-    center: [number, number];
-    text: string;
-  }
+  place_name: string;
+  center: [number, number];
+  text: string;
+}

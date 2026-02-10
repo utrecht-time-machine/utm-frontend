@@ -3,7 +3,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subject, combineLatest, interval } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import type { AuthorizationStatus, ProviderChangeEvent } from 'cordova-background-geolocation-lt';
+import type {
+  AuthorizationStatus,
+  ProviderChangeEvent,
+} from 'cordova-background-geolocation-lt';
 
 import { CordovaService } from 'src/app/services/cordova.service';
 import { GeofenceService } from 'src/app/services/geofence/geofence.service';
@@ -22,10 +25,10 @@ type PermissionStatus = {
 };
 
 @Component({
-    selector: 'app-route-notifications-permissions-debug',
-    imports: [CommonModule],
-    templateUrl: './route-notifications-permissions-debug.component.html',
-    styleUrls: ['./route-notifications-permissions-debug.component.scss']
+  selector: 'app-route-notifications-permissions-debug',
+  imports: [CommonModule],
+  templateUrl: './route-notifications-permissions-debug.component.html',
+  styleUrls: ['./route-notifications-permissions-debug.component.scss'],
 })
 export class RouteNotificationsPermissionsDebugComponent
   implements OnInit, OnDestroy
@@ -37,9 +40,9 @@ export class RouteNotificationsPermissionsDebugComponent
   private locationPermissionOk$ = new BehaviorSubject<boolean>(false);
   private notificationPermissionOk$ = new BehaviorSubject<boolean>(false);
   private geofenceEnabled$ = new BehaviorSubject<boolean>(false);
-  private providerStatus$ = new BehaviorSubject<AuthorizationStatus | undefined>(
-    undefined
-  );
+  private providerStatus$ = new BehaviorSubject<
+    AuthorizationStatus | undefined
+  >(undefined);
 
   readonly status$ = combineLatest([
     this.cordovaReady$,
@@ -67,14 +70,14 @@ export class RouteNotificationsPermissionsDebugComponent
           providerStatus,
           providerStatusLabel: this.authorizationStatusToLabel(providerStatus),
         };
-      }
-    )
+      },
+    ),
   );
 
   constructor(
     private cordova: CordovaService,
     private geofenceService: GeofenceService,
-    private pushNotificationPermissions: PushNotificationPermissionsService
+    private pushNotificationPermissions: PushNotificationPermissionsService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -98,7 +101,7 @@ export class RouteNotificationsPermissionsDebugComponent
         switchMap(async () => {
           const ok = await this.pushNotificationPermissions.hasPermission();
           return ok;
-        })
+        }),
       )
       .subscribe((ok) => this.notificationPermissionOk$.next(ok));
 
@@ -107,7 +110,9 @@ export class RouteNotificationsPermissionsDebugComponent
         startWith(0),
         takeUntil(this.destroy$),
         switchMap(async () => {
-          const plugin = (window as any)?.BackgroundGeolocation as BgGeo | undefined;
+          const plugin = (window as any)?.BackgroundGeolocation as
+            | BgGeo
+            | undefined;
           if (!plugin) {
             return undefined;
           }
@@ -119,7 +124,7 @@ export class RouteNotificationsPermissionsDebugComponent
           } catch {
             return undefined;
           }
-        })
+        }),
       )
       .subscribe((status) => this.providerStatus$.next(status));
   }
@@ -134,7 +139,7 @@ export class RouteNotificationsPermissionsDebugComponent
   }
 
   private authorizationStatusToLabel(
-    status: AuthorizationStatus | undefined
+    status: AuthorizationStatus | undefined,
   ): string {
     if (status === undefined || status === null) {
       return 'unknown';

@@ -5,15 +5,15 @@ import { ApiService } from '../../services/api.service';
 import { OrganisationService } from '../../services/organisation.service';
 
 @Component({
-    selector: 'app-footer',
-    templateUrl: './footer.component.html',
-    styleUrls: ['./footer.component.scss'],
-    standalone: false
+  selector: 'app-footer',
+  templateUrl: './footer.component.html',
+  styleUrls: ['./footer.component.scss'],
+  standalone: false,
 })
 export class FooterComponent {
   constructor(
     public router: Router,
     public apiService: ApiService,
-    public organisationService: OrganisationService
+    public organisationService: OrganisationService,
   ) {}
 }

@@ -5,17 +5,17 @@ import { ImageViewerService } from '../../../services/image-viewer.service';
 import { UtmTranslateService } from '../../../services/utm-translate.service';
 
 @Component({
-    selector: 'app-story',
-    templateUrl: './story.component.html',
-    styleUrls: ['./story.component.scss'],
-    standalone: false
+  selector: 'app-story',
+  templateUrl: './story.component.html',
+  styleUrls: ['./story.component.scss'],
+  standalone: false,
 })
 export class StoryComponent {
   constructor(
     public story: StoryService,
     public router: Router,
     public imageViewerService: ImageViewerService,
-    public utmTranslate: UtmTranslateService
+    public utmTranslate: UtmTranslateService,
   ) {}
 
   ngOnInit() {}

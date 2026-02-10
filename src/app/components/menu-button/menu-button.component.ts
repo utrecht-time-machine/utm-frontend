@@ -12,10 +12,10 @@ enum MenuSortOn {
 }
 
 @Component({
-    selector: 'app-menu-button',
-    templateUrl: './menu-button.component.html',
-    styleUrls: ['./menu-button.component.scss'],
-    standalone: false
+  selector: 'app-menu-button',
+  templateUrl: './menu-button.component.html',
+  styleUrls: ['./menu-button.component.scss'],
+  standalone: false,
 })
 export class MenuButtonComponent {
   SelectedView = SelectedView;
@@ -56,7 +56,7 @@ export class MenuButtonComponent {
     public menuService: MenuService,
     public router: Router,
     public routing: RoutingService,
-    public map: MapService
+    public map: MapService,
   ) {}
 
   public get locationsByLetterAreLoaded(): boolean {

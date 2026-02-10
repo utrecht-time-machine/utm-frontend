@@ -71,7 +71,7 @@ export class ThemeService {
   filterThemes() {
     const searchText = this.searchText.toLowerCase();
     const filteredThemes = this.all.value.filter((theme) =>
-      theme.title.toLowerCase().includes(searchText)
+      theme.title.toLowerCase().includes(searchText),
     );
     this.filtered.next(filteredThemes);
   }

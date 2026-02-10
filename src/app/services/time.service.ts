@@ -9,10 +9,10 @@ export class TimeService {
   DEFAULT_MAX_YEAR = new Date().getFullYear();
 
   minYear: BehaviorSubject<number> = new BehaviorSubject<number>(
-    this.DEFAULT_MIN_YEAR
+    this.DEFAULT_MIN_YEAR,
   );
   maxYear: BehaviorSubject<number> = new BehaviorSubject<number>(
-    this.DEFAULT_MAX_YEAR
+    this.DEFAULT_MAX_YEAR,
   );
   isSliding = new BehaviorSubject<boolean>(false);
 
