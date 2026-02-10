@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CordovaService } from '../cordova.service';
+import { PushNotificationPermissionsService } from '../push-notifications/push-notification-permissions.service';
 import {
   GeofenceIdentifierInfo,
   GeofenceIdentifierService,
@@ -58,6 +59,7 @@ export class GeofenceService {
     private geofenceIdentifier: GeofenceIdentifierService,
     private geofenceNotifications: GeofenceNotificationService,
     private geofencePermissions: GeofencePermissionsService,
+    private pushNotificationPermissions: PushNotificationPermissionsService,
     private zone: NgZone
   ) {}
 
@@ -127,6 +129,17 @@ export class GeofenceService {
       if (!hasLocationPermission) {
         console.warn(
           '[GeofenceService] enabling route notifications failed: permissions not authorized'
+        );
+        this.updateState({ enabled: false, activeGeofences: [] });
+        await this.disableGeofencing();
+        return false;
+      }
+
+      const hasNotificationPermission =
+        await this.pushNotificationPermissions.ensurePermission();
+      if (!hasNotificationPermission) {
+        console.warn(
+          '[GeofenceService] enabling route notifications failed: notification permissions not authorized'
         );
         this.updateState({ enabled: false, activeGeofences: [] });
         await this.disableGeofencing();

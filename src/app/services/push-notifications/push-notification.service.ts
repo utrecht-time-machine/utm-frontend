@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { CordovaService } from './cordova.service';
+import { CordovaService } from '../cordova.service';
 
 export type LocalNotificationOptions = {
   id: number;

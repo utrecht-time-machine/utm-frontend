@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { PushNotificationService } from './push-notification.service';
+import { PushNotificationService } from './push-notifications/push-notification.service';
 import { UtmRoutesService } from './utm-routes.service';
 
 @Injectable({
@@ -51,8 +51,8 @@ export class NotificationClickService {
       typeof stopIdx === 'number'
         ? stopIdx
         : typeof stopIdx === 'string'
-          ? Number(stopIdx)
-          : undefined;
+        ? Number(stopIdx)
+        : undefined;
 
     void this.utmRoutes.navigateToRouteStop(routeId, stopIdxNum);
     return true;
