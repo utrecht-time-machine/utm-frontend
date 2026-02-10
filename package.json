@@ -39,7 +39,7 @@
     "@photo-sphere-viewer/core": "^5.8.2",
     "@photo-sphere-viewer/equirectangular-video-adapter": "^5.9.0",
     "@photo-sphere-viewer/video-plugin": "^5.9.0",
-    "@turf/turf": "^6.5.0",
+    "@turf/turf": "^7.3.4",
     "@types/howler": "^2.2.7",
     "cordova-background-geolocation-lt": "^4.18.0",
     "express": "^4.18.2",
