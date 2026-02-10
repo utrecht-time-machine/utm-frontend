@@ -45,7 +45,7 @@
     "express": "^4.18.2",
     "howler": "^2.2.3",
     "mapbox-gl": "^2.14.1",
-    "ngx-matomo-client": "^6.4.1",
+    "ngx-matomo-client": "^7.1.0",
     "rxjs": "~7.8.0",
     "three": "^0.166.1",
     "tslib": "^2.3.0",
