@@ -13,14 +13,14 @@
 }
 
 :root {
-  --mdc-theme-primary: var(--red);
-  --mdc-theme-secondary: #5b5b5b;
+  --mat-theme-primary: var(--red);
+  --mat-theme-secondary: #5b5b5b;
 
   .mdc-slider__thumb .mdc-slider__thumb-knob {
     border: 2px solid white !important;
   }
 
-  --mdc-checkbox-state-layer-size: 30px;
+  --mat-checkbox-state-layer-size: 30px;
   .mat-mdc-checkbox-touch-target {
     width: 30px;
     height: 30px;
@@ -28,13 +28,13 @@
 }
 
 .mat-mdc-slider.mat-primary {
-  --mdc-slider-handle-color: white; // var(--red);
-  --mdc-slider-focus-handle-color: white; //var(--red);
-  --mdc-slider-hover-handle-color: white; //var(--red);
-  --mdc-slider-active-track-color: var(--red);
-  --mdc-slider-inactive-track-color: rgba(0, 0, 0, 0.2);
-  --mdc-slider-with-tick-marks-active-container-color: #fff;
-  --mdc-slider-with-tick-marks-inactive-container-color: white; //var(--red);
+  --mat-slider-handle-color: white; // var(--red);
+  --mat-slider-focus-handle-color: white; //var(--red);
+  --mat-slider-hover-handle-color: white; //var(--red);
+  --mat-slider-active-track-color: var(--red);
+  --mat-slider-inactive-track-color: rgba(0, 0, 0, 0.2);
+  --mat-slider-with-tick-marks-active-container-color: #fff;
+  --mat-slider-with-tick-marks-inactive-container-color: white; //var(--red);
   --mat-mdc-slider-ripple-color: rgba(0, 0, 0, 0); //var(--red);
   --mat-mdc-slider-hover-ripple-color: rgba(
     0,
@@ -48,7 +48,7 @@
     0,
     0
   ); // rgba(254, 0, 62, 0.1);
-  --mdc-slider-label-container-color: var(--red);
+  --mat-slider-label-container-color: var(--red);
   --mat-mdc-slider-value-indicator-opacity: 1;
   .mdc-slider__value-indicator {
     border-radius: 2rem;
@@ -56,17 +56,17 @@
 }
 
 .mat-mdc-checkbox.mat-accent {
-  --mdc-checkbox-selected-checkmark-color: #fff;
-  --mdc-checkbox-selected-focus-icon-color: black;
-  --mdc-checkbox-selected-hover-icon-color: black;
-  --mdc-checkbox-selected-icon-color: black;
-  --mdc-checkbox-selected-pressed-icon-color: black;
-  --mdc-checkbox-unselected-focus-icon-color: #212121;
-  --mdc-checkbox-unselected-hover-icon-color: #212121;
-  --mdc-checkbox-disabled-selected-icon-color: rgba(0, 0, 0, 0.38);
-  --mdc-checkbox-disabled-unselected-icon-color: rgba(0, 0, 0, 0.38);
-  --mdc-checkbox-unselected-icon-color: rgba(0, 0, 0, 0.54);
-  --mdc-checkbox-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+  --mat-checkbox-selected-checkmark-color: #fff;
+  --mat-checkbox-selected-focus-icon-color: black;
+  --mat-checkbox-selected-hover-icon-color: black;
+  --mat-checkbox-selected-icon-color: black;
+  --mat-checkbox-selected-pressed-icon-color: black;
+  --mat-checkbox-unselected-focus-icon-color: #212121;
+  --mat-checkbox-unselected-hover-icon-color: #212121;
+  --mat-checkbox-disabled-selected-icon-color: rgba(0, 0, 0, 0.38);
+  --mat-checkbox-disabled-unselected-icon-color: rgba(0, 0, 0, 0.38);
+  --mat-checkbox-unselected-icon-color: rgba(0, 0, 0, 0.54);
+  --mat-checkbox-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
 }
 
 .mdc-checkbox__ripple {
