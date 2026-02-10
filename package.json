@@ -1,6 +1,9 @@
 {
   "name": "utm2023-frontend",
   "version": "0.0.0",
+  "_notes": {
+    "cordova": "TODO: Reduce code duplication of cordova build target with other build target(s)"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
