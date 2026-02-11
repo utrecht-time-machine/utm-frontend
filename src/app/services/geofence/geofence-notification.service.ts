@@ -48,6 +48,7 @@ export class GeofenceNotificationService {
       id: notificationId,
       title,
       text,
+      trigger: { at: new Date(Date.now() + 1000) },
       data: {
         routeId: meta?.routeId,
         stopIdx: meta?.stopIdx,

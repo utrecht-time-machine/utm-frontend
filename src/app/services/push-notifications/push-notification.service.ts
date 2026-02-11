@@ -7,6 +7,9 @@ export type LocalNotificationOptions = {
   title?: string;
   text?: string;
   data?: any;
+  trigger?: {
+    at: Date;
+  };
 };
 
 export type LocalNotificationClickEvent = {
