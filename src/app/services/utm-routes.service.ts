@@ -269,6 +269,8 @@ export class UtmRoutesService {
       });
       await routeLocationsLoadedPromise;
     }
+    // TODO: Properly wait for stops loading to finish
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     this.selectStopByIdx(stopIdx, 200);
   }
@@ -343,7 +345,6 @@ export class UtmRoutesService {
         });
         return;
       }
-
     }
   }
 
