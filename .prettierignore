@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.next/
+out/
+
+# Angular generated files
+.angular/
+
+# Logs
+*.log
+
+# Coverage
+coverage/
+
+# Cypress
+cypress/downloads/
+cypress/screenshots/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -20,7 +20,9 @@
     "e2e": "ng e2e --configuration=production",
     "cypress:run:live-prod": "CYPRESS_BASE_URL=https://utrechttimemachine.nl cypress run",
     "cypress:run:local-prod": "start-server-and-test 'ng serve --configuration=production' http://localhost:4200 'cypress run'",
-    "serve:ssr:utm2023-frontend": "node dist/utm2023-frontend/server/server.mjs"
+    "serve:ssr:utm2023-frontend": "node dist/utm2023-frontend/server/server.mjs",
+    "format": "prettier --write \"src/**/*.{ts,js,json,scss,html}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,js,json,scss,html}\""
   },
   "private": true,
   "dependencies": {
