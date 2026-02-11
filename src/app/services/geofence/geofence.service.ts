@@ -467,7 +467,7 @@ export class GeofenceService {
 
       // ⚠️ The minimum reliable radius is 200 meters. Anything less will likely not cause a geofence to trigger. This is documented by Apple here:
       // https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/LocationAwarenessPG/RegionMonitoring/RegionMonitoring.html
-      const radius = 200;
+      const radius = 50;
 
       const geofence: BgGeofence = {
         identifier,
