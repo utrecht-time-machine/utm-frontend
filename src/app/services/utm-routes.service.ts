@@ -116,7 +116,7 @@ export class UtmRoutesService {
   }
 
   private _loadStoriesDataFromServerOnStopChange() {
-    this.selectedStopIdx.subscribe(async () => {
+    this.selectedStopIdx.subscribe(async stopIdx => {
       let selectedStopDataIsAlreadyLoaded: boolean = this.selectedStop?.stories !== undefined;
       if (
         this.selectedStop?.show_location_info &&
@@ -169,6 +169,13 @@ export class UtmRoutesService {
       // Trigger change detection to update the UI
       const currentStopIdx = this.selectedStopIdx.getValue();
       this.selectedStopIdx.next(currentStopIdx);
+
+      if (this.platform.isBrowser() && stopIdx !== undefined && window.scrollY == 0) {
+        // TODO: Fine-tune this value, where do we want to scroll to when selecting a new stop?
+        setTimeout(() => {
+          window.scrollTo({ top: 200, behavior: 'smooth' });
+        }, 100);
+      }
 
       this.spinner.loadingRouteStopStories = false;
     });
@@ -337,12 +344,6 @@ export class UtmRoutesService {
         return;
       }
 
-      if (this.platform.isBrowser() && (window.scrollY == 0 || scrollTo !== undefined)) {
-        // TODO: Fine-tune this value, where do we want to scroll to when selecting a new stop?
-        setTimeout(() => {
-          window.scrollTo({ top: scrollTo ?? 200, behavior: 'smooth' });
-        });
-      }
     }
   }
 
