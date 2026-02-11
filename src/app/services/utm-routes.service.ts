@@ -166,6 +166,10 @@ export class UtmRoutesService {
         return indexA - indexB;
       });
 
+      // Trigger change detection to update the UI
+      const currentStopIdx = this.selectedStopIdx.getValue();
+      this.selectedStopIdx.next(currentStopIdx);
+
       this.spinner.loadingRouteStopStories = false;
     });
   }
@@ -227,16 +231,24 @@ export class UtmRoutesService {
   }
 
   public async navigateToRouteStop(routeId: string, stopIdx: number | undefined): Promise<void> {
-    await this.router.navigate(['/routes', routeId]);
-
     if (!this.all.value.length) {
       await this.load();
     }
 
-    await this.selectById(routeId);
+    const route: UtmRoute | undefined = this.all.value.find(r => r.nid === routeId);
+    if (!route) {
+      console.error('Could not find route with ID', routeId);
+      return;
+    }
+
+    await this.selectByUrlOrId(route.url);
+
+    // TODO: Properly wait for route selection to finish
+    await new Promise(resolve => setTimeout(resolve, 200));
 
     const selectedRoute = this.selected.getValue();
     if (!selectedRoute) {
+      console.error('No route selected after navigation');
       return;
     }
 
@@ -304,6 +316,7 @@ export class UtmRoutesService {
   public selectStopByIdx(stopIdx: number | undefined, scrollTo: number | undefined = undefined) {
     const selectedRoute: UtmRoute | undefined = this.selected.getValue();
     const selectedStops: UtmRouteStop[] | undefined = selectedRoute?.stops;
+
     if (!selectedStops) {
       return;
     }

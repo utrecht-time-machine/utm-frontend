@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CordovaService } from '../cordova.service';
 import { PushNotificationPermissionsService } from '../push-notifications/push-notification-permissions.service';
-import { GeofenceIdentifierInfo, GeofenceIdentifierService } from './geofence-identifier.service';
+import { GeofenceIdentifierService } from './geofence-identifier.service';
 import { GeofenceNotificationService } from './geofence-notification.service';
 import { GeofencePermissionsService } from './geofence-permissions.service';
 import { UtmRoutesService } from '../utm-routes.service';
@@ -18,6 +18,7 @@ import type {
   ProviderChangeEvent,
   State,
 } from 'cordova-background-geolocation-lt';
+import { RouteStopData } from 'src/app/models/route-stop-data';
 
 type BgGeo = typeof import('cordova-background-geolocation-lt').default;
 
@@ -60,10 +61,8 @@ export class GeofenceService {
     private zone: NgZone,
   ) {}
 
-  private getGeofenceInfoFromIdentifier(
-    identifier: string | undefined,
-  ): GeofenceIdentifierInfo | undefined {
-    return this.geofenceIdentifier.getInfoFromIdentifier(
+  private getGeofenceDataFromIdentifier(identifier: string | undefined): RouteStopData | undefined {
+    return this.geofenceIdentifier.getDataFromIdentifier(
       identifier,
       this.stateSubject.getValue().activeGeofences,
     );
@@ -279,7 +278,7 @@ export class GeofenceService {
             try {
               await this.geofenceNotifications.handleGeofenceEvent(event, {
                 routeNotificationsEnabled: this.routeNotificationsEnabled,
-                getInfoFromIdentifier: id => this.getGeofenceInfoFromIdentifier(id),
+                getDataFromIdentifier: id => this.getGeofenceDataFromIdentifier(id),
               });
             } catch (e) {
               console.warn('[GeofenceService] geofence notification handler failed', e);

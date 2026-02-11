@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import type { Geofence as BgGeofence, Extras } from 'cordova-background-geolocation-lt';
-
-export type GeofenceIdentifierInfo = {
-  routeId?: string;
-  routeTitle?: string;
-  stopIdx?: number;
-  stopTitle?: string;
-};
+import { RouteStopData } from '../../models/route-stop-data';
 
 @Injectable({
   providedIn: 'root',
@@ -44,10 +38,10 @@ export class GeofenceIdentifierService {
     return Number.isFinite(n) ? n : undefined;
   }
 
-  getInfoFromIdentifier(
+  getDataFromIdentifier(
     identifier: string | undefined,
     activeGeofences: BgGeofence[],
-  ): GeofenceIdentifierInfo | undefined {
+  ): RouteStopData | undefined {
     if (!identifier) {
       return undefined;
     }

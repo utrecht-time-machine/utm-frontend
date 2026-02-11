@@ -4,6 +4,7 @@ import type { GeofenceEvent } from 'cordova-background-geolocation-lt';
 
 import { GeofenceIdentifierService } from './geofence-identifier.service';
 import { PushNotificationService } from '../push-notifications/push-notification.service';
+import { RouteStopData } from '../../models/route-stop-data';
 
 @Injectable({
   providedIn: 'root',
@@ -18,14 +19,7 @@ export class GeofenceNotificationService {
     event: GeofenceEvent,
     opts: {
       routeNotificationsEnabled: boolean;
-      getInfoFromIdentifier: (identifier: string | undefined) =>
-        | {
-            routeId?: string;
-            routeTitle?: string;
-            stopIdx?: number;
-            stopTitle?: string;
-          }
-        | undefined;
+      getDataFromIdentifier: (identifier: string | undefined) => RouteStopData | undefined;
     },
   ): Promise<void> {
     const identifier = event?.identifier;
@@ -39,7 +33,7 @@ export class GeofenceNotificationService {
       return;
     }
 
-    const meta = opts.getInfoFromIdentifier(identifier);
+    const meta = opts.getDataFromIdentifier(identifier);
 
     const title = meta?.routeTitle || 'Utrecht Time Machine';
     const stopNum = meta?.stopIdx !== undefined ? meta.stopIdx + 1 : undefined;

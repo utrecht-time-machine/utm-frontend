@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PushNotificationService } from './push-notification.service';
 import { UtmRoutesService } from '../utm-routes.service';
+import { RouteStopData } from '../../models/route-stop-data';
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +26,8 @@ export class PushNotificationClickService {
     });
   }
 
-  private handleClick(notification: any): void {
-    const data = notification?.data ?? notification?.extras ?? notification;
+  private handleClick(notification: unknown): void {
+    const data = this.extractNotificationData(notification);
     if (!data) {
       return;
     }
@@ -36,20 +37,24 @@ export class PushNotificationClickService {
     }
   }
 
-  private handleRouteStopClick(data: any): boolean {
-    const routeId = data?.routeId;
-    const stopIdx = data?.stopIdx;
+  private extractNotificationData(notification: unknown): RouteStopData | null {
+    if (!notification || typeof notification !== 'object') {
+      return null;
+    }
+
+    const notif = notification as Record<string, unknown>;
+    return (notif['data'] as RouteStopData) ?? null;
+  }
+
+  private handleRouteStopClick(data: RouteStopData): boolean {
+    const { routeId, stopIdx } = data;
+
 
     if (typeof routeId !== 'string') {
       return false;
     }
 
-    const stopIdxNum =
-      typeof stopIdx === 'number'
-        ? stopIdx
-        : typeof stopIdx === 'string'
-        ? Number(stopIdx)
-        : undefined;
+    const stopIdxNum = typeof stopIdx === 'number' ? stopIdx : undefined;
 
     void this.utmRoutes.navigateToRouteStop(routeId, stopIdxNum);
     return true;
