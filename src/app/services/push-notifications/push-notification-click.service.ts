@@ -6,12 +6,12 @@ import { UtmRoutesService } from '../utm-routes.service';
 @Injectable({
   providedIn: 'root',
 })
-export class NotificationClickService {
+export class PushNotificationClickService {
   private sub: Subscription | undefined;
 
   constructor(
     private push: PushNotificationService,
-    private utmRoutes: UtmRoutesService
+    private utmRoutes: UtmRoutesService,
   ) {
     void this.init();
   }
@@ -51,8 +51,8 @@ export class NotificationClickService {
       typeof stopIdx === 'number'
         ? stopIdx
         : typeof stopIdx === 'string'
-        ? Number(stopIdx)
-        : undefined;
+          ? Number(stopIdx)
+          : undefined;
 
     void this.utmRoutes.navigateToRouteStop(routeId, stopIdxNum);
     return true;
