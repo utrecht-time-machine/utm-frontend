@@ -18,7 +18,7 @@ export class ThemeService {
   constructor(public api: ApiService) {
     void this.updateAllFromServer();
 
-    this.selectedIds.subscribe((selectedIds) => {
+    this.selectedIds.subscribe(selectedIds => {
       console.log('Selected theme IDs:', selectedIds);
       this.numTimesSelectedThemesChanged++;
     });
@@ -41,7 +41,7 @@ export class ThemeService {
     let selectedIds = this.selectedIds.value;
 
     if (this.isSelected(nid)) {
-      selectedIds = selectedIds.filter((id) => id !== nid);
+      selectedIds = selectedIds.filter(id => id !== nid);
     } else {
       selectedIds.push(nid);
     }
@@ -57,7 +57,7 @@ export class ThemeService {
     if (noThemesSelected) {
       return true;
     }
-    return nids.some((nid) => this.selectedIds.value.includes(nid));
+    return nids.some(nid => this.selectedIds.value.includes(nid));
   }
 
   clearSelection() {
@@ -70,7 +70,7 @@ export class ThemeService {
 
   filterThemes() {
     const searchText = this.searchText.toLowerCase();
-    const filteredThemes = this.all.value.filter((theme) =>
+    const filteredThemes = this.all.value.filter(theme =>
       theme.title.toLowerCase().includes(searchText),
     );
     this.filtered.next(filteredThemes);

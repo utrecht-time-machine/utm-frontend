@@ -34,7 +34,7 @@ export class StaticPageComponent implements OnInit {
 
   ngOnInit() {
     // console.log('StaticPageComponent ngOnInit');
-    this.route.data.subscribe(async (data) => {
+    this.route.data.subscribe(async data => {
       // console.log('StaticPageComponent data', data);
       await this.loadContent(data['pageData']?.nid);
     });

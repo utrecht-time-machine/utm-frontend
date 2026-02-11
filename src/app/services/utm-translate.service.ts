@@ -10,25 +10,17 @@ import { environment } from '../../environments/environment';
 export class UtmTranslateService {
   readonly SOURCE_LANG = 'nl-NL';
   readonly TARGET_LANG = 'en-US';
-  shouldTranslate: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    true,
-  );
+  shouldTranslate: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  constructor(
-    private http: HttpClient,
-    private translateService: TranslateService,
-  ) {}
+  constructor(private http: HttpClient, private translateService: TranslateService) {}
 
-  async translateString(
-    stringToTranslate: string | undefined,
-  ): Promise<string> {
+  async translateString(stringToTranslate: string | undefined): Promise<string> {
     if (!stringToTranslate) {
       return '';
     }
 
     const doesNotNeedTranslation =
-      !this.translateService.currentLang ||
-      this.translateService.currentLang === 'nl';
+      !this.translateService.currentLang || this.translateService.currentLang === 'nl';
     if (doesNotNeedTranslation) {
       return stringToTranslate;
     }
@@ -50,11 +42,7 @@ export class UtmTranslateService {
     };
 
     const response: { translation: string } = await lastValueFrom(
-      this.http.post<{ translation: string }>(
-        environment.translateUrl,
-        requestBody,
-        httpOptions,
-      ),
+      this.http.post<{ translation: string }>(environment.translateUrl, requestBody, httpOptions),
     );
     return response.translation.toString();
   }
@@ -75,10 +63,7 @@ export class UtmTranslateService {
     return await Promise.all(promises);
   }
 
-  public async translateObjectsByKeys(
-    objs: any[],
-    keys: string[],
-  ): Promise<any> {
+  public async translateObjectsByKeys(objs: any[], keys: string[]): Promise<any> {
     const promises = [];
     for (const obj of objs) {
       promises.push(this.translateObjectByKeys(obj, keys));
@@ -86,11 +71,7 @@ export class UtmTranslateService {
     return await Promise.all(promises);
   }
 
-  public getAsEnglishIfApplicable(
-    obj: any,
-    key: string,
-    englishKey: string,
-  ): string {
+  public getAsEnglishIfApplicable(obj: any, key: string, englishKey: string): string {
     if (!obj) {
       return '';
     }

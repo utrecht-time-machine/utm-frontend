@@ -18,15 +18,15 @@ import { RoutingService } from './routing.service';
 export class UtmRoutesService {
   all = new BehaviorSubject<UtmRoute[]>([]);
 
-  selected: BehaviorSubject<UtmRoute | undefined> = new BehaviorSubject<
-    UtmRoute | undefined
-  >(undefined);
+  selected: BehaviorSubject<UtmRoute | undefined> = new BehaviorSubject<UtmRoute | undefined>(
+    undefined,
+  );
 
   selectedRouteLocationsLoaded: EventEmitter<any> = new EventEmitter<any>();
 
-  selectedStopIdx: BehaviorSubject<number | undefined> = new BehaviorSubject<
-    number | undefined
-  >(undefined);
+  selectedStopIdx: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(
+    undefined,
+  );
 
   constructor(
     private apiService: ApiService,
@@ -46,7 +46,7 @@ export class UtmRoutesService {
   }
 
   private _initSelectOnRouteChange() {
-    this.router.events.subscribe((e) => {
+    this.router.events.subscribe(e => {
       if (!(e instanceof NavigationEnd)) {
         return;
       }
@@ -58,7 +58,7 @@ export class UtmRoutesService {
   }
 
   private _checkDevModeRouteOnRouteChange() {
-    this.selected.subscribe((selectedRoute) => {
+    this.selected.subscribe(selectedRoute => {
       if (!selectedRoute) {
         return;
       }
@@ -71,13 +71,14 @@ export class UtmRoutesService {
   }
 
   private _loadStopsDataFromServerOnRouteChange() {
-    this.selected.subscribe(async (selectedRoute) => {
+    this.selected.subscribe(async selectedRoute => {
       if (!selectedRoute) {
         return;
       }
 
-      const routeStops: UtmRouteStop[] | undefined =
-        await this.apiService.getUtmRouteStopsById(selectedRoute.nid);
+      const routeStops: UtmRouteStop[] | undefined = await this.apiService.getUtmRouteStopsById(
+        selectedRoute.nid,
+      );
 
       if (!routeStops) {
         return;
@@ -89,7 +90,7 @@ export class UtmRoutesService {
       for (const routeStop of routeStops) {
         const loadingStopLocationDataPromise: Promise<void> = this.apiService
           .getLocationDetailsById(routeStop.location_id)
-          .then((locationDetails) => {
+          .then(locationDetails => {
             routeStop.location = locationDetails;
 
             if (routeStop.show_location_info && locationDetails !== undefined) {
@@ -116,8 +117,7 @@ export class UtmRoutesService {
 
   private _loadStoriesDataFromServerOnStopChange() {
     this.selectedStopIdx.subscribe(async () => {
-      let selectedStopDataIsAlreadyLoaded: boolean =
-        this.selectedStop?.stories !== undefined;
+      let selectedStopDataIsAlreadyLoaded: boolean = this.selectedStop?.stories !== undefined;
       if (
         this.selectedStop?.show_location_info &&
         this.selectedStop?.stories &&
@@ -142,15 +142,13 @@ export class UtmRoutesService {
       for (const storyId of stop.story_ids.split(',')) {
         const loadingStoryDetailsPromise: Promise<void> = this.apiService
           .getStoryDetailsById(storyId)
-          .then(async (story) => {
+          .then(async story => {
             if (stop.stories === undefined) {
               stop.stories = [];
             }
 
             if (story) {
-              story.mediaItems = await this.apiService.getMediaItemsByStoryId(
-                story.story_id,
-              );
+              story.mediaItems = await this.apiService.getMediaItemsByStoryId(story.story_id);
 
               stop.stories.push(story);
             }
@@ -184,9 +182,7 @@ export class UtmRoutesService {
     if (environment.dev) {
       return this.all.value;
     }
-    return this.all.value.filter(
-      (route: UtmRoute) => !route.show_only_in_dev_mode,
-    );
+    return this.all.value.filter((route: UtmRoute) => !route.show_only_in_dev_mode);
   }
 
   public get selectedStop(): UtmRouteStop | undefined {
@@ -218,9 +214,7 @@ export class UtmRoutesService {
       return;
     }
 
-    const routeToSelect: UtmRoute | undefined = this.all.value.find(
-      (r) => r.nid === id,
-    );
+    const routeToSelect: UtmRoute | undefined = this.all.value.find(r => r.nid === id);
     if (!routeToSelect) {
       console.warn('Could not find route with ID', id, this.all.value);
       this.spinner.loadingRoute = false;
@@ -232,10 +226,7 @@ export class UtmRoutesService {
     this.spinner.loadingRoute = false;
   }
 
-  public async navigateToRouteStop(
-    routeId: string,
-    stopIdx: number | undefined,
-  ): Promise<void> {
+  public async navigateToRouteStop(routeId: string, stopIdx: number | undefined): Promise<void> {
     await this.router.navigate(['/routes', routeId]);
 
     if (!this.all.value.length) {
@@ -251,7 +242,7 @@ export class UtmRoutesService {
 
     const stopsLoaded = !!selectedRoute.stops?.length;
     if (!stopsLoaded) {
-      const routeLocationsLoadedPromise = new Promise<void>((resolve) => {
+      const routeLocationsLoadedPromise = new Promise<void>(resolve => {
         const sub = this.selectedRouteLocationsLoaded.subscribe(() => {
           sub.unsubscribe();
           resolve();
@@ -280,11 +271,7 @@ export class UtmRoutesService {
     } else if (this.router.url !== url) {
       // If not there already, navigate to url - this triggers running this function again
       // through the subscription to router events
-      console.log(
-        'URL is not yet what it should be, redirecting:',
-        this.router.url,
-        url,
-      );
+      console.log('URL is not yet what it should be, redirecting:', this.router.url, url);
 
       this._justRedirected = true;
       await this.router.navigateByUrl(url);
@@ -314,18 +301,14 @@ export class UtmRoutesService {
     await this.selectById(id);
   }
 
-  public selectStopByIdx(
-    stopIdx: number | undefined,
-    scrollTo: number | undefined = undefined,
-  ) {
+  public selectStopByIdx(stopIdx: number | undefined, scrollTo: number | undefined = undefined) {
     const selectedRoute: UtmRoute | undefined = this.selected.getValue();
     const selectedStops: UtmRouteStop[] | undefined = selectedRoute?.stops;
     if (!selectedStops) {
       return;
     }
 
-    const stopDoesNotExist =
-      stopIdx !== undefined && stopIdx >= selectedStops.length;
+    const stopDoesNotExist = stopIdx !== undefined && stopIdx >= selectedStops.length;
     if (stopDoesNotExist) {
       return;
     }
@@ -341,10 +324,7 @@ export class UtmRoutesService {
         return;
       }
 
-      if (
-        this.platform.isBrowser() &&
-        (window.scrollY == 0 || scrollTo !== undefined)
-      ) {
+      if (this.platform.isBrowser() && (window.scrollY == 0 || scrollTo !== undefined)) {
         // TODO: Fine-tune this value, where do we want to scroll to when selecting a new stop?
         setTimeout(() => {
           window.scrollTo({ top: scrollTo ?? 200, behavior: 'smooth' });

@@ -8,20 +8,13 @@ import { HeaderModule } from './components/header/header.module';
 import { FooterModule } from './components/footer/footer.module';
 import { MapModule } from './components/map/map.module';
 import { MenuButtonModule } from './components/menu-button/menu-button.module';
-import {
-  HttpClient,
-  provideHttpClient,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { RoutesModule } from './components/routes/routes.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ConnectivityModule } from './components/connectivity/connectivity.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  NgxMatomoTrackerModule,
-  NgxMatomoRouterModule,
-} from 'ngx-matomo-client';
+import { NgxMatomoTrackerModule, NgxMatomoRouterModule } from 'ngx-matomo-client';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

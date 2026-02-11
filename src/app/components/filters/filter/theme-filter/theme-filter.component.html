@@ -7,20 +7,20 @@
     <div class="theme-scroll-area">
       <div class="theme-list">
         @for (theme of themes.filtered | async; track theme) {
-          <div class="theme-checkbox-container">
-            <mat-checkbox
-              [id]="theme.nid"
-              [name]="theme.nid"
-              [value]="theme.nid"
-              (change)="themes.toggle(theme.nid)"
-              [checked]="themes.isSelected(theme.nid)"
-              [disableRipple]="true"
-            >
-              <span [innerHTML]="theme.title"></span>
-              <br />
-              <span class="theme-head">{{ theme.head }}</span>
-            </mat-checkbox>
-          </div>
+        <div class="theme-checkbox-container">
+          <mat-checkbox
+            [id]="theme.nid"
+            [name]="theme.nid"
+            [value]="theme.nid"
+            (change)="themes.toggle(theme.nid)"
+            [checked]="themes.isSelected(theme.nid)"
+            [disableRipple]="true"
+          >
+            <span [innerHTML]="theme.title"></span>
+            <br />
+            <span class="theme-head">{{ theme.head }}</span>
+          </mat-checkbox>
+        </div>
         }
       </div>
     </div>

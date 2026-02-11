@@ -21,8 +21,7 @@ export class StoryComponent {
   ngOnInit() {}
 
   onLocationLinkClicked() {
-    const locationUrl: string | undefined =
-      this.story.shownStory.getValue()?.location_url;
+    const locationUrl: string | undefined = this.story.shownStory.getValue()?.location_url;
     if (locationUrl) {
       void this.router.navigateByUrl(locationUrl);
     }

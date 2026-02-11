@@ -1,9 +1,7 @@
 @if (!license || !license?.url) {
-  <span><em [innerHtml]="license.title"></em></span>
-}
-
-@if (license?.url) {
-  <span class="license"
-    ><a [href]="license.url" target="_blank"> <img [src]="license.image" /></a
-  ></span>
+<span><em [innerHtml]="license.title"></em></span>
+} @if (license?.url) {
+<span class="license"
+  ><a [href]="license.url" target="_blank"> <img [src]="license.image" /></a
+></span>
 }

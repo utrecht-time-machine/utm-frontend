@@ -19,7 +19,7 @@ export class OrganisationFilterService {
   toggle(id: string) {
     let selectedIds = this.selectedIds.value;
     if (this.isSelected(id)) {
-      selectedIds = selectedIds.filter((selId) => selId !== id);
+      selectedIds = selectedIds.filter(selId => selId !== id);
     } else {
       selectedIds.push(id);
     }
@@ -43,8 +43,6 @@ export class OrganisationFilterService {
     if (noOrganisationsSelected) {
       return true;
     }
-    return organisationIds.some((orgId) =>
-      this.selectedIds.value.includes(orgId),
-    );
+    return organisationIds.some(orgId => this.selectedIds.value.includes(orgId));
   }
 }

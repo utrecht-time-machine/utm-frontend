@@ -43,8 +43,7 @@ export class SelectedItemComponent {
   }
 
   onCloseStoryClicked() {
-    const locationUrl: string | undefined =
-      this.storyService.shownStory.getValue()?.location_url;
+    const locationUrl: string | undefined = this.storyService.shownStory.getValue()?.location_url;
     if (locationUrl) {
       void this.router.navigateByUrl(locationUrl);
     }
@@ -58,10 +57,6 @@ export class SelectedItemComponent {
   }
 
   get shownStories(): Story[] {
-    return (
-      this.locationDetails?.stories?.filter((story) =>
-        this.shouldShowStory(story),
-      ) ?? []
-    );
+    return this.locationDetails?.stories?.filter(story => this.shouldShowStory(story)) ?? [];
   }
 }

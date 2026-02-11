@@ -6,94 +6,72 @@
   <div class="map-data">
     <div class="map-data-handle"></div>
     @if (routing.getSelectedView() === SelectedView.SelectedRoute) {
-      <app-route-steps></app-route-steps>
-    }
-    @if (
-      getSelectedLocation() ||
-      routing.getSelectedView() === SelectedView.Routes ||
-      routing.getSelectedView() === SelectedView.SelectedRoute ||
-      routing.getSelectedView() === SelectedView.Story
-    ) {
-      <div class="map-data-dock" id="map_dock">
-        <div class="views-element-container">
-          @if (
-            routing.getSelectedView() === SelectedView.Locations ||
-            routing.getSelectedView() === SelectedView.Story
-          ) {
-            <app-selected-item
-              [locationDetails]="getSelectedLocation()"
-            ></app-selected-item>
-          }
-          @if (routing.getSelectedView() === SelectedView.SelectedRoute) {
-            <app-selected-route></app-selected-route>
-          }
-        </div>
+    <app-route-steps></app-route-steps>
+    } @if ( getSelectedLocation() || routing.getSelectedView() === SelectedView.Routes ||
+    routing.getSelectedView() === SelectedView.SelectedRoute || routing.getSelectedView() ===
+    SelectedView.Story ) {
+    <div class="map-data-dock" id="map_dock">
+      <div class="views-element-container">
+        @if ( routing.getSelectedView() === SelectedView.Locations || routing.getSelectedView() ===
+        SelectedView.Story ) {
+        <app-selected-item [locationDetails]="getSelectedLocation()"></app-selected-item>
+        } @if (routing.getSelectedView() === SelectedView.SelectedRoute) {
+        <app-selected-route></app-selected-route>
+        }
       </div>
-    }
-
-    @if (
-      routing.getSelectedView() === SelectedView.Locations ||
-      routing.getSelectedView() === SelectedView.Story
-    ) {
-      <div class="map-data-near">
-        <div class="pad">
-          <h2>
-            {{ "exploreArea" | translate }}
-          </h2>
-          <div class="card-hold promote" id="map_near">
-            @for (
-              locationWithDistance of mapService.locationsClosestToCenter.getValue();
-              track locationWithDistance
-            ) {
-              <div class="card">
-                <a
-                  (click)="
-                    mapService.selectLocationByUrlOrId(
-                      locationWithDistance.location.url,
-                      locationWithDistance.location.nid
-                    )
-                  "
-                >
-                  <div class="head">
-                    <div>
-                      <div>
-                        <img
-                          [src]="
-                            imageService.getImageUrl(
-                              locationWithDistance.location.image_small,
-                              locationWithDistance.location.image_source_name,
-                              locationWithDistance.location.image_license
-                            )
-                          "
-                        />
-                      </div>
-                    </div>
+    </div>
+    } @if ( routing.getSelectedView() === SelectedView.Locations || routing.getSelectedView() ===
+    SelectedView.Story ) {
+    <div class="map-data-near">
+      <div class="pad">
+        <h2>
+          {{ 'exploreArea' | translate }}
+        </h2>
+        <div class="card-hold promote" id="map_near">
+          @for ( locationWithDistance of mapService.locationsClosestToCenter.getValue(); track
+          locationWithDistance ) {
+          <div class="card">
+            <a
+              (click)="
+                mapService.selectLocationByUrlOrId(
+                  locationWithDistance.location.url,
+                  locationWithDistance.location.nid
+                )
+              "
+            >
+              <div class="head">
+                <div>
+                  <div>
+                    <img
+                      [src]="
+                        imageService.getImageUrl(
+                          locationWithDistance.location.image_small,
+                          locationWithDistance.location.image_source_name,
+                          locationWithDistance.location.image_license
+                        )
+                      "
+                    />
                   </div>
-                  <div class="core">
-                    <span class="type">{{
-                      locationWithDistance.location.address
-                    }}</span
-                    ><span
-                      class="name"
-                      [innerHtml]="locationWithDistance.location.title"
-                    ></span
-                    ><span class="desc">{{
-                      locationWithDistance.location.head
-                    }}</span>
-                    <span class="dist">{{
-                      UtilService.convertDistanceInKmToString(
-                        locationWithDistance.distanceFromCenterInKm
-                      )
-                    }}</span>
-                  </div>
-                </a>
+                </div>
               </div>
-            }
-            <!--          TODO: Refactor to use components (ignored for now as it seems to mess with the preferred DOM hierarchy for the CSS -->
-            <!--          <app-nearby-item></app-nearby-item>-->
+              <div class="core">
+                <span class="type">{{ locationWithDistance.location.address }}</span
+                ><span class="name" [innerHtml]="locationWithDistance.location.title"></span
+                ><span class="desc">{{ locationWithDistance.location.head }}</span>
+                <span class="dist">{{
+                  UtilService.convertDistanceInKmToString(
+                    locationWithDistance.distanceFromCenterInKm
+                  )
+                }}</span>
+              </div>
+            </a>
           </div>
+          }
+          <!--          TODO: Refactor to use components (ignored for now as it seems to mess with the preferred DOM hierarchy for the CSS -->
+          <!--          <app-nearby-item></app-nearby-item>-->
         </div>
       </div>
+    </div>
     }
   </div>
 </div>

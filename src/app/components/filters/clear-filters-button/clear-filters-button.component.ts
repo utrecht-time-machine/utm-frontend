@@ -23,11 +23,7 @@ export class ClearFiltersButtonComponent implements OnInit {
   ngOnInit(): void {}
 
   hasActiveFilters(): boolean {
-    return (
-      this.time.isActive() ||
-      this.themes.isActive() ||
-      this.organisationFilter.isActive()
-    );
+    return this.time.isActive() || this.themes.isActive() || this.organisationFilter.isActive();
   }
 
   clearFilters($event: MouseEvent) {

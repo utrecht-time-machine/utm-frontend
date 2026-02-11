@@ -6,7 +6,7 @@
         routing.getSelectedView() === SelectedView.Locations,
     }"
   >
-    <a (click)="clickOnLink('/')">{{ "locations" | translate }}</a>
+    <a (click)="clickOnLink('/')">{{ 'locations' | translate }}</a>
   </li>
 
   <li
@@ -17,11 +17,11 @@
         routing.getSelectedView() === SelectedView.SelectedRoute,
     }"
   >
-    <a (click)="clickOnLink('/routes')">{{ "routes" | translate }}</a>
+    <a (click)="clickOnLink('/routes')">{{ 'routes' | translate }}</a>
   </li>
 
   <li class="menu-item films-menu-item">
-    <a href="https://film.utrechttimemachine.nl">{{ "films" | translate }}</a>
+    <a href="https://film.utrechttimemachine.nl">{{ 'films' | translate }}</a>
   </li>
 
   <li
@@ -31,12 +31,12 @@
         routing.getSelectedView() === SelectedView.About,
     }"
   >
-    <a (click)="clickOnLink('/over')">{{ "about" | translate }}</a>
+    <a (click)="clickOnLink('/over')">{{ 'about' | translate }}</a>
   </li>
 
   @if (showLanguageToggle) {
-    <li class="menu-item language-toggle">
-      <app-lang-toggle></app-lang-toggle>
-    </li>
+  <li class="menu-item language-toggle">
+    <app-lang-toggle></app-lang-toggle>
+  </li>
   }
 </ul>

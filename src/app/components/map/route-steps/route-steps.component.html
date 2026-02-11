@@ -1,19 +1,15 @@
 <div class="map-data-path type-{{ routeTypeStr }}">
   <div class="route-top-row">
     @if (routeDistanceStr || routeDurationStr) {
-      <div id="nav_calc" class="nav-calc">
-        <span
-          >{{ routeDistanceStr }} <em>{{ routeDurationStr }}</em></span
-        >
-      </div>
-    }
-
-    @if (routeNotifications.deviceAllowsGeofencing$ | async) {
-      <div class="route-notifications-toggle-container">
-        <app-route-notifications-toggle
-          [variant]="'compact'"
-        ></app-route-notifications-toggle>
-      </div>
+    <div id="nav_calc" class="nav-calc">
+      <span
+        >{{ routeDistanceStr }} <em>{{ routeDurationStr }}</em></span
+      >
+    </div>
+    } @if (routeNotifications.deviceAllowsGeofencing$ | async) {
+    <div class="route-notifications-toggle-container">
+      <app-route-notifications-toggle [variant]="'compact'"></app-route-notifications-toggle>
+    </div>
     }
   </div>
 
@@ -28,21 +24,18 @@
           <div></div>
         </a>
       </li>
-      @for (
-        routeStop of utmRoutes.selected.getValue()?.stops;
-        track routeStop;
-        let stopNum = $index
-      ) {
-        <li>
-          <a
-            (click)="utmRoutes.selectStopByIdx(stopNum)"
-            [ngClass]="{ on: utmRoutes.selectedStopIdx.getValue() === stopNum }"
-          >
-            <div>
-              {{ stopNum + 1 }}
-            </div>
-          </a>
-        </li>
+      @for ( routeStop of utmRoutes.selected.getValue()?.stops; track routeStop; let stopNum =
+      $index ) {
+      <li>
+        <a
+          (click)="utmRoutes.selectStopByIdx(stopNum)"
+          [ngClass]="{ on: utmRoutes.selectedStopIdx.getValue() === stopNum }"
+        >
+          <div>
+            {{ stopNum + 1 }}
+          </div>
+        </a>
+      </li>
       }
     </ul>
   </div>

@@ -17,10 +17,7 @@ export class EditButtonComponent {
 
   shouldBeShown(): boolean {
     if (this.platform.isBrowser()) {
-      return (
-        environment.dev ||
-        window.localStorage.getItem('utrechtTimeMachineDev') === 'true'
-      );
+      return environment.dev || window.localStorage.getItem('utrechtTimeMachineDev') === 'true';
     }
 
     return environment.dev;

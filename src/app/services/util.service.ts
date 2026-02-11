@@ -10,12 +10,7 @@ export class UtilService {
     return distanceInKm.toFixed(1) + ' km';
   }
 
-  static getDistanceFromLatLonInKm(
-    lat1: number,
-    lon1: number,
-    lat2: number,
-    lon2: number,
-  ): number {
+  static getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const R = 6371; // Radius of the earth in km
     const dLat = UtilService.deg2rad(lat2 - lat1);
     const dLon = UtilService.deg2rad(lon2 - lon1);
@@ -34,21 +29,13 @@ export class UtilService {
     return deg * (Math.PI / 180);
   }
 
-  static addUrlPrefix(
-    obj: any,
-    key: string,
-    prefix: string = environment.imageBaseUrl,
-  ): void {
+  static addUrlPrefix(obj: any, key: string, prefix: string = environment.imageBaseUrl): void {
     if (key in obj && obj[key]) {
       obj[key] = prefix + obj[key];
     }
   }
 
-  static addUrlPrefixes(
-    objs: any[],
-    key: string,
-    prefix: string = environment.imageBaseUrl,
-  ): void {
+  static addUrlPrefixes(objs: any[], key: string, prefix: string = environment.imageBaseUrl): void {
     for (const obj of objs) {
       UtilService.addUrlPrefix(obj, key, prefix);
     }
@@ -56,7 +43,7 @@ export class UtilService {
 
   static getUniqueListByKey(list: any[], key: string) {
     const seen: Set<string> = new Set<string>();
-    const unique = list.filter((elem) => {
+    const unique = list.filter(elem => {
       if (!seen.has(elem[key])) {
         seen.add(elem[key]);
         return true;

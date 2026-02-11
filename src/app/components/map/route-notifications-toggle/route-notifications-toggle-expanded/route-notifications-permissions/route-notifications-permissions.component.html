@@ -1,45 +1,37 @@
-@if (status$ | async; as status) {
-  @if (status.missing.length > 0) {
-    <div class="route-notification-permissions-debug">
-      <div class="route-notification-permissions-debug__title">
-        Toestemmingen
-      </div>
+@if (status$ | async; as status) { @if (status.missing.length > 0) {
+<div class="route-notification-permissions-debug">
+  <div class="route-notification-permissions-debug__title">Toestemmingen</div>
 
-      <div class="route-notification-permissions-debug__text">
-        Om dit te laten werken, zijn de volgende toestemmingen nodig:
-      </div>
+  <div class="route-notification-permissions-debug__text">
+    Om dit te laten werken, zijn de volgende toestemmingen nodig:
+  </div>
 
-      <ul class="route-notification-permissions-debug__list">
-        <li>
-          <span class="route-notification-permissions-debug__label"
-            >Locatie in de achtergrond</span
-          >
-          <strong
-            class="route-notification-permissions-debug__value"
-            [class.ok]="status.backgroundLocationOk"
-            [class.not-ok]="!status.backgroundLocationOk"
-          >
-            {{ backgroundLocationStatusText(status.backgroundLocationStatus) }}
-          </strong>
-        </li>
-        <li>
-          <span class="route-notification-permissions-debug__label"
-            >Notificaties</span
-          >
-          <strong
-            class="route-notification-permissions-debug__value"
-            [class.ok]="status.notificationPermissionOk"
-            [class.not-ok]="!status.notificationPermissionOk"
-          >
-            {{ ok(status.notificationPermissionOk) }}
-          </strong>
-        </li>
-      </ul>
+  <ul class="route-notification-permissions-debug__list">
+    <li>
+      <span class="route-notification-permissions-debug__label">Locatie in de achtergrond</span>
+      <strong
+        class="route-notification-permissions-debug__value"
+        [class.ok]="status.backgroundLocationOk"
+        [class.not-ok]="!status.backgroundLocationOk"
+      >
+        {{ backgroundLocationStatusText(status.backgroundLocationStatus) }}
+      </strong>
+    </li>
+    <li>
+      <span class="route-notification-permissions-debug__label">Notificaties</span>
+      <strong
+        class="route-notification-permissions-debug__value"
+        [class.ok]="status.notificationPermissionOk"
+        [class.not-ok]="!status.notificationPermissionOk"
+      >
+        {{ ok(status.notificationPermissionOk) }}
+      </strong>
+    </li>
+  </ul>
 
-      <div class="route-notification-permissions-debug__hint">
-        Lukt het niet? Dan zijn de toestemmingen mogelijk eerder definitief
-        geweigerd. Pas dit aan via de instellingen van je telefoon.
-      </div>
-    </div>
-  }
-}
+  <div class="route-notification-permissions-debug__hint">
+    Lukt het niet? Dan zijn de toestemmingen mogelijk eerder definitief geweigerd. Pas dit aan via
+    de instellingen van je telefoon.
+  </div>
+</div>
+} }

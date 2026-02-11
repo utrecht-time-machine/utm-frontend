@@ -38,21 +38,18 @@ export class MapService {
   private destinationMarker: mapboxgl.Marker | undefined;
 
   map: mapboxgl.Map | undefined = undefined;
-  allLocations: BehaviorSubject<MapLocation[]> = new BehaviorSubject<
-    MapLocation[]
-  >([]);
+  allLocations: BehaviorSubject<MapLocation[]> = new BehaviorSubject<MapLocation[]>([]);
 
   shownLocationPopup: Popup | undefined = undefined;
   shownStopPopup: Popup | undefined = undefined;
 
   mapLocationsFeatures: GeoJSON.FeatureCollection | undefined = undefined;
 
-  selectedLocation: BehaviorSubject<LocationDetails | undefined> =
-    new BehaviorSubject<LocationDetails | undefined>(undefined);
+  selectedLocation: BehaviorSubject<LocationDetails | undefined> = new BehaviorSubject<
+    LocationDetails | undefined
+  >(undefined);
 
-  locationsClosestToCenter = new BehaviorSubject<LocationDistanceFromCenter[]>(
-    [],
-  );
+  locationsClosestToCenter = new BehaviorSubject<LocationDistanceFromCenter[]>([]);
 
   constructor(
     private apiService: ApiService,
@@ -74,17 +71,15 @@ export class MapService {
       this.shownStopPopup?.remove();
     });
 
-    this.router.events.subscribe((e) => {
+    this.router.events.subscribe(e => {
       if (!(e instanceof NavigationEnd)) {
         return;
       }
 
-      const loadedLocationsPage =
-        this.routing.getSelectedView() === SelectedView.Locations;
+      const loadedLocationsPage = this.routing.getSelectedView() === SelectedView.Locations;
 
       if (loadedLocationsPage) {
-        const loadedHomePage =
-          this.router.url === '/' || this.router.url === '/locaties';
+        const loadedHomePage = this.router.url === '/' || this.router.url === '/locaties';
         // console.log('Loaded home page', loadedHomePage);
 
         if (loadedHomePage) {
@@ -96,8 +91,7 @@ export class MapService {
         void this.deselectLocation();
       }
 
-      const loadedRoutePage =
-        this.routing.getSelectedView() === SelectedView.SelectedRoute;
+      const loadedRoutePage = this.routing.getSelectedView() === SelectedView.SelectedRoute;
       if (!loadedRoutePage) {
         this.removeRouteMarkersFromMap();
         this.utmRoutes.selected.next(undefined);
@@ -105,12 +99,9 @@ export class MapService {
     });
 
     this.locationsClosestToCenter.subscribe(() => {
-      console.log(
-        'Locations closest to center updated:',
-        this.locationsClosestToCenter.getValue(),
-      );
+      console.log('Locations closest to center updated:', this.locationsClosestToCenter.getValue());
 
-      this.locationsClosestToCenter.getValue().map((locationCloseToCenter) => {
+      this.locationsClosestToCenter.getValue().map(locationCloseToCenter => {
         this.utmTranslate.translateObjectByKeys(
           locationCloseToCenter.location,
           environment.translateKeys.mapLocation,
@@ -124,7 +115,7 @@ export class MapService {
       });
     });
 
-    this.utmRoutes.selectedStopIdx.subscribe((stopIdx) => {
+    this.utmRoutes.selectedStopIdx.subscribe(stopIdx => {
       if (!this.utmRoutes.selectedStop) {
         this.fitMapToRouteBounds();
         this.shownStopPopup?.remove();
@@ -134,8 +125,7 @@ export class MapService {
         return;
       }
 
-      const selectedStop: UtmRouteStop | undefined =
-        this.utmRoutes.selectedStop;
+      const selectedStop: UtmRouteStop | undefined = this.utmRoutes.selectedStop;
       if (!selectedStop) {
         return;
       }
@@ -150,11 +140,7 @@ export class MapService {
 
         this._showMapStopPopup(
           stopCoords,
-          this.utmTranslate.getAsEnglishIfApplicable(
-            selectedStop,
-            'title',
-            'title_english',
-          ),
+          this.utmTranslate.getAsEnglishIfApplicable(selectedStop, 'title', 'title_english'),
           selectedStop.location?.address as string,
           selectedStop.location?.thumb as string,
           stopIdx,
@@ -283,9 +269,7 @@ export class MapService {
 
       if (this.routing.getSelectedView() === SelectedView.Locations) {
         this.addLocationsOnMap(false);
-      } else if (
-        this.routing.getSelectedView() === SelectedView.SelectedRoute
-      ) {
+      } else if (this.routing.getSelectedView() === SelectedView.SelectedRoute) {
         void this.addRouteMarkersOnMap();
         this.addLocationsOnMap(true);
       }
@@ -368,9 +352,7 @@ export class MapService {
     return boundingBox;
   }
 
-  private async _getLineStringCoordinatesFromGeoJSONUrl(
-    geoJSONUrl: string,
-  ): Promise<LngLatLike[]> {
+  private async _getLineStringCoordinatesFromGeoJSONUrl(geoJSONUrl: string): Promise<LngLatLike[]> {
     const geoJSON = await lastValueFrom(this.http.get<any>(geoJSONUrl));
     let coordinates: LngLatLike[] = [];
 
@@ -395,8 +377,7 @@ export class MapService {
 
     this.removeRouteMarkersFromMap();
 
-    const routeStops: UtmRouteStop[] | undefined =
-      this.utmRoutes.selected.getValue()?.stops;
+    const routeStops: UtmRouteStop[] | undefined = this.utmRoutes.selected.getValue()?.stops;
     if (!routeStops) {
       // console.warn('Could not find route stops');
       return;
@@ -412,18 +393,11 @@ export class MapService {
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [
-              stop?.location?.coords.lng,
-              stop?.location?.coords.lat,
-            ],
+            coordinates: [stop?.location?.coords.lng, stop?.location?.coords.lat],
           },
           properties: {
             label: idx + 1,
-            stop_title: this.utmTranslate.getAsEnglishIfApplicable(
-              stop,
-              'title',
-              'title_english',
-            ),
+            stop_title: this.utmTranslate.getAsEnglishIfApplicable(stop, 'title', 'title_english'),
             stop_address: stop.location?.address,
             stop_thumb: stop.location?.thumb,
             idx: idx,
@@ -437,11 +411,9 @@ export class MapService {
 
     if (routeGeoJSONUrl) {
       // TODO: Save these coordinates to the route object to prevent repeated future requests
-      routeLineCoordinates =
-        await this._getLineStringCoordinatesFromGeoJSONUrl(routeGeoJSONUrl);
+      routeLineCoordinates = await this._getLineStringCoordinatesFromGeoJSONUrl(routeGeoJSONUrl);
     } else {
-      routeLineCoordinates =
-        await this._getRouteStopsPathCoordinates(routeStops);
+      routeLineCoordinates = await this._getRouteStopsPathCoordinates(routeStops);
     }
 
     const stopsPathFeature: any = {
@@ -546,12 +518,12 @@ export class MapService {
       return;
     }
 
-    const locationFeatures: MapboxGeoJSONFeature[] = (
-      this.map.getSource('locations') as any
-    )['_data']['features'];
+    const locationFeatures: MapboxGeoJSONFeature[] = (this.map.getSource('locations') as any)[
+      '_data'
+    ]['features'];
 
     const locationCoordinates: LngLat[] | undefined = locationFeatures
-      .map((locationFeature) => {
+      .map(locationFeature => {
         const coords = (locationFeature.geometry as any)?.['coordinates'];
         const lng = coords[0];
         const lat = coords[1];
@@ -575,8 +547,7 @@ export class MapService {
       return;
     }
 
-    const locationBounds: LngLatBounds =
-      this.getBoundingBoxByCoordinates(locationCoordinates);
+    const locationBounds: LngLatBounds = this.getBoundingBoxByCoordinates(locationCoordinates);
 
     this.map.fitBounds(locationBounds, {
       padding: 50,
@@ -591,7 +562,7 @@ export class MapService {
 
     const stopsCoordinates: LngLat[] | undefined = this.utmRoutes.selected
       .getValue()
-      ?.stops?.filter((stop) => {
+      ?.stops?.filter(stop => {
         return (
           stop &&
           stop.location &&
@@ -599,14 +570,13 @@ export class MapService {
           !isNaN(stop.location?.coords.lat)
         );
       })
-      .map((stop) => {
+      .map(stop => {
         // @ts-ignore
         return new LngLat(stop.location.coords.lng, stop.location.coords.lat);
       });
 
     if (stopsCoordinates) {
-      const stopsBounds: LngLatBounds =
-        this.getBoundingBoxByCoordinates(stopsCoordinates);
+      const stopsBounds: LngLatBounds = this.getBoundingBoxByCoordinates(stopsCoordinates);
 
       this.map.fitBounds(stopsBounds, {
         padding: 100,
@@ -700,41 +670,34 @@ export class MapService {
     }
   }
 
-  async addMapLocationsFromServer(
-    hideLocations: boolean,
-    fitToLocationBounds: boolean,
-  ) {
+  async addMapLocationsFromServer(hideLocations: boolean, fitToLocationBounds: boolean) {
     // TODO: Prevent additional server requests when updating themes or time slider values
     this.allLocations.next(
       await lastValueFrom(this.apiService.getMapLocations())
-        .catch((err) => {
+        .catch(err => {
           console.error(err);
           return [];
         })
-        .then((locations) => {
+        .then(locations => {
           if (!locations || !locations.length) {
             console.error('No locations found in database');
           }
 
           // TODO: Make sure to parse all themes, min and max dates here
           // console.log('Locations (from server)', locations);
-          const uniqueLocations: MapLocation[] =
-            this._parseLocations(locations);
+          const uniqueLocations: MapLocation[] = this._parseLocations(locations);
 
-          const showableLocations = uniqueLocations.filter((location) => {
-            const locationHasSelectedTheme = this.themes.shouldShow(
-              location.story_theme_ids,
-            );
+          const showableLocations = uniqueLocations.filter(location => {
+            const locationHasSelectedTheme = this.themes.shouldShow(location.story_theme_ids);
 
             const locationIsInDateRange = this.time.isInSelectedRange(
               location.min_dates,
               location.max_dates,
             );
 
-            const locationHasSelectedOrganisation =
-              this.organisationFilter.shouldShow(
-                location.organisation_ids || [],
-              );
+            const locationHasSelectedOrganisation = this.organisationFilter.shouldShow(
+              location.organisation_ids || [],
+            );
 
             if (!location.geo) {
               console.warn('LOCATION WITHOUT GEO COORDINATES', location.url);
@@ -783,15 +746,7 @@ export class MapService {
       filter: ['has', 'point_count'],
       paint: {
         // 'circle-color': ['step', ['get', 'point_count'], '#ffffff', 80, '#fe0000', 200, '#fe0000'],
-        'circle-color': [
-          'step',
-          ['get', 'point_count'],
-          '#ffffff',
-          80,
-          '#ffffff',
-          200,
-          '#ffffff',
-        ],
+        'circle-color': ['step', ['get', 'point_count'], '#ffffff', 80, '#ffffff', 200, '#ffffff'],
         'circle-radius': ['step', ['get', 'point_count'], 18, 80, 36, 200, 36],
         'circle-stroke-width': 2,
         'circle-stroke-color': '#fe0000',
@@ -825,13 +780,12 @@ export class MapService {
 
     // Process the titles to strip HTML
     if (this.mapLocationsFeatures) {
-      this.mapLocationsFeatures.features.forEach((feature) => {
+      this.mapLocationsFeatures.features.forEach(feature => {
         if (feature.properties) {
           // Create a temporary div to parse HTML and get text content
           const tempDiv = document.createElement('div');
           tempDiv.innerHTML = feature.properties['title'];
-          feature.properties['plainTitle'] =
-            tempDiv.textContent || tempDiv.innerText || '';
+          feature.properties['plainTitle'] = tempDiv.textContent || tempDiv.innerText || '';
           // Clean up the temporary div
           tempDiv.remove();
         }
@@ -875,7 +829,7 @@ export class MapService {
 
   private _parseLocations(locations: MapLocation[]): MapLocation[] {
     const uniqueLocations: { [nid: string]: MapLocation } = {};
-    locations.forEach((location) => {
+    locations.forEach(location => {
       const splitStringToArray = (str?: string): string[] => {
         return str ? str.split(', ') : [];
       };
@@ -888,9 +842,7 @@ export class MapService {
         ? false
         : location.hide_from_map_str === '1';
 
-      const storyThemeIds: string[] = splitStringToArray(
-        location?.story_theme_ids_str,
-      );
+      const storyThemeIds: string[] = splitStringToArray(location?.story_theme_ids_str);
       uniqueLocations[location.nid].story_theme_ids = [
         ...(uniqueLocations[location.nid].story_theme_ids ?? []),
         ...storyThemeIds,
@@ -907,9 +859,7 @@ export class MapService {
         ...maxDates,
       ];
 
-      const organisationIds: string[] = splitStringToArray(
-        location?.organisation_ids_str,
-      );
+      const organisationIds: string[] = splitStringToArray(location?.organisation_ids_str);
       uniqueLocations[location.nid].organisation_ids = organisationIds;
     });
 
@@ -936,34 +886,23 @@ export class MapService {
     // TODO: Also check if in bounds?
 
     const center = this.map.getCenter();
-    let locationsWithDistances: LocationDistanceFromCenter[] =
-      this.mapLocationsFeatures.features
-        .map((feature: any) => {
-          const [lng, lat] = feature.geometry.coordinates;
-          const distance = UtilService.getDistanceFromLatLonInKm(
-            center.lat,
-            center.lng,
-            lat,
-            lng,
-          );
-          const location: MapLocation = feature?.properties;
-          return { location, distanceFromCenterInKm: distance };
-        })
-        .filter((item: any) => {
-          const locationIsSelected: boolean =
-            this.selectedLocation.getValue()?.nid ===
-            item.location.nid.toString();
-          const locationIsSelectedAsStop =
-            this.utmRoutes.selectedStop?.id === item.location.nid.toString();
-          return (
-            !isNaN(item.distanceFromCenterInKm) &&
-            !locationIsSelected &&
-            !locationIsSelectedAsStop
-          );
-        });
-    locationsWithDistances.sort(
-      (a, b) => a.distanceFromCenterInKm - b.distanceFromCenterInKm,
-    );
+    let locationsWithDistances: LocationDistanceFromCenter[] = this.mapLocationsFeatures.features
+      .map((feature: any) => {
+        const [lng, lat] = feature.geometry.coordinates;
+        const distance = UtilService.getDistanceFromLatLonInKm(center.lat, center.lng, lat, lng);
+        const location: MapLocation = feature?.properties;
+        return { location, distanceFromCenterInKm: distance };
+      })
+      .filter((item: any) => {
+        const locationIsSelected: boolean =
+          this.selectedLocation.getValue()?.nid === item.location.nid.toString();
+        const locationIsSelectedAsStop =
+          this.utmRoutes.selectedStop?.id === item.location.nid.toString();
+        return (
+          !isNaN(item.distanceFromCenterInKm) && !locationIsSelected && !locationIsSelectedAsStop
+        );
+      });
+    locationsWithDistances.sort((a, b) => a.distanceFromCenterInKm - b.distanceFromCenterInKm);
     locationsWithDistances = locationsWithDistances.slice(0, maxItems);
     this.locationsClosestToCenter.next(locationsWithDistances);
   }
@@ -1031,8 +970,7 @@ export class MapService {
     }
 
     const urlWithoutParams = url.split('?')[0];
-    const locationIsAlreadySelected =
-      urlWithoutParams === this.selectedLocation.getValue()?.url;
+    const locationIsAlreadySelected = urlWithoutParams === this.selectedLocation.getValue()?.url;
     if (locationIsAlreadySelected) {
       return;
     }
@@ -1040,10 +978,7 @@ export class MapService {
     setTimeout(() => (this.spinner.loadingLocation = true));
     if (!locationId) {
       const urlWithoutParams = url.split('?')[0];
-      console.log(
-        '(location) Retrieving Nid from URL alias',
-        urlWithoutParams + '...',
-      );
+      console.log('(location) Retrieving Nid from URL alias', urlWithoutParams + '...');
       locationId = await this.apiService.getNidFromUrlAlias(urlWithoutParams);
     }
 
@@ -1137,7 +1072,7 @@ export class MapService {
     // Catch popup clicks and route them to the Angular routing service
     const link = popup.getElement()?.querySelector('.popup-location-link');
     if (link) {
-      link.addEventListener('click', (event) => {
+      link.addEventListener('click', event => {
         event.preventDefault();
         const url = link.getAttribute('data-url');
         if (url) {
@@ -1149,12 +1084,7 @@ export class MapService {
     }
   }
 
-  private _getStopPopupHtml(
-    title: string,
-    address: string,
-    thumb: string,
-    idx: number,
-  ): string {
+  private _getStopPopupHtml(title: string, address: string, thumb: string, idx: number): string {
     return `
     <a data-stop-idx="${idx}" class="popup-stop-link">
       <div>
@@ -1217,9 +1147,7 @@ export class MapService {
 
       if (markerLabel) {
         const popup = new mapboxgl.Popup({ offset: 15 })
-          .setHTML(
-            `<div class="marker-popup" style="padding: 15px;">${markerLabel}</div>`,
-          )
+          .setHTML(`<div class="marker-popup" style="padding: 15px;">${markerLabel}</div>`)
           .setMaxWidth('300px');
 
         this.destinationMarker.setPopup(popup);
@@ -1286,15 +1214,12 @@ export class MapService {
     this.shownStopPopup = popup;
   }
 
-  private async _getRouteStopsPathCoordinates(
-    routeStops: UtmRouteStop[],
-  ): Promise<LngLatLike[]> {
+  private async _getRouteStopsPathCoordinates(routeStops: UtmRouteStop[]): Promise<LngLatLike[]> {
     const coordsStr: string = routeStops
-      .map((stop) => {
+      .map(stop => {
         if (stop?.location?.coords) {
           const hasInvalidCoords =
-            isNaN(stop?.location?.coords.lng) ||
-            isNaN(stop?.location?.coords.lat);
+            isNaN(stop?.location?.coords.lng) || isNaN(stop?.location?.coords.lat);
           if (hasInvalidCoords) {
             return undefined;
           }
@@ -1302,7 +1227,7 @@ export class MapService {
         }
         return undefined;
       })
-      .filter((coordStr) => coordStr !== undefined)
+      .filter(coordStr => coordStr !== undefined)
       .join(';');
 
     if (!coordsStr) {
@@ -1315,9 +1240,7 @@ export class MapService {
       environment.mapboxAccessToken;
 
     // console.log(directionsRequest);
-    const directionsData: any = await lastValueFrom(
-      this.http.get(directionsRequest),
-    );
+    const directionsData: any = await lastValueFrom(this.http.get(directionsRequest));
 
     let coordinates = [];
     if (directionsData.routes.length > 0) {

@@ -1,86 +1,59 @@
 @if (utmRoutes.selectedStop?.audio && !shouldShowEnglishAudio) {
-  <app-audio-player
-    [audioUrl]="utmRoutes.selectedStop?.audio"
-    [transcript]="utmRoutes.selectedStop?.audio_transcript"
-    class="route-stop-audio-player"
-  />
-}
-
-@if (shouldShowEnglishAudio) {
-  <app-audio-player
-    [audioUrl]="utmRoutes.selectedStop?.audio_english"
-    [transcript]="utmRoutes.selectedStop?.audio_transcript"
-    class="route-stop-audio-player"
-  />
+<app-audio-player
+  [audioUrl]="utmRoutes.selectedStop?.audio"
+  [transcript]="utmRoutes.selectedStop?.audio_transcript"
+  class="route-stop-audio-player"
+/>
+} @if (shouldShowEnglishAudio) {
+<app-audio-player
+  [audioUrl]="utmRoutes.selectedStop?.audio_english"
+  [transcript]="utmRoutes.selectedStop?.audio_transcript"
+  class="route-stop-audio-player"
+/>
 }
 
 <app-edit-button [nid]="utmRoutes.selectedStop?.id"></app-edit-button>
 
 <h2
   [innerHtml]="
-    utmTranslate.getAsEnglishIfApplicable(
-      utmRoutes.selectedStop,
-      'title',
-      'title_english'
-    )
+    utmTranslate.getAsEnglishIfApplicable(utmRoutes.selectedStop, 'title', 'title_english')
   "
 ></h2>
-@if (
-  this.utmTranslate.getAsEnglishIfApplicable(
-    utmRoutes.selectedStop,
-    "intro",
-    "intro_english"
-  )
+@if ( this.utmTranslate.getAsEnglishIfApplicable( utmRoutes.selectedStop, "intro", "intro_english" )
 ) {
-  <div class="stop-intro-container">
-    <p
-      class="stop-intro"
-      [innerHTML]="
-        this.utmTranslate.getAsEnglishIfApplicable(
-          utmRoutes.selectedStop,
-          'intro',
-          'intro_english'
-        )
-      "
-    ></p>
-  </div>
+<div class="stop-intro-container">
+  <p
+    class="stop-intro"
+    [innerHTML]="
+      this.utmTranslate.getAsEnglishIfApplicable(utmRoutes.selectedStop, 'intro', 'intro_english')
+    "
+  ></p>
+</div>
 }
 
 <div class="media-container">
   @if (utmRoutes.selectedStop?.stories) {
-    <div>
-      @for (story of utmRoutes.selectedStop?.stories; track story) {
-        @if (story?.title) {
-          <div
-            class="story-head"
-            [hidden]="story.title === utmRoutes.selectedStop?.title"
-          >
-            <h2 [innerHTML]="story.title"></h2>
-          </div>
-        }
-        @if (story.audio) {
-          <app-audio-player
-            [audioUrl]="story.audio"
-            class="story-audio-player"
-          />
-        }
-        @for (mediaItem of story?.mediaItems; track mediaItem; let i = $index) {
-          <div class="views-element-container">
-            <app-media-item
-              [mediaItem]="mediaItem"
-              [showTitle]="!(i === 0 && mediaItem.title === story.title)"
-              [addTopMargin]="false"
-            ></app-media-item>
-          </div>
-        }
-      }
+  <div>
+    @for (story of utmRoutes.selectedStop?.stories; track story) { @if (story?.title) {
+    <div class="story-head" [hidden]="story.title === utmRoutes.selectedStop?.title">
+      <h2 [innerHTML]="story.title"></h2>
     </div>
-  }
-
-  @if (utmRoutes.hasNextStop()) {
-    <a class="route-next route-button" (click)="utmRoutes.selectNextStop(0)">
-      {{ "nextStop" | translate }}
-    </a>
+    } @if (story.audio) {
+    <app-audio-player [audioUrl]="story.audio" class="story-audio-player" />
+    } @for (mediaItem of story?.mediaItems; track mediaItem; let i = $index) {
+    <div class="views-element-container">
+      <app-media-item
+        [mediaItem]="mediaItem"
+        [showTitle]="!(i === 0 && mediaItem.title === story.title)"
+        [addTopMargin]="false"
+      ></app-media-item>
+    </div>
+    } }
+  </div>
+  } @if (utmRoutes.hasNextStop()) {
+  <a class="route-next route-button" (click)="utmRoutes.selectNextStop(0)">
+    {{ 'nextStop' | translate }}
+  </a>
   }
 </div>
 

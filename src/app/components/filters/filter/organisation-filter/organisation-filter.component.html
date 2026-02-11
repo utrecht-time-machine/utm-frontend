@@ -6,24 +6,17 @@
   <div class="organisation-scroll-area">
     <div class="organisation-grid">
       @for (organisation of organisations.all | async; track organisation) {
-        <div
-          class="organisation-logo-container"
-          [class.selected]="organisationFilter.isSelected(organisation.id)"
-          (click)="organisationFilter.toggle(organisation.id)"
-          [title]="organisation.title"
-        >
-          <div class="organisation-logo-border">
-            <img
-              [src]="organisation.logo"
-              [alt]="organisation.title"
-              class="organisation-logo"
-            />
-          </div>
-          <div
-            class="organisation-title"
-            [innerHTML]="organisation.title"
-          ></div>
+      <div
+        class="organisation-logo-container"
+        [class.selected]="organisationFilter.isSelected(organisation.id)"
+        (click)="organisationFilter.toggle(organisation.id)"
+        [title]="organisation.title"
+      >
+        <div class="organisation-logo-border">
+          <img [src]="organisation.logo" [alt]="organisation.title" class="organisation-logo" />
         </div>
+        <div class="organisation-title" [innerHTML]="organisation.title"></div>
+      </div>
       }
     </div>
   </div>

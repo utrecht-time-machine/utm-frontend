@@ -8,9 +8,7 @@ import { CordovaService } from '../cordova.service';
 export class PushNotificationPermissionsService {
   constructor(private cordova: CordovaService) {}
 
-  private async getLocalNotification(
-    timeoutMs = 2000,
-  ): Promise<any | undefined> {
+  private async getLocalNotification(timeoutMs = 2000): Promise<any | undefined> {
     const ready = await this.cordova.ready(timeoutMs);
     if (!ready) {
       return undefined;
@@ -33,16 +31,11 @@ export class PushNotificationPermissionsService {
       return true;
     }
 
-    return await new Promise<boolean>((resolve) => {
+    return await new Promise<boolean>(resolve => {
       try {
-        localNotification.hasPermission((granted: boolean) =>
-          resolve(!!granted),
-        );
+        localNotification.hasPermission((granted: boolean) => resolve(!!granted));
       } catch (e) {
-        console.warn(
-          '[PushNotificationPermissionsService] hasPermission failed',
-          e,
-        );
+        console.warn('[PushNotificationPermissionsService] hasPermission failed', e);
         resolve(false);
       }
     });
@@ -61,16 +54,11 @@ export class PushNotificationPermissionsService {
       return true;
     }
 
-    return await new Promise<boolean>((resolve) => {
+    return await new Promise<boolean>(resolve => {
       try {
-        localNotification.requestPermission((granted: boolean) =>
-          resolve(!!granted),
-        );
+        localNotification.requestPermission((granted: boolean) => resolve(!!granted));
       } catch (e) {
-        console.warn(
-          '[PushNotificationPermissionsService] requestPermission failed',
-          e,
-        );
+        console.warn('[PushNotificationPermissionsService] requestPermission failed', e);
         resolve(false);
       }
     });

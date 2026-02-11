@@ -8,13 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [OrganisationFilterComponent],
-  imports: [
-    CommonModule,
-    FilterModule,
-    TranslateModule,
-    MatCheckboxModule,
-    MatIconModule,
-  ],
+  imports: [CommonModule, FilterModule, TranslateModule, MatCheckboxModule, MatIconModule],
   exports: [OrganisationFilterComponent],
 })
 export class OrganisationFilterModule {}

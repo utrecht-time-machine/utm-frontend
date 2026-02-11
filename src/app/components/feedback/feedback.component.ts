@@ -53,9 +53,7 @@ export class FeedbackComponent {
       return false;
     }
 
-    return (
-      this.feedbackService.getItemRating(this.feedbackItemId) !== undefined
-    );
+    return this.feedbackService.getItemRating(this.feedbackItemId) !== undefined;
   }
 
   private showStatusMessage(status: 'success' | 'error', message: string) {
@@ -86,16 +84,10 @@ export class FeedbackComponent {
 
     try {
       await this.feedbackService.comment(this.feedbackItemId, this.commentText);
-      this.showStatusMessage(
-        'success',
-        this.translate.instant('commentSendingSuccess'),
-      );
+      this.showStatusMessage('success', this.translate.instant('commentSendingSuccess'));
       this.commentText = '';
     } catch (error) {
-      this.showStatusMessage(
-        'error',
-        this.translate.instant('commentSendingError'),
-      );
+      this.showStatusMessage('error', this.translate.instant('commentSendingError'));
     }
 
     this.isSubmittingComment = false;

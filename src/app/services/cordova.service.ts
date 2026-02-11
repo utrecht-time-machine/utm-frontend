@@ -21,7 +21,7 @@ export class CordovaService {
       return;
     }
 
-    this.readyPromise = new Promise<boolean>((resolve) => {
+    this.readyPromise = new Promise<boolean>(resolve => {
       document.addEventListener(
         'deviceready',
         () => {
@@ -48,9 +48,7 @@ export class CordovaService {
 
     return await Promise.race([
       this.readyPromise,
-      new Promise<boolean>((resolve) =>
-        window.setTimeout(() => resolve(false), timeoutMs),
-      ),
+      new Promise<boolean>(resolve => window.setTimeout(() => resolve(false), timeoutMs)),
     ]);
   }
 

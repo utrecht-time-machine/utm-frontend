@@ -1,9 +1,9 @@
 <div class="header-left">
   @if (icon) {
-    <img [src]="icon" [alt]="title" class="filter-icon" />
+  <img [src]="icon" [alt]="title" class="filter-icon" />
   }
   <span class="header-title">{{ title }}</span>
   @if (isActive) {
-    <div class="badge" [@fadeInOut]>Actief</div>
+  <div class="badge" [@fadeInOut]>Actief</div>
   }
 </div>

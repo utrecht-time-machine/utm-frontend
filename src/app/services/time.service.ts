@@ -8,12 +8,8 @@ export class TimeService {
   DEFAULT_MIN_YEAR = 0;
   DEFAULT_MAX_YEAR = new Date().getFullYear();
 
-  minYear: BehaviorSubject<number> = new BehaviorSubject<number>(
-    this.DEFAULT_MIN_YEAR,
-  );
-  maxYear: BehaviorSubject<number> = new BehaviorSubject<number>(
-    this.DEFAULT_MAX_YEAR,
-  );
+  minYear: BehaviorSubject<number> = new BehaviorSubject<number>(this.DEFAULT_MIN_YEAR);
+  maxYear: BehaviorSubject<number> = new BehaviorSubject<number>(this.DEFAULT_MAX_YEAR);
   isSliding = new BehaviorSubject<boolean>(false);
 
   constructor() {}
@@ -24,8 +20,7 @@ export class TimeService {
 
   isSetToDefaultRange(): boolean {
     return (
-      this.minYear.value <= this.DEFAULT_MIN_YEAR &&
-      this.maxYear.value >= this.DEFAULT_MAX_YEAR
+      this.minYear.value <= this.DEFAULT_MIN_YEAR && this.maxYear.value >= this.DEFAULT_MAX_YEAR
     );
   }
 
@@ -36,34 +31,23 @@ export class TimeService {
 
   isInSelectedRange(minDates: string[], maxDates: string[]) {
     // If no dates are provided, show only if slider is at default range
-    const hasMinDate =
-      minDates?.length > 0 && minDates.some((date) => date !== '');
-    const hasMaxDate =
-      maxDates?.length > 0 && maxDates.some((date) => date !== '');
+    const hasMinDate = minDates?.length > 0 && minDates.some(date => date !== '');
+    const hasMaxDate = maxDates?.length > 0 && maxDates.some(date => date !== '');
 
     if (!hasMinDate && !hasMaxDate) {
       return this.isSetToDefaultRange();
     }
 
     // Get the min and max years from the dates
-    const minYears = minDates
-      .filter((date) => date !== '')
-      .map((date) => new Date(date).getFullYear());
-    const maxYears = maxDates
-      .filter((date) => date !== '')
-      .map((date) => new Date(date).getFullYear());
+    const minYears = minDates.filter(date => date !== '').map(date => new Date(date).getFullYear());
+    const maxYears = maxDates.filter(date => date !== '').map(date => new Date(date).getFullYear());
 
-    const locationMinYear =
-      minYears.length > 0 ? Math.min(...minYears) : undefined;
-    const locationMaxYear =
-      maxYears.length > 0 ? Math.max(...maxYears) : undefined;
+    const locationMinYear = minYears.length > 0 ? Math.min(...minYears) : undefined;
+    const locationMaxYear = maxYears.length > 0 ? Math.max(...maxYears) : undefined;
 
     // If we have both min and max dates
     if (locationMinYear !== undefined && locationMaxYear !== undefined) {
-      return (
-        locationMinYear <= this.maxYear.value &&
-        locationMaxYear >= this.minYear.value
-      );
+      return locationMinYear <= this.maxYear.value && locationMaxYear >= this.minYear.value;
     }
 
     // If we have only one date

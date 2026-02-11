@@ -9,9 +9,7 @@
         <a (click)="this.router.navigateByUrl('/intro')"></a>
       </div>
       <div class="site-name">
-        <a (click)="this.router.navigateByUrl('/intro')"
-          >Utrecht<br />Time Machine</a
-        >
+        <a (click)="this.router.navigateByUrl('/intro')">Utrecht<br />Time Machine</a>
       </div>
       <div class="site-live">
         <div class="views-element-container">
@@ -52,60 +50,41 @@
                   }"
                 >
                   <!-- Location, route and story results -->
-                  @for (type of liveSearchResultTypes; track type) {
-                    @if (search.getLiveSearchResultsByType(type)?.length) {
-                      <li class="search-result-type">
-                        <img
-                          [src]="getSearchResultTypeConfig(type).icon"
-                          alt="{{ type }} icon"
-                          class="header-icon"
-                        />
-                        {{
-                          getSearchResultTypeConfig(type).titleTranslationKey
-                            | translate
-                        }}
-                      </li>
-                    }
-                    @for (
-                      searchResult of search.getLiveSearchResultsByType(type);
-                      track searchResult
-                    ) {
-                      <li
-                        [innerHtml]="searchResult.label"
-                        (click)="
-                          getSearchResultTypeConfig(type).clickHandler(
-                            searchResult.url
-                          )
-                        "
-                      ></li>
-                    }
-                  }
+                  @for (type of liveSearchResultTypes; track type) { @if
+                  (search.getLiveSearchResultsByType(type)?.length) {
+                  <li class="search-result-type">
+                    <img
+                      [src]="getSearchResultTypeConfig(type).icon"
+                      alt="{{ type }} icon"
+                      class="header-icon"
+                    />
+                    {{ getSearchResultTypeConfig(type).titleTranslationKey | translate }}
+                  </li>
+                  } @for ( searchResult of search.getLiveSearchResultsByType(type); track
+                  searchResult ) {
+                  <li
+                    [innerHtml]="searchResult.label"
+                    (click)="getSearchResultTypeConfig(type).clickHandler(searchResult.url)"
+                  ></li>
+                  } }
 
                   <!-- Address Results -->
                   @if ((search.addressResults | async)?.length) {
-                    <li class="search-result-type">
-                      <img
-                        src="assets/ui/svg/map.svg"
-                        alt="Addresses icon"
-                        class="header-icon"
-                      />
-                      {{ "addressesOnMap" | translate }}
-                    </li>
-                  }
-                  @for (
-                    address of search.addressResults | async;
-                    track address
-                  ) {
-                    <li
-                      (click)="onAddressSelect(address)"
-                      (mousedown)="$event.preventDefault()"
-                      class="address-result"
-                    >
-                      <div class="search-view">
-                        <div class="name">{{ address.place_name }}</div>
-                        <!-- <div class="addr">{{ address.text }}</div> -->
-                      </div>
-                    </li>
+                  <li class="search-result-type">
+                    <img src="assets/ui/svg/map.svg" alt="Addresses icon" class="header-icon" />
+                    {{ 'addressesOnMap' | translate }}
+                  </li>
+                  } @for ( address of search.addressResults | async; track address ) {
+                  <li
+                    (click)="onAddressSelect(address)"
+                    (mousedown)="$event.preventDefault()"
+                    class="address-result"
+                  >
+                    <div class="search-view">
+                      <div class="name">{{ address.place_name }}</div>
+                      <!-- <div class="addr">{{ address.text }}</div> -->
+                    </div>
+                  </li>
                   }
                 </ul>
               </div>

@@ -86,10 +86,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
       if (clientX < boundingRect.left || clientX > boundingRect.right) return;
 
       const clickX = clientX - boundingRect.left;
-      const percentage = Math.max(
-        0,
-        Math.min(100, (clickX / boundingRect.width) * 100),
-      );
+      const percentage = Math.max(0, Math.min(100, (clickX / boundingRect.width) * 100));
 
       this.setTimeByPercentage(percentage);
     } catch (error) {

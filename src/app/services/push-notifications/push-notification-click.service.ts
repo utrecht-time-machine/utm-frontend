@@ -9,10 +9,7 @@ import { UtmRoutesService } from '../utm-routes.service';
 export class PushNotificationClickService {
   private sub: Subscription | undefined;
 
-  constructor(
-    private push: PushNotificationService,
-    private utmRoutes: UtmRoutesService,
-  ) {
+  constructor(private push: PushNotificationService, private utmRoutes: UtmRoutesService) {
     void this.init();
   }
 
@@ -51,8 +48,8 @@ export class PushNotificationClickService {
       typeof stopIdx === 'number'
         ? stopIdx
         : typeof stopIdx === 'string'
-          ? Number(stopIdx)
-          : undefined;
+        ? Number(stopIdx)
+        : undefined;
 
     void this.utmRoutes.navigateToRouteStop(routeId, stopIdxNum);
     return true;

@@ -1,6 +1,6 @@
-@import "assets/scss/fonts";
-@import "assets/scss/core";
-@import "mapbox-gl/dist/mapbox-gl.css";
+@import 'assets/scss/fonts';
+@import 'assets/scss/core';
+@import 'mapbox-gl/dist/mapbox-gl.css';
 
 // 360 photo viewer
 .psv-container {
@@ -36,18 +36,8 @@
   --mat-slider-with-tick-marks-active-container-color: #fff;
   --mat-slider-with-tick-marks-inactive-container-color: white; //var(--red);
   --mat-mdc-slider-ripple-color: rgba(0, 0, 0, 0); //var(--red);
-  --mat-mdc-slider-hover-ripple-color: rgba(
-    0,
-    0,
-    0,
-    0
-  ); // rgba(254, 0, 62, 0.1);
-  --mat-mdc-slider-focus-ripple-color: rgba(
-    0,
-    0,
-    0,
-    0
-  ); // rgba(254, 0, 62, 0.1);
+  --mat-mdc-slider-hover-ripple-color: rgba(0, 0, 0, 0); // rgba(254, 0, 62, 0.1);
+  --mat-mdc-slider-focus-ripple-color: rgba(0, 0, 0, 0); // rgba(254, 0, 62, 0.1);
   --mat-slider-label-container-color: var(--red);
   --mat-mdc-slider-value-indicator-opacity: 1;
   .mdc-slider__value-indicator {

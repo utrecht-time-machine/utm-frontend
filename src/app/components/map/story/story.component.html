@@ -1,42 +1,29 @@
 <div class="pad">
-  <app-edit-button
-    [nid]="story.shownStory.getValue()?.story_id"
-  ></app-edit-button>
+  <app-edit-button [nid]="story.shownStory.getValue()?.story_id"></app-edit-button>
 
   <h2>
     {{
-      utmTranslate.getAsEnglishIfApplicable(
-        story.shownStory.getValue(),
-        "title",
-        "title_english"
-      ) | unescape
+      utmTranslate.getAsEnglishIfApplicable(story.shownStory.getValue(), 'title', 'title_english')
+        | unescape
     }}
   </h2>
   @if (story.shownStory.getValue()?.location_title) {
-    <p class="story-location">
-      {{ "location" | translate }}:
-      <a
-        (click)="onLocationLinkClicked()"
-        [innerHtml]="story.shownStory.getValue()?.location_title"
-      ></a>
-    </p>
-  }
-
-  @if (story.shownStory.getValue()?.audio) {
-    <app-audio-player
-      [audioUrl]="story.shownStory.getValue()?.audio"
-      class="story-audio-player"
-    />
+  <p class="story-location">
+    {{ 'location' | translate }}:
+    <a
+      (click)="onLocationLinkClicked()"
+      [innerHtml]="story.shownStory.getValue()?.location_title"
+    ></a>
+  </p>
+  } @if (story.shownStory.getValue()?.audio) {
+  <app-audio-player [audioUrl]="story.shownStory.getValue()?.audio" class="story-audio-player" />
   }
 
   <div class="media-container">
-    @for (
-      mediaItem of story.shownStory.getValue()?.mediaItems;
-      track mediaItem
-    ) {
-      <div class="views-element-container">
-        <app-media-item [mediaItem]="mediaItem"></app-media-item>
-      </div>
+    @for ( mediaItem of story.shownStory.getValue()?.mediaItems; track mediaItem ) {
+    <div class="views-element-container">
+      <app-media-item [mediaItem]="mediaItem"></app-media-item>
+    </div>
     }
   </div>
 

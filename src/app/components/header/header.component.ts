@@ -39,7 +39,7 @@ export class HeaderComponent {
     public themes: ThemeService,
     public utmRoutes: UtmRoutesService,
   ) {
-    this.searchInputSubject.pipe(debounceTime(300)).subscribe((searchInput) => {
+    this.searchInputSubject.pipe(debounceTime(300)).subscribe(searchInput => {
       void this.search.updateLiveSearchResults(searchInput);
     });
   }
@@ -51,8 +51,7 @@ export class HeaderComponent {
   onSearchBlur(event: FocusEvent) {
     const clickedElement = event.relatedTarget as HTMLElement;
     const clickInsideContainer =
-      clickedElement &&
-      this.searchContainer.nativeElement.contains(clickedElement);
+      clickedElement && this.searchContainer.nativeElement.contains(clickedElement);
     if (!clickInsideContainer) {
       this.search.hideLiveSearchResults();
     }
@@ -75,7 +74,7 @@ export class HeaderComponent {
       this.routing.getSelectedView() === SelectedView.SelectedRoute;
     if (!isAlreadyShowingMap) {
       await this.router.navigateByUrl('/locaties');
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
     }
 
     this.map.flyTo(address.center, 16, address.place_name);

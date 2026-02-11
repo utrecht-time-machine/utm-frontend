@@ -4,13 +4,7 @@ import { FilterService } from '../../services/filter.service';
 import { map, combineLatest, lastValueFrom, take } from 'rxjs';
 import { RoutingService } from 'src/app/services/routing.service';
 import { SelectedView } from 'src/app/models/selected-view';
-import {
-  trigger,
-  transition,
-  style,
-  animate,
-  state,
-} from '@angular/animations';
+import { trigger, transition, style, animate, state } from '@angular/animations';
 
 @Component({
   selector: 'app-filters',
@@ -60,10 +54,7 @@ export class FiltersComponent {
     }
   }
 
-  getStyles$ = combineLatest([
-    this.time.isSliding,
-    this.filters.isShowing,
-  ]).pipe(
+  getStyles$ = combineLatest([this.time.isSliding, this.filters.isShowing]).pipe(
     map(([isSliding, isShowingFilters]) => ({
       background: `rgba(255, 255, 255, 0.85)`,
       'backdrop-filter': `blur(16px)`,

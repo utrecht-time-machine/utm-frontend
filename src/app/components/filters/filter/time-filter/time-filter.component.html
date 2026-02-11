@@ -16,16 +16,8 @@
       (mousedown)="onSlideStart()"
       (touchstart)="onSlideStart()"
     >
-      <input
-        [value]="time.minYear.value"
-        matSliderStartThumb
-        id="min-year-input"
-      />
-      <input
-        [value]="time.maxYear.value"
-        matSliderEndThumb
-        id="max-year-input"
-      />
+      <input [value]="time.minYear.value" matSliderStartThumb id="min-year-input" />
+      <input [value]="time.maxYear.value" matSliderEndThumb id="max-year-input" />
     </mat-slider>
   </div>
 </app-filter>

@@ -11,10 +11,7 @@ import { FilterType } from '../../../../models/filter-type.enum';
   standalone: false,
 })
 export class ThemeFilterComponent extends FilterComponent {
-  constructor(
-    public themes: ThemeService,
-    public filters: FilterService,
-  ) {
+  constructor(public themes: ThemeService, public filters: FilterService) {
     super();
   }
 

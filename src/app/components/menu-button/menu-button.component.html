@@ -1,10 +1,10 @@
 @if (routing.getSelectedView() !== SelectedView.Story) {
-  <div class="menu-mb-btn">
-    <a (click)="menuService.toggleMbMenu()">
-      <div></div>
-      <div></div>
-    </a>
-  </div>
+<div class="menu-mb-btn">
+  <a (click)="menuService.toggleMbMenu()">
+    <div></div>
+    <div></div>
+  </a>
+</div>
 }
 
 <div class="menu-mb">
@@ -28,66 +28,56 @@
 <div class="menu-az">
   <div>
     @if (menuService.azMenuIsShown) {
-      <div class="menu-az-inner">
-        <div class="brand white" (click)="onBrandLogoClicked()">
-          <div>Utrecht<br />Time Machine</div>
-        </div>
-        <div
-          class="az-view-nav"
-          [ngClass]="{
+    <div class="menu-az-inner">
+      <div class="brand white" (click)="onBrandLogoClicked()">
+        <div>Utrecht<br />Time Machine</div>
+      </div>
+      <div
+        class="az-view-nav"
+        [ngClass]="{
             'sorted-on-address': menuIsSortedOn === MenuSortOn.Address,
           }"
-          (click)="toggleMenuSort()"
-        >
-          <div>{{ "name" | translate }}</div>
-          <div>
-            <div class="switch">
-              <div></div>
-              <div></div>
-            </div>
+        (click)="toggleMenuSort()"
+      >
+        <div>{{ 'name' | translate }}</div>
+        <div>
+          <div class="switch">
+            <div></div>
+            <div></div>
           </div>
-          <div>{{ "address" | translate }}</div>
         </div>
-        <div class="az-view on" data-id="a">
-          @if (locationsByLetterAreLoaded) {
-            <div class="views-element-container">
-              @for (letter of alphabet; track letter) {
-                <div>
-                  <h3>{{ letter }}</h3>
-                  @for (location of locationsByLetter[letter]; track location) {
-                    <div>
-                      <a
-                        (click)="
-                          map.selectLocationByUrlOrId(
-                            location.url,
-                            location.nid
-                          )
-                        "
-                        ><span
-                          class="name"
-                          [innerHtml]="
-                            menuIsSortedOn === MenuSortOn.Title
-                              ? location.title
-                              : location.address
-                          "
-                        ></span
-                        ><span
-                          class="name-sub"
-                          [innerHtml]="
-                            menuIsSortedOn === MenuSortOn.Title
-                              ? location.address
-                              : location.title
-                          "
-                        ></span
-                      ></a>
-                    </div>
-                  }
-                </div>
-              }
+        <div>{{ 'address' | translate }}</div>
+      </div>
+      <div class="az-view on" data-id="a">
+        @if (locationsByLetterAreLoaded) {
+        <div class="views-element-container">
+          @for (letter of alphabet; track letter) {
+          <div>
+            <h3>{{ letter }}</h3>
+            @for (location of locationsByLetter[letter]; track location) {
+            <div>
+              <a (click)="map.selectLocationByUrlOrId(location.url, location.nid)"
+                ><span
+                  class="name"
+                  [innerHtml]="
+                    menuIsSortedOn === MenuSortOn.Title ? location.title : location.address
+                  "
+                ></span
+                ><span
+                  class="name-sub"
+                  [innerHtml]="
+                    menuIsSortedOn === MenuSortOn.Title ? location.address : location.title
+                  "
+                ></span
+              ></a>
             </div>
+            }
+          </div>
           }
         </div>
+        }
       </div>
+    </div>
     }
   </div>
 </div>

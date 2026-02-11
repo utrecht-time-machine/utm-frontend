@@ -32,7 +32,7 @@ export class GeofenceOverlayService {
     this.map = map;
 
     if (!this.sub) {
-      this.sub = this.geofences.state$.subscribe((state) => {
+      this.sub = this.geofences.state$.subscribe(state => {
         const visible = Boolean(state.enabled && state.locationPermissionOk);
         this.visible = visible;
         this.fences = state.activeGeofences;
@@ -68,9 +68,7 @@ export class GeofenceOverlayService {
 
     const data = this.buildGeoJson(fences);
 
-    const existing = map.getSource(this.sourceId) as
-      | mapboxgl.GeoJSONSource
-      | undefined;
+    const existing = map.getSource(this.sourceId) as mapboxgl.GeoJSONSource | undefined;
 
     const beforeLayerId =
       map.getLayer('stops-marker')?.id ??
@@ -155,12 +153,15 @@ export class GeofenceOverlayService {
         radius,
       };
 
-      const circlePoly: Feature<Polygon, GeofenceOverlayProperties> =
-        turfCircle([lng, lat], radius / 1000, {
+      const circlePoly: Feature<Polygon, GeofenceOverlayProperties> = turfCircle(
+        [lng, lat],
+        radius / 1000,
+        {
           steps: 64,
           units: 'kilometers',
           properties,
-        });
+        },
+      );
 
       features.push(circlePoly);
     }

@@ -8,16 +8,10 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class RoutingService {
-  public readonly selectedView = new BehaviorSubject<SelectedView>(
-    SelectedView.Undefined,
-  );
+  public readonly selectedView = new BehaviorSubject<SelectedView>(SelectedView.Undefined);
 
-  constructor(
-    private route: ActivatedRoute,
-    public router: Router,
-    private story: StoryService,
-  ) {
-    router.events.subscribe((e) => {
+  constructor(private route: ActivatedRoute, public router: Router, private story: StoryService) {
+    router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/story/') || e.url.includes('?story=')) {
           this.story.showView();

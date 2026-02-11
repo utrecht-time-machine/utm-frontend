@@ -12,10 +12,7 @@ export class FeedbackService {
 
   ratingsPerItem: { [itemId: string]: FeedbackRating } = {};
 
-  constructor(
-    private apiService: ApiService,
-    private platform: PlatformService,
-  ) {
+  constructor(private apiService: ApiService, private platform: PlatformService) {
     const localStorageRatings: string | null = null;
 
     if (this.platform.isBrowser()) {

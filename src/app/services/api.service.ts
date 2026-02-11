@@ -63,10 +63,8 @@ export class ApiService {
 
   async getStaticPage(nid: string): Promise<StaticPage | undefined> {
     const staticPages: StaticPage[] = await lastValueFrom(
-      this.http.get<StaticPage[]>(
-        environment.apiUrl + environment.apiSuffixes.staticPage + nid,
-      ),
-    ).catch((err) => {
+      this.http.get<StaticPage[]>(environment.apiUrl + environment.apiSuffixes.staticPage + nid),
+    ).catch(err => {
       console.error(err);
       return [];
     });
@@ -77,10 +75,7 @@ export class ApiService {
 
     const staticPage: StaticPage = staticPages[0];
     UtilService.addUrlPrefix(staticPage, 'photo');
-    await this.utmTranslate.translateObjectByKeys(
-      staticPage,
-      environment.translateKeys.staticPage,
-    );
+    await this.utmTranslate.translateObjectByKeys(staticPage, environment.translateKeys.staticPage);
     return staticPage;
   }
 
@@ -102,13 +97,10 @@ export class ApiService {
 
     const blocks = mockHomeBlocks;
 
-    const processedBlocks = blocks.map(async (block) => {
+    const processedBlocks = blocks.map(async block => {
       // TODO: add in again once received from backend
       // UtilService.addUrlPrefix(block, 'photo');
-      await this.utmTranslate.translateObjectByKeys(
-        block,
-        environment.translateKeys.staticPage,
-      );
+      await this.utmTranslate.translateObjectByKeys(block, environment.translateKeys.staticPage);
       return block;
     });
 
@@ -118,35 +110,24 @@ export class ApiService {
   getMapLocations(): Observable<MapLocation[]> {
     console.log('Retrieving map locations...');
     // return this.http.get<MapLocation[]>('/assets/mock/mapLocations.json');
-    return this.http.get<MapLocation[]>(
-      environment.apiUrl + environment.apiSuffixes.mapLocations,
-    );
+    return this.http.get<MapLocation[]>(environment.apiUrl + environment.apiSuffixes.mapLocations);
   }
 
   async getUtmRoutes(): Promise<UtmRoute[]> {
     let utmRoutes: UtmRoute[] = await lastValueFrom(
-      this.http.get<UtmRoute[]>(
-        environment.apiUrl + environment.apiSuffixes.routes,
-      ),
-    ).catch((err) => {
+      this.http.get<UtmRoute[]>(environment.apiUrl + environment.apiSuffixes.routes),
+    ).catch(err => {
       console.error(err);
       return [];
     });
 
-    UtilService.addUrlPrefixes(
-      utmRoutes,
-      'geojson_url',
-      environment.geoJsonBaseUrl,
-    );
+    UtilService.addUrlPrefixes(utmRoutes, 'geojson_url', environment.geoJsonBaseUrl);
 
     UtilService.addUrlPrefixes(utmRoutes, 'audio');
     UtilService.addUrlPrefixes(utmRoutes, 'photo');
-    this.utmTranslate.translateObjectsByKeys(
-      utmRoutes,
-      environment.translateKeys.routes,
-    );
+    this.utmTranslate.translateObjectsByKeys(utmRoutes, environment.translateKeys.routes);
 
-    utmRoutes.forEach((utmRoute) => {
+    utmRoutes.forEach(utmRoute => {
       if (!utmRoute.show_only_in_dev_mode_plaintext) {
         utmRoute.show_only_in_dev_mode = false;
       } else if (utmRoute.show_only_in_dev_mode_plaintext === '1') {
@@ -162,9 +143,7 @@ export class ApiService {
       }
 
       if (utmRoute.organisation_ids_str) {
-        utmRoute.organisation_ids = splitStringToArray(
-          utmRoute.organisation_ids_str,
-        );
+        utmRoute.organisation_ids = splitStringToArray(utmRoute.organisation_ids_str);
       }
     });
     return utmRoutes;
@@ -172,10 +151,8 @@ export class ApiService {
 
   async getThemes(): Promise<Theme[]> {
     let themes: Theme[] = await lastValueFrom(
-      this.http.get<Theme[]>(
-        environment.apiUrl + environment.apiSuffixes.allThemes,
-      ),
-    ).catch((err) => {
+      this.http.get<Theme[]>(environment.apiUrl + environment.apiSuffixes.allThemes),
+    ).catch(err => {
       console.error(err);
       return [];
     });
@@ -189,10 +166,7 @@ export class ApiService {
     // UtilService.addUrlPrefixes(utmRoutes, 'audio');
     // UtilService.addUrlPrefixes(utmRoutes, 'photo');
 
-    void this.utmTranslate.translateObjectsByKeys(
-      themes,
-      environment.translateKeys.themes,
-    );
+    void this.utmTranslate.translateObjectsByKeys(themes, environment.translateKeys.themes);
 
     return themes;
   }
@@ -214,10 +188,7 @@ export class ApiService {
       UtilService.addUrlPrefix(story, 'audio', environment.audioBaseUrl);
     }
 
-    this.utmTranslate.translateObjectByKeys(
-      story,
-      environment.translateKeys.storyDetails,
-    );
+    this.utmTranslate.translateObjectByKeys(story, environment.translateKeys.storyDetails);
     return story;
   }
 
@@ -232,11 +203,8 @@ export class ApiService {
       ),
     );
 
-    mediaItems.forEach((mediaItem) => {
-      this.utmTranslate.translateObjectByKeys(
-        mediaItem,
-        environment.translateKeys.mediaItem,
-      );
+    mediaItems.forEach(mediaItem => {
+      this.utmTranslate.translateObjectByKeys(mediaItem, environment.translateKeys.mediaItem);
 
       const mediaItemOrgIds: string[] = mediaItem.organisation_ids.split(',');
       mediaItem.organisations = this.organisations.getByIds(mediaItemOrgIds);
@@ -249,8 +217,8 @@ export class ApiService {
         UtilService.addUrlPrefix(mediaItem, 'image_small');
       }
 
-      const isAudioItem = environment.mediaItemAudioExtensions.some(
-        (audioExtension) => mediaItem.media_file.endsWith(audioExtension),
+      const isAudioItem = environment.mediaItemAudioExtensions.some(audioExtension =>
+        mediaItem.media_file.endsWith(audioExtension),
       );
       const isVideoItem = mediaItem.media_file;
 
@@ -278,12 +246,8 @@ export class ApiService {
         for (const youTubePrefix of environment.mediaItemYouTubePrefixToReplace) {
           const isYouTubeEmbed = mediaItem.embed_url.includes(youTubePrefix);
           if (isYouTubeEmbed) {
-            mediaItem.embed_url = mediaItem.embed_url.replace(
-              youTubePrefix,
-              '',
-            );
-            mediaItem.embed_url =
-              environment.mediaItemYouTubeEmbedUrl + mediaItem.embed_url;
+            mediaItem.embed_url = mediaItem.embed_url.replace(youTubePrefix, '');
+            mediaItem.embed_url = environment.mediaItemYouTubeEmbedUrl + mediaItem.embed_url;
             break;
           }
         }
@@ -303,14 +267,10 @@ export class ApiService {
     return mediaItems;
   }
 
-  async getLocationDetailsById(
-    locationId: string,
-  ): Promise<LocationDetails | undefined> {
+  async getLocationDetailsById(locationId: string): Promise<LocationDetails | undefined> {
     const locationsDetails: LocationDetails[] = await lastValueFrom(
       this.http.get<LocationDetails[]>(
-        environment.apiUrl +
-          environment.apiSuffixes.locationDetailsById +
-          locationId,
+        environment.apiUrl + environment.apiSuffixes.locationDetailsById + locationId,
       ),
     );
     if (locationsDetails.length < 1) {
@@ -327,18 +287,14 @@ export class ApiService {
       environment.translateKeys.locationDetails,
     );
 
-    const splitGeoCoords: string[] = locationDetails.geo
-      .split(',')
-      .map((coord) => coord.trim());
+    const splitGeoCoords: string[] = locationDetails.geo.split(',').map(coord => coord.trim());
     locationDetails.coords = {
       lat: parseFloat(splitGeoCoords[0]),
       lng: parseFloat(splitGeoCoords[1]),
     };
 
     // TODO: Enrich location/organisation details with story data asynchronously?
-    const locationStories: Story[] = await this.getStoriesByLocationId(
-      locationDetails.nid,
-    );
+    const locationStories: Story[] = await this.getStoriesByLocationId(locationDetails.nid);
     locationDetails.stories = locationStories;
 
     if (locationDetails?.organisation_ids) {
@@ -349,9 +305,7 @@ export class ApiService {
     return locationDetails;
   }
 
-  async getUtmRouteStopsById(
-    routeId: string,
-  ): Promise<UtmRouteStop[] | undefined> {
+  async getUtmRouteStopsById(routeId: string): Promise<UtmRouteStop[] | undefined> {
     console.log('Retrieving route stops', routeId);
 
     const utmRouteStops: UtmRouteStop[] = await lastValueFrom(
@@ -360,25 +314,18 @@ export class ApiService {
       ),
     );
 
-    utmRouteStops.forEach((stop) => {
+    utmRouteStops.forEach(stop => {
       if (stop.audio) {
         UtilService.addUrlPrefix(stop, 'audio', environment.audioBaseUrl);
       }
 
       if (stop.audio_english) {
-        UtilService.addUrlPrefix(
-          stop,
-          'audio_english',
-          environment.audioBaseUrl,
-        );
+        UtilService.addUrlPrefix(stop, 'audio_english', environment.audioBaseUrl);
       }
 
       stop.show_location_info = (stop.show_location_info as any) === '1';
 
-      this.utmTranslate.translateObjectByKeys(
-        stop,
-        environment.translateKeys.stop,
-      );
+      this.utmTranslate.translateObjectByKeys(stop, environment.translateKeys.stop);
     });
 
     console.log('STOPS', utmRouteStops);
@@ -388,31 +335,22 @@ export class ApiService {
   public async getStoriesByLocationId(locationId: string): Promise<Story[]> {
     const stories: Story[] = await lastValueFrom(
       this.http.get<Story[]>(
-        environment.apiUrl +
-          environment.apiSuffixes.storiesByLocationId +
-          locationId,
+        environment.apiUrl + environment.apiSuffixes.storiesByLocationId + locationId,
       ),
     );
     UtilService.addUrlPrefixes(stories, 'photo');
 
-    stories.map((story) => {
+    stories.map(story => {
       story.story_url_alias = story.story_link.replace('/story/', '');
-      story.theme_ids = story.theme_ids_str
-        ? story.theme_ids_str.split(', ')
-        : [];
+      story.theme_ids = story.theme_ids_str ? story.theme_ids_str.split(', ') : [];
     });
 
-    this.utmTranslate.translateObjectsByKeys(
-      stories,
-      environment.translateKeys.storyDetails,
-    );
+    this.utmTranslate.translateObjectsByKeys(stories, environment.translateKeys.storyDetails);
     return stories;
   }
 
-  public convertMapLocationsToGeoJson(
-    mapLocations: MapLocation[],
-  ): GeoJSON.FeatureCollection {
-    const features: GeoJSON.Feature[] = mapLocations.map((mapLocation) => {
+  public convertMapLocationsToGeoJson(mapLocations: MapLocation[]): GeoJSON.FeatureCollection {
+    const features: GeoJSON.Feature[] = mapLocations.map(mapLocation => {
       const [latitude, longitude] = mapLocation.geo.split(',').map(Number);
       UtilService.addUrlPrefix(mapLocation, 'thumb');
       UtilService.addUrlPrefix(mapLocation, 'image_small');
@@ -446,9 +384,7 @@ export class ApiService {
     return await lastValueFrom(this.http.post(url, requestBody, httpOptions));
   }
 
-  public convertLocationDetailsToStory(
-    locationDetails: LocationDetails,
-  ): Story {
+  public convertLocationDetailsToStory(locationDetails: LocationDetails): Story {
     const locationMediaItem: MediaItem = {
       caption: locationDetails.caption as string,
       embed_url: '',

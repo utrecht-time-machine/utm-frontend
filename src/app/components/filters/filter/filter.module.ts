@@ -7,12 +7,7 @@ import { FilterHeaderComponent } from './filter-header/filter-header.component';
 
 @NgModule({
   declarations: [FilterComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    MatIconModule,
-    FilterHeaderComponent,
-  ],
+  imports: [CommonModule, TranslateModule, MatIconModule, FilterHeaderComponent],
   exports: [FilterComponent],
 })
 export class FilterModule {}

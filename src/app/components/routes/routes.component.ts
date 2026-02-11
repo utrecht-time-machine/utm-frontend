@@ -55,9 +55,7 @@ export class RoutesComponent {
       [route.max_date_str || ''],
     );
 
-    const passesOrganisationFilter = this.organisations.shouldShow(
-      route.organisation_ids || [],
-    );
+    const passesOrganisationFilter = this.organisations.shouldShow(route.organisation_ids || []);
 
     return passesThemeFilter && passesTimeFilter && passesOrganisationFilter;
   }

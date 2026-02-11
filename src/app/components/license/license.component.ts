@@ -11,8 +11,7 @@ import { License } from '../../models/license';
 export class LicenseComponent {
   @Input() licenseLabel: string | undefined = undefined;
 
-  readonly LICENSE_IMAGE_FOLDER: string =
-    environment.imageBaseUrl + '/sites/images';
+  readonly LICENSE_IMAGE_FOLDER: string = environment.imageBaseUrl + '/sites/images';
 
   readonly LICENSE_URL_LOOKUP: { [licenseLabel: string]: License } = {
     'CC0, No Rights Reserved': {
@@ -58,8 +57,7 @@ export class LicenseComponent {
   };
 
   public get license(): License {
-    const licenseNotFound =
-      !this.licenseLabel || !(this.licenseLabel in this.LICENSE_URL_LOOKUP);
+    const licenseNotFound = !this.licenseLabel || !(this.licenseLabel in this.LICENSE_URL_LOOKUP);
     if (licenseNotFound) {
       return {
         title: this.licenseLabel as string,

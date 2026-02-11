@@ -19,10 +19,7 @@ export const environment = {
   aliasToNidUrl: 'https://data.utrechttimemachine.nl/alias_to_nid?alias=',
   mediaItemImageExtensions: ['.png', '.jpg'],
   mediaItemAudioExtensions: ['.mp3', '.ogg'],
-  mediaItemYouTubePrefixToReplace: [
-    'https://www.youtube.com/watch?v=',
-    'https://youtu.be/',
-  ],
+  mediaItemYouTubePrefixToReplace: ['https://www.youtube.com/watch?v=', 'https://youtu.be/'],
   mediaItemYouTubeEmbedUrl: 'https://youtube.com/embed/',
   mapboxAccessToken:
     'pk.eyJ1IjoidXRyZWNodHRpbWVtYWNoaW5lIiwiYSI6ImNtNzk1aWZ4ZDAxb3UycXNienh5bngwcXkifQ.WtfuJZJcWBWX11FlwKz7Hw',
@@ -35,13 +32,7 @@ export const environment = {
     locationDetails: ['caption', 'teaser', 'head', 'title', 'text'],
     storyDetails: ['title', 'location_title'],
     mediaItem: ['title', 'caption', 'text', 'audio_transcript'],
-    stop: [
-      'title',
-      'intro',
-      'location_teaser',
-      'location_text',
-      'audio_transcript',
-    ],
+    stop: ['title', 'intro', 'location_teaser', 'location_text', 'audio_transcript'],
     organisation: ['title'],
     mapLocation: ['title', 'head'],
     staticPage: ['title', 'body'],

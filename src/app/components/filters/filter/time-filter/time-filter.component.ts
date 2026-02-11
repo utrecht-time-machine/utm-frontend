@@ -24,10 +24,7 @@ export class TimeFilterComponent extends FilterComponent {
   @ViewChild('slider') slider!: MatSlider;
   debouncedTimeout: any;
 
-  constructor(
-    public time: TimeService,
-    public filters: FilterService,
-  ) {
+  constructor(public time: TimeService, public filters: FilterService) {
     super();
   }
 

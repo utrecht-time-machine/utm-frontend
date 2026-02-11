@@ -1,9 +1,5 @@
 <div class="clear-button-container">
-  <button
-    class="clear-button"
-    [disabled]="!hasActiveFilters()"
-    (click)="clearFilters($event)"
-  >
-    {{ "clearFilters" | translate }}
+  <button class="clear-button" [disabled]="!hasActiveFilters()" (click)="clearFilters($event)">
+    {{ 'clearFilters' | translate }}
   </button>
 </div>

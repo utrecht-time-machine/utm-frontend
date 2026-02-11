@@ -1,18 +1,14 @@
 <div class="container" [style.max-height]="maxHeight">
   <div class="filter-header-row" (click)="toggleCollapse()">
-    <app-filter-header
-      [title]="title"
-      [icon]="icon"
-      [isActive]="isActive"
-    ></app-filter-header>
+    <app-filter-header [title]="title" [icon]="icon" [isActive]="isActive"></app-filter-header>
     <span class="collapse-caret" [class.collapsed]="collapsed">
       <img src="assets/ui/svg/angle-down.svg" alt="Toggle" />
     </span>
   </div>
 
   @if (!collapsed) {
-    <div class="filter-content" [@collapse]="!collapsed ? 'open' : 'closed'">
-      <ng-content></ng-content>
-    </div>
+  <div class="filter-content" [@collapse]="!collapsed ? 'open' : 'closed'">
+    <ng-content></ng-content>
+  </div>
   }
 </div>

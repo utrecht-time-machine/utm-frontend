@@ -12,19 +12,13 @@ export class RouteNotificationsSettingsService {
   private geofence: GeofenceService | undefined;
   private enabledSub: Subscription | undefined;
 
-  private readonly deviceAllowsGeofencingSubject = new BehaviorSubject<boolean>(
-    false,
-  );
-  public readonly deviceAllowsGeofencing$ =
-    this.deviceAllowsGeofencingSubject.asObservable();
+  private readonly deviceAllowsGeofencingSubject = new BehaviorSubject<boolean>(false);
+  public readonly deviceAllowsGeofencing$ = this.deviceAllowsGeofencingSubject.asObservable();
 
   private readonly enabledSubject = new BehaviorSubject<boolean>(false);
   public readonly enabled$ = this.enabledSubject.asObservable();
 
-  constructor(
-    private injector: Injector,
-    private cordova: CordovaService,
-  ) {
+  constructor(private injector: Injector, private cordova: CordovaService) {
     void this.checkDeviceAllowsGeofencing();
 
     if (this.loadEnabledFromLocalStorage()) {
@@ -38,7 +32,7 @@ export class RouteNotificationsSettingsService {
     }
 
     if (!this.enabledSub) {
-      this.enabledSub = this.geofence.state$.subscribe((state) => {
+      this.enabledSub = this.geofence.state$.subscribe(state => {
         this.enabledSubject.next(state.enabled);
         this.saveEnabledToLocalStorage(state.enabled);
       });
@@ -83,10 +77,7 @@ export class RouteNotificationsSettingsService {
 
   private saveEnabledToLocalStorage(enabled: boolean): void {
     try {
-      (window as any)?.localStorage?.setItem(
-        this.enabledStorageKey,
-        String(enabled),
-      );
+      (window as any)?.localStorage?.setItem(this.enabledStorageKey, String(enabled));
     } catch {
       // ignore
     }

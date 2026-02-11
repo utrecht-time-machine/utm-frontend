@@ -9,12 +9,6 @@ import { LangToggleModule } from '../lang-toggle/lang-toggle.module';
 @NgModule({
   declarations: [HeaderComponent],
   exports: [HeaderComponent],
-  imports: [
-    CommonModule,
-    RouterModule,
-    MenuLinksModule,
-    TranslateModule,
-    LangToggleModule,
-  ],
+  imports: [CommonModule, RouterModule, MenuLinksModule, TranslateModule, LangToggleModule],
 })
 export class HeaderModule {}

@@ -2,10 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CordovaService } from '../cordova.service';
 import { PushNotificationPermissionsService } from '../push-notifications/push-notification-permissions.service';
-import {
-  GeofenceIdentifierInfo,
-  GeofenceIdentifierService,
-} from './geofence-identifier.service';
+import { GeofenceIdentifierInfo, GeofenceIdentifierService } from './geofence-identifier.service';
 import { GeofenceNotificationService } from './geofence-notification.service';
 import { GeofencePermissionsService } from './geofence-permissions.service';
 import { UtmRoutesService } from '../utm-routes.service';
@@ -107,9 +104,7 @@ export class GeofenceService {
     }
   }
 
-  public async setRouteNotificationsEnabled(
-    enabled: boolean,
-  ): Promise<boolean> {
+  public async setRouteNotificationsEnabled(enabled: boolean): Promise<boolean> {
     if (enabled) {
       if (this.routeNotificationsEnabled) {
         return this.stateSubject.getValue().enabled;
@@ -135,8 +130,7 @@ export class GeofenceService {
         return false;
       }
 
-      const hasNotificationPermission =
-        await this.pushNotificationPermissions.ensurePermission();
+      const hasNotificationPermission = await this.pushNotificationPermissions.ensurePermission();
       if (!hasNotificationPermission) {
         console.warn(
           '[GeofenceService] enabling route notifications failed: notification permissions not authorized',
@@ -198,7 +192,7 @@ export class GeofenceService {
       return;
     }
 
-    this.routeSub = this.utmRoutes.selected.subscribe((route) => {
+    this.routeSub = this.utmRoutes.selected.subscribe(route => {
       if (!this.routeNotificationsEnabled) {
         return;
       }
@@ -206,15 +200,13 @@ export class GeofenceService {
       void this.handleRouteChanged(route);
     });
 
-    this.stopsLoadedSub = this.utmRoutes.selectedRouteLocationsLoaded.subscribe(
-      () => {
-        if (!this.routeNotificationsEnabled) {
-          return;
-        }
+    this.stopsLoadedSub = this.utmRoutes.selectedRouteLocationsLoaded.subscribe(() => {
+      if (!this.routeNotificationsEnabled) {
+        return;
+      }
 
-        void this.handleStopsPossiblyLoaded(this.utmRoutes.selected.getValue());
-      },
-    );
+      void this.handleStopsPossiblyLoaded(this.utmRoutes.selected.getValue());
+    });
   }
 
   private teardownSubscriptions(): void {
@@ -254,9 +246,7 @@ export class GeofenceService {
     this.initializingPromise = (async (): Promise<boolean> => {
       const plugin = await this.getPlugin();
       if (!plugin) {
-        console.warn(
-          '[GeofenceService] ensureInitialized: no plugin available',
-        );
+        console.warn('[GeofenceService] ensureInitialized: no plugin available');
         return false;
       }
 
@@ -289,14 +279,10 @@ export class GeofenceService {
             try {
               await this.geofenceNotifications.handleGeofenceEvent(event, {
                 routeNotificationsEnabled: this.routeNotificationsEnabled,
-                getInfoFromIdentifier: (id) =>
-                  this.getGeofenceInfoFromIdentifier(id),
+                getInfoFromIdentifier: id => this.getGeofenceInfoFromIdentifier(id),
               });
             } catch (e) {
-              console.warn(
-                '[GeofenceService] geofence notification handler failed',
-                e,
-              );
+              console.warn('[GeofenceService] geofence notification handler failed', e);
             }
           });
 
@@ -304,7 +290,7 @@ export class GeofenceService {
             () => {
               // Intentionally ignored
             },
-            (error) => {
+            error => {
               console.warn('[GeofenceService] onLocation error', error);
             },
           );
@@ -345,8 +331,7 @@ export class GeofenceService {
 
         // Request permission explicitly; abort initialization if not granted.
         try {
-          const permissionResult: AuthorizationStatus =
-            await plugin.requestPermission();
+          const permissionResult: AuthorizationStatus = await plugin.requestPermission();
 
           if (
             permissionResult === plugin.AUTHORIZATION_STATUS_DENIED ||
@@ -359,10 +344,7 @@ export class GeofenceService {
             return false;
           }
         } catch (status) {
-          console.warn(
-            '[GeofenceService] requestPermission FAILURE (post-ready)',
-            status,
-          );
+          console.warn('[GeofenceService] requestPermission FAILURE (post-ready)', status);
           return false;
         }
 
@@ -404,9 +386,7 @@ export class GeofenceService {
     }
   }
 
-  private async handleStopsPossiblyLoaded(
-    route: UtmRoute | undefined,
-  ): Promise<void> {
+  private async handleStopsPossiblyLoaded(route: UtmRoute | undefined): Promise<void> {
     if (!this.routeNotificationsEnabled) {
       return;
     }
@@ -476,15 +456,12 @@ export class GeofenceService {
       );
 
       if (typeof lat !== 'number' || typeof lng !== 'number') {
-        console.warn(
-          '[GeofenceService] stop has no coords; skipping geofence',
-          {
-            identifier,
-            idx,
-            locationId: stop.location_id,
-            location: stop.location,
-          },
-        );
+        console.warn('[GeofenceService] stop has no coords; skipping geofence', {
+          identifier,
+          idx,
+          locationId: stop.location_id,
+          location: stop.location,
+        });
         continue;
       }
 
@@ -538,10 +515,7 @@ export class GeofenceService {
     try {
       await this.bgGeo.removeGeofences();
     } catch (e) {
-      console.warn(
-        '[GeofenceService] disableGeofencing removeGeofences failed',
-        e,
-      );
+      console.warn('[GeofenceService] disableGeofencing removeGeofences failed', e);
     }
 
     await this.refreshActiveGeofences();

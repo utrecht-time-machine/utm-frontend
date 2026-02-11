@@ -45,17 +45,14 @@ export class LangToggleComponent {
       }
     });
 
-    const showLocationsOnMap =
-      this.routing.getSelectedView() === SelectedView.Locations;
-    this.map
-      .addMapLocationsFromServer(!showLocationsOnMap, false)
-      .then(async () => {
-        const selectedId = this.map.selectedLocation.getValue()?.nid;
-        if (selectedId) {
-          await this.map.selectLocationById(selectedId);
-        }
-        this.map.updateLocationsClosestToCenter();
-      });
+    const showLocationsOnMap = this.routing.getSelectedView() === SelectedView.Locations;
+    this.map.addMapLocationsFromServer(!showLocationsOnMap, false).then(async () => {
+      const selectedId = this.map.selectedLocation.getValue()?.nid;
+      if (selectedId) {
+        await this.map.selectLocationById(selectedId);
+      }
+      this.map.updateLocationsClosestToCenter();
+    });
   }
 
   ngOnInit() {
@@ -66,9 +63,7 @@ export class LangToggleComponent {
     let localStorageLang: string | null = null;
 
     if (this.platform.isBrowser()) {
-      localStorageLang = window.localStorage.getItem(
-        this.LOCAL_STORAGE_LANG_KEY,
-      );
+      localStorageLang = window.localStorage.getItem(this.LOCAL_STORAGE_LANG_KEY);
     }
 
     if (localStorageLang) {

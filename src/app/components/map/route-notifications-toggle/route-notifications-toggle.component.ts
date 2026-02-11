@@ -4,10 +4,7 @@ import { RouteNotificationsToggleExpandedComponent } from './route-notifications
 
 @Component({
   selector: 'app-route-notifications-toggle',
-  imports: [
-    RouteNotificationsToggleExpandedComponent,
-    RouteNotificationsToggleCompactComponent,
-  ],
+  imports: [RouteNotificationsToggleExpandedComponent, RouteNotificationsToggleCompactComponent],
   templateUrl: './route-notifications-toggle.component.html',
   styleUrls: ['./route-notifications-toggle.component.scss'],
 })

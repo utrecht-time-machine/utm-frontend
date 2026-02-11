@@ -38,23 +38,23 @@
 .feed a:hover {
   opacity: 0.6;
 }
-.feed a[data-id="1"] {
+.feed a[data-id='1'] {
   background-image: url(/assets/ui/svg/feedback/mood0.svg);
   //background-color: #ff7540;
 }
-.feed a[data-id="2"] {
+.feed a[data-id='2'] {
   background-image: url(/assets/ui/svg/feedback/mood1.svg);
   background-color: #fe003e;
 }
-.feed a[data-id="3"] {
+.feed a[data-id='3'] {
   background-image: url(/assets/ui/svg/feedback/mood2.svg);
   background-color: #ffe150;
 }
-.feed a[data-id="4"] {
+.feed a[data-id='4'] {
   background-image: url(/assets/ui/svg/feedback/mood3.svg);
   background-color: #99ea33;
 }
-.feed a[data-id="5"] {
+.feed a[data-id='5'] {
   background-image: url(/assets/ui/svg/feedback/mood4.svg);
   //background-color: #2bd12b;
 }
@@ -194,9 +194,7 @@ textarea {
   min-height: 80px;
   font-size: 1em;
   color: #333;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   transition: border-color 120ms ease;
 
   &:focus {

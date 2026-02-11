@@ -3,10 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subject, combineLatest, interval } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import type {
-  AuthorizationStatus,
-  ProviderChangeEvent,
-} from 'cordova-background-geolocation-lt';
+import type { AuthorizationStatus, ProviderChangeEvent } from 'cordova-background-geolocation-lt';
 
 import { CordovaService } from 'src/app/services/cordova.service';
 import { GeofenceService } from 'src/app/services/geofence/geofence.service';
@@ -31,18 +28,14 @@ type PermissionStatus = {
   templateUrl: './route-notifications-permissions.component.html',
   styleUrls: ['./route-notifications-permissions.component.scss'],
 })
-export class RouteNotificationsPermissionsComponent
-  implements OnInit, OnDestroy
-{
+export class RouteNotificationsPermissionsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   private cordovaReady$ = new BehaviorSubject<boolean>(false);
   private backgroundGeolocationAvailable$ = new BehaviorSubject<boolean>(false);
   private notificationPermissionOk$ = new BehaviorSubject<boolean>(false);
   private geofenceEnabled$ = new BehaviorSubject<boolean>(false);
-  private providerStatus$ = new BehaviorSubject<
-    AuthorizationStatus | undefined
-  >(undefined);
+  private providerStatus$ = new BehaviorSubject<AuthorizationStatus | undefined>(undefined);
 
   readonly status$ = combineLatest([
     this.cordovaReady$,
@@ -107,11 +100,9 @@ export class RouteNotificationsPermissionsComponent
     const bg = (window as any)?.BackgroundGeolocation as BgGeo | undefined;
     this.backgroundGeolocationAvailable$.next(Boolean(bg));
 
-    this.geofenceService.state$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((state) => {
-        this.geofenceEnabled$.next(state.enabled);
-      });
+    this.geofenceService.state$.pipe(takeUntil(this.destroy$)).subscribe(state => {
+      this.geofenceEnabled$.next(state.enabled);
+    });
 
     interval(1500)
       .pipe(
@@ -122,30 +113,27 @@ export class RouteNotificationsPermissionsComponent
           return ok;
         }),
       )
-      .subscribe((ok) => this.notificationPermissionOk$.next(ok));
+      .subscribe(ok => this.notificationPermissionOk$.next(ok));
 
     interval(1500)
       .pipe(
         startWith(0),
         takeUntil(this.destroy$),
         switchMap(async () => {
-          const plugin = (window as any)?.BackgroundGeolocation as
-            | BgGeo
-            | undefined;
+          const plugin = (window as any)?.BackgroundGeolocation as BgGeo | undefined;
           if (!plugin) {
             return undefined;
           }
 
           try {
-            const providerState: ProviderChangeEvent =
-              await plugin.getProviderState();
+            const providerState: ProviderChangeEvent = await plugin.getProviderState();
             return providerState?.status as AuthorizationStatus | undefined;
           } catch {
             return undefined;
           }
         }),
       )
-      .subscribe((status) => this.providerStatus$.next(status));
+      .subscribe(status => this.providerStatus$.next(status));
   }
 
   ngOnDestroy(): void {
@@ -157,9 +145,7 @@ export class RouteNotificationsPermissionsComponent
     return v ? 'Toestemming gegeven' : 'Geen toestemming';
   }
 
-  protected backgroundLocationStatusText(
-    status: AuthorizationStatus | 'unavailable',
-  ): string {
+  protected backgroundLocationStatusText(status: AuthorizationStatus | 'unavailable'): string {
     if (status === 'unavailable') {
       return 'Niet beschikbaar';
     }

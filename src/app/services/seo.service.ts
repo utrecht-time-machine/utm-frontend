@@ -64,9 +64,7 @@ export class SeoService {
             this.storyService.shownStory.getValue()?.mediaItems,
           );
         } else {
-          this.generateLocationMeta(
-            this.mapService.selectedLocation.getValue(),
-          );
+          this.generateLocationMeta(this.mapService.selectedLocation.getValue());
         }
         break;
       case SelectedView.About:
@@ -82,9 +80,7 @@ export class SeoService {
         this.generateRoutesMeta();
         break;
       case SelectedView.SelectedRoute:
-        this.generateSelectedRouteMeta(
-          this.utmRoutesService.selected.getValue(),
-        );
+        this.generateSelectedRouteMeta(this.utmRoutesService.selected.getValue());
         break;
       case SelectedView.Undefined:
       default:
@@ -121,10 +117,7 @@ export class SeoService {
     );
   }
 
-  private generateStoryMeta(
-    story: Story | undefined,
-    mediaItems: MediaItem[] | undefined,
-  ) {
+  private generateStoryMeta(story: Story | undefined, mediaItems: MediaItem[] | undefined) {
     if (!story || !mediaItems) {
       // console.warn('No story, regenerating home');
       // this.generateHomeMeta();
@@ -132,11 +125,7 @@ export class SeoService {
     }
 
     // Description extraction from media item
-    const title = this.utmTranslate.getAsEnglishIfApplicable(
-      story,
-      'title',
-      'title_english',
-    );
+    const title = this.utmTranslate.getAsEnglishIfApplicable(story, 'title', 'title_english');
     let description = title;
     if (mediaItems && mediaItems[0] && mediaItems[0].text) {
       description = mediaItems[0].text.replace(/<[^>]+>/g, '').trim();
@@ -197,15 +186,11 @@ export class SeoService {
     });
     this.meta.updateTag({
       name: 'description',
-      content: description
-        ? this.preProcessDescription(description)
-        : DEFAULT_DESCRIPTION,
+      content: description ? this.preProcessDescription(description) : DEFAULT_DESCRIPTION,
     });
     this.meta.updateTag({
       name: 'og:description',
-      content: description
-        ? this.preProcessDescription(description)
-        : DEFAULT_DESCRIPTION,
+      content: description ? this.preProcessDescription(description) : DEFAULT_DESCRIPTION,
     });
     this.meta.updateTag({
       name: 'og:image',

@@ -63,9 +63,7 @@ export class MenuButtonComponent {
     if (this.menuIsSortedOn === MenuSortOn.Title) {
       return Object.keys(this.menuService.allLocationsSortedByTitle).length > 0;
     } else if (this.menuIsSortedOn === MenuSortOn.Address) {
-      return (
-        Object.keys(this.menuService.allLocationsSortedByAddress).length > 0
-      );
+      return Object.keys(this.menuService.allLocationsSortedByAddress).length > 0;
     }
 
     console.warn('Menu sorted on unknown variable');

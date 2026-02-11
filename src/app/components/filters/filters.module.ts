@@ -10,11 +10,7 @@ import { ActiveFiltersBadgeComponent } from './active-filters-badge/active-filte
 import { OrganisationFilterModule } from './filter/organisation-filter/organisation-filter.module';
 
 @NgModule({
-  declarations: [
-    FiltersComponent,
-    ClearFiltersButtonComponent,
-    ActiveFiltersBadgeComponent,
-  ],
+  declarations: [FiltersComponent, ClearFiltersButtonComponent, ActiveFiltersBadgeComponent],
   imports: [
     CommonModule,
     ThemeFilterModule,

@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import type {
-  AuthorizationStatus,
-  ProviderChangeEvent,
-} from 'cordova-background-geolocation-lt';
+import type { AuthorizationStatus, ProviderChangeEvent } from 'cordova-background-geolocation-lt';
 
 type BgGeo = typeof import('cordova-background-geolocation-lt').default;
 
@@ -31,10 +28,7 @@ export class GeofencePermissionsService {
 
       return true;
     } catch (e) {
-      console.warn(
-        '[GeofencePermissionsService] hasLocationPermission failed',
-        e,
-      );
+      console.warn('[GeofencePermissionsService] hasLocationPermission failed', e);
       return false;
     }
   }

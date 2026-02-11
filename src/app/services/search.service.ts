@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  LiveSearchResult,
-  LiveSearchResultType,
-} from '../models/live-search-result';
+import { LiveSearchResult, LiveSearchResultType } from '../models/live-search-result';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -13,9 +10,9 @@ import { AddressSearchResult } from '../models/adress-search-result';
   providedIn: 'root',
 })
 export class SearchService {
-  liveSearchResults: BehaviorSubject<LiveSearchResult[]> = new BehaviorSubject<
-    LiveSearchResult[]
-  >([]);
+  liveSearchResults: BehaviorSubject<LiveSearchResult[]> = new BehaviorSubject<LiveSearchResult[]>(
+    [],
+  );
   addressResults: BehaviorSubject<AddressSearchResult[]> = new BehaviorSubject<
     AddressSearchResult[]
   >([]);
@@ -23,15 +20,10 @@ export class SearchService {
   showLiveSearchResults = false;
   isLoadingLiveSearchResults = false;
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getLiveSearchResultsByType(type: LiveSearchResultType) {
-    return this.liveSearchResults
-      .getValue()
-      .filter((result) => result.type === type);
+    return this.liveSearchResults.getValue().filter(result => result.type === type);
   }
 
   async updateLiveSearchResults(searchInput: string) {
@@ -44,10 +36,8 @@ export class SearchService {
     this.isLoadingLiveSearchResults = true;
     this.searchAddresses(searchInput);
     const searchResults: LiveSearchResult[] | void = await lastValueFrom(
-      this.http.get<LiveSearchResult[]>(
-        environment.liveSearchUrl + searchInput,
-      ),
-    ).catch((err) => {
+      this.http.get<LiveSearchResult[]>(environment.liveSearchUrl + searchInput),
+    ).catch(err => {
       console.error(err);
     });
 
@@ -57,9 +47,7 @@ export class SearchService {
     }
 
     for (const searchResult of searchResults) {
-      searchResult.label = this._convertSearchResultLabelHtmlFormat(
-        searchResult.label,
-      );
+      searchResult.label = this._convertSearchResultLabelHtmlFormat(searchResult.label);
 
       if (searchResult.url.startsWith('/routes')) {
         searchResult.type = 'route';
@@ -81,8 +69,7 @@ export class SearchService {
     if (this.liveSearchResults.getValue().length <= 0) {
       return;
     }
-    const firstSearchResult: LiveSearchResult =
-      this.liveSearchResults.getValue()[0];
+    const firstSearchResult: LiveSearchResult = this.liveSearchResults.getValue()[0];
     if (!firstSearchResult.url) {
       return;
     }
@@ -130,17 +117,13 @@ export class SearchService {
     };
 
     try {
-      const response = await lastValueFrom(
-        this.http.get<any>(endpoint, { params }),
-      );
+      const response = await lastValueFrom(this.http.get<any>(endpoint, { params }));
 
-      const results: AddressSearchResult[] = response.features.map(
-        (feature: any) => ({
-          place_name: feature.place_name,
-          center: feature.center,
-          text: feature.text,
-        }),
-      );
+      const results: AddressSearchResult[] = response.features.map((feature: any) => ({
+        place_name: feature.place_name,
+        center: feature.center,
+        text: feature.text,
+      }));
 
       this.addressResults.next(results);
     } catch (error) {

@@ -48,8 +48,7 @@ export class GeofenceNotificationService {
     const text = `Je bent bij ${stopPart}${stopTitlePart} aangekomen. Tik om meer te lezen.`;
 
     const baseId: number = this.identifier.hashToInt(identifier ?? 'unknown');
-    const notificationId: number =
-      (baseId % 1000000) * 1000 + (Date.now() % 1000);
+    const notificationId: number = (baseId % 1000000) * 1000 + (Date.now() % 1000);
 
     const ok: boolean = await this.push.scheduleLocalNotification({
       id: notificationId,
@@ -62,13 +61,10 @@ export class GeofenceNotificationService {
     });
 
     if (!ok) {
-      console.warn(
-        '[GeofenceNotificationService] scheduleLocalNotification failed',
-        {
-          identifier,
-          notificationId,
-        },
-      );
+      console.warn('[GeofenceNotificationService] scheduleLocalNotification failed', {
+        identifier,
+        notificationId,
+      });
     }
   }
 }

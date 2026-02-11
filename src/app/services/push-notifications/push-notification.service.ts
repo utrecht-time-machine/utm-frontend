@@ -74,10 +74,7 @@ export class PushNotificationService {
       return false;
     }
 
-    console.log(
-      '[PushNotificationService] Scheduling local notification',
-      options,
-    );
+    console.log('[PushNotificationService] Scheduling local notification', options);
     localNotification.schedule(options);
     console.log('[PushNotificationService] scheduleLocalNotification done');
 

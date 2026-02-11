@@ -20,12 +20,7 @@ import { FeedbackModule } from '../feedback/feedback.module';
 import { RouteNotificationsToggleComponent } from './route-notifications-toggle/route-notifications-toggle.component';
 
 @NgModule({
-  declarations: [
-    MapComponent,
-    SelectedItemComponent,
-    SelectedRouteComponent,
-    RouteStepsComponent,
-  ],
+  declarations: [MapComponent, SelectedItemComponent, SelectedRouteComponent, RouteStepsComponent],
   exports: [MapComponent],
   imports: [
     CommonModule,

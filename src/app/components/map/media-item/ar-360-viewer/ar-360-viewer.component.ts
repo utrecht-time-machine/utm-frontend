@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Viewer } from '@photo-sphere-viewer/core';
 import { VideoPlugin } from '@photo-sphere-viewer/video-plugin';
 import { EquirectangularVideoAdapter } from '@photo-sphere-viewer/equirectangular-video-adapter';

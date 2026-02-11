@@ -1,101 +1,90 @@
 @if (mediaItem) {
-  <div>
-    <div
-      class="media-item"
-      [ngClass]="{
+<div>
+  <div
+    class="media-item"
+    [ngClass]="{
         'has-head': hasHead(),
         'media-item-no-top-margin': !addTopMargin,
       }"
-    >
-      <div class="core">
-        @if (showTitle) {
-          <div class="core-name">
-            <h4 [innerHtml]="mediaItem.title"></h4>
-          </div>
-        }
-        @if (mediaItem.has_audio) {
-          <app-audio-player
-            [audioUrl]="mediaItem.media_file"
-            [transcript]="mediaItem.audio_transcript"
-          ></app-audio-player>
-        }
-        @if (mediaItem.type === MediaItemType.Image) {
-          <div class="image-embed">
-            <app-image-viewer
-              [imageUrl]="mediaItem.image_small"
-              [imageSource]="mediaItem.source_name"
-              [imageLicense]="mediaItem.license"
-              [imageAlt]="mediaItem.caption"
-            ></app-image-viewer>
-          </div>
-        }
-        @if (mediaItem.type === MediaItemType.AR) {
-          <div class="AR-embed">
-            <app-ar-360-viewer
-              [imageSrc]="mediaItem.ar_360_photo"
-              [videoSrc]="mediaItem.ar_360_video"
-              [defaultPitch]="mediaItem.ar_360_photo_default_pitch"
-              [defaultYaw]="mediaItem.ar_360_photo_default_yaw"
-              [defaultZoom]="mediaItem.ar_360_photo_default_zoom"
-            ></app-ar-360-viewer>
-          </div>
-        }
-        @if (
-          mediaItem.type === MediaItemType.Embed ||
-          mediaItem.type === MediaItemType.Video
-        ) {
-          <div class="video-embed">
-            <div>
-              @if (mediaItem.type === MediaItemType.Embed) {
-                <iframe [src]="mediaItem.embed_url | safe"></iframe>
-              }
-              @if (mediaItem.type === MediaItemType.Video) {
-                <video controls="" preload="auto">
-                  <source [src]="mediaItem.media_file" />
-                </video>
-              }
-            </div>
-          </div>
-        }
-        <div class="media-source">
-          <div class="views-element-container">
-            <div>
-              <span [innerHtml]="mediaItem.caption"></span>
-              @if (mediaItem?.source_name) {
-                <span
-                  >{{ "source" | translate }}:
-                  <!--  TODO: Refactor into component -->
-                  @if (mediaItem?.source_link) {
-                    <a
-                      [href]="mediaItem.source_link"
-                      target="_blank"
-                      [innerHtml]="mediaItem.source_name"
-                    ></a>
-                  }
-                  @if (!mediaItem?.source_link) {
-                    <span
-                      [innerHtml]="mediaItem.source_name"
-                      style="display: inline; margin-top: 0"
-                    ></span>
-                  }
-                </span>
-              }
-              <app-license [licenseLabel]="mediaItem.license"></app-license>
-            </div>
-          </div>
-        </div>
-        <app-organisations
-          [organisations]="mediaItem.organisations"
-        ></app-organisations>
+  >
+    <div class="core">
+      @if (showTitle) {
+      <div class="core-name">
+        <h4 [innerHtml]="mediaItem.title"></h4>
       </div>
-      @if (hasHead()) {
-        <div class="head">
-          @if (showTitle) {
-            <h4 [innerHtml]="mediaItem.title"></h4>
+      } @if (mediaItem.has_audio) {
+      <app-audio-player
+        [audioUrl]="mediaItem.media_file"
+        [transcript]="mediaItem.audio_transcript"
+      ></app-audio-player>
+      } @if (mediaItem.type === MediaItemType.Image) {
+      <div class="image-embed">
+        <app-image-viewer
+          [imageUrl]="mediaItem.image_small"
+          [imageSource]="mediaItem.source_name"
+          [imageLicense]="mediaItem.license"
+          [imageAlt]="mediaItem.caption"
+        ></app-image-viewer>
+      </div>
+      } @if (mediaItem.type === MediaItemType.AR) {
+      <div class="AR-embed">
+        <app-ar-360-viewer
+          [imageSrc]="mediaItem.ar_360_photo"
+          [videoSrc]="mediaItem.ar_360_video"
+          [defaultPitch]="mediaItem.ar_360_photo_default_pitch"
+          [defaultYaw]="mediaItem.ar_360_photo_default_yaw"
+          [defaultZoom]="mediaItem.ar_360_photo_default_zoom"
+        ></app-ar-360-viewer>
+      </div>
+      } @if ( mediaItem.type === MediaItemType.Embed || mediaItem.type === MediaItemType.Video ) {
+      <div class="video-embed">
+        <div>
+          @if (mediaItem.type === MediaItemType.Embed) {
+          <iframe [src]="mediaItem.embed_url | safe"></iframe>
+          } @if (mediaItem.type === MediaItemType.Video) {
+          <video controls="" preload="auto">
+            <source [src]="mediaItem.media_file" />
+          </video>
           }
-          <div [innerHtml]="mediaItem.text"></div>
         </div>
+      </div>
       }
+      <div class="media-source">
+        <div class="views-element-container">
+          <div>
+            <span [innerHtml]="mediaItem.caption"></span>
+            @if (mediaItem?.source_name) {
+            <span
+              >{{ 'source' | translate }}:
+              <!--  TODO: Refactor into component -->
+              @if (mediaItem?.source_link) {
+              <a
+                [href]="mediaItem.source_link"
+                target="_blank"
+                [innerHtml]="mediaItem.source_name"
+              ></a>
+              } @if (!mediaItem?.source_link) {
+              <span
+                [innerHtml]="mediaItem.source_name"
+                style="display: inline; margin-top: 0"
+              ></span>
+              }
+            </span>
+            }
+            <app-license [licenseLabel]="mediaItem.license"></app-license>
+          </div>
+        </div>
+      </div>
+      <app-organisations [organisations]="mediaItem.organisations"></app-organisations>
     </div>
+    @if (hasHead()) {
+    <div class="head">
+      @if (showTitle) {
+      <h4 [innerHtml]="mediaItem.title"></h4>
+      }
+      <div [innerHtml]="mediaItem.text"></div>
+    </div>
+    }
   </div>
+</div>
 }
