@@ -265,13 +265,21 @@ export class GeofenceService {
 
           // Listen for geofence events
           plugin.onGeofence(async (event: GeofenceEvent) => {
+            console.log('[GeofenceService] 🎯 Geofence event received:', {
+              identifier: event?.identifier,
+              action: event?.action,
+              location: event?.location,
+              timestamp: new Date().toISOString(),
+            });
+
             const identifier = event?.identifier;
             const action = event?.action;
 
             if (action === 'ENTER' || action === 'EXIT') {
               console.log('[GeofenceService] geofence event', {
-                action,
                 identifier,
+                action,
+                location: event?.location,
               });
             }
 
@@ -286,13 +294,29 @@ export class GeofenceService {
           });
 
           plugin.onLocation(
-            () => {
-              // Intentionally ignored
+            location => {
+              console.log('[GeofenceService] 📍 Location update:', {
+                lat: location.coords.latitude,
+                lng: location.coords.longitude,
+                accuracy: location.coords.accuracy,
+                timestamp: new Date().toISOString(),
+                velocity: location.coords.speed,
+                isMoving: location.is_moving,
+              });
             },
             error => {
               console.warn('[GeofenceService] onLocation error', error);
             },
           );
+
+          plugin.onMotionChange(location => {
+            console.log('[GeofenceService] 🏃 Motion change:', {
+              isMoving: location.isMoving,
+              lat: location.location.coords.latitude,
+              lng: location.location.coords.longitude,
+              timestamp: new Date().toISOString(),
+            });
+          });
 
           plugin.onGeofencesChange((event: GeofencesChangeEvent) => {
             if (!this.routeNotificationsEnabled) {
@@ -306,16 +330,21 @@ export class GeofenceService {
         }
 
         const config: Config = {
-          debug: false,
-          logLevel: plugin.LOG_LEVEL_ERROR,
+          debug: true,
+          logLevel: plugin.LOG_LEVEL_VERBOSE,
           desiredAccuracy: plugin.DESIRED_ACCURACY_HIGH,
-          distanceFilter: 25,
           stopOnTerminate: false,
           startOnBoot: true,
           enableHeadless: true,
           geofenceModeHighAccuracy: true,
           geofenceInitialTriggerEntry: false,
-          // iOS: allow background location. Android: ACCESS_BACKGROUND_LOCATION permission
+          stopTimeout: 5,
+          disableStopDetection: true,
+          disableMotionActivityUpdates: true,
+          distanceFilter: 0,
+          locationUpdateInterval: 2500, // Update every 2.5 seconds
+          fastestLocationUpdateInterval: 1000, // Fastest possible updates
+          forceReloadOnMotionChange: true,
           locationAuthorizationRequest: 'Always',
           backgroundPermissionRationale: {
             title: 'Locatie in de achtergrond',
@@ -328,23 +357,26 @@ export class GeofenceService {
 
         await plugin.ready(config);
 
-        // Request permission explicitly; abort initialization if not granted.
+        // Check if we need permissions
         try {
-          const permissionResult: AuthorizationStatus = await plugin.requestPermission();
+          const authorization = await plugin.requestPermission();
+          console.log('[GeofenceService] 🔐 Permission result:', authorization);
+        } catch (e) {
+          console.log('[GeofenceService] Permission check failed:', e);
+        }
 
-          if (
-            permissionResult === plugin.AUTHORIZATION_STATUS_DENIED ||
-            permissionResult === plugin.AUTHORIZATION_STATUS_NOT_DETERMINED
-          ) {
-            console.warn(
-              '[GeofenceService] requestPermission returned non-authorized status; aborting init',
-              { permissionResult },
-            );
-            return false;
+        // Check if plugin is already running
+        try {
+          const state = await plugin.getState();
+          console.log('[GeofenceService] 📊 Current plugin state:', state);
+
+          if (state.enabled) {
+            console.log('[GeofenceService] ✅ Plugin already running, skipping start');
+            this.initialized = true;
+            return true;
           }
-        } catch (status) {
-          console.warn('[GeofenceService] requestPermission FAILURE (post-ready)', status);
-          return false;
+        } catch (e) {
+          console.log('[GeofenceService] Could not get plugin state:', e);
         }
 
         // Engage geofences-only mode (per docs) since we only need geofence events
@@ -366,11 +398,19 @@ export class GeofenceService {
   }
 
   private async handleRouteChanged(route: UtmRoute | undefined): Promise<void> {
+    console.log('[GeofenceService] 🛣️ Route changed:', {
+      routeId: route?.nid,
+      routeTitle: route?.title,
+      hasRoute: !!route,
+      notificationsEnabled: this.routeNotificationsEnabled,
+    });
+
     if (!this.routeNotificationsEnabled) {
       return;
     }
 
     if (!route) {
+      console.log('[GeofenceService] 🚫 User navigated away from route - clearing geofences');
       this.activeRouteId = undefined;
       await this.clearAllGeofences();
       return;
@@ -380,6 +420,7 @@ export class GeofenceService {
 
     // If stops already loaded, create fences immediately
     if (route.stops?.length) {
+      console.log('[GeofenceService] 📍 Route already has stops - creating geofences immediately');
       await this.setGeofencesForRoute(route);
       return;
     }
@@ -411,8 +452,11 @@ export class GeofenceService {
   }
 
   private async clearAllGeofences(): Promise<void> {
+    console.log('[GeofenceService] 🧹 Clearing all geofences');
+
     // Do not initialize the plugin just to clear fences
     if (!this.initialized || !this.bgGeo) {
+      console.log('[GeofenceService] Plugin not initialized - just clearing state');
       this.updateState({ activeGeofences: [] });
       return;
     }
@@ -420,6 +464,7 @@ export class GeofenceService {
     try {
       await this.bgGeo.removeGeofences();
       this.updateState({ activeGeofences: [] });
+      console.log('[GeofenceService] ✅ All geofences cleared successfully');
     } catch (e) {
       console.error('[GeofenceService] clearAllGeofences failed', e);
       this.updateState({ activeGeofences: [] });
@@ -466,7 +511,7 @@ export class GeofenceService {
 
       // ⚠️ The minimum reliable radius is 200 meters. Anything less will likely not cause a geofence to trigger. This is documented by Apple here:
       // https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/LocationAwarenessPG/RegionMonitoring/RegionMonitoring.html
-      const radius = 50;
+      const radius = 200;
 
       const geofence: BgGeofence = {
         identifier,
@@ -497,7 +542,18 @@ export class GeofenceService {
     }
 
     try {
+      console.log(
+        '[GeofenceService] 🚀 Adding geofences:',
+        geofences.map(g => ({
+          identifier: g.identifier,
+          radius: g.radius,
+          lat: g.latitude,
+          lng: g.longitude,
+        })),
+      );
+
       await this.bgGeo.addGeofences(geofences);
+      console.log('[GeofenceService] ✅ Geofences added successfully');
       void this.refreshActiveGeofences();
     } catch (e) {
       console.error('[GeofenceService] addGeofences failed', e);
