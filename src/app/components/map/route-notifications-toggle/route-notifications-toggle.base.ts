@@ -1,10 +1,11 @@
 import { RouteNotificationsSettingsService } from '../../../services/route-notifications-settings.service';
+import { Observable } from 'rxjs';
 
 export abstract class RouteNotificationsToggleBase {
-  constructor(protected routeNotifications: RouteNotificationsSettingsService) {}
+  public readonly enabled$: Observable<boolean>;
 
-  public get enabled(): boolean {
-    return this.routeNotifications.getEnabled();
+  constructor(protected routeNotifications: RouteNotificationsSettingsService) {
+    this.enabled$ = this.routeNotifications.enabled$;
   }
 
   public async onToggleChange(event: Event): Promise<void> {
@@ -12,9 +13,5 @@ export abstract class RouteNotificationsToggleBase {
     const requested = Boolean(target?.checked);
 
     await this.routeNotifications.setEnabled(requested);
-
-    if (target) {
-      target.checked = this.enabled;
-    }
   }
 }

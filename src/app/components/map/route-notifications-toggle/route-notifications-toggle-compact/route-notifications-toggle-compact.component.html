@@ -1,6 +1,6 @@
 <div class="route-notification-compact">
   <label class="route-notification-compact__toggle">
-    <input type="checkbox" [checked]="enabled" (change)="onToggleChange($event)" />
+    <input type="checkbox" [checked]="enabled$ | async" (change)="onToggleChange($event)" />
     <div class="route-notification-compact__toggle-ui"></div>
   </label>
 </div>
