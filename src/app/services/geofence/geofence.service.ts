@@ -74,7 +74,7 @@ export class GeofenceService {
     }
 
     try {
-      await this.bgGeo.startGeofences();
+      await this.bgGeo.start();
     } catch (e) {
       console.warn('[GeofenceService] startGeofencingEngine failed', e);
     }
@@ -379,8 +379,9 @@ export class GeofenceService {
           console.log('[GeofenceService] Could not get plugin state:', e);
         }
 
-        // Engage geofences-only mode (per docs) since we only need geofence events
-        await plugin.startGeofences();
+        // Try to start
+        await plugin.start();
+        console.log('[GeofenceService] ✅ Plugin started successfully');
 
         this.initialized = true;
         return true;
