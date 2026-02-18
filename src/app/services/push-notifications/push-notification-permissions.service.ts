@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 
 import { CordovaService } from '../cordova.service';
+import { DebugLogService } from '../debug-log.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PushNotificationPermissionsService {
-  constructor(private cordova: CordovaService) {}
+  constructor(private cordova: CordovaService, private logger: DebugLogService) {}
 
   private async getLocalNotification(timeoutMs = 2000): Promise<any | undefined> {
     const ready = await this.cordova.ready(timeoutMs);
@@ -25,8 +26,9 @@ export class PushNotificationPermissionsService {
     }
 
     if (typeof localNotification.hasPermission !== 'function') {
-      console.warn(
-        '[PushNotificationPermissionsService] cordova.plugins.notification.local.hasPermission not available',
+      this.logger.warn(
+        'PushNotificationPermissionsService',
+        'cordova.plugins.notification.local.hasPermission not available',
       );
       return true;
     }
@@ -35,7 +37,7 @@ export class PushNotificationPermissionsService {
       try {
         localNotification.hasPermission((granted: boolean) => resolve(!!granted));
       } catch (e) {
-        console.warn('[PushNotificationPermissionsService] hasPermission failed', e);
+        this.logger.warn('PushNotificationPermissionsService', 'hasPermission failed', e);
         resolve(false);
       }
     });
@@ -48,8 +50,9 @@ export class PushNotificationPermissionsService {
     }
 
     if (typeof localNotification.requestPermission !== 'function') {
-      console.warn(
-        '[PushNotificationPermissionsService] cordova.plugins.notification.local.requestPermission not available',
+      this.logger.warn(
+        'PushNotificationPermissionsService',
+        'cordova.plugins.notification.local.requestPermission not available',
       );
       return true;
     }
@@ -58,7 +61,7 @@ export class PushNotificationPermissionsService {
       try {
         localNotification.requestPermission((granted: boolean) => resolve(!!granted));
       } catch (e) {
-        console.warn('[PushNotificationPermissionsService] requestPermission failed', e);
+        this.logger.warn('PushNotificationPermissionsService', 'requestPermission failed', e);
         resolve(false);
       }
     });

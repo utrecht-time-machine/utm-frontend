@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CordovaService } from '../cordova.service';
+import { DebugLogService } from '../debug-log.service';
 import { PushNotificationPermissionsService } from '../push-notifications/push-notification-permissions.service';
 import { GeofenceIdentifierService } from './geofence-identifier.service';
 import { GeofenceNotificationService } from './geofence-notification.service';
@@ -59,6 +60,7 @@ export class GeofenceService {
     private geofencePermissions: GeofencePermissionsService,
     private pushNotificationPermissions: PushNotificationPermissionsService,
     private zone: NgZone,
+    private logger: DebugLogService,
   ) {}
 
   private getGeofenceDataFromIdentifier(identifier: string | undefined): RouteStopData | undefined {
@@ -76,7 +78,7 @@ export class GeofenceService {
     try {
       await this.bgGeo.start();
     } catch (e) {
-      console.warn('[GeofenceService] startGeofencingEngine failed', e);
+      this.logger.warn('GeofenceService', 'startGeofencingEngine failed', e);
     }
   }
 
@@ -109,11 +111,12 @@ export class GeofenceService {
         return this.stateSubject.getValue().enabled;
       }
 
-      console.log('[GeofenceService] enabling route notifications geofencing');
+      this.logger.log('GeofenceService', 'enabling route notifications geofencing');
       const ok = await this.ensureInitialized();
       if (!ok) {
-        console.warn(
-          '[GeofenceService] enabling route notifications failed: plugin not initialized',
+        this.logger.warn(
+          'GeofenceService',
+          'enabling route notifications failed: plugin not initialized',
         );
         this.updateState({ enabled: false, activeGeofences: [] });
         return false;
@@ -121,8 +124,9 @@ export class GeofenceService {
 
       const hasLocationPermission = await this.checkHasLocationPermission();
       if (!hasLocationPermission) {
-        console.warn(
-          '[GeofenceService] enabling route notifications failed: permissions not authorized',
+        this.logger.warn(
+          'GeofenceService',
+          'enabling route notifications failed: permissions not authorized',
         );
         this.updateState({ enabled: false, activeGeofences: [] });
         await this.disableGeofencing();
@@ -131,8 +135,9 @@ export class GeofenceService {
 
       const hasNotificationPermission = await this.pushNotificationPermissions.ensurePermission();
       if (!hasNotificationPermission) {
-        console.warn(
-          '[GeofenceService] enabling route notifications failed: notification permissions not authorized',
+        this.logger.warn(
+          'GeofenceService',
+          'enabling route notifications failed: notification permissions not authorized',
         );
         this.updateState({ enabled: false, activeGeofences: [] });
         await this.disableGeofencing();
@@ -159,7 +164,7 @@ export class GeofenceService {
 
     this.routeNotificationsEnabled = false;
 
-    console.log('[GeofenceService] disabling route notifications geofencing');
+    this.logger.log('GeofenceService', 'disabling route notifications geofencing');
     this.teardownSubscriptions();
     await this.disableGeofencing();
 
@@ -177,8 +182,9 @@ export class GeofenceService {
     this.updateState({ locationPermissionOk: ok });
 
     if (!ok && this.routeNotificationsEnabled) {
-      console.warn(
-        '[GeofenceService] location permission not granted; disabling route notifications',
+      this.logger.warn(
+        'GeofenceService',
+        'location permission not granted; disabling route notifications',
       );
       void this.setRouteNotificationsEnabled(false);
     }
@@ -224,8 +230,9 @@ export class GeofenceService {
     const plugin = w?.BackgroundGeolocation as BgGeo | undefined;
 
     if (!plugin) {
-      console.warn(
-        '[GeofenceService] BackgroundGeolocation plugin not found on window. Is cordova-background-geolocation-lt installed and built?',
+      this.logger.warn(
+        'GeofenceService',
+        'BackgroundGeolocation plugin not found on window. Is cordova-background-geolocation-lt installed and built?',
       );
       return undefined;
     }
@@ -245,7 +252,7 @@ export class GeofenceService {
     this.initializingPromise = (async (): Promise<boolean> => {
       const plugin = await this.getPlugin();
       if (!plugin) {
-        console.warn('[GeofenceService] ensureInitialized: no plugin available');
+        this.logger.warn('GeofenceService', 'ensureInitialized: no plugin available');
         return false;
       }
 
@@ -265,7 +272,7 @@ export class GeofenceService {
 
           // Listen for geofence events
           plugin.onGeofence(async (event: GeofenceEvent) => {
-            console.log('[GeofenceService] 🎯 Geofence event received:', {
+            this.logger.log('GeofenceService', 'Geofence event received', {
               identifier: event?.identifier,
               action: event?.action,
               location: event?.location,
@@ -276,9 +283,8 @@ export class GeofenceService {
             const action = event?.action;
 
             if (action === 'ENTER' || action === 'EXIT') {
-              console.log('[GeofenceService] geofence event', {
+              this.logger.log('GeofenceService', `geofence ${action}`, {
                 identifier,
-                action,
                 location: event?.location,
               });
             }
@@ -289,13 +295,13 @@ export class GeofenceService {
                 getDataFromIdentifier: id => this.getGeofenceDataFromIdentifier(id),
               });
             } catch (e) {
-              console.warn('[GeofenceService] geofence notification handler failed', e);
+              this.logger.warn('GeofenceService', 'geofence notification handler failed', e);
             }
           });
 
           plugin.onLocation(
             location => {
-              console.log('[GeofenceService] 📍 Location update:', {
+              this.logger.log('GeofenceService', 'Location update', {
                 lat: location.coords.latitude,
                 lng: location.coords.longitude,
                 accuracy: location.coords.accuracy,
@@ -305,12 +311,12 @@ export class GeofenceService {
               });
             },
             error => {
-              console.warn('[GeofenceService] onLocation error', error);
+              this.logger.warn('GeofenceService', 'onLocation error', error);
             },
           );
 
           plugin.onMotionChange(location => {
-            console.log('[GeofenceService] 🏃 Motion change:', {
+            this.logger.log('GeofenceService', 'Motion change', {
               isMoving: location.isMoving,
               lat: location.location.coords.latitude,
               lng: location.location.coords.longitude,
@@ -329,9 +335,9 @@ export class GeofenceService {
           });
 
           plugin.onEnabledChange((isEnabled: boolean) => {
-            console.log('[GeofenceService] 🔄 onEnabledChange:', isEnabled);
+            this.logger.log('GeofenceService', 'onEnabledChange', isEnabled);
             if (!isEnabled && this.routeNotificationsEnabled) {
-              console.warn('[GeofenceService] Plugin disabled externally; syncing state');
+              this.logger.warn('GeofenceService', 'Plugin disabled externally; syncing state');
               this.routeNotificationsEnabled = false;
               this.teardownSubscriptions();
             }
@@ -366,7 +372,7 @@ export class GeofenceService {
         };
 
         const readyState = await plugin.ready(config);
-        console.log('[GeofenceService] Plugin ready state:', readyState);
+        this.logger.log('GeofenceService', 'Plugin ready state', readyState);
 
         this.initialized = true;
 
@@ -374,8 +380,9 @@ export class GeofenceService {
         // Sync our internal state to match the actual plugin state so the UI
         // always accurately reflects whether geofencing is running.
         if (readyState.enabled) {
-          console.log(
-            '[GeofenceService] ⚠️ Plugin was already running from a previous session — syncing enabled state',
+          this.logger.log(
+            'GeofenceService',
+            'Plugin was already running from a previous session — syncing enabled state',
           );
           this.routeNotificationsEnabled = true;
           this.initSubscriptions();
@@ -385,7 +392,7 @@ export class GeofenceService {
 
         return true;
       } catch (e) {
-        console.error('[GeofenceService] ensureInitialized failed', e);
+        this.logger.error('GeofenceService', 'ensureInitialized failed', e);
         return false;
       }
     })();
@@ -398,7 +405,7 @@ export class GeofenceService {
   }
 
   private async handleRouteChanged(route: UtmRoute | undefined): Promise<void> {
-    console.log('[GeofenceService] 🛣️ Route changed:', {
+    this.logger.log('GeofenceService', 'Route changed', {
       routeId: route?.nid,
       routeTitle: route?.title,
       hasRoute: !!route,
@@ -410,7 +417,7 @@ export class GeofenceService {
     }
 
     if (!route) {
-      console.log('[GeofenceService] 🚫 User navigated away from route - clearing geofences');
+      this.logger.log('GeofenceService', 'User navigated away from route - clearing geofences');
       this.activeRouteId = undefined;
       await this.clearAllGeofences();
       return;
@@ -420,7 +427,10 @@ export class GeofenceService {
 
     // If stops already loaded, create fences immediately
     if (route.stops?.length) {
-      console.log('[GeofenceService] 📍 Route already has stops - creating geofences immediately');
+      this.logger.log(
+        'GeofenceService',
+        'Route already has stops - creating geofences immediately',
+      );
       await this.setGeofencesForRoute(route);
       return;
     }
@@ -441,8 +451,9 @@ export class GeofenceService {
     }
 
     if (!route.stops?.length) {
-      console.warn(
-        '[GeofenceService] handleStopsPossiblyLoaded: event fired but route has no stops',
+      this.logger.warn(
+        'GeofenceService',
+        'handleStopsPossiblyLoaded: event fired but route has no stops',
         { routeId: route.nid },
       );
       return;
@@ -452,11 +463,11 @@ export class GeofenceService {
   }
 
   private async clearAllGeofences(): Promise<void> {
-    console.log('[GeofenceService] 🧹 Clearing all geofences');
+    this.logger.log('GeofenceService', 'Clearing all geofences');
 
     // Do not initialize the plugin just to clear fences
     if (!this.initialized || !this.bgGeo) {
-      console.log('[GeofenceService] Plugin not initialized - just clearing state');
+      this.logger.log('GeofenceService', 'Plugin not initialized - just clearing state');
       this.updateState({ activeGeofences: [] });
       return;
     }
@@ -464,9 +475,9 @@ export class GeofenceService {
     try {
       await this.bgGeo.removeGeofences();
       this.updateState({ activeGeofences: [] });
-      console.log('[GeofenceService] ✅ All geofences cleared successfully');
+      this.logger.log('GeofenceService', 'All geofences cleared successfully');
     } catch (e) {
-      console.error('[GeofenceService] clearAllGeofences failed', e);
+      this.logger.error('GeofenceService', 'clearAllGeofences failed', e);
       this.updateState({ activeGeofences: [] });
     }
   }
@@ -478,7 +489,7 @@ export class GeofenceService {
 
     const ok = await this.ensureInitialized();
     if (!ok || !this.bgGeo) {
-      console.warn('[GeofenceService] setGeofencesForRoute: not initialized');
+      this.logger.warn('GeofenceService', 'setGeofencesForRoute: not initialized');
       return;
     }
 
@@ -500,7 +511,7 @@ export class GeofenceService {
       );
 
       if (typeof lat !== 'number' || typeof lng !== 'number') {
-        console.warn('[GeofenceService] stop has no coords; skipping geofence', {
+        this.logger.warn('GeofenceService', 'stop has no coords; skipping geofence', {
           identifier,
           idx,
           locationId: stop.location_id,
@@ -534,7 +545,7 @@ export class GeofenceService {
     }
 
     if (!geofences.length) {
-      console.warn('[GeofenceService] No valid geofences to add', {
+      this.logger.warn('GeofenceService', 'No valid geofences to add', {
         routeId: route.nid,
         totalStops: stops.length,
       });
@@ -542,8 +553,9 @@ export class GeofenceService {
     }
 
     try {
-      console.log(
-        '[GeofenceService] 🚀 Adding geofences:',
+      this.logger.log(
+        'GeofenceService',
+        'Adding geofences',
         geofences.map(g => ({
           identifier: g.identifier,
           radius: g.radius,
@@ -553,10 +565,10 @@ export class GeofenceService {
       );
 
       await this.bgGeo.addGeofences(geofences);
-      console.log('[GeofenceService] ✅ Geofences added successfully');
+      this.logger.log('GeofenceService', 'Geofences added successfully');
       void this.refreshActiveGeofences();
     } catch (e) {
-      console.error('[GeofenceService] addGeofences failed', e);
+      this.logger.error('GeofenceService', 'addGeofences failed', e);
       void this.refreshActiveGeofences();
     }
   }
@@ -570,7 +582,7 @@ export class GeofenceService {
     try {
       await this.bgGeo.removeGeofences();
     } catch (e) {
-      console.warn('[GeofenceService] disableGeofencing removeGeofences failed', e);
+      this.logger.warn('GeofenceService', 'disableGeofencing removeGeofences failed', e);
     }
 
     await this.refreshActiveGeofences();
@@ -578,7 +590,7 @@ export class GeofenceService {
     try {
       await this.bgGeo.stop();
     } catch (e) {
-      console.warn('[GeofenceService] disableGeofencing stop failed', e);
+      this.logger.warn('GeofenceService', 'disableGeofencing stop failed', e);
     }
   }
 }

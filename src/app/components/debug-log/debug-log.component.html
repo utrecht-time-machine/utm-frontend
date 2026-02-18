@@ -1,0 +1,25 @@
+<div class="debug-log">
+  <div class="debug-log__header">
+    <span class="debug-log__title">Debug Log ({{ entries.length }})</span>
+    <button class="debug-log__clear" (click)="clear()">Clear</button>
+  </div>
+
+  <div class="debug-log__list">
+    @for (entry of entries; track trackByIndex($index); let i = $index) {
+    <div class="debug-log__entry debug-log__entry--{{ entry.level }}">
+      <span class="debug-log__time">{{ entry.timestamp | date : 'HH:mm:ss.SSS' }}</span>
+      <span class="debug-log__source">{{ entry.source }}</span>
+      <span class="debug-log__message">{{ entry.message }}</span>
+      @if (entry.data !== undefined) {
+      <button class="debug-log__data-toggle" (click)="toggleData(i)">
+        {{ isExpanded(i) ? '▾ data' : '▸ data' }}
+      </button>
+      @if (isExpanded(i)) {
+      <pre class="debug-log__data">{{ entry.data | json }}</pre>
+      } }
+    </div>
+    } @empty {
+    <div class="debug-log__empty">No logs yet.</div>
+    }
+  </div>
+</div>

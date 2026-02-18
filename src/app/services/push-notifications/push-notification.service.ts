@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { CordovaService } from '../cordova.service';
+import { DebugLogService } from '../debug-log.service';
 
 export type LocalNotificationOptions = {
   id: number;
@@ -25,7 +26,7 @@ export class PushNotificationService {
 
   private clickHandlerRegistered = false;
 
-  constructor(private cordova: CordovaService) {}
+  constructor(private cordova: CordovaService, private logger: DebugLogService) {}
 
   async ensureClickHandlerRegistered(timeoutMs = 2000): Promise<void> {
     if (this.clickHandlerRegistered) {
@@ -53,16 +54,17 @@ export class PushNotificationService {
     options: LocalNotificationOptions,
     timeoutMs = 2000,
   ): Promise<boolean> {
-    console.log('[PushNotificationService] scheduleLocalNotification called', {
+    this.logger.log('PushNotificationService', 'scheduleLocalNotification called', {
       options,
       timeoutMs,
     });
 
     const ready = await this.cordova.ready(timeoutMs);
-    console.log('[PushNotificationService] cordova.ready result', { ready });
+    this.logger.log('PushNotificationService', 'cordova.ready result', { ready });
     if (!ready) {
-      console.warn(
-        '[PushNotificationService] Cordova not ready / not available; not scheduling notification',
+      this.logger.warn(
+        'PushNotificationService',
+        'Cordova not ready / not available; not scheduling notification',
       );
       return false;
     }
@@ -70,16 +72,17 @@ export class PushNotificationService {
     const cordovaRef = this.cordova.getCordova();
     const localNotification = cordovaRef?.plugins?.notification?.local;
     if (!localNotification?.schedule) {
-      console.warn(
-        '[PushNotificationService] cordova.plugins.notification.local.schedule not available',
+      this.logger.warn(
+        'PushNotificationService',
+        'cordova.plugins.notification.local.schedule not available',
         { cordovaRef },
       );
       return false;
     }
 
-    console.log('[PushNotificationService] Scheduling local notification', options);
+    this.logger.log('PushNotificationService', 'Scheduling local notification', options);
     localNotification.schedule(options);
-    console.log('[PushNotificationService] scheduleLocalNotification done');
+    this.logger.log('PushNotificationService', 'scheduleLocalNotification done');
 
     void this.ensureClickHandlerRegistered(timeoutMs);
     return true;

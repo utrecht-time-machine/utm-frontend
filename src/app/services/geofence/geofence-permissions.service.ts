@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 
 import type { AuthorizationStatus, ProviderChangeEvent } from 'cordova-background-geolocation-lt';
 
+import { DebugLogService } from '../debug-log.service';
+
 type BgGeo = typeof import('cordova-background-geolocation-lt').default;
 
 @Injectable({
   providedIn: 'root',
 })
 export class GeofencePermissionsService {
+  constructor(private logger: DebugLogService) {}
+
   async hasLocationPermission(bgGeo: BgGeo): Promise<boolean> {
     try {
       const providerState: ProviderChangeEvent = await bgGeo.getProviderState();
@@ -28,7 +32,7 @@ export class GeofencePermissionsService {
 
       return true;
     } catch (e) {
-      console.warn('[GeofencePermissionsService] hasLocationPermission failed', e);
+      this.logger.warn('GeofencePermissionsService', 'hasLocationPermission failed', e);
       return false;
     }
   }

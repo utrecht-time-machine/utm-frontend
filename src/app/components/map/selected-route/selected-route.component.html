@@ -11,6 +11,9 @@
         />
       </div>
       }
+
+      <app-debug-log />
+
       <app-edit-button [nid]="utmRoutes.selected.getValue()?.nid"></app-edit-button>
       <h2>
         {{ utmTranslate.getAsEnglishIfApplicable(selectedRoute, 'title', 'title_english') }}

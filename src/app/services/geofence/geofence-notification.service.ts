@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import type { GeofenceEvent } from 'cordova-background-geolocation-lt';
 
+import { DebugLogService } from '../debug-log.service';
 import { GeofenceIdentifierService } from './geofence-identifier.service';
 import { PushNotificationService } from '../push-notifications/push-notification.service';
 import { RouteStopData } from '../../models/route-stop-data';
@@ -13,6 +14,7 @@ export class GeofenceNotificationService {
   constructor(
     private push: PushNotificationService,
     private identifier: GeofenceIdentifierService,
+    private logger: DebugLogService,
   ) {}
 
   async handleGeofenceEvent(
@@ -56,7 +58,7 @@ export class GeofenceNotificationService {
     });
 
     if (!ok) {
-      console.warn('[GeofenceNotificationService] scheduleLocalNotification failed', {
+      this.logger.warn('GeofenceNotificationService', 'scheduleLocalNotification failed', {
         identifier,
         notificationId,
       });

@@ -18,6 +18,7 @@ import { FiltersModule } from '../filters/filters.module';
 import { TimeFilterModule } from '../filters/filter/time-filter/time-filter.module';
 import { FeedbackModule } from '../feedback/feedback.module';
 import { RouteNotificationsToggleComponent } from './route-notifications-toggle/route-notifications-toggle.component';
+import { DebugLogComponent } from "../debug-log/debug-log.component";
 
 @NgModule({
   declarations: [MapComponent, SelectedItemComponent, SelectedRouteComponent, RouteStepsComponent],
@@ -38,6 +39,7 @@ import { RouteNotificationsToggleComponent } from './route-notifications-toggle/
     FiltersModule,
     FeedbackModule,
     RouteNotificationsToggleComponent,
-  ],
+    DebugLogComponent
+],
 })
 export class MapModule {}
