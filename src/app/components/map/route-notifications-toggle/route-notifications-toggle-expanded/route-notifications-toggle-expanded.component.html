@@ -4,16 +4,16 @@
       <img
         class="route-notification-card__icon-img"
         src="assets/ui/svg/bell.svg"
-        alt="Push-notificatie icoon"
+        [alt]="'pushNotificationIconAlt' | translate"
       />
     </span>
-    <div class="route-notification-card__title">Push-notificaties</div>
+    <div class="route-notification-card__title">{{ 'pushNotifications' | translate }}</div>
   </div>
 
   <div class="route-notification-card__body">
     <div class="route-notification-card__text-row">
       <div class="route-notification-card__text">
-        Zet dit aan om een melding te ontvangen als je bij een routepunt in de buurt bent.
+        {{ 'routeNotificationsDescription' | translate }}
       </div>
 
       <app-route-toggle

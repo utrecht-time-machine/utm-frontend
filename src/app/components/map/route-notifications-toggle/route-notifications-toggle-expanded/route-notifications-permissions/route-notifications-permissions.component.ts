@@ -9,6 +9,7 @@ import { CordovaService } from 'src/app/services/cordova.service';
 import { GeofenceService } from 'src/app/services/geofence/geofence.service';
 import { PushNotificationPermissionsService } from 'src/app/services/push-notifications/push-notification-permissions.service';
 import { RouteNotificationsSettingsService } from 'src/app/services/route-notifications-settings.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 type BgGeo = typeof import('cordova-background-geolocation-lt').default;
 
@@ -24,7 +25,7 @@ type PermissionStatus = {
 
 @Component({
   selector: 'app-route-notifications-permissions',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './route-notifications-permissions.component.html',
   styleUrls: ['./route-notifications-permissions.component.scss'],
 })
@@ -61,16 +62,16 @@ export class RouteNotificationsPermissionsComponent implements OnInit, OnDestroy
 
         const missing: string[] = [];
         if (!cordovaReady) {
-          missing.push('App is nog niet klaar');
+          missing.push(this.translate.instant('appNotReady'));
         }
         if (!backgroundGeolocationAvailable) {
-          missing.push('Geofencing niet beschikbaar op dit apparaat');
+          missing.push(this.translate.instant('geofencingNotAvailable'));
         }
         if (!backgroundLocationOk) {
-          missing.push('Locatie-toegang in de achtergrond');
+          missing.push(this.translate.instant('backgroundLocationAccess'));
         }
         if (!notificationPermissionOk) {
-          missing.push('Notificaties');
+          missing.push(this.translate.instant('notifications'));
         }
 
         return {
@@ -91,6 +92,7 @@ export class RouteNotificationsPermissionsComponent implements OnInit, OnDestroy
     private geofenceService: GeofenceService,
     private pushNotificationPermissions: PushNotificationPermissionsService,
     private routeNotifications: RouteNotificationsSettingsService,
+    private translate: TranslateService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -142,30 +144,30 @@ export class RouteNotificationsPermissionsComponent implements OnInit, OnDestroy
   }
 
   protected ok(v: boolean): string {
-    return v ? 'Toestemming gegeven' : 'Geen toestemming';
+    return v ? this.translate.instant('permissionGranted') : this.translate.instant('noPermission');
   }
 
   protected backgroundLocationStatusText(status: AuthorizationStatus | 'unavailable'): string {
     if (status === 'unavailable') {
-      return 'Niet beschikbaar';
+      return this.translate.instant('notAvailable');
     }
 
     const bg = (window as any)?.BackgroundGeolocation as BgGeo | undefined;
     if (!bg) {
-      return 'Onbekend';
+      return this.translate.instant('unknown');
     }
 
     switch (status) {
       case bg.AUTHORIZATION_STATUS_ALWAYS:
-        return 'Toestemming gegeven';
+        return this.translate.instant('permissionAlways');
       case bg.AUTHORIZATION_STATUS_WHEN_IN_USE:
-        return 'Alleen tijdens gebruik';
+        return this.translate.instant('permissionWhenInUse');
       case bg.AUTHORIZATION_STATUS_DENIED:
-        return 'Geweigerd';
+        return this.translate.instant('permissionDenied');
       case bg.AUTHORIZATION_STATUS_NOT_DETERMINED:
-        return 'Nog gevraagd';
+        return this.translate.instant('permissionNotDetermined');
       default:
-        return 'Onbekend';
+        return this.translate.instant('unknown');
     }
   }
 }
