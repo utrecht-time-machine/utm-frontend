@@ -327,6 +327,16 @@ export class GeofenceService {
               void this.refreshActiveGeofences();
             }
           });
+
+          plugin.onEnabledChange((isEnabled: boolean) => {
+            console.log('[GeofenceService] 🔄 onEnabledChange:', isEnabled);
+            if (!isEnabled && this.routeNotificationsEnabled) {
+              console.warn('[GeofenceService] Plugin disabled externally; syncing state');
+              this.routeNotificationsEnabled = false;
+              this.teardownSubscriptions();
+            }
+            this.updateState({ enabled: isEnabled });
+          });
         }
 
         const config: Config = {
@@ -355,35 +365,24 @@ export class GeofenceService {
           },
         };
 
-        await plugin.ready(config);
-
-        // Check if we need permissions
-        try {
-          const authorization = await plugin.requestPermission();
-          console.log('[GeofenceService] 🔐 Permission result:', authorization);
-        } catch (e) {
-          console.log('[GeofenceService] Permission check failed:', e);
-        }
-
-        // Check if plugin is already running
-        try {
-          const state = await plugin.getState();
-          console.log('[GeofenceService] 📊 Current plugin state:', state);
-
-          if (state.enabled) {
-            console.log('[GeofenceService] ✅ Plugin already running, skipping start');
-            this.initialized = true;
-            return true;
-          }
-        } catch (e) {
-          console.log('[GeofenceService] Could not get plugin state:', e);
-        }
-
-        // Try to start
-        await plugin.start();
-        console.log('[GeofenceService] ✅ Plugin started successfully');
+        const readyState = await plugin.ready(config);
+        console.log('[GeofenceService] Plugin ready state:', readyState);
 
         this.initialized = true;
+
+        // The plugin persists its enabled state across app launches via ready().
+        // Sync our internal state to match the actual plugin state so the UI
+        // always accurately reflects whether geofencing is running.
+        if (readyState.enabled) {
+          console.log(
+            '[GeofenceService] ⚠️ Plugin was already running from a previous session — syncing enabled state',
+          );
+          this.routeNotificationsEnabled = true;
+          this.initSubscriptions();
+          this.updateState({ enabled: true });
+          void this.refreshActiveGeofences();
+        }
+
         return true;
       } catch (e) {
         console.error('[GeofenceService] ensureInitialized failed', e);
