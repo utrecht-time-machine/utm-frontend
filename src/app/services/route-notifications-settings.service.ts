@@ -45,8 +45,7 @@ export class RouteNotificationsSettingsService {
   public async setEnabled(enabled: boolean): Promise<boolean> {
     if (enabled) {
       this.ensureGeofenceIsWired();
-      const ok = await this.geofence!.setRouteNotificationsEnabled(true);
-      return ok;
+      return await this.geofence!.setRouteNotificationsEnabled(true);
     }
 
     this.ensureGeofenceIsWired();

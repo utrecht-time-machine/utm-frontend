@@ -382,13 +382,26 @@ export class GeofenceService {
         if (readyState.enabled) {
           this.logger.log(
             'GeofenceService',
-            'Plugin was already running from a previous session — syncing enabled state',
+            'Plugin was already running from a previous session — verifying permissions before syncing state',
           );
-          this.routeNotificationsEnabled = true;
-          this.initSubscriptions();
-          this.updateState({ enabled: true });
-          void this.refreshActiveGeofences();
-          void this.checkHasLocationPermission();
+          const hasLocationPermission = await this.geofencePermissions.hasLocationPermission(
+            plugin,
+          );
+          this.updateState({ locationPermissionOk: hasLocationPermission });
+
+          if (!hasLocationPermission) {
+            this.logger.warn(
+              'GeofenceService',
+              'Persisted session found but location permission no longer granted — disabling',
+            );
+            await this.disableGeofencing();
+            this.updateState({ enabled: false, activeGeofences: [] });
+          } else {
+            this.routeNotificationsEnabled = true;
+            this.initSubscriptions();
+            this.updateState({ enabled: true });
+            void this.refreshActiveGeofences();
+          }
         }
 
         return true;

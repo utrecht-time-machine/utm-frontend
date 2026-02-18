@@ -17,7 +17,11 @@
       </div>
 
       <label class="route-notification-card__toggle">
-        <input type="checkbox" [checked]="enabled$ | async" (change)="onToggleChange($event)" />
+        <input
+          type="checkbox"
+          [checked]="enabled"
+          (click)="$event.preventDefault(); onToggleClick()"
+        />
         <span class="route-notification-card__toggle-ui"></span>
       </label>
     </div>

@@ -1,17 +1,21 @@
+import { Directive, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { RouteNotificationsSettingsService } from '../../../services/route-notifications-settings.service';
-import { Observable } from 'rxjs';
 
-export abstract class RouteNotificationsToggleBase {
-  public readonly enabled$: Observable<boolean>;
+@Directive()
+export abstract class RouteNotificationsToggleBase implements OnDestroy {
+  public enabled = false;
+  private _sub: Subscription;
 
   constructor(protected routeNotifications: RouteNotificationsSettingsService) {
-    this.enabled$ = this.routeNotifications.enabled$;
+    this._sub = this.routeNotifications.enabled$.subscribe(v => (this.enabled = v));
   }
 
-  public async onToggleChange(event: Event): Promise<void> {
-    const target = event.target as HTMLInputElement | null;
-    const requested = Boolean(target?.checked);
+  public onToggleClick(): void {
+    void this.routeNotifications.setEnabled(!this.enabled);
+  }
 
-    await this.routeNotifications.setEnabled(requested);
+  ngOnDestroy(): void {
+    this._sub.unsubscribe();
   }
 }
