@@ -61,7 +61,9 @@ export class GeofenceService {
     private pushNotificationPermissions: PushNotificationPermissionsService,
     private zone: NgZone,
     private logger: DebugLogService,
-  ) {}
+  ) {
+    void this.ensureInitialized();
+  }
 
   private getGeofenceDataFromIdentifier(identifier: string | undefined): RouteStopData | undefined {
     return this.geofenceIdentifier.getDataFromIdentifier(
@@ -201,7 +203,6 @@ export class GeofenceService {
       if (!this.routeNotificationsEnabled) {
         return;
       }
-
       void this.handleRouteChanged(route);
     });
 
@@ -209,7 +210,6 @@ export class GeofenceService {
       if (!this.routeNotificationsEnabled) {
         return;
       }
-
       void this.handleStopsPossiblyLoaded(this.utmRoutes.selected.getValue());
     });
   }
@@ -388,6 +388,7 @@ export class GeofenceService {
           this.initSubscriptions();
           this.updateState({ enabled: true });
           void this.refreshActiveGeofences();
+          void this.checkHasLocationPermission();
         }
 
         return true;

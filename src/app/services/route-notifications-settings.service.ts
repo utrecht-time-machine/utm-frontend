@@ -18,6 +18,7 @@ export class RouteNotificationsSettingsService {
 
   constructor(private injector: Injector, private cordova: CordovaService) {
     void this.checkDeviceAllowsGeofencing();
+    this.ensureGeofenceIsWired();
   }
 
   private ensureGeofenceIsWired(): void {
