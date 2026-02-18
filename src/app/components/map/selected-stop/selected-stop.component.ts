@@ -18,8 +18,6 @@ export class SelectedStopComponent {
     public utmTranslate: UtmTranslateService,
   ) {}
 
-  ngOnInit() {}
-
   get shouldShowEnglishAudio(): boolean {
     if (!this.utmRoutes.selectedStop?.audio_english) {
       return false;

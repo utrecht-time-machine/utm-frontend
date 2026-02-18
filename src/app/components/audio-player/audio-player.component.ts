@@ -9,7 +9,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Howl } from 'howler';
+import { DebugLogService } from 'src/app/services/debug-log.service';
 import { PlatformService } from 'src/app/services/platform.service';
+import { UtmRoutesService } from 'src/app/services/utm-routes.service';
 
 @Component({
   selector: 'app-audio-player',
@@ -27,7 +29,11 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
 
   @ViewChild('audioElement', { static: false }) audioElement!: ElementRef;
 
-  constructor(public platform: PlatformService) {
+  constructor(
+    public platform: PlatformService,
+    private logger: DebugLogService,
+    private utmRoutes: UtmRoutesService,
+  ) {
     if (this.platform.isBrowser()) {
       setInterval(() => {
         this.percentageComplete = this._getPercentageComplete();
@@ -41,9 +47,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  ngOnInit() {
-    this.load(this.audioUrl);
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.audio?.stop();
@@ -121,9 +125,30 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
+    this.logger.log('AudioPlayer', 'load', { audioUrl });
     setTimeout(() => {
       this.audio = new Howl({
         src: [audioUrl],
+        onload: () => {
+          const shouldAutoPlay = this.utmRoutes.consumeAutoPlay();
+          this.logger.log('AudioPlayer', 'Howl loaded', { audioUrl, shouldAutoPlay });
+          if (shouldAutoPlay) {
+            this.logger.log('AudioPlayer', 'auto-playing');
+            this.audio?.play();
+          }
+        },
+        onplay: () => {
+          this.logger.log('AudioPlayer', 'playing');
+        },
+        onpause: () => {
+          this.logger.log('AudioPlayer', 'paused');
+        },
+        onstop: () => {
+          this.logger.log('AudioPlayer', 'stopped');
+        },
+        onloaderror: (_id: number, err: unknown) => {
+          this.logger.error('AudioPlayer', 'load error', err);
+        },
       });
     });
   }

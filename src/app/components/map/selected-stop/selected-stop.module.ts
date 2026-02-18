@@ -9,6 +9,7 @@ import { FeedbackModule } from '../../feedback/feedback.module';
 import { AudioPlayerModule } from '../../audio-player/audio-player.module';
 import { AudioTranscriptComponent } from '../../audio-transcript/audio-transcript.component';
 import { RouteNotificationsToggleComponent } from '../route-notifications-toggle/route-notifications-toggle.component';
+import { DebugLogComponent } from "../../debug-log/debug-log.component";
 
 @NgModule({
   declarations: [SelectedStopComponent],
@@ -22,7 +23,8 @@ import { RouteNotificationsToggleComponent } from '../route-notifications-toggle
     AudioPlayerModule,
     AudioTranscriptComponent,
     RouteNotificationsToggleComponent,
-  ],
+    DebugLogComponent
+],
   exports: [SelectedStopComponent],
 })
 export class SelectedStopModule {}

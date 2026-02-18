@@ -11,6 +11,7 @@ import { Story } from '../models/story';
 import { environment } from '../../environments/environment';
 import { SelectedView } from '../models/selected-view';
 import { RoutingService } from './routing.service';
+import { DebugLogService } from './debug-log.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,18 @@ export class UtmRoutesService {
     undefined,
   );
 
+  autoPlayAudio = false;
+
+  consumeAutoPlay(): boolean {
+    const val = this.autoPlayAudio;
+    this.autoPlayAudio = false;
+    this.logger.log('UtmRoutesService', 'consumeAutoPlay', {
+      returned: val,
+      stopIdx: this.selectedStopIdx.value,
+    });
+    return val;
+  }
+
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -35,6 +48,7 @@ export class UtmRoutesService {
     private platform: PlatformService,
     private utmTranslate: UtmTranslateService,
     private routing: RoutingService,
+    private logger: DebugLogService,
   ) {
     void this.load();
 
@@ -272,7 +286,7 @@ export class UtmRoutesService {
     // TODO: Properly wait for stops loading to finish
     await new Promise(resolve => setTimeout(resolve, 100));
 
-    this.selectStopByIdx(stopIdx, 200);
+    this.selectStopByIdx(stopIdx, 200, true);
   }
 
   private _justRedirected = false;
@@ -322,7 +336,12 @@ export class UtmRoutesService {
     await this.selectById(id);
   }
 
-  public selectStopByIdx(stopIdx: number | undefined, scrollTo: number | undefined = undefined) {
+  public selectStopByIdx(
+    stopIdx: number | undefined,
+    scrollTo: number | undefined = undefined,
+    autoPlay = false,
+  ) {
+    this.logger.log('UtmRoutesService', 'selectStopByIdx', { stopIdx, autoPlay });
     const selectedRoute: UtmRoute | undefined = this.selected.getValue();
     const selectedStops: UtmRouteStop[] | undefined = selectedRoute?.stops;
 
@@ -336,6 +355,7 @@ export class UtmRoutesService {
     }
 
     if (selectedRoute) {
+      this.autoPlayAudio = autoPlay;
       this.selectedStopIdx.next(stopIdx);
 
       const selectingHome = stopIdx === undefined;
