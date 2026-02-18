@@ -124,6 +124,9 @@ export class GeofenceService {
         return false;
       }
 
+      // Call start before checking permissions (plugin start triggers the location permission prompt)
+      await this.startGeofencingEngine();
+
       const hasLocationPermission = await this.checkHasLocationPermission();
       if (!hasLocationPermission) {
         this.logger.warn(
@@ -145,10 +148,6 @@ export class GeofenceService {
         await this.disableGeofencing();
         return false;
       }
-
-      // If the user previously disabled geofencing, the plugin may have been stopped.
-      // Start it again on every enable.
-      await this.startGeofencingEngine();
 
       // Only now consider the feature enabled.
       this.routeNotificationsEnabled = true;
