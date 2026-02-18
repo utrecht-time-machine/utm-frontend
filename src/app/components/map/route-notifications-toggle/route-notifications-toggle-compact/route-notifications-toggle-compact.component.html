@@ -1,6 +1,9 @@
 <div class="route-notification-compact">
-  <label class="route-notification-compact__toggle">
-    <input type="checkbox" [checked]="enabled" (click)="$event.preventDefault(); onToggleClick()" />
-    <div class="route-notification-compact__toggle-ui"></div>
-  </label>
+  <app-route-toggle
+    variant="compact"
+    [enabled]="enabled"
+    [busy]="busy"
+    [shaking]="shaking"
+    (toggleClick)="onToggleClick()"
+  ></app-route-toggle>
 </div>

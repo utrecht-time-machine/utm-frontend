@@ -1,0 +1,116 @@
+.route-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.route-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.route-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.route-toggle__ui {
+  --width: 44px;
+  --height: 26px;
+  --thumb-size: 22px;
+  --thumb-offset: 2px;
+  --thumb-transform: 18px;
+
+  width: var(--width);
+  height: var(--height);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: background 0.15s ease;
+}
+
+.route-toggle__ui::after {
+  content: '';
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: 999px;
+  background: #fff;
+  position: absolute;
+  top: var(--thumb-offset);
+  left: var(--thumb-offset);
+  transition: transform 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.route-toggle input:checked + .route-toggle__ui {
+  background: #1e7d3d;
+}
+
+.route-toggle input:checked + .route-toggle__ui::after {
+  transform: translateX(var(--thumb-transform));
+}
+
+.route-toggle__ui.busy {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.route-toggle__ui.shake {
+  animation: toggle-shake 0.5s ease;
+}
+
+@keyframes toggle-shake {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-4px);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Spinner styles */
+.route-toggle__spinner {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  border-top-color: rgba(0, 0, 0, 0.8);
+  animation: spinner 0.8s linear infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Compact variant overrides */
+.route-toggle--compact .route-toggle__ui {
+  --width: 2.4em;
+  --height: 1.4em;
+  --thumb-size: 1.1em;
+  --thumb-offset: 0.15em;
+  --thumb-transform: calc(2.4em - 1.1em - 0.3em);
+}
+
+.route-toggle--compact .route-toggle__spinner {
+  width: 1.4em;
+  height: 1.4em;
+}

@@ -13,6 +13,7 @@ import { RoutesModule } from './components/routes/routes.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ConnectivityModule } from './components/connectivity/connectivity.module';
+import { ToastComponent } from './components/toast/toast.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxMatomoTrackerModule, NgxMatomoRouterModule } from 'ngx-matomo-client';
 
@@ -46,6 +47,7 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     NgxMatomoRouterModule,
     ConnectivityModule,
+    ToastComponent,
     BrowserAnimationsModule,
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],

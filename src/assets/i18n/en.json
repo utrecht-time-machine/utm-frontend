@@ -39,5 +39,6 @@
   "commentPlaceholder": "Share your thoughts or suggestions. Would you like us to reply? Don't forget to share your email address.",
   "commentSendingSuccess": "Thank you for your feedback",
   "commentSendingError": "There was an error sending your feedback",
-  "organisations": "With contributions from"
+  "organisations": "With contributions from",
+  "routeNotificationsPermissionRequired": "Please allow location and notification permission in settings to enable push notifications."
 }

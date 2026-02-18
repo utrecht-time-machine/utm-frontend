@@ -1,0 +1,9 @@
+<div class="route-toggle-wrapper" [class.route-toggle--compact]="variant === 'compact'">
+  <label class="route-toggle">
+    <input type="checkbox" [checked]="enabled" (click)="onClick($event)" />
+    <div class="route-toggle__ui" [class.shake]="shaking" [class.busy]="busy"></div>
+  </label>
+  @if (busy) {
+  <div class="route-toggle__spinner"></div>
+  }
+</div>

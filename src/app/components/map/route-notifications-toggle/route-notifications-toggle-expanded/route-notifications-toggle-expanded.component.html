@@ -16,14 +16,12 @@
         Zet dit aan om een melding te ontvangen als je bij een routepunt in de buurt bent.
       </div>
 
-      <label class="route-notification-card__toggle">
-        <input
-          type="checkbox"
-          [checked]="enabled"
-          (click)="$event.preventDefault(); onToggleClick()"
-        />
-        <span class="route-notification-card__toggle-ui"></span>
-      </label>
+      <app-route-toggle
+        [enabled]="enabled"
+        [busy]="busy"
+        [shaking]="shaking"
+        (toggleClick)="onToggleClick()"
+      ></app-route-toggle>
     </div>
 
     <app-route-notifications-permissions></app-route-notifications-permissions>

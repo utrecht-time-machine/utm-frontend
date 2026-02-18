@@ -40,5 +40,6 @@
   "commentPlaceholder": "Deel hier je gedachten of suggesties. Wil je graag een reactie ontvangen? Vergeet dan niet je e-mail adres op te schrijven.",
   "commentSendingSuccess": "Bedankt voor je feedback",
   "commentSendingError": "Er ging iets mis bij het versturen",
-  "organisations": "Met bijdragen van"
+  "organisations": "Met bijdragen van",
+  "routeNotificationsPermissionRequired": "Sta locatie- en notificaties toestemmingen toe in instellingen om push-notificaties in te schakelen."
 }

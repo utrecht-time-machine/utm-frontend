@@ -1,16 +1,23 @@
 import { Component } from '@angular/core';
 import { RouteNotificationsSettingsService } from 'src/app/services/route-notifications-settings.service';
 import { RouteNotificationsToggleBase } from '../route-notifications-toggle.base';
+import { ToastService } from 'src/app/services/toast.service';
+import { TranslateService } from '@ngx-translate/core';
+import { RouteToggleComponent } from '../route-toggle/route-toggle.component';
 
 @Component({
   selector: 'app-route-notifications-toggle-compact',
   standalone: true,
   templateUrl: './route-notifications-toggle-compact.component.html',
   styleUrls: ['./route-notifications-toggle-compact.component.scss'],
-  imports: [],
+  imports: [RouteToggleComponent],
 })
 export class RouteNotificationsToggleCompactComponent extends RouteNotificationsToggleBase {
-  constructor(routeNotifications: RouteNotificationsSettingsService) {
-    super(routeNotifications);
+  constructor(
+    routeNotifications: RouteNotificationsSettingsService,
+    toast: ToastService,
+    translate: TranslateService,
+  ) {
+    super(routeNotifications, toast, translate);
   }
 }
