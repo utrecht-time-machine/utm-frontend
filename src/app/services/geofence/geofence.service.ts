@@ -79,6 +79,12 @@ export class GeofenceService {
 
     try {
       await this.bgGeo.startGeofences();
+
+      setTimeout(() => {
+        // Force motion detection on route start
+        void this.bgGeo?.changePace(true);
+        this.logger.log('GeofenceService', 'Forced motion change on enable');
+      }, 1000);
     } catch (e) {
       this.logger.warn('GeofenceService', 'startGeofencingEngine failed', e);
     }
