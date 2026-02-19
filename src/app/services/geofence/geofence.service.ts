@@ -367,8 +367,8 @@ export class GeofenceService {
         }
 
         const config: Config = {
-          debug: true,
-          logLevel: plugin.LOG_LEVEL_VERBOSE,
+          debug: false,
+          logLevel: plugin.LOG_LEVEL_ERROR,
           geofenceModeHighAccuracy: true,
           desiredAccuracy: plugin.DESIRED_ACCURACY_MEDIUM,
           distanceFilter: 50,
