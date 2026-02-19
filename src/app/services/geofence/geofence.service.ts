@@ -78,7 +78,7 @@ export class GeofenceService {
     }
 
     try {
-      await this.bgGeo.start();
+      await this.bgGeo.startGeofences();
     } catch (e) {
       this.logger.warn('GeofenceService', 'startGeofencingEngine failed', e);
     }
@@ -347,19 +347,15 @@ export class GeofenceService {
         const config: Config = {
           debug: true,
           logLevel: plugin.LOG_LEVEL_VERBOSE,
-          desiredAccuracy: plugin.DESIRED_ACCURACY_HIGH,
-          stopOnTerminate: false,
-          startOnBoot: true,
-          enableHeadless: true,
           geofenceModeHighAccuracy: true,
-          geofenceInitialTriggerEntry: false,
-          stopTimeout: 5,
-          disableStopDetection: true,
-          disableMotionActivityUpdates: true,
-          distanceFilter: 0,
-          locationUpdateInterval: 2500, // Update every 2.5 seconds
-          fastestLocationUpdateInterval: 1000, // Fastest possible updates
-          forceReloadOnMotionChange: true,
+          desiredAccuracy: plugin.DESIRED_ACCURACY_MEDIUM,
+          distanceFilter: 50,
+          locationUpdateInterval: 5000,
+          fastestLocationUpdateInterval: 5000,
+          geofenceInitialTriggerEntry: true,
+          stopOnTerminate: true,
+          startOnBoot: false,
+          enableHeadless: false,
           locationAuthorizationRequest: 'Always',
           backgroundPermissionRationale: {
             title: 'Locatie in de achtergrond',
@@ -367,6 +363,12 @@ export class GeofenceService {
               "Utrecht Time Machine gebruikt je locatie om meldingen te sturen als je een routepunt nadert. Om dit te laten werken, moet je 'Altijd' locatie‑toegang inschakelen in de instellingen.",
             positiveAction: 'Ok',
             negativeAction: 'Niet nu',
+          },
+          notification: {
+            title: 'Utrecht Time Machine',
+            text: 'Routemeldingen actief',
+            sticky: true,
+            channelName: 'Routemeldingen',
           },
         };
 
@@ -535,7 +537,7 @@ export class GeofenceService {
 
       // ⚠️ The minimum reliable radius is 200 meters. Anything less will likely not cause a geofence to trigger. This is documented by Apple here:
       // https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/LocationAwarenessPG/RegionMonitoring/RegionMonitoring.html
-      const radius = 200;
+      const radius = 75;
 
       const geofence: BgGeofence = {
         identifier,
