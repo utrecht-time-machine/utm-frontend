@@ -25,7 +25,7 @@ export class GeofenceNotificationService {
     },
   ): Promise<void> {
     const identifier = event?.identifier;
-    const action = (event as any)?.action;
+    const action = event?.action;
 
     if (action !== 'ENTER') {
       return;
