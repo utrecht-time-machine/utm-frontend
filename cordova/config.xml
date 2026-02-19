@@ -123,12 +123,40 @@
       <string>Utrecht Time Machine gebruikt je achtergrondlocatie om meldingen te kunnen sturen als je een routepunt nadert.</string>
     </edit-config>
 
-    <!-- <config-file platform="ios" target="*-
-" parent="NSLocationAlwaysAndWhenInUseUsageDescription">
-      <string>Utrecht Time Machine toont historische informatie over je huidige locatie. Je locatie wordt
-    alleen door de
-        app zelf gebruikt en wordt met niemand gedeeld.
-      </string>
-    </config-file> -->
+    <!-- iOS Privacy Manifest (required by Apple) -->
+    <privacy-manifest>
+      <key>NSPrivacyAccessedAPITypes</key>
+      <array>
+        <!-- cordova-background-geolocation: UserDefaults -->
+        <dict>
+          <key>NSPrivacyAccessedAPIType</key>
+          <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+          <key>NSPrivacyAccessedAPITypeReasons</key>
+          <array>
+            <string>CA92.1</string>
+            <string>1C8F.1</string>
+          </array>
+        </dict>
+        <!-- cordova-background-geolocation (CocoaLumberjack): FileTimestamp -->
+        <dict>
+          <key>NSPrivacyAccessedAPIType</key>
+          <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+          <key>NSPrivacyAccessedAPITypeReasons</key>
+          <array>
+            <string>C617.1</string>
+            <string>0A2A.1</string>
+          </array>
+        </dict>
+        <!-- cordova-background-geolocation (CocoaLumberjack): DiskSpace -->
+        <dict>
+          <key>NSPrivacyAccessedAPIType</key>
+          <string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+          <key>NSPrivacyAccessedAPITypeReasons</key>
+          <array>
+            <string>E174.1</string>
+          </array>
+        </dict>
+      </array>
+    </privacy-manifest>
   </platform>
 </widget> 
