@@ -54,6 +54,12 @@
       <uses-permission android:name="android.permission.WAKE_LOCK" />
     </config-file>
 
+    <config-file parent="/manifest/application" target="app/src/main/AndroidManifest.xml">
+      <meta-data
+        android:name="com.transistorsoft.locationmanager.license"
+        android:value="$GEOLOCATION_LICENSE_KEY" />
+    </config-file>
+
     <resource-file src="res/android/drawable/ic_launcher_background.xml"
       target="app/src/main/res/drawable/ic_launcher_background.xml" />
     <resource-file src="res/android/mipmap-hdpi/ic_launcher.png"
@@ -160,4 +166,6 @@
       </array>
     </privacy-manifest>
   </platform>
+  
+  <hook src="hooks/before_prepare.js" type="before_prepare" />
 </widget> 
