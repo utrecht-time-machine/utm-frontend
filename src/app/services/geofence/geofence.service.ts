@@ -84,6 +84,19 @@ export class GeofenceService {
     }
   }
 
+  private async stopGeofencingEngine(): Promise<void> {
+    if (!this.bgGeo) {
+      return;
+    }
+
+    try {
+      await this.bgGeo.stop();
+      this.logger.log('GeofenceService', 'Geofencing engine stopped');
+    } catch (e) {
+      this.logger.warn('GeofenceService', 'stopGeofencingEngine failed', e);
+    }
+  }
+
   private updateState(value: Partial<GeofenceState>): void {
     this.zone.run(() =>
       this.stateSubject.next({
@@ -124,8 +137,11 @@ export class GeofenceService {
         return false;
       }
 
-      // Call start before checking permissions (plugin start triggers the location permission prompt)
-      await this.startGeofencingEngine();
+      try {
+        await this.bgGeo!.requestPermission();
+      } catch {
+        // requestPermission rejects when the user denies — handled below.
+      }
 
       const hasLocationPermission = await this.checkHasLocationPermission();
       if (!hasLocationPermission) {
@@ -432,13 +448,20 @@ export class GeofenceService {
     }
 
     if (!route) {
-      this.logger.log('GeofenceService', 'User navigated away from route - clearing geofences');
+      this.logger.log(
+        'GeofenceService',
+        'User navigated away from route - stopping geofencing engine',
+      );
       this.activeRouteId = undefined;
       await this.clearAllGeofences();
+      await this.stopGeofencingEngine();
       return;
     }
 
     this.activeRouteId = route.nid;
+
+    // Ensure the engine is running when a route is selected and the user has enabled notifications
+    await this.startGeofencingEngine();
 
     // If stops already loaded, create fences immediately
     if (route.stops?.length) {
@@ -594,18 +617,7 @@ export class GeofenceService {
       return;
     }
 
-    try {
-      await this.bgGeo.removeGeofences();
-    } catch (e) {
-      this.logger.warn('GeofenceService', 'disableGeofencing removeGeofences failed', e);
-    }
-
-    await this.refreshActiveGeofences();
-
-    try {
-      await this.bgGeo.stop();
-    } catch (e) {
-      this.logger.warn('GeofenceService', 'disableGeofencing stop failed', e);
-    }
+    await this.clearAllGeofences();
+    await this.stopGeofencingEngine();
   }
 }
