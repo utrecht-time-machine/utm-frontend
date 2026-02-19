@@ -11,6 +11,7 @@ import { Story } from '../models/story';
 import { environment } from '../../environments/environment';
 import { SelectedView } from '../models/selected-view';
 import { RoutingService } from './routing.service';
+import { AudioCoordinatorService } from './audio-coordinator.service';
 import { DebugLogService } from './debug-log.service';
 
 @Injectable({
@@ -29,18 +30,6 @@ export class UtmRoutesService {
     undefined,
   );
 
-  autoPlayAudio = false;
-
-  consumeAutoPlay(): boolean {
-    const val = this.autoPlayAudio;
-    this.autoPlayAudio = false;
-    this.logger.log('UtmRoutesService', 'consumeAutoPlay', {
-      returned: val,
-      stopIdx: this.selectedStopIdx.value,
-    });
-    return val;
-  }
-
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -49,6 +38,7 @@ export class UtmRoutesService {
     private utmTranslate: UtmTranslateService,
     private routing: RoutingService,
     private logger: DebugLogService,
+    private audioCoordinator: AudioCoordinatorService,
   ) {
     void this.load();
 
@@ -355,7 +345,9 @@ export class UtmRoutesService {
     }
 
     if (selectedRoute) {
-      this.autoPlayAudio = autoPlay;
+      if (autoPlay) {
+        this.audioCoordinator.requestAutoPlay();
+      }
       this.selectedStopIdx.next(stopIdx);
 
       const selectingHome = stopIdx === undefined;

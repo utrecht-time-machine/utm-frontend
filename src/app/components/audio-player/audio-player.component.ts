@@ -9,9 +9,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Howl } from 'howler';
+import {
+  AudioCoordinatorService,
+  AudioPlayerRegistration,
+} from 'src/app/services/audio-coordinator.service';
 import { DebugLogService } from 'src/app/services/debug-log.service';
 import { PlatformService } from 'src/app/services/platform.service';
-import { UtmRoutesService } from 'src/app/services/utm-routes.service';
 
 @Component({
   selector: 'app-audio-player',
@@ -29,10 +32,13 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
 
   @ViewChild('audioElement', { static: false }) audioElement!: ElementRef;
 
+  private _registration: AudioPlayerRegistration | undefined;
+
   constructor(
     public platform: PlatformService,
     private logger: DebugLogService,
-    private utmRoutes: UtmRoutesService,
+    private audioCoordinator: AudioCoordinatorService,
+    private elementRef: ElementRef,
   ) {
     if (this.platform.isBrowser()) {
       setInterval(() => {
@@ -52,6 +58,10 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy() {
     this.audio?.stop();
     this.audio?.unload();
+    if (this._registration) {
+      this.audioCoordinator.unregisterPlayer(this._registration);
+      this._registration = undefined;
+    }
   }
 
   onAudioBarScrubbed(event: any) {
@@ -130,12 +140,15 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
       this.audio = new Howl({
         src: [audioUrl],
         onload: () => {
-          const shouldAutoPlay = this.utmRoutes.consumeAutoPlay();
-          this.logger.log('AudioPlayer', 'Howl loaded', { audioUrl, shouldAutoPlay });
-          if (shouldAutoPlay) {
-            this.logger.log('AudioPlayer', 'auto-playing');
-            this.audio?.play();
+          this.logger.log('AudioPlayer', 'Howl loaded', { audioUrl });
+          if (this._registration) {
+            this.audioCoordinator.unregisterPlayer(this._registration);
           }
+          this._registration = {
+            elementRef: this.elementRef,
+            play: () => this.audio?.play(),
+          };
+          this.audioCoordinator.registerPlayer(this._registration);
         },
         onplay: () => {
           this.logger.log('AudioPlayer', 'playing');
