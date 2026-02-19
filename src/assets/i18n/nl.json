@@ -42,6 +42,7 @@
   "commentSendingError": "Er ging iets mis bij het versturen",
   "organisations": "Met bijdragen van",
   "routeNotificationsPermissionRequired": "Sta locatie- en notificatie toestemming toe in Instellingen om route push-notificaties in te schakelen.",
+  "routeNotificationsEnabled": "Je ontvangt nu een melding als je bij een routepunt in de buurt komt.",
   "pushNotificationIconAlt": "Push-notificatie icoon",
   "pushNotifications": "Push-notificaties",
   "routeNotificationsDescription": "Zet dit aan om een melding te ontvangen als je bij een routepunt in de buurt bent.",

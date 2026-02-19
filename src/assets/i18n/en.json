@@ -41,6 +41,7 @@
   "commentSendingError": "There was an error sending your feedback",
   "organisations": "With contributions from",
   "routeNotificationsPermissionRequired": "Please allow location and notification permission in Settings to enable route push notifications.",
+  "routeNotificationsEnabled": "You'll now receive a notification when you're near a route point.",
   "pushNotificationIconAlt": "Push notification icon",
   "pushNotifications": "Push notifications",
   "routeNotificationsDescription": "Enable this to receive a notification when you're near a route point.",

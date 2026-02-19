@@ -5,6 +5,7 @@ import { RouteNotificationsPermissionsComponent } from './route-notifications-pe
 import { ToastService } from 'src/app/services/toast.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { RouteToggleComponent } from '../route-toggle/route-toggle.component';
+import { PushNotificationService } from 'src/app/services/push-notifications/push-notification.service';
 
 @Component({
   selector: 'app-route-notifications-toggle-expanded',
@@ -17,7 +18,8 @@ export class RouteNotificationsToggleExpandedComponent extends RouteNotification
     routeNotifications: RouteNotificationsSettingsService,
     toast: ToastService,
     translate: TranslateService,
+    pushNotification: PushNotificationService,
   ) {
-    super(routeNotifications, toast, translate);
+    super(routeNotifications, toast, translate, pushNotification);
   }
 }
