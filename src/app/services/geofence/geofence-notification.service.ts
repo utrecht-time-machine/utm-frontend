@@ -6,6 +6,7 @@ import { DebugLogService } from '../debug-log.service';
 import { GeofenceIdentifierService } from './geofence-identifier.service';
 import { PushNotificationService } from '../push-notifications/push-notification.service';
 import { RouteStopData } from '../../models/route-stop-data';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class GeofenceNotificationService {
     private push: PushNotificationService,
     private identifier: GeofenceIdentifierService,
     private logger: DebugLogService,
+    private translate: TranslateService,
   ) {}
 
   async handleGeofenceEvent(
@@ -37,11 +39,15 @@ export class GeofenceNotificationService {
 
     const meta = opts.getDataFromIdentifier(identifier);
 
-    const title = meta?.routeTitle || 'Utrecht Time Machine';
+    const title = meta?.routeTitle || this.translate.instant('appTitle');
     const stopNum = meta?.stopIdx !== undefined ? meta.stopIdx + 1 : undefined;
-    const stopPart = stopNum ? `Routepunt ${stopNum}` : 'Routepunt';
+    const stopPart = stopNum
+      ? this.translate.instant('routePoint', { number: stopNum })
+      : this.translate.instant('routePointDefault');
     const stopTitlePart = meta?.stopTitle ? ` (${meta.stopTitle})` : '';
-    const text = `Je bent bij ${stopPart}${stopTitlePart} aangekomen. Tik om meer te lezen.`;
+    const text = this.translate.instant('nearRoutePoint', {
+      stopPart: `${stopPart}${stopTitlePart}`,
+    });
 
     const baseId: number = this.identifier.hashToInt(identifier ?? 'unknown');
     const notificationId: number = (baseId % 1000000) * 1000 + (Date.now() % 1000);
