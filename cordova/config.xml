@@ -35,6 +35,7 @@
   <icon src="/res/icon/source-icon.png" />
 
   <platform name="android">
+    <preference name="AndroidXEnabled" value="true" />
     <preference name="AndroidWindowSplashScreenBackground" value="#fe003e" />
     <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/android/splashscreen.xml" />
 
