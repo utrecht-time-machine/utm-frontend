@@ -329,7 +329,7 @@ export class UtmRoutesService {
 
   public selectStopByIdx(
     stopIdx: number | undefined,
-    scrollTo: number | undefined = undefined,
+    scrollTo: number | undefined = 200,
     autoPlay = false,
   ) {
     this.logger.log('UtmRoutesService', 'selectStopByIdx', { stopIdx, autoPlay });
@@ -352,9 +352,9 @@ export class UtmRoutesService {
       this.selectedStopIdx.next(stopIdx);
 
       const selectingHome = stopIdx === undefined;
-      if (selectingHome && this.platform.isBrowser()) {
+      if (this.platform.isBrowser()) {
         setTimeout(() => {
-          window.scrollTo({ top: selectingHome ? 0 : 200, behavior: 'smooth' });
+          window.scrollTo({ top: selectingHome ? 0 : scrollTo, behavior: 'smooth' });
         });
         return;
       }
