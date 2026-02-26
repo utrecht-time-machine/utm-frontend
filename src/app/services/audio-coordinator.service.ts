@@ -28,13 +28,16 @@ export class AudioCoordinatorService {
     this._registeredPlayers.push(registration);
     this.logger.log('AudioCoordinatorService', 'player registered', {
       total: this._registeredPlayers.length,
+      pendingAutoPlay: this._pendingAutoPlay,
     });
 
     if (this._pendingAutoPlay) {
       if (this._autoPlayTimeout) {
+        this.logger.log('AudioCoordinatorService', 'clearing existing autoplay timeout');
         clearTimeout(this._autoPlayTimeout);
       }
       // Wait 1000ms for other players to register before autoplaying the top one in the DOM
+      this.logger.log('AudioCoordinatorService', 'scheduling autoplay attempt in 1000ms');
       this._autoPlayTimeout = setTimeout(() => {
         this._tryAutoPlay();
       }, 1000);
@@ -70,13 +73,26 @@ export class AudioCoordinatorService {
 
     const topmost = this._getTopmostPlayer();
     if (!topmost) {
+      this.logger.warn(
+        'AudioCoordinatorService',
+        'no topmost player found despite having registered players',
+        {
+          registeredCount: this._registeredPlayers.length,
+        },
+      );
       return;
     }
 
     this._pendingAutoPlay = false;
     this._clearAutoPlayTimeout();
-    this.logger.log('AudioCoordinatorService', 'auto-playing topmost player');
-    topmost.play();
+    this.logger.log('AudioCoordinatorService', 'attempting to auto-play topmost player');
+
+    try {
+      topmost.play();
+      this.logger.log('AudioCoordinatorService', 'auto-play initiated successfully');
+    } catch (error) {
+      this.logger.error('AudioCoordinatorService', 'auto-play failed', error);
+    }
   }
 
   private _getTopmostPlayer(): AudioPlayerRegistration | undefined {
