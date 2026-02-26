@@ -1,2 +1,3 @@
 export const PROXIMITY_RADIUS_METERS = 75;
 export const EXIT_RADIUS_METERS = 120;
+export const ENABLE_AUDIO_AUTOPLAY = true;
