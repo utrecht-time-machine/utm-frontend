@@ -6,3 +6,20 @@ app-audio-transcript {
   width: 100%;
   margin: 0 auto;
 }
+
+@keyframes pulse-shadow {
+  0% {
+    box-shadow: 0 0 0 0px rgba(91, 130, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(91, 130, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0px rgba(91, 130, 255, 0);
+  }
+}
+
+:host ::ng-deep .audioplayer-playpause {
+  animation: pulse-shadow 2s 2;
+  border-radius: 50%;
+}
