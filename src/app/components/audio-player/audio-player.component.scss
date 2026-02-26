@@ -20,6 +20,10 @@ app-audio-transcript {
 }
 
 :host ::ng-deep .audioplayer-playpause {
-  animation: pulse-shadow 2s 2;
   border-radius: 50%;
+}
+
+:host.pulse-animation ::ng-deep .audioplayer-playpause {
+  animation: pulse-shadow 2s 2;
+  animation-delay: 0.3s;
 }

@@ -12,7 +12,6 @@ import { environment } from '../../environments/environment';
 import { SelectedView } from '../models/selected-view';
 import { RoutingService } from './routing.service';
 import { AudioCoordinatorService } from './audio-coordinator.service';
-import { ENABLE_AUDIO_AUTOPLAY } from './geofence/geofence.constants';
 import { DebugLogService } from './debug-log.service';
 
 @Injectable({
@@ -277,7 +276,7 @@ export class UtmRoutesService {
     // TODO: Properly wait for stops loading to finish
     await new Promise(resolve => setTimeout(resolve, 100));
 
-    this.selectStopByIdx(stopIdx, 200, ENABLE_AUDIO_AUTOPLAY);
+    this.selectStopByIdx(stopIdx, 200, true);
   }
 
   private _justRedirected = false;

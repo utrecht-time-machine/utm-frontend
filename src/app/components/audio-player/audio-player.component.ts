@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  HostBinding,
   Input,
   OnChanges,
   OnDestroy,
@@ -15,6 +16,7 @@ import {
 } from 'src/app/services/audio-coordinator.service';
 import { DebugLogService } from 'src/app/services/debug-log.service';
 import { PlatformService } from 'src/app/services/platform.service';
+import { SHOW_PULSE_ANIMATION_INSTEAD_OF_AUDIO_AUTOPLAY } from 'src/app/services/geofence/geofence.constants';
 
 @Component({
   selector: 'app-audio-player',
@@ -26,6 +28,8 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
   scrubbingAudio = false;
   percentageComplete = 0;
   audio: Howl | undefined;
+
+  @HostBinding('class.pulse-animation') pulseAnimation = false;
 
   @Input() audioUrl: string | undefined;
   @Input() transcript?: string;
@@ -146,7 +150,14 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
           }
           this._registration = {
             elementRef: this.elementRef,
-            play: () => this.audio?.play(),
+            play: () => {
+              this.logger.log('AudioPlayer', 'autoplay triggered via coordinator');
+              if (SHOW_PULSE_ANIMATION_INSTEAD_OF_AUDIO_AUTOPLAY) {
+                this._triggerPulseAnimation();
+              } else {
+                this.audio?.play();
+              }
+            },
           };
           this.audioCoordinator.registerPlayer(this._registration);
         },
@@ -231,5 +242,15 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
       return 0;
     }
     return (this.audio.seek() / this.audio.duration()) * 100;
+  }
+
+  private _triggerPulseAnimation(): void {
+    this.pulseAnimation = true;
+    this.logger.log('AudioPlayer', 'pulse animation triggered');
+    // Reset after animation completes (2s animation * 2 iterations + 0.3s delay + buffer)
+    setTimeout(() => {
+      this.pulseAnimation = false;
+      this.logger.log('AudioPlayer', 'pulse animation reset');
+    }, 4500);
   }
 }
