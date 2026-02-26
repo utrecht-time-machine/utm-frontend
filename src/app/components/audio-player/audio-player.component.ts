@@ -153,7 +153,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
             play: () => {
               this.logger.log('AudioPlayer', 'autoplay triggered via coordinator');
               if (SHOW_PULSE_ANIMATION_INSTEAD_OF_AUDIO_AUTOPLAY) {
-                this._triggerPulseAnimation();
+                this._startPulseAnimation();
               } else {
                 this.audio?.play();
               }
@@ -163,6 +163,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
         },
         onplay: () => {
           this.logger.log('AudioPlayer', 'playing');
+          this._stopPulseAnimation();
         },
         onpause: () => {
           this.logger.log('AudioPlayer', 'paused');
@@ -244,13 +245,15 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
     return (this.audio.seek() / this.audio.duration()) * 100;
   }
 
-  private _triggerPulseAnimation(): void {
+  private _startPulseAnimation(): void {
     this.pulseAnimation = true;
-    this.logger.log('AudioPlayer', 'pulse animation triggered');
-    // Reset after animation completes (2s animation * 2 iterations + 0.3s delay + buffer)
-    setTimeout(() => {
+    this.logger.log('AudioPlayer', 'pulse animation started');
+  }
+
+  private _stopPulseAnimation(): void {
+    if (this.pulseAnimation) {
       this.pulseAnimation = false;
-      this.logger.log('AudioPlayer', 'pulse animation reset');
-    }, 4500);
+      this.logger.log('AudioPlayer', 'pulse animation stopped');
+    }
   }
 }
