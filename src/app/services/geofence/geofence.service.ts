@@ -8,7 +8,7 @@ import { GeofencePermissionsService } from './geofence-permissions.service';
 import { UtmRoutesService } from '../utm-routes.service';
 import { UtmRoute } from '../../models/utm-route';
 import { UtmRouteStop } from '../../models/utm-route-stop';
-import { PROXIMITY_RADIUS_METERS, ALLOW_REPEAT_NOTIFICATIONS } from './geofence.constants';
+import { PROXIMITY_RADIUS_METERS, EXIT_RADIUS_METERS } from './geofence.constants';
 
 import type {
   Config,
@@ -35,6 +35,7 @@ interface TrackedStop {
   stopTitle: string;
   locationId: string | number | undefined;
   notified: boolean;
+  inside: boolean;
 }
 
 function haversineDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
@@ -122,32 +123,47 @@ export class GeofenceService {
       {
         lat,
         lng,
-        radius: PROXIMITY_RADIUS_METERS,
-        allowRepeat: ALLOW_REPEAT_NOTIFICATIONS,
+        enterRadius: PROXIMITY_RADIUS_METERS,
+        exitRadius: EXIT_RADIUS_METERS,
       },
     );
+
+    let stateChanged = false;
 
     for (const stop of this.trackedStops) {
       const distance = haversineDistance(lat, lng, stop.lat, stop.lng);
 
-      if (!ALLOW_REPEAT_NOTIFICATIONS && stop.notified) {
-        this.logger.log(
-          'GeofenceService',
-          `checkProximity: Stop ${stop.stopIdx} ("${
-            stop.stopTitle
-          }") already notified, skipping. Distance: ${Math.round(distance)}m`,
-        );
+      if (stop.inside) {
+        if (distance > EXIT_RADIUS_METERS) {
+          stop.inside = false;
+          stateChanged = true;
+          this.logger.log(
+            'GeofenceService',
+            `checkProximity: EXITED Stop ${stop.stopIdx} ("${stop.stopTitle}")`,
+            {
+              distance: Math.round(distance),
+              exitRadius: EXIT_RADIUS_METERS,
+            },
+          );
+        } else {
+          this.logger.log(
+            'GeofenceService',
+            `checkProximity: Stop ${stop.stopIdx} ("${stop.stopTitle}") still inside`,
+            { distance: Math.round(distance) },
+          );
+        }
         continue;
       }
 
       if (distance <= PROXIMITY_RADIUS_METERS) {
+        stop.inside = true;
         stop.notified = true;
-        this.logger.log('GeofenceService', 'Proximity trigger MATCH', {
+        stateChanged = true;
+        this.logger.log('GeofenceService', 'Proximity trigger ENTER', {
           stopIdx: stop.stopIdx,
           stopTitle: stop.stopTitle,
           distance: Math.round(distance),
-          threshold: PROXIMITY_RADIUS_METERS,
-          allowRepeat: ALLOW_REPEAT_NOTIFICATIONS,
+          enterRadius: PROXIMITY_RADIUS_METERS,
         });
 
         const meta: RouteStopData = {
@@ -160,20 +176,22 @@ export class GeofenceService {
         void this.geofenceNotifications.handleProximityTrigger(meta).catch(e => {
           this.logger.warn('GeofenceService', 'proximity notification handler failed', e);
         });
-
-        this.updateState({ trackedStops: [...this.trackedStops] });
       } else {
         this.logger.log(
           'GeofenceService',
           `checkProximity: Stop ${stop.stopIdx} ("${stop.stopTitle}") out of range`,
           {
             distance: Math.round(distance),
-            threshold: PROXIMITY_RADIUS_METERS,
+            enterRadius: PROXIMITY_RADIUS_METERS,
             lat: stop.lat,
             lng: stop.lng,
           },
         );
       }
+    }
+
+    if (stateChanged) {
+      this.updateState({ trackedStops: [...this.trackedStops] });
     }
   }
 
@@ -604,6 +622,7 @@ export class GeofenceService {
         stopTitle: stop.title,
         locationId: stop.location_id,
         notified: false,
+        inside: false,
       });
     }
 

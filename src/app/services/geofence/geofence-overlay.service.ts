@@ -13,6 +13,7 @@ interface OverlayStop {
   stopIdx: number;
   stopTitle: string;
   notified: boolean;
+  inside: boolean;
 }
 
 type GeofenceOverlayProperties = {
