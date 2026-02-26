@@ -36,11 +36,11 @@ export class AudioCoordinatorService {
         this.logger.log('AudioCoordinatorService', 'clearing existing autoplay timeout');
         clearTimeout(this._autoPlayTimeout);
       }
-      // Wait 1000ms for other players to register before autoplaying the top one in the DOM
-      this.logger.log('AudioCoordinatorService', 'scheduling autoplay attempt in 1000ms');
+      // Wait for other players to register before autoplaying the top one in the DOM
+      this.logger.log('AudioCoordinatorService', 'scheduling autoplay attempt in 500ms');
       this._autoPlayTimeout = setTimeout(() => {
         this._tryAutoPlay();
-      }, 1000);
+      }, 500);
     }
   }
 
