@@ -3,9 +3,17 @@ import mapboxgl from 'mapbox-gl';
 import { Subscription } from 'rxjs';
 import { circle as turfCircle } from '@turf/turf';
 import type { Feature, FeatureCollection, Polygon } from 'geojson';
-import type { Geofence as BgGeofence } from 'cordova-background-geolocation-lt';
 
 import { GeofenceService } from './geofence.service';
+import { PROXIMITY_RADIUS_METERS } from './geofence.constants';
+
+interface OverlayStop {
+  lat: number;
+  lng: number;
+  stopIdx: number;
+  stopTitle: string;
+  notified: boolean;
+}
 
 type GeofenceOverlayProperties = {
   identifier?: string;
@@ -20,7 +28,7 @@ export class GeofenceOverlayService {
   private sub: Subscription | undefined;
 
   private visible = false;
-  private fences: BgGeofence[] = [];
+  private stops: OverlayStop[] = [];
 
   private readonly sourceId = 'utm-active-geofences';
   private readonly fillLayerId = 'utm-active-geofences-fill';
@@ -35,13 +43,13 @@ export class GeofenceOverlayService {
       this.sub = this.geofences.state$.subscribe(state => {
         const visible = Boolean(state.enabled && state.locationPermissionOk);
         this.visible = visible;
-        this.fences = state.activeGeofences;
-        this.updateOverlay(visible ? state.activeGeofences : []);
+        this.stops = state.trackedStops;
+        this.updateOverlay(visible ? state.trackedStops : []);
       });
     }
 
     // Style reload wipes sources/layers, so re-apply current state whenever attach is called.
-    this.updateOverlay(this.visible ? this.fences : []);
+    this.updateOverlay(this.visible ? this.stops : []);
   }
 
   detach(): void {
@@ -55,18 +63,18 @@ export class GeofenceOverlayService {
     this.sub = undefined;
   }
 
-  private updateOverlay(fences: BgGeofence[]): void {
+  private updateOverlay(stops: OverlayStop[]): void {
     const map = this.map;
     if (!map) {
       return;
     }
 
-    if (!fences?.length) {
+    if (!stops?.length) {
       this.removeOverlay();
       return;
     }
 
-    const data = this.buildGeoJson(fences);
+    const data = this.buildGeoJson(stops);
 
     const existing = map.getSource(this.sourceId) as mapboxgl.GeoJSONSource | undefined;
 
@@ -130,32 +138,19 @@ export class GeofenceOverlayService {
   }
 
   private buildGeoJson(
-    fences: BgGeofence[],
+    stops: OverlayStop[],
   ): FeatureCollection<Polygon, GeofenceOverlayProperties> {
     const features: Array<Feature<Polygon, GeofenceOverlayProperties>> = [];
 
-    for (const f of fences) {
-      const lat = f.latitude;
-      const lng = f.longitude;
-      if (!lat || !lng) {
-        console.warn('Geofence missing latitude or longitude', f);
-        continue;
-      }
-
-      const radius = f.radius;
-      if (!radius) {
-        console.warn('Geofence missing radius', f);
-        continue;
-      }
-
+    for (const s of stops) {
       const properties: GeofenceOverlayProperties = {
-        identifier: f.identifier,
-        radius,
+        identifier: `stop-${s.stopIdx}`,
+        radius: PROXIMITY_RADIUS_METERS,
       };
 
       const circlePoly: Feature<Polygon, GeofenceOverlayProperties> = turfCircle(
-        [lng, lat],
-        radius / 1000,
+        [s.lng, s.lat],
+        PROXIMITY_RADIUS_METERS / 1000,
         {
           steps: 64,
           units: 'kilometers',

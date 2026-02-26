@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import type { GeofenceEvent } from 'cordova-background-geolocation-lt';
-
 import { DebugLogService } from '../debug-log.service';
 import { GeofenceIdentifierService } from './geofence-identifier.service';
 import { PushNotificationService } from '../push-notifications/push-notification.service';
@@ -19,26 +17,7 @@ export class GeofenceNotificationService {
     private translate: TranslateService,
   ) {}
 
-  async handleGeofenceEvent(
-    event: GeofenceEvent,
-    opts: {
-      routeNotificationsEnabled: boolean;
-      getDataFromIdentifier: (identifier: string | undefined) => RouteStopData | undefined;
-    },
-  ): Promise<void> {
-    const identifier = event?.identifier;
-    const action = event?.action;
-
-    if (action !== 'ENTER') {
-      return;
-    }
-
-    if (!opts.routeNotificationsEnabled) {
-      return;
-    }
-
-    const meta = opts.getDataFromIdentifier(identifier);
-
+  async handleProximityTrigger(meta: RouteStopData): Promise<void> {
     const title = meta?.routeTitle || this.translate.instant('appTitle');
     const stopNum = meta?.stopIdx !== undefined ? meta.stopIdx + 1 : undefined;
     const stopPart = stopNum
@@ -49,7 +28,8 @@ export class GeofenceNotificationService {
       stopPart: `${stopPart}${stopTitlePart}`,
     });
 
-    const baseId: number = this.identifier.hashToInt(identifier ?? 'unknown');
+    const identifierStr = `route:${meta.routeId ?? 'unknown'}:stop:${meta.stopIdx ?? 0}`;
+    const baseId: number = this.identifier.hashToInt(identifierStr);
     const notificationId: number = (baseId % 1000000) * 1000 + (Date.now() % 1000);
 
     const ok: boolean = await this.push.scheduleLocalNotification({
@@ -65,7 +45,7 @@ export class GeofenceNotificationService {
 
     if (!ok) {
       this.logger.warn('GeofenceNotificationService', 'scheduleLocalNotification failed', {
-        identifier,
+        identifierStr,
         notificationId,
       });
     }

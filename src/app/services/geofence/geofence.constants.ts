@@ -1,0 +1,2 @@
+export const PROXIMITY_RADIUS_METERS = 75;
+export const ALLOW_REPEAT_NOTIFICATIONS = false;

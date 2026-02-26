@@ -3,21 +3,18 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { CordovaService } from '../cordova.service';
 import { DebugLogService } from '../debug-log.service';
 import { PushNotificationPermissionsService } from '../push-notifications/push-notification-permissions.service';
-import { GeofenceIdentifierService } from './geofence-identifier.service';
 import { GeofenceNotificationService } from './geofence-notification.service';
 import { GeofencePermissionsService } from './geofence-permissions.service';
 import { UtmRoutesService } from '../utm-routes.service';
 import { UtmRoute } from '../../models/utm-route';
 import { UtmRouteStop } from '../../models/utm-route-stop';
+import { PROXIMITY_RADIUS_METERS, ALLOW_REPEAT_NOTIFICATIONS } from './geofence.constants';
 
 import type {
-  AuthorizationStatus,
   Config,
-  Geofence as BgGeofence,
-  GeofenceEvent,
-  GeofencesChangeEvent,
+  HeartbeatEvent,
+  Location,
   ProviderChangeEvent,
-  State,
 } from 'cordova-background-geolocation-lt';
 import { RouteStopData } from 'src/app/models/route-stop-data';
 
@@ -26,8 +23,30 @@ type BgGeo = typeof import('cordova-background-geolocation-lt').default;
 export type GeofenceState = {
   enabled: boolean;
   locationPermissionOk: boolean;
-  activeGeofences: BgGeofence[];
+  trackedStops: TrackedStop[];
 };
+
+interface TrackedStop {
+  lat: number;
+  lng: number;
+  routeId: string;
+  routeTitle: string;
+  stopIdx: number;
+  stopTitle: string;
+  locationId: string | number | undefined;
+  notified: boolean;
+}
+
+function haversineDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371000;
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 
 @Injectable({
   providedIn: 'root',
@@ -42,10 +61,12 @@ export class GeofenceService {
 
   private routeNotificationsEnabled = false;
 
+  private trackedStops: TrackedStop[] = [];
+
   private readonly stateSubject = new BehaviorSubject<GeofenceState>({
     enabled: false,
     locationPermissionOk: false,
-    activeGeofences: [],
+    trackedStops: [],
   });
 
   public readonly state$ = this.stateSubject.asObservable();
@@ -55,7 +76,6 @@ export class GeofenceService {
   constructor(
     private cordova: CordovaService,
     private utmRoutes: UtmRoutesService,
-    private geofenceIdentifier: GeofenceIdentifierService,
     private geofenceNotifications: GeofenceNotificationService,
     private geofencePermissions: GeofencePermissionsService,
     private pushNotificationPermissions: PushNotificationPermissionsService,
@@ -65,41 +85,95 @@ export class GeofenceService {
     void this.ensureInitialized();
   }
 
-  private getGeofenceDataFromIdentifier(identifier: string | undefined): RouteStopData | undefined {
-    return this.geofenceIdentifier.getDataFromIdentifier(
-      identifier,
-      this.stateSubject.getValue().activeGeofences,
-    );
-  }
-
-  private async startGeofencingEngine(): Promise<void> {
+  private async startTrackingEngine(): Promise<void> {
     if (!this.bgGeo) {
       return;
     }
 
     try {
-      await this.bgGeo.startGeofences();
-
-      setTimeout(() => {
-        // Force motion detection on route start
-        void this.bgGeo?.changePace(true);
-        this.logger.log('GeofenceService', 'Forced motion change on enable');
-      }, 1000);
+      await this.bgGeo.start();
     } catch (e) {
-      this.logger.warn('GeofenceService', 'startGeofencingEngine failed', e);
+      this.logger.warn('GeofenceService', 'startTrackingEngine failed', e);
     }
   }
 
-  private async stopGeofencingEngine(): Promise<void> {
+  private async stopTrackingEngine(): Promise<void> {
     if (!this.bgGeo) {
       return;
     }
 
     try {
       await this.bgGeo.stop();
-      this.logger.log('GeofenceService', 'Geofencing engine stopped');
+      this.logger.log('GeofenceService', 'Tracking engine stopped');
     } catch (e) {
-      this.logger.warn('GeofenceService', 'stopGeofencingEngine failed', e);
+      this.logger.warn('GeofenceService', 'stopTrackingEngine failed', e);
+    }
+  }
+
+  private checkProximity(lat: number, lng: number): void {
+    if (this.trackedStops.length === 0) {
+      this.logger.log('GeofenceService', 'checkProximity: No stops currently tracked');
+      return;
+    }
+
+    this.logger.log(
+      'GeofenceService',
+      `checkProximity: Checking ${this.trackedStops.length} stops`,
+      {
+        lat,
+        lng,
+        radius: PROXIMITY_RADIUS_METERS,
+        allowRepeat: ALLOW_REPEAT_NOTIFICATIONS,
+      },
+    );
+
+    for (const stop of this.trackedStops) {
+      const distance = haversineDistance(lat, lng, stop.lat, stop.lng);
+
+      if (!ALLOW_REPEAT_NOTIFICATIONS && stop.notified) {
+        this.logger.log(
+          'GeofenceService',
+          `checkProximity: Stop ${stop.stopIdx} ("${
+            stop.stopTitle
+          }") already notified, skipping. Distance: ${Math.round(distance)}m`,
+        );
+        continue;
+      }
+
+      if (distance <= PROXIMITY_RADIUS_METERS) {
+        stop.notified = true;
+        this.logger.log('GeofenceService', 'Proximity trigger MATCH', {
+          stopIdx: stop.stopIdx,
+          stopTitle: stop.stopTitle,
+          distance: Math.round(distance),
+          threshold: PROXIMITY_RADIUS_METERS,
+          allowRepeat: ALLOW_REPEAT_NOTIFICATIONS,
+        });
+
+        const meta: RouteStopData = {
+          routeId: stop.routeId,
+          routeTitle: stop.routeTitle,
+          stopIdx: stop.stopIdx,
+          stopTitle: stop.stopTitle,
+        };
+
+        void this.geofenceNotifications.handleProximityTrigger(meta).catch(e => {
+          this.logger.warn('GeofenceService', 'proximity notification handler failed', e);
+        });
+
+        this.updateState({ trackedStops: [...this.trackedStops] });
+      } else {
+        this.logger.log(
+          'GeofenceService',
+          `checkProximity: Stop ${stop.stopIdx} ("${stop.stopTitle}") out of range`,
+          {
+            distance: Math.round(distance),
+            threshold: PROXIMITY_RADIUS_METERS,
+            lat: stop.lat,
+            lng: stop.lng,
+          },
+        );
+      }
     }
   }
 
@@ -110,20 +184,6 @@ export class GeofenceService {
         ...value,
       }),
     );
-  }
-
-  private async refreshActiveGeofences(): Promise<void> {
-    if (!this.initialized || !this.bgGeo) {
-      this.updateState({ activeGeofences: [] });
-      return;
-    }
-
-    try {
-      const fences = await this.bgGeo.getGeofences();
-      this.updateState({ activeGeofences: fences ?? [] });
-    } catch {
-      this.updateState({ activeGeofences: [] });
-    }
   }
 
   public async setRouteNotificationsEnabled(enabled: boolean): Promise<boolean> {
@@ -139,7 +199,7 @@ export class GeofenceService {
           'GeofenceService',
           'enabling route notifications failed: plugin not initialized',
         );
-        this.updateState({ enabled: false, activeGeofences: [] });
+        this.updateState({ enabled: false, trackedStops: [] });
         return false;
       }
 
@@ -155,8 +215,8 @@ export class GeofenceService {
           'GeofenceService',
           'enabling route notifications failed: permissions not authorized',
         );
-        this.updateState({ enabled: false, activeGeofences: [] });
-        await this.disableGeofencing();
+        this.updateState({ enabled: false, trackedStops: [] });
+        await this.disableTracking();
         return false;
       }
 
@@ -166,8 +226,8 @@ export class GeofenceService {
           'GeofenceService',
           'enabling route notifications failed: notification permissions not authorized',
         );
-        this.updateState({ enabled: false, activeGeofences: [] });
-        await this.disableGeofencing();
+        this.updateState({ enabled: false, trackedStops: [] });
+        await this.disableTracking();
         return false;
       }
 
@@ -187,11 +247,11 @@ export class GeofenceService {
 
     this.routeNotificationsEnabled = false;
 
-    this.logger.log('GeofenceService', 'disabling route notifications geofencing');
+    this.logger.log('GeofenceService', 'disabling route notifications');
     this.teardownSubscriptions();
-    await this.disableGeofencing();
+    await this.disableTracking();
 
-    this.updateState({ enabled: false, activeGeofences: [] });
+    this.updateState({ enabled: false, trackedStops: [] });
 
     return true;
   }
@@ -291,45 +351,34 @@ export class GeofenceService {
             void this.checkHasLocationPermission();
           });
 
-          // Listen for geofence events
-          plugin.onGeofence(async (event: GeofenceEvent) => {
-            this.logger.log('GeofenceService', 'Geofence event received', {
-              identifier: event?.identifier,
-              action: event?.action,
-              location: event?.location,
-              timestamp: new Date().toISOString(),
-            });
-
-            const identifier = event?.identifier;
-            const action = event?.action;
-
-            if (action === 'ENTER' || action === 'EXIT') {
-              this.logger.log('GeofenceService', `geofence ${action}`, {
-                identifier,
-                location: event?.location,
-              });
-            }
-
-            try {
-              await this.geofenceNotifications.handleGeofenceEvent(event, {
-                routeNotificationsEnabled: this.routeNotificationsEnabled,
-                getDataFromIdentifier: id => this.getGeofenceDataFromIdentifier(id),
-              });
-            } catch (e) {
-              this.logger.warn('GeofenceService', 'geofence notification handler failed', e);
-            }
-          });
-
           plugin.onLocation(
-            location => {
-              this.logger.log('GeofenceService', 'Location update', {
+            (location: Location) => {
+              this.logger.log('GeofenceService', 'onLocation update received', {
                 lat: location.coords.latitude,
                 lng: location.coords.longitude,
                 accuracy: location.coords.accuracy,
                 timestamp: new Date().toISOString(),
                 velocity: location.coords.speed,
                 isMoving: location.is_moving,
+                trackedStopsCount: this.trackedStops.length,
+                notificationsEnabled: this.routeNotificationsEnabled,
               });
+
+              if (this.routeNotificationsEnabled) {
+                if (this.trackedStops.length > 0) {
+                  this.checkProximity(location.coords.latitude, location.coords.longitude);
+                } else {
+                  this.logger.log(
+                    'GeofenceService',
+                    'onLocation: Skipping proximity check (no stops tracked)',
+                  );
+                }
+              } else {
+                this.logger.log(
+                  'GeofenceService',
+                  'onLocation: Skipping proximity check (notifications disabled)',
+                );
+              }
             },
             error => {
               this.logger.warn('GeofenceService', 'onLocation error', error);
@@ -345,13 +394,22 @@ export class GeofenceService {
             });
           });
 
-          plugin.onGeofencesChange((event: GeofencesChangeEvent) => {
-            if (!this.routeNotificationsEnabled) {
+          plugin.onHeartbeat(async (event: HeartbeatEvent) => {
+            if (!this.routeNotificationsEnabled || this.trackedStops.length === 0) {
               return;
             }
 
-            if (event?.on || event?.off) {
-              void this.refreshActiveGeofences();
+            this.logger.log('GeofenceService', 'Heartbeat — requesting current position');
+            try {
+              const location = await plugin.getCurrentPosition({
+                samples: 1,
+                persist: false,
+                desiredAccuracy: 10,
+                timeout: 15,
+              });
+              this.checkProximity(location.coords.latitude, location.coords.longitude);
+            } catch (e) {
+              this.logger.warn('GeofenceService', 'Heartbeat getCurrentPosition failed', e);
             }
           });
 
@@ -367,14 +425,15 @@ export class GeofenceService {
         }
 
         const config: Config = {
-          debug: false,
-          logLevel: plugin.LOG_LEVEL_ERROR,
-          geofenceModeHighAccuracy: true,
-          desiredAccuracy: plugin.DESIRED_ACCURACY_MEDIUM,
-          distanceFilter: 50,
-          locationUpdateInterval: 5000,
-          fastestLocationUpdateInterval: 5000,
-          geofenceInitialTriggerEntry: true,
+          debug: true,
+          logLevel: plugin.LOG_LEVEL_VERBOSE,
+          desiredAccuracy: plugin.DESIRED_ACCURACY_HIGH,
+          distanceFilter: 30, // The minimum distance (meters) a device must move horizontally before an update event is generated. By default, distanceFilter is elastically auto-calculated: When speed increases, distanceFilter increases; when speed decreases, so too does distanceFilter.
+          // locationUpdateInterval: 5000, // Android only, requires distanceFilter to be 0
+          // fastestLocationUpdateInterval: 3000, // Android only
+          stopTimeout: 5,
+          preventSuspend: true,
+          heartbeatInterval: 60, // Minimum 60 on Android
           stopOnTerminate: true,
           startOnBoot: false,
           enableHeadless: false,
@@ -401,7 +460,7 @@ export class GeofenceService {
 
         // The plugin persists its enabled state across app launches via ready().
         // Sync our internal state to match the actual plugin state so the UI
-        // always accurately reflects whether geofencing is running.
+        // always accurately reflects whether tracking is running.
         if (readyState.enabled) {
           this.logger.log(
             'GeofenceService',
@@ -417,13 +476,12 @@ export class GeofenceService {
               'GeofenceService',
               'Persisted session found but location permission no longer granted — disabling',
             );
-            await this.disableGeofencing();
-            this.updateState({ enabled: false, activeGeofences: [] });
+            await this.disableTracking();
+            this.updateState({ enabled: false, trackedStops: [] });
           } else {
             this.routeNotificationsEnabled = true;
             this.initSubscriptions();
             this.updateState({ enabled: true });
-            void this.refreshActiveGeofences();
           }
         }
 
@@ -456,26 +514,26 @@ export class GeofenceService {
     if (!route) {
       this.logger.log(
         'GeofenceService',
-        'User navigated away from route - stopping geofencing engine',
+        'User navigated away from route - stopping tracking engine',
       );
       this.activeRouteId = undefined;
-      await this.clearAllGeofences();
-      await this.stopGeofencingEngine();
+      this.clearTrackedStops();
+      await this.stopTrackingEngine();
       return;
     }
 
     this.activeRouteId = route.nid;
 
     // Ensure the engine is running when a route is selected and the user has enabled notifications
-    await this.startGeofencingEngine();
+    await this.startTrackingEngine();
 
-    // If stops already loaded, create fences immediately
+    // If stops already loaded, set up tracking immediately
     if (route.stops?.length) {
       this.logger.log(
         'GeofenceService',
-        'Route already has stops - creating geofences immediately',
+        'Route already has stops - setting up tracking immediately',
       );
-      await this.setGeofencesForRoute(route);
+      this.setStopsForRoute(route);
       return;
     }
   }
@@ -503,60 +561,33 @@ export class GeofenceService {
       return;
     }
 
-    await this.setGeofencesForRoute(route);
+    this.setStopsForRoute(route);
   }
 
-  private async clearAllGeofences(): Promise<void> {
-    this.logger.log('GeofenceService', 'Clearing all geofences');
-
-    // Do not initialize the plugin just to clear fences
-    if (!this.initialized || !this.bgGeo) {
-      this.logger.log('GeofenceService', 'Plugin not initialized - just clearing state');
-      this.updateState({ activeGeofences: [] });
-      return;
-    }
-
-    try {
-      await this.bgGeo.removeGeofences();
-      this.updateState({ activeGeofences: [] });
-      this.logger.log('GeofenceService', 'All geofences cleared successfully');
-    } catch (e) {
-      this.logger.error('GeofenceService', 'clearAllGeofences failed', e);
-      this.updateState({ activeGeofences: [] });
-    }
+  private clearTrackedStops(): void {
+    this.logger.log('GeofenceService', 'Clearing tracked stops');
+    this.trackedStops = [];
+    this.updateState({ trackedStops: [] });
   }
 
-  private async setGeofencesForRoute(route: UtmRoute) {
+  private setStopsForRoute(route: UtmRoute): void {
     if (!this.routeNotificationsEnabled) {
       return;
     }
 
-    const ok = await this.ensureInitialized();
-    if (!ok || !this.bgGeo) {
-      this.logger.warn('GeofenceService', 'setGeofencesForRoute: not initialized');
-      return;
-    }
-
-    await this.clearAllGeofences();
+    this.clearTrackedStops();
 
     const stops = route.stops ?? [];
+    const tracked: TrackedStop[] = [];
 
-    const geofences: BgGeofence[] = [];
     for (let idx = 0; idx < stops.length; idx++) {
       const stop: UtmRouteStop = stops[idx];
       const coords = stop.location?.coords;
       const lat = coords?.lat;
       const lng = coords?.lng;
 
-      const identifier = this.geofenceIdentifier.buildRouteStopIdentifier(
-        route.nid,
-        idx,
-        stop.location_id,
-      );
-
       if (typeof lat !== 'number' || typeof lng !== 'number') {
-        this.logger.warn('GeofenceService', 'stop has no coords; skipping geofence', {
-          identifier,
+        this.logger.warn('GeofenceService', 'stop has no coords; skipping', {
           idx,
           locationId: stop.location_id,
           location: stop.location,
@@ -564,66 +595,55 @@ export class GeofenceService {
         continue;
       }
 
-      // ⚠️ The minimum reliable radius is 200 meters. Anything less will likely not cause a geofence to trigger. This is documented by Apple here:
-      // https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/LocationAwarenessPG/RegionMonitoring/RegionMonitoring.html
-      const radius = 75;
-
-      const geofence: BgGeofence = {
-        identifier,
-        radius,
-        latitude: lat,
-        longitude: lng,
-        notifyOnEntry: true,
-        notifyOnExit: false,
-        notifyOnDwell: false,
-        extras: {
-          routeId: route.nid,
-          routeTitle: route.title,
-          stopIdx: idx,
-          locationId: stop.location_id,
-          title: stop.title,
-        },
-      };
-
-      geofences.push(geofence);
+      tracked.push({
+        lat,
+        lng,
+        routeId: route.nid,
+        routeTitle: route.title,
+        stopIdx: idx,
+        stopTitle: stop.title,
+        locationId: stop.location_id,
+        notified: false,
+      });
     }
 
-    if (!geofences.length) {
-      this.logger.warn('GeofenceService', 'No valid geofences to add', {
+    if (!tracked.length) {
+      this.logger.warn('GeofenceService', 'No valid stops to track', {
         routeId: route.nid,
         totalStops: stops.length,
       });
       return;
     }
 
-    try {
-      this.logger.log(
-        'GeofenceService',
-        'Adding geofences',
-        geofences.map(g => ({
-          identifier: g.identifier,
-          radius: g.radius,
-          lat: g.latitude,
-          lng: g.longitude,
-        })),
-      );
+    this.trackedStops = tracked;
+    this.updateState({ trackedStops: [...tracked] });
 
-      await this.bgGeo.addGeofences(geofences);
-      this.logger.log('GeofenceService', 'Geofences added successfully');
-      void this.refreshActiveGeofences();
-    } catch (e) {
-      this.logger.error('GeofenceService', 'addGeofences failed', e);
-      void this.refreshActiveGeofences();
+    this.logger.log(
+      'GeofenceService',
+      'Tracking stops set',
+      tracked.map(s => ({
+        stopIdx: s.stopIdx,
+        stopTitle: s.stopTitle,
+        lat: s.lat,
+        lng: s.lng,
+      })),
+    );
+
+    // Immediately check proximity with current position if available
+    if (this.bgGeo) {
+      void this.bgGeo
+        .getCurrentPosition({ samples: 1, persist: false, desiredAccuracy: 10, timeout: 10 })
+        .then(location => {
+          this.checkProximity(location.coords.latitude, location.coords.longitude);
+        })
+        .catch(() => {
+          // Ignore — first onLocation will handle it
+        });
     }
   }
 
-  private async disableGeofencing(): Promise<void> {
-    if (!this.initialized || !this.bgGeo) {
-      this.updateState({ activeGeofences: [] });
-      return;
-    }
-
-    await this.clearAllGeofences();
-    await this.stopGeofencingEngine();
+  private async disableTracking(): Promise<void> {
+    this.clearTrackedStops();
+    await this.stopTrackingEngine();
   }
 }
