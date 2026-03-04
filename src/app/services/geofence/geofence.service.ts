@@ -443,8 +443,8 @@ export class GeofenceService {
         }
 
         const config: Config = {
-          debug: true,
-          logLevel: plugin.LOG_LEVEL_VERBOSE,
+          debug: false,
+          logLevel: plugin.LOG_LEVEL_ERROR,
           desiredAccuracy: plugin.DESIRED_ACCURACY_HIGH,
           distanceFilter: 30, // The minimum distance (meters) a device must move horizontally before an update event is generated. By default, distanceFilter is elastically auto-calculated: When speed increases, distanceFilter increases; when speed decreases, so too does distanceFilter.
           // locationUpdateInterval: 5000, // Android only, requires distanceFilter to be 0
