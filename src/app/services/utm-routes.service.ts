@@ -238,6 +238,10 @@ export class UtmRoutesService {
 
     this.selected.next(routeToSelect);
 
+    if (this.platform.isBrowser()) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     this.spinner.loadingRoute = false;
   }
 
