@@ -214,6 +214,11 @@ export class UtmRoutesService {
     return selectedRoute.stops[selectedStopIdx];
   }
 
+  public get isCurrentRouteCycling(): boolean {
+    const selectedRoute: UtmRoute | undefined = this.selected.getValue();
+    return selectedRoute?.type === 'Fietsroute';
+  }
+
   public async load() {
     const routes = await this.apiService.getUtmRoutes();
     this.all.next(routes);

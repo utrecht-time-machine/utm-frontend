@@ -5,7 +5,11 @@ import { circle as turfCircle } from '@turf/turf';
 import type { Feature, FeatureCollection, Polygon } from 'geojson';
 
 import { GeofenceService } from './geofence.service';
-import { PROXIMITY_RADIUS_METERS } from './geofence.constants';
+import { UtmRoutesService } from '../utm-routes.service';
+import {
+  WALKING_PROXIMITY_RADIUS_METERS,
+  CYCLING_PROXIMITY_RADIUS_METERS,
+} from './geofence.constants';
 
 interface OverlayStop {
   lat: number;
@@ -35,7 +39,7 @@ export class GeofenceOverlayService {
   private readonly fillLayerId = 'utm-active-geofences-fill';
   private readonly lineLayerId = 'utm-active-geofences-line';
 
-  constructor(private geofences: GeofenceService) {}
+  constructor(private geofences: GeofenceService, private utmRoutes: UtmRoutesService) {}
 
   attach(map: mapboxgl.Map): void {
     this.map = map;
@@ -143,15 +147,20 @@ export class GeofenceOverlayService {
   ): FeatureCollection<Polygon, GeofenceOverlayProperties> {
     const features: Array<Feature<Polygon, GeofenceOverlayProperties>> = [];
 
+    const isCycling = this.utmRoutes.isCurrentRouteCycling;
+    const proximityRadius = isCycling
+      ? CYCLING_PROXIMITY_RADIUS_METERS
+      : WALKING_PROXIMITY_RADIUS_METERS;
+
     for (const s of stops) {
       const properties: GeofenceOverlayProperties = {
         identifier: `stop-${s.stopIdx}`,
-        radius: PROXIMITY_RADIUS_METERS,
+        radius: proximityRadius,
       };
 
       const circlePoly: Feature<Polygon, GeofenceOverlayProperties> = turfCircle(
         [s.lng, s.lat],
-        PROXIMITY_RADIUS_METERS / 1000,
+        proximityRadius / 1000,
         {
           steps: 64,
           units: 'kilometers',

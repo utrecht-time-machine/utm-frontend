@@ -8,7 +8,13 @@ import { GeofencePermissionsService } from './geofence-permissions.service';
 import { UtmRoutesService } from '../utm-routes.service';
 import { UtmRoute } from '../../models/utm-route';
 import { UtmRouteStop } from '../../models/utm-route-stop';
-import { PROXIMITY_RADIUS_METERS, EXIT_RADIUS_METERS } from './geofence.constants';
+import {
+  WALKING_PROXIMITY_RADIUS_METERS,
+  WALKING_EXIT_RADIUS_METERS,
+  CYCLING_PROXIMITY_RADIUS_METERS,
+  CYCLING_EXIT_RADIUS_METERS,
+  SHOW_PULSE_ANIMATION_INSTEAD_OF_AUDIO_AUTOPLAY,
+} from './geofence.constants';
 
 import type {
   Config,
@@ -117,14 +123,22 @@ export class GeofenceService {
       return;
     }
 
+    const isCycling = this.utmRoutes.isCurrentRouteCycling;
+    const proximityRadius = isCycling
+      ? CYCLING_PROXIMITY_RADIUS_METERS
+      : WALKING_PROXIMITY_RADIUS_METERS;
+    const exitRadius = isCycling ? CYCLING_EXIT_RADIUS_METERS : WALKING_EXIT_RADIUS_METERS;
+
     this.logger.log(
       'GeofenceService',
-      `checkProximity: Checking ${this.trackedStops.length} stops`,
+      `checkProximity: Checking ${this.trackedStops.length} stops (${
+        isCycling ? 'cycling' : 'walking'
+      } route)`,
       {
         lat,
         lng,
-        enterRadius: PROXIMITY_RADIUS_METERS,
-        exitRadius: EXIT_RADIUS_METERS,
+        enterRadius: proximityRadius,
+        exitRadius: exitRadius,
       },
     );
 
@@ -134,7 +148,7 @@ export class GeofenceService {
       const distance = haversineDistance(lat, lng, stop.lat, stop.lng);
 
       if (stop.inside) {
-        if (distance > EXIT_RADIUS_METERS) {
+        if (distance > exitRadius) {
           stop.inside = false;
           stateChanged = true;
           this.logger.log(
@@ -142,7 +156,7 @@ export class GeofenceService {
             `checkProximity: EXITED Stop ${stop.stopIdx} ("${stop.stopTitle}")`,
             {
               distance: Math.round(distance),
-              exitRadius: EXIT_RADIUS_METERS,
+              exitRadius: exitRadius,
             },
           );
         } else {
@@ -155,7 +169,7 @@ export class GeofenceService {
         continue;
       }
 
-      if (distance <= PROXIMITY_RADIUS_METERS) {
+      if (distance <= proximityRadius) {
         stop.inside = true;
         stop.notified = true;
         stateChanged = true;
@@ -163,7 +177,7 @@ export class GeofenceService {
           stopIdx: stop.stopIdx,
           stopTitle: stop.stopTitle,
           distance: Math.round(distance),
-          enterRadius: PROXIMITY_RADIUS_METERS,
+          enterRadius: proximityRadius,
         });
 
         const meta: RouteStopData = {
@@ -182,7 +196,7 @@ export class GeofenceService {
           `checkProximity: Stop ${stop.stopIdx} ("${stop.stopTitle}") out of range`,
           {
             distance: Math.round(distance),
-            enterRadius: PROXIMITY_RADIUS_METERS,
+            enterRadius: proximityRadius,
             lat: stop.lat,
             lng: stop.lng,
           },

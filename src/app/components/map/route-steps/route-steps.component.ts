@@ -91,7 +91,7 @@ export class RouteStepsComponent implements AfterViewInit, OnDestroy {
   }
 
   public get routeTypeStr(): string {
-    if (this.selectedRoute?.type == 'Fietsroute') {
+    if (this.utmRoutes.isCurrentRouteCycling) {
       return 'cycling';
     }
     return 'walking';
