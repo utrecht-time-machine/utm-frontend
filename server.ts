@@ -17,6 +17,11 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
+  // Ignore cordova.js requests when using SSR
+  server.get('/cordova.js', (req, res) => {
+    res.status(200).send('');
+  });
+
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
