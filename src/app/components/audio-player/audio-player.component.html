@@ -1,8 +1,21 @@
 @if (audioUrl) {
 <div class="audio-container">
-  <div class="audioplayer" [ngClass]="{ 'audioplayer-playing': isPlaying }">
+  <div
+    class="audioplayer"
+    [ngClass]="{
+      'audioplayer-playing': isPlaying,
+      'audioplayer-loading': isLoading,
+      'audioplayer-error': hasError
+    }"
+  >
     <div class="audioplayer-playpause" title="" (click)="togglePlayPause()">
+      @if (isLoading) {
+      <div class="audioplayer-spinner"></div>
+      } @else if (hasError) {
+      <img src="assets/ui/svg/close.svg" alt="Error loading audio" class="audioplayer-error-icon" />
+      } @else {
       <a href="javascript:void(0);"></a>
+      }
     </div>
     <div class="audioplayer-time audioplayer-time-current">
       {{ formattedPlayTime }}

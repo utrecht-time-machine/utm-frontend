@@ -28,6 +28,8 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
   scrubbingAudio = false;
   percentageComplete = 0;
   audio: Howl | undefined;
+  isLoading = false;
+  hasError = false;
 
   @HostBinding('class.pulse-animation') pulseAnimation = false;
 
@@ -139,11 +141,15 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
+    this.isLoading = true;
+    this.hasError = false;
     this.logger.log('AudioPlayer', 'load', { audioUrl });
     setTimeout(() => {
       this.audio = new Howl({
         src: [audioUrl],
         onload: () => {
+          this.isLoading = false;
+          this.hasError = false;
           this.logger.log('AudioPlayer', 'Howl loaded', { audioUrl });
           if (this._registration) {
             this.audioCoordinator.unregisterPlayer(this._registration);
@@ -172,6 +178,8 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
           this.logger.log('AudioPlayer', 'stopped');
         },
         onloaderror: (_id: number, err: unknown) => {
+          this.isLoading = false;
+          this.hasError = true;
           this.logger.error('AudioPlayer', 'load error', err);
         },
       });
@@ -179,7 +187,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   togglePlayPause() {
-    if (!this.audio) {
+    if (!this.audio || this.isLoading || this.hasError) {
       return;
     }
 
