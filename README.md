@@ -14,7 +14,7 @@ The application uses these public APIs:
 - **Utrecht Time Machine Data API (Drupal)**: `https://data.utrechttimemachine.nl`
   - Locations, themes, routes, and media content
   - Live search functionality
-- **Utrecht Time Machine Services API (Express)**: `https://services.utrechttimemachine.nl`
+- **Utrecht Time Machine Services API (Express, see [GH repo](https://github.com/utrecht-time-machine/utm-services))**: `https://services.utrechttimemachine.nl`
   - Translation services
   - Feedback and comment submission
 - **Mapbox API**: Public token included for map rendering
