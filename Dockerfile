@@ -1,5 +1,5 @@
 ## Use Node Slim image
-FROM node:20-slim
+FROM node:22-slim
 
 WORKDIR /app
 
@@ -8,9 +8,9 @@ COPY . .
 
 RUN npm install -g @angular/cli
 RUN npm install
-RUN ng build && ng run utm2023-frontend:server
+RUN npm run build
 
 EXPOSE 4000
 
 ## Start the application
-CMD ["node", "dist/utm2023-frontend/server/main.js"]
+CMD ["node", "dist/server/server.mjs"]
