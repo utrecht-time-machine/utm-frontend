@@ -12,7 +12,7 @@
   ],
   "author": "Utrecht Time Machine",
   "devDependencies": {
-    "cordova-android": "^14.0.1",
+    "cordova-android": "^15.0.0",
     "cordova-browser": "^7.0.0",
     "cordova-ios": "^8.0.0",
     "cordova-plugin-device": "^3.0.0",
@@ -23,8 +23,8 @@
   "cordova": {
     "platforms": [
       "browser",
-      "android",
-      "ios"
+      "ios",
+      "android"
     ],
     "plugins": {
       "cordova-plugin-geolocation": {},
