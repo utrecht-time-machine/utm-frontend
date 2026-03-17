@@ -88,6 +88,8 @@ npm run run:android    # Run on Android device/emulator
 npm run run:ios        # Run on iOS device/simulator
 ```
 
+Builds are published through [Google Play Console](https://play.google.com/console/about/) and [App Store Connect](https://appstoreconnect.apple.com/).
+
 ## End-to-end testing (Cypress)
 
 ```bash
