@@ -12,8 +12,8 @@
   <allow-intent href="https://*/*" />
 
 
-  <preference name="android-targetSdkVersion" value="35" />
-  <preference name="android-compileSdkVersion" value="35" />
+  <preference name="android-targetSdkVersion" value="36" />
+  <preference name="android-compileSdkVersion" value="36" />
 
   <preference name="StatusBarOverlaysWebView" value="false" />
 
