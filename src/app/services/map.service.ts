@@ -688,7 +688,10 @@ export class MapService {
           const uniqueLocations: MapLocation[] = this._parseLocations(locations);
 
           const showableLocations = uniqueLocations.filter(location => {
-            const locationHasSelectedTheme = this.themes.shouldShow(location.story_theme_ids);
+            const locationHasSelectedTheme = this.themes.shouldShow([
+              ...location.story_theme_ids,
+              ...location.location_theme_ids,
+            ]);
 
             const locationIsInDateRange = this.time.isInSelectedRange(
               location.min_dates,
@@ -843,9 +846,15 @@ export class MapService {
         : location.hide_from_map_str === '1';
 
       const storyThemeIds: string[] = splitStringToArray(location?.story_theme_ids_str);
+      const existingStoryThemeIds = uniqueLocations[location.nid].story_theme_ids ?? [];
       uniqueLocations[location.nid].story_theme_ids = [
-        ...(uniqueLocations[location.nid].story_theme_ids ?? []),
-        ...storyThemeIds,
+        ...new Set([...existingStoryThemeIds, ...storyThemeIds]),
+      ];
+
+      const locationThemeIds: string[] = location?.location_theme_ids ?? [];
+      const existingLocationThemeIds = uniqueLocations[location.nid].location_theme_ids ?? [];
+      uniqueLocations[location.nid].location_theme_ids = [
+        ...new Set([...existingLocationThemeIds, ...locationThemeIds]),
       ];
 
       const minDates: string[] = splitStringToArray(location?.min_date_str);
