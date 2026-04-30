@@ -14,7 +14,7 @@
 
 <app-debug-log />
 
-<app-edit-button [nid]="utmRoutes.selectedStop?.id"></app-edit-button>
+<app-edit-button [nid]="utmRoutes.selectedStop?.id" label="Edit route stop" />
 
 <h2
   [innerHtml]="
@@ -36,7 +36,9 @@
 <div class="media-container">
   @if (utmRoutes.selectedStop?.stories) {
   <div>
-    @for (story of utmRoutes.selectedStop?.stories; track story) { @if (story?.title) {
+    @for (story of utmRoutes.selectedStop?.stories; track story) {
+    <app-edit-button [nid]="story.story_id" label="Edit verhaal" />
+    @if (story?.title) {
     <div class="story-head" [hidden]="story.title === utmRoutes.selectedStop?.title">
       <h2 [innerHTML]="story.title"></h2>
     </div>

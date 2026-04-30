@@ -14,7 +14,7 @@
 
       <app-debug-log />
 
-      <app-edit-button [nid]="utmRoutes.selected.getValue()?.nid"></app-edit-button>
+      <app-edit-button [nid]="utmRoutes.selected.getValue()?.nid" label="Edit route" />
       <h2>
         {{ utmTranslate.getAsEnglishIfApplicable(selectedRoute, 'title', 'title_english') }}
       </h2>

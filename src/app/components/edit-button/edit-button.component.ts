@@ -10,6 +10,7 @@ import { PlatformService } from '../../services/platform.service';
 })
 export class EditButtonComponent {
   @Input() nid: string | undefined;
+  @Input() label: string = 'Edit';
 
   environment = environment;
 

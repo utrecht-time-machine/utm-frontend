@@ -3,6 +3,7 @@ import { UtmRoutesService } from '../../../services/utm-routes.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UtmTranslateService } from '../../../services/utm-translate.service';
+import { EditButtonComponent } from '../../edit-button/edit-button.component';
 
 @Component({
   selector: 'app-selected-stop',

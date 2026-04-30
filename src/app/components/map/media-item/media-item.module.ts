@@ -8,6 +8,7 @@ import { OrganisationsModule } from '../../organisations/organisations.module';
 import { AudioPlayerModule } from '../../audio-player/audio-player.module';
 import { ImageViewerModule } from './image-viewer/image-viewer.module';
 import { Ar360ViewerModule } from './ar-360-viewer/ar-360-viewer.module';
+import { EditButtonModule } from "../../edit-button/edit-button.module";
 
 @NgModule({
   declarations: [MediaItemComponent],
@@ -20,7 +21,8 @@ import { Ar360ViewerModule } from './ar-360-viewer/ar-360-viewer.module';
     AudioPlayerModule,
     ImageViewerModule,
     Ar360ViewerModule,
-  ],
+    EditButtonModule
+],
   exports: [MediaItemComponent],
 })
 export class MediaItemModule {}
