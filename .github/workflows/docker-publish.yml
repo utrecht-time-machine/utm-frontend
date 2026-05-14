@@ -138,8 +138,10 @@ jobs:
           envs: LOCAL_TOKEN, LOCAL_USERNAME
           script: |
             echo $LOCAL_TOKEN | sudo docker login ghcr.io -u $LOCAL_USERNAME --password-stdin
-            sudo docker pull ghcr.io/utrecht-time-machine/utm2023-frontend:main
-            sudo docker stop utm2023-frontend
-            sudo docker rm utm2023-frontend
-            sudo docker run -p 4000:4000 --name utm2023-frontend --restart always -d ghcr.io/utrecht-time-machine/utm2023-frontend:main
+            sudo docker pull ghcr.io/utrecht-time-machine/utm-frontend:main
+            sudo docker stop utm2023-frontend || true
+            sudo docker rm utm2023-frontend || true
+            sudo docker stop utm-frontend || true
+            sudo docker rm utm-frontend || true
+            sudo docker run -p 4000:4000 --name utm-frontend --restart always -d ghcr.io/utrecht-time-machine/utm-frontend:main
             sudo docker image prune -a -f
