@@ -4,6 +4,7 @@ import {
   ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -18,7 +19,7 @@ import { PlatformService } from 'src/app/services/platform.service';
   styleUrls: ['./image-viewer.component.scss'],
   standalone: false,
 })
-export class ImageViewerComponent implements AfterViewInit, OnChanges {
+export class ImageViewerComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() imageUrl: string | undefined = undefined;
   @Input() imageSource: string | undefined = undefined;
   @Input() imageLicense: string | undefined = undefined;
@@ -35,10 +36,14 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if ('imageSrc' in changes) {
+    if ('imageUrl' in changes && !changes['imageUrl'].firstChange) {
       setTimeout(() => {
         if (this.viewer) {
-          this.viewer.update();
+          this.viewer.destroy();
+          this.viewer = undefined;
+        }
+        if (changes['imageUrl'].currentValue) {
+          this._initImageViewer();
         }
       });
     }
@@ -72,5 +77,11 @@ export class ImageViewerComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit() {
     this._initImageViewer();
+  }
+
+  ngOnDestroy() {
+    if (this.viewer) {
+      this.viewer.destroy();
+    }
   }
 }
