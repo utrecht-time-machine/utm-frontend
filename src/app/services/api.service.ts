@@ -182,11 +182,7 @@ export class ApiService {
       return undefined;
     }
     const story: Story = storyDetails[0];
-    UtilService.addUrlPrefix(story, 'photo');
-
-    if (story.audio) {
-      UtilService.addUrlPrefix(story, 'audio', environment.audioBaseUrl);
-    }
+    this.processStoryFields(story);
 
     this.utmTranslate.translateObjectByKeys(story, environment.translateKeys.storyDetails);
     return story;
@@ -338,9 +334,8 @@ export class ApiService {
         environment.apiUrl + environment.apiSuffixes.storiesByLocationId + locationId,
       ),
     );
-    UtilService.addUrlPrefixes(stories, 'photo');
-
-    stories.map(story => {
+    stories.forEach(story => {
+      this.processStoryFields(story);
       story.story_url_alias = story.story_link.replace('/story/', '');
       story.theme_ids = story.theme_ids_str ? story.theme_ids_str.split(', ') : [];
     });
@@ -382,6 +377,27 @@ export class ApiService {
 
     // console.log(requestBody, url);
     return await lastValueFrom(this.http.post(url, requestBody, httpOptions));
+  }
+
+  private processStoryFields(story: Story): void {
+    if (story.use_first_media_item_thumb_as_photo_str) {
+      story.use_first_media_item_thumb_as_photo =
+        story.use_first_media_item_thumb_as_photo_str === '1';
+    }
+
+    if (story.first_media_item_thumb) {
+      UtilService.addUrlPrefix(story, 'first_media_item_thumb');
+    }
+
+    if (story.use_first_media_item_thumb_as_photo && story.first_media_item_thumb) {
+      story.photo = story.first_media_item_thumb;
+    } else {
+      UtilService.addUrlPrefix(story, 'photo');
+    }
+
+    if (story.audio) {
+      UtilService.addUrlPrefix(story, 'audio', environment.audioBaseUrl);
+    }
   }
 
   public convertLocationDetailsToStory(locationDetails: LocationDetails): Story {

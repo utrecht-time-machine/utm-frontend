@@ -15,6 +15,9 @@ export interface Story {
   audio: string;
 
   mediaItems?: MediaItem[];
+  first_media_item_thumb?: string;
+  use_first_media_item_thumb_as_photo_str?: string;
+  use_first_media_item_thumb_as_photo?: boolean;
 
   max_date_str: string;
   min_date_str: string;
