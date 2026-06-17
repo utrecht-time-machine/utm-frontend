@@ -134,6 +134,12 @@ export class ApiService {
         utmRoute.show_only_in_dev_mode = true;
       }
 
+      if (!utmRoute.show_iphone_audio_tip_str) {
+        utmRoute.show_iphone_audio_tip = false;
+      } else if (utmRoute.show_iphone_audio_tip_str === '1') {
+        utmRoute.show_iphone_audio_tip = true;
+      }
+
       const splitStringToArray = (str?: string): string[] => {
         return str ? str.split(', ') : [];
       };

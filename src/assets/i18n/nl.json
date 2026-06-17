@@ -65,5 +65,6 @@
   "permissionAlways": "Toestemming gegeven",
   "permissionWhenInUse": "Alleen tijdens gebruik",
   "permissionDenied": "Geweigerd",
-  "permissionNotDetermined": "Nog gevraagd"
+  "permissionNotDetermined": "Nog gevraagd",
+  "iphoneAudioWarning": "Beluister je deze audiotour op een iPhone? Zorg er dan voor dat het geluid (knopje zijkant links boven) aan staat."
 }

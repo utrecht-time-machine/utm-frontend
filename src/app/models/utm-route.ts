@@ -34,4 +34,7 @@ export interface UtmRoute {
 
   show_only_in_dev_mode_plaintext?: string;
   show_only_in_dev_mode: boolean;
+
+  show_iphone_audio_tip_str?: string;
+  show_iphone_audio_tip: boolean;
 }

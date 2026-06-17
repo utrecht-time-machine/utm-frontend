@@ -64,5 +64,6 @@
   "permissionAlways": "Permission granted",
   "permissionWhenInUse": "Only when in use",
   "permissionDenied": "Denied",
-  "permissionNotDetermined": "Not yet requested"
+  "permissionNotDetermined": "Not yet requested",
+  "iphoneAudioWarning": "Are you listening to this audio tour on an iPhone? Then make sure the sound (button on the top left side) is turned on."
 }

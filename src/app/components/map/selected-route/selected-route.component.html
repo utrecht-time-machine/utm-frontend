@@ -30,6 +30,8 @@
           class="route-container-text"
           [innerHtml]="utmTranslate.getAsEnglishIfApplicable(selectedRoute, 'text', 'text_english')"
         ></div>
+        } @if (selectedRoute?.show_iphone_audio_tip) {
+        <app-iphone-audio-warning></app-iphone-audio-warning>
         } @if (routeNotifications.deviceAllowsGeofencing$ | async) {
         <app-route-notifications-toggle></app-route-notifications-toggle>
         }

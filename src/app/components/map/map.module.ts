@@ -18,7 +18,8 @@ import { FiltersModule } from '../filters/filters.module';
 import { TimeFilterModule } from '../filters/filter/time-filter/time-filter.module';
 import { FeedbackModule } from '../feedback/feedback.module';
 import { RouteNotificationsToggleComponent } from './route-notifications-toggle/route-notifications-toggle.component';
-import { DebugLogComponent } from "../debug-log/debug-log.component";
+import { DebugLogComponent } from '../debug-log/debug-log.component';
+import { IphoneAudioWarningComponent } from './iphone-audio-warning/iphone-audio-warning.component';
 
 @NgModule({
   declarations: [MapComponent, SelectedItemComponent, SelectedRouteComponent, RouteStepsComponent],
@@ -39,7 +40,8 @@ import { DebugLogComponent } from "../debug-log/debug-log.component";
     FiltersModule,
     FeedbackModule,
     RouteNotificationsToggleComponent,
-    DebugLogComponent
-],
+    DebugLogComponent,
+    IphoneAudioWarningComponent,
+  ],
 })
 export class MapModule {}
