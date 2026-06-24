@@ -65,5 +65,11 @@
   "permissionWhenInUse": "Only when in use",
   "permissionDenied": "Denied",
   "permissionNotDetermined": "Not yet requested",
-  "iphoneAudioWarning": "Are you listening to this audio tour on an iPhone? Then make sure the sound (button on the top left side) is turned on."
+  "iphoneAudioWarning": "Are you listening to this audio tour on an iPhone? Then make sure the sound (button on the top left side) is turned on.",
+  "sortBy": "Sort by",
+  "sortRelevance": "Relevance",
+  "sortAlphabeticalAsc": "Alphabetical (A-Z)",
+  "sortAlphabeticalDesc": "Alphabetical (Z-A)",
+  "sortDurationAsc": "Duration (shortest first)",
+  "sortDurationDesc": "Duration (longest first)"
 }

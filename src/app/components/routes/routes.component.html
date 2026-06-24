@@ -3,6 +3,16 @@
 <div class="section section-routes">
   <div class="pad">
     <h1>{{ 'routes' | translate }}</h1>
+    <div class="sort-container">
+      <label for="route-sort">{{ 'sortBy' | translate }}:</label>
+      <select id="route-sort" [(ngModel)]="selectedSort" (change)="onSortChange(selectedSort)">
+        <option value="relevance">{{ 'sortRelevance' | translate }}</option>
+        <option value="alphabetical-asc">{{ 'sortAlphabeticalAsc' | translate }}</option>
+        <option value="alphabetical-desc">{{ 'sortAlphabeticalDesc' | translate }}</option>
+        <option value="duration-asc">{{ 'sortDurationAsc' | translate }}</option>
+        <option value="duration-desc">{{ 'sortDurationDesc' | translate }}</option>
+      </select>
+    </div>
     <div class="views-element-container">
       <div class="card-hold promote">
         @for (shownUtmRoute of sortedRoutes; track shownUtmRoute) {

@@ -66,5 +66,11 @@
   "permissionWhenInUse": "Alleen tijdens gebruik",
   "permissionDenied": "Geweigerd",
   "permissionNotDetermined": "Nog gevraagd",
-  "iphoneAudioWarning": "Beluister je deze audiotour op een iPhone? Zorg er dan voor dat het geluid (knopje zijkant links boven) aan staat."
+  "iphoneAudioWarning": "Beluister je deze audiotour op een iPhone? Zorg er dan voor dat het geluid (knopje zijkant links boven) aan staat.",
+  "sortBy": "Sorteer op",
+  "sortRelevance": "Relevantie",
+  "sortAlphabeticalAsc": "Alfabetisch (A-Z)",
+  "sortAlphabeticalDesc": "Alfabetisch (Z-A)",
+  "sortDurationAsc": "Duur (kortste eerst)",
+  "sortDurationDesc": "Duur (langste eerst)"
 }
